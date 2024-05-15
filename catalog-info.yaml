@@ -1,0 +1,10 @@
+apiVersion: backstage.io/v1alpha1
+kind: Component
+metadata:
+  name: deploytools
+  title: deploytools
+  description: A collection of tools used for deploying applications at Diamond Light Source
+spec:
+  type: documentation
+  lifecycle: experimental
+  owner: 

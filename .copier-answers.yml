@@ -1,0 +1,17 @@
+# Changes here will be overwritten by Copier
+_commit: 2.1.0
+_src_path: gh:DiamondLightSource/python-copier-template
+author_email: martin.gaughran@diamond.ac.uk
+author_name: Martin Gaughran
+component_owner: ''
+description: A collection of tools used for deploying applications at Diamond Light
+    Source
+distribution_name: deploytools
+docker: false
+docs_type: README
+git_platform: github.com
+github_org: MJGaughran
+package_name: deploytools
+pypi: false
+repo_name: deploytools
+type_checker: pyright
