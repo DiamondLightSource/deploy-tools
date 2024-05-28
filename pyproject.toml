@@ -14,7 +14,9 @@ classifiers = [
     "Programming Language :: Python :: 3.11",
 ]
 description = "A collection of tools used for deploying applications at Diamond Light Source"
-dependencies = [] # Add project dependencies here, e.g. ["click", "numpy"]
+dependencies = [
+    "typer",
+] # Add project dependencies here, e.g. ["click", "numpy"]
 dynamic = ["version"]
 license.file = "LICENSE"
 readme = "README.md"
@@ -35,6 +37,7 @@ dev = [
 
 [project.scripts]
 deploytools = "deploytools.__main__:main"
+generate-schema = "deploytools.models.generate:main"
 
 [project.urls]
 GitHub = "https://github.com/MJGaughran/deploytools"

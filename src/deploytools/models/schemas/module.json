@@ -1,0 +1,93 @@
+{
+  "$defs": {
+    "EnvVar": {
+      "properties": {
+        "name": {
+          "title": "Name",
+          "type": "string"
+        },
+        "value": {
+          "title": "Value",
+          "type": "string"
+        }
+      },
+      "required": [
+        "name",
+        "value"
+      ],
+      "title": "EnvVar",
+      "type": "object"
+    },
+    "ExternalModule": {
+      "properties": {
+        "name": {
+          "title": "Name",
+          "type": "string"
+        },
+        "version": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Version"
+        }
+      },
+      "required": [
+        "name",
+        "version"
+      ],
+      "title": "ExternalModule",
+      "type": "object"
+    }
+  },
+  "properties": {
+    "name": {
+      "title": "Name",
+      "type": "string"
+    },
+    "version": {
+      "title": "Version",
+      "type": "string"
+    },
+    "dependencies": {
+      "anyOf": [
+        {
+          "items": {
+            "$ref": "#/$defs/ExternalModule"
+          },
+          "type": "array"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "title": "Dependencies"
+    },
+    "environment_vars": {
+      "anyOf": [
+        {
+          "items": {
+            "$ref": "#/$defs/EnvVar"
+          },
+          "type": "array"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "title": "Environment Vars"
+    }
+  },
+  "required": [
+    "name",
+    "version",
+    "dependencies",
+    "environment_vars"
+  ],
+  "title": "Module",
+  "type": "object"
+}

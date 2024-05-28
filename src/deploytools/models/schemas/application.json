@@ -1,0 +1,197 @@
+{
+  "$defs": {
+    "Apptainer": {
+      "properties": {
+        "app_type": {
+          "const": "apptainer",
+          "enum": [
+            "apptainer"
+          ],
+          "title": "App Type",
+          "type": "string"
+        },
+        "container": {
+          "$ref": "#/$defs/Container"
+        },
+        "global_args": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Global Args"
+        },
+        "entrypoints": {
+          "items": {
+            "$ref": "#/$defs/Entrypoint"
+          },
+          "title": "Entrypoints",
+          "type": "array"
+        },
+        "mounts": {
+          "anyOf": [
+            {
+              "items": {
+                "type": "string"
+              },
+              "type": "array"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Mounts"
+        }
+      },
+      "required": [
+        "app_type",
+        "container",
+        "entrypoints"
+      ],
+      "title": "Apptainer",
+      "type": "object"
+    },
+    "Container": {
+      "properties": {
+        "image": {
+          "title": "Image",
+          "type": "string"
+        },
+        "version": {
+          "title": "Version",
+          "type": "string"
+        }
+      },
+      "required": [
+        "image",
+        "version"
+      ],
+      "title": "Container",
+      "type": "object"
+    },
+    "Entrypoint": {
+      "properties": {
+        "name": {
+          "title": "Name",
+          "type": "string"
+        },
+        "path": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Path"
+        },
+        "args": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Args"
+        },
+        "mounts": {
+          "anyOf": [
+            {
+              "items": {
+                "type": "string"
+              },
+              "type": "array"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Mounts"
+        }
+      },
+      "required": [
+        "name"
+      ],
+      "title": "Entrypoint",
+      "type": "object"
+    },
+    "Runfile": {
+      "properties": {
+        "app_type": {
+          "const": "runfile",
+          "enum": [
+            "runfile"
+          ],
+          "title": "App Type",
+          "type": "string"
+        },
+        "path": {
+          "title": "Path",
+          "type": "string"
+        },
+        "global_args": {
+          "title": "Global Args",
+          "type": "string"
+        }
+      },
+      "required": [
+        "app_type",
+        "path",
+        "global_args"
+      ],
+      "title": "Runfile",
+      "type": "object"
+    }
+  },
+  "properties": {
+    "name": {
+      "title": "Name",
+      "type": "string"
+    },
+    "module": {
+      "title": "Module",
+      "type": "string"
+    },
+    "version": {
+      "title": "Version",
+      "type": "string"
+    },
+    "config": {
+      "discriminator": {
+        "mapping": {
+          "apptainer": "#/$defs/Apptainer",
+          "runfile": "#/$defs/Runfile"
+        },
+        "propertyName": "app_type"
+      },
+      "oneOf": [
+        {
+          "$ref": "#/$defs/Apptainer"
+        },
+        {
+          "$ref": "#/$defs/Runfile"
+        }
+      ],
+      "title": "Config"
+    }
+  },
+  "required": [
+    "name",
+    "module",
+    "version",
+    "config"
+  ],
+  "title": "Application",
+  "type": "object"
+}
