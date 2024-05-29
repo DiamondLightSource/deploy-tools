@@ -50,6 +50,9 @@ name = "Martin Gaughran"
 [tool.setuptools_scm]
 write_to = "src/deploytools/_version.py"
 
+[tool.setuptools.package-data]
+deploytools = ['templates', 'models/schema/*']
+
 [tool.pyright]
 reportMissingImports = false # Ignore missing stubs in imported modules
 
