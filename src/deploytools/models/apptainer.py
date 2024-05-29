@@ -4,8 +4,8 @@ from pydantic import BaseModel
 
 
 class Entrypoint(BaseModel):
-    name: str
-    path: Optional[str] = None
+    executable_name: str
+    command: Optional[str] = None
     args: Optional[str] = None
     mounts: Optional[Sequence[str]] = None
 

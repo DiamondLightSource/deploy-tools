@@ -5,6 +5,11 @@ from pydantic import BaseModel
 from .yaml_schema import YamlSchema
 
 
+class ModuleMetadata(BaseModel):
+    name: str
+    version: str
+
+
 class ExternalModule(BaseModel):
     name: str
     version: Optional[str]
@@ -16,7 +21,6 @@ class EnvVar(BaseModel):
 
 
 class Module(YamlSchema):
-    name: str
-    version: str
+    metadata: ModuleMetadata
     dependencies: Optional[Sequence[ExternalModule]]
     environment_vars: Optional[Sequence[EnvVar]]
