@@ -4,7 +4,6 @@ from pathlib import Path
 
 from jinja2 import Environment, PackageLoader
 
-from .models.application import AppMetadataModel
 from .models.apptainer import ApptainerModel
 
 APPTAINER_LAUNCH_FILE = "apptainer-launch"
@@ -16,13 +15,10 @@ class Apptainer:
 
     def generate_sif_file(
         self,
-        metadata: AppMetadataModel,
         config: ApptainerModel,
         output_folder: Path,
     ):
-        output_path = output_folder / ":".join(
-            (metadata.name, (metadata.version + ".sif"))
-        )
+        output_path = output_folder / ":".join((config.name, (config.version + ".sif")))
 
         if not output_path.is_absolute:
             raise Exception("Sif file output path must be absolute")
@@ -41,7 +37,6 @@ class Apptainer:
 
     def create_entrypoint_files(
         self,
-        metadata: AppMetadataModel,
         config: ApptainerModel,
         output_folder: Path,
     ):
@@ -71,8 +66,8 @@ class Apptainer:
             parameters = {
                 "mounts": mounts,
                 "apptainer_args": apptainer_args,
-                "sif_name": metadata.name,
-                "sif_version": metadata.version,
+                "sif_name": config.name,
+                "sif_version": config.version,
                 "command_args": command_args,
             }
 
@@ -85,25 +80,3 @@ class Apptainer:
         template = self._env.get_template(APPTAINER_LAUNCH_FILE)
         with open(output_file, "w") as f:
             f.write(template.render(sif_folder=str(sif_folder)))
-
-    def create_module_file(
-        self, config: AppMetadataModel, output_folder: Path, entrypoint_folder: Path
-    ):
-        template = self._env.get_template("module")
-
-        description = config.description
-        if description is None:
-            description = f"Entrypoint scripts for {config.module}"
-
-        parameters = {
-            "module_name": config.module,
-            "module_version": config.version,
-            "module_description": description,
-            "entrypoint_folder": entrypoint_folder,
-        }
-
-        output_file = output_folder / config.module / config.version
-        output_file.parent.mkdir(exist_ok=True, parents=True)
-
-        with open(output_file, "w") as f:
-            f.write(template.render(**parameters))

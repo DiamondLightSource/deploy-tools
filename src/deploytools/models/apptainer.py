@@ -22,6 +22,8 @@ class ContainerImageModel(BaseModel):
 
 class ApptainerModel(BaseModel):
     app_type: Literal["apptainer"]
+    name: str
+    version: str
     container: ContainerImageModel
     entrypoints: Sequence[EntrypointModel]
     global_options: EntrypointOptionsModel
