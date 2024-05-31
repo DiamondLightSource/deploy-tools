@@ -3,21 +3,25 @@ from typing import Literal, Optional, Sequence
 from pydantic import BaseModel
 
 
-class Entrypoint(BaseModel):
+class EntrypointOptionsModel(BaseModel):
+    apptainer_args: str = ""
+    command_args: str = ""
+    mounts: Sequence[str] = []
+
+
+class EntrypointModel(BaseModel):
     executable_name: str
     command: Optional[str] = None
-    args: Optional[str] = None
-    mounts: Optional[Sequence[str]] = None
+    options: EntrypointOptionsModel
 
 
-class ContainerImage(BaseModel):
+class ContainerImageModel(BaseModel):
     path: str
     version: str
 
 
-class Apptainer(BaseModel):
+class ApptainerModel(BaseModel):
     app_type: Literal["apptainer"]
-    container: ContainerImage
-    global_args: Optional[str] = None
-    entrypoints: Sequence[Entrypoint]
-    mounts: Optional[Sequence[str]] = None
+    container: ContainerImageModel
+    entrypoints: Sequence[EntrypointModel]
+    global_options: EntrypointOptionsModel

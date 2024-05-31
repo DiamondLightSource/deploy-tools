@@ -1,0 +1,10 @@
+#! /bin/bash
+
+DEPLOYTOOLS_MOUNTS = "{{ mounts }}"
+DEPLOYTOOLS_APPTAINER_ARGS = "{{ apptainer_args }}"
+DEPLOYTOOLS_SIF_NAME = "{{ sif_name }}"
+DEPLOYTOOLS_SIF_VERSION = "{{ sif_version }}"
+DEPLOYTOOLS_COMMAND = "{{ command }}"
+DEPLOYTOOLS_COMMAND_ARGS = "{{ command_args }}"
+
+apptools-launch "${@}"

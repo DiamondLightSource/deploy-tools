@@ -5,7 +5,7 @@ import yaml
 from pydantic import BaseModel
 
 
-class YamlSchema(BaseModel):
+class YamlSchemaModel(BaseModel):
     @classmethod
     def from_yaml(cls, file_path: str) -> Self:
         with open(file_path) as f:

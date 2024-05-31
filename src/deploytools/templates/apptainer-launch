@@ -1,0 +1,36 @@
+#! /bin/bash
+
+# Relevant environment variables:
+# DEPLOYTOOLS_MOUNTS         = Mounts for container
+# DEPLOYTOOLS_APPTAINER_ARGS = Additional arguments for apptainer
+# DEPLOYTOOLS_SIF_NAME       = Sif file name (without version)
+# DEPLOYTOOLS_SIF_VERSION    = Sif file version
+# DEPLOYTOOLS_COMMAND        = Command to run in container
+# DEPLOYTOOLS_COMMAND_ARGS   = Options and arguments to pass to command
+
+# Arguments:
+# ${@} = Remaining args to pass to the command
+
+# Halt on error
+set -e
+
+# Pass in the sif folder via jinja2
+sif_folder="{{ sif_folder }}"
+if [[ ! -d ${sif_folder} ]]; then
+    echo "ERROR: sif folder ${sif_folder} does not exist" 1>&2
+    exit 1
+fi
+
+sif_name=${sif_folder}/${DEPLOYTOOLS_SIF_NAME}:${DEPLOYTOOLS_SIF_VERSION}.sif
+
+# Raise an error if sif file does not exist
+if [[ ! -f ${sif_name} ]]; then
+    echo "ERROR: sif file ${sif_file} does not exist" 1>&2
+    exit 1
+fi
+
+opts="--env DISPLAY=${DISPLAY}"
+opts=${opts}" ${DEPLOYTOOLS_ARGS}"
+
+set -x
+apptainer exec -B ${DEPLOYTOOLS_MOUNTS} ${opts} ${sif_name} ${DEPLOYTOOLS_COMMAND} "${DEPLOYTOOLS_COMMAND_ARGS}" "${@}"

@@ -1,6 +1,29 @@
 {
   "$defs": {
-    "Apptainer": {
+    "AppMetadataModel": {
+      "properties": {
+        "name": {
+          "title": "Name",
+          "type": "string"
+        },
+        "module": {
+          "title": "Module",
+          "type": "string"
+        },
+        "version": {
+          "title": "Version",
+          "type": "string"
+        }
+      },
+      "required": [
+        "name",
+        "module",
+        "version"
+      ],
+      "title": "AppMetadataModel",
+      "type": "object"
+    },
+    "ApptainerModel": {
       "properties": {
         "app_type": {
           "const": "apptainer",
@@ -11,55 +34,32 @@
           "type": "string"
         },
         "container": {
-          "$ref": "#/$defs/Container"
-        },
-        "global_args": {
-          "anyOf": [
-            {
-              "type": "string"
-            },
-            {
-              "type": "null"
-            }
-          ],
-          "default": null,
-          "title": "Global Args"
+          "$ref": "#/$defs/ContainerImageModel"
         },
         "entrypoints": {
           "items": {
-            "$ref": "#/$defs/Entrypoint"
+            "$ref": "#/$defs/EntrypointModel"
           },
           "title": "Entrypoints",
           "type": "array"
         },
-        "mounts": {
-          "anyOf": [
-            {
-              "items": {
-                "type": "string"
-              },
-              "type": "array"
-            },
-            {
-              "type": "null"
-            }
-          ],
-          "default": null,
-          "title": "Mounts"
+        "global_options": {
+          "$ref": "#/$defs/EntrypointOptionsModel"
         }
       },
       "required": [
         "app_type",
         "container",
-        "entrypoints"
+        "entrypoints",
+        "global_options"
       ],
-      "title": "Apptainer",
+      "title": "ApptainerModel",
       "type": "object"
     },
-    "Container": {
+    "ContainerImageModel": {
       "properties": {
-        "image": {
-          "title": "Image",
+        "path": {
+          "title": "Path",
           "type": "string"
         },
         "version": {
@@ -68,19 +68,19 @@
         }
       },
       "required": [
-        "image",
+        "path",
         "version"
       ],
-      "title": "Container",
+      "title": "ContainerImageModel",
       "type": "object"
     },
-    "Entrypoint": {
+    "EntrypointModel": {
       "properties": {
-        "name": {
-          "title": "Name",
+        "executable_name": {
+          "title": "Executable Name",
           "type": "string"
         },
-        "path": {
+        "command": {
           "anyOf": [
             {
               "type": "string"
@@ -90,43 +90,58 @@
             }
           ],
           "default": null,
-          "title": "Path"
+          "title": "Command"
         },
-        "args": {
-          "anyOf": [
-            {
-              "type": "string"
-            },
-            {
-              "type": "null"
-            }
-          ],
-          "default": null,
-          "title": "Args"
-        },
-        "mounts": {
-          "anyOf": [
-            {
-              "items": {
-                "type": "string"
-              },
-              "type": "array"
-            },
-            {
-              "type": "null"
-            }
-          ],
-          "default": null,
-          "title": "Mounts"
+        "options": {
+          "$ref": "#/$defs/EntrypointOptionsModel"
         }
       },
       "required": [
-        "name"
+        "executable_name",
+        "options"
       ],
-      "title": "Entrypoint",
+      "title": "EntrypointModel",
       "type": "object"
     },
-    "Runfile": {
+    "EntrypointOptionsModel": {
+      "properties": {
+        "apptainer_args": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Apptainer Args"
+        },
+        "command_args": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Command Args"
+        },
+        "mounts": {
+          "default": [],
+          "items": {
+            "type": "string"
+          },
+          "title": "Mounts",
+          "type": "array"
+        }
+      },
+      "title": "EntrypointOptionsModel",
+      "type": "object"
+    },
+    "RunfileModel": {
       "properties": {
         "app_type": {
           "const": "runfile",
@@ -150,48 +165,37 @@
         "path",
         "global_args"
       ],
-      "title": "Runfile",
+      "title": "RunfileModel",
       "type": "object"
     }
   },
   "properties": {
-    "name": {
-      "title": "Name",
-      "type": "string"
-    },
-    "module": {
-      "title": "Module",
-      "type": "string"
-    },
-    "version": {
-      "title": "Version",
-      "type": "string"
+    "metadata": {
+      "$ref": "#/$defs/AppMetadataModel"
     },
     "config": {
       "discriminator": {
         "mapping": {
-          "apptainer": "#/$defs/Apptainer",
-          "runfile": "#/$defs/Runfile"
+          "apptainer": "#/$defs/ApptainerModel",
+          "runfile": "#/$defs/RunfileModel"
         },
         "propertyName": "app_type"
       },
       "oneOf": [
         {
-          "$ref": "#/$defs/Apptainer"
+          "$ref": "#/$defs/ApptainerModel"
         },
         {
-          "$ref": "#/$defs/Runfile"
+          "$ref": "#/$defs/RunfileModel"
         }
       ],
       "title": "Config"
     }
   },
   "required": [
-    "name",
-    "module",
-    "version",
+    "metadata",
     "config"
   ],
-  "title": "Application",
+  "title": "ApplicationModel",
   "type": "object"
 }

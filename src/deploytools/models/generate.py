@@ -4,18 +4,18 @@ from typing import Dict
 import typer
 from typing_extensions import Annotated
 
-from .application import Application
-from .module import Module
-from .yaml_schema import YamlSchema
+from .application import ApplicationModel
+from .module import ModuleModel
+from .yaml_schema import YamlSchemaModel
 
 app = typer.Typer()
 
 app.command()
 
 
-schemas: Dict[str, type[YamlSchema]] = {
-    "application.json": Application,
-    "module.json": Module,
+schemas: Dict[str, type[YamlSchemaModel]] = {
+    "application.json": ApplicationModel,
+    "module.json": ModuleModel,
 }
 
 

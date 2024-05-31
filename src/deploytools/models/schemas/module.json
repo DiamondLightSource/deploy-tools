@@ -1,6 +1,6 @@
 {
   "$defs": {
-    "EnvVar": {
+    "EnvVarModel": {
       "properties": {
         "name": {
           "title": "Name",
@@ -15,10 +15,10 @@
         "name",
         "value"
       ],
-      "title": "EnvVar",
+      "title": "EnvVarModel",
       "type": "object"
     },
-    "ExternalModule": {
+    "ExternalModuleModel": {
       "properties": {
         "name": {
           "title": "Name",
@@ -40,24 +40,37 @@
         "name",
         "version"
       ],
-      "title": "ExternalModule",
+      "title": "ExternalModuleModel",
+      "type": "object"
+    },
+    "ModuleMetadataModel": {
+      "properties": {
+        "name": {
+          "title": "Name",
+          "type": "string"
+        },
+        "version": {
+          "title": "Version",
+          "type": "string"
+        }
+      },
+      "required": [
+        "name",
+        "version"
+      ],
+      "title": "ModuleMetadataModel",
       "type": "object"
     }
   },
   "properties": {
-    "name": {
-      "title": "Name",
-      "type": "string"
-    },
-    "version": {
-      "title": "Version",
-      "type": "string"
+    "metadata": {
+      "$ref": "#/$defs/ModuleMetadataModel"
     },
     "dependencies": {
       "anyOf": [
         {
           "items": {
-            "$ref": "#/$defs/ExternalModule"
+            "$ref": "#/$defs/ExternalModuleModel"
           },
           "type": "array"
         },
@@ -71,7 +84,7 @@
       "anyOf": [
         {
           "items": {
-            "$ref": "#/$defs/EnvVar"
+            "$ref": "#/$defs/EnvVarModel"
           },
           "type": "array"
         },
@@ -83,11 +96,10 @@
     }
   },
   "required": [
-    "name",
-    "version",
+    "metadata",
     "dependencies",
     "environment_vars"
   ],
-  "title": "Module",
+  "title": "ModuleModel",
   "type": "object"
 }

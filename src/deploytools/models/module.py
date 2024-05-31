@@ -2,25 +2,25 @@ from typing import Optional, Sequence
 
 from pydantic import BaseModel
 
-from .yaml_schema import YamlSchema
+from .yaml_schema import YamlSchemaModel
 
 
-class ModuleMetadata(BaseModel):
+class ModuleMetadataModel(BaseModel):
     name: str
     version: str
 
 
-class ExternalModule(BaseModel):
+class ExternalModuleModel(BaseModel):
     name: str
     version: Optional[str]
 
 
-class EnvVar(BaseModel):
+class EnvVarModel(BaseModel):
     name: str
     value: str
 
 
-class Module(YamlSchema):
-    metadata: ModuleMetadata
-    dependencies: Optional[Sequence[ExternalModule]]
-    environment_vars: Optional[Sequence[EnvVar]]
+class ModuleModel(YamlSchemaModel):
+    metadata: ModuleMetadataModel
+    dependencies: Optional[Sequence[ExternalModuleModel]]
+    environment_vars: Optional[Sequence[EnvVarModel]]
