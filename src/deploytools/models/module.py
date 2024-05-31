@@ -22,5 +22,5 @@ class EnvVarModel(BaseModel):
 
 class ModuleModel(YamlSchemaModel):
     metadata: ModuleMetadataModel
-    dependencies: Optional[Sequence[ExternalModuleModel]]
-    environment_vars: Optional[Sequence[EnvVarModel]]
+    dependencies: Sequence[ExternalModuleModel] = []
+    environment_vars: Sequence[EnvVarModel] = []

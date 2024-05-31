@@ -3,7 +3,7 @@ from typing import Optional, Union
 from pydantic import BaseModel, Field
 
 from .apptainer import ApptainerModel
-from .runfile import RunfileModel
+from .runfile import RunFileModel
 from .yaml_schema import YamlSchemaModel
 
 
@@ -16,4 +16,4 @@ class AppMetadataModel(BaseModel):
 
 class ApplicationModel(YamlSchemaModel):
     metadata: AppMetadataModel
-    config: Union[ApptainerModel, RunfileModel] = Field(..., discriminator="app_type")
+    config: Union[ApptainerModel, RunFileModel] = Field(..., discriminator="app_type")
