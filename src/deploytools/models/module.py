@@ -2,8 +2,6 @@ from typing import Optional, Sequence
 
 from pydantic import BaseModel
 
-from .yaml_schema import YamlSchemaModel
-
 
 class ModuleMetadataModel(BaseModel):
     name: str
@@ -20,7 +18,7 @@ class EnvVarModel(BaseModel):
     value: str
 
 
-class ModuleModel(YamlSchemaModel):
+class ModuleModel(BaseModel):
     metadata: ModuleMetadataModel
     dependencies: Sequence[ExternalModuleModel] = []
     environment_vars: Sequence[EnvVarModel] = []

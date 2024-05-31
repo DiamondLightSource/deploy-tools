@@ -4,7 +4,6 @@ from pydantic import BaseModel, Field
 
 from .apptainer import ApptainerModel
 from .runfile import RunFileModel
-from .yaml_schema import YamlSchemaModel
 
 
 class AppMetadataModel(BaseModel):
@@ -14,6 +13,6 @@ class AppMetadataModel(BaseModel):
     description: Optional[str] = None
 
 
-class ApplicationModel(YamlSchemaModel):
+class ApplicationModel(BaseModel):
     metadata: AppMetadataModel
     config: Union[ApptainerModel, RunFileModel] = Field(..., discriminator="app_type")
