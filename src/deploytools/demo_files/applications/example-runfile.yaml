@@ -1,0 +1,9 @@
+# yaml-language-server: $schema=../../models/schemas/application.json
+
+app_config:
+  app_type: runfile
+
+  name: cs-studio
+  command_path: css.sh
+  command_args: "-f ~/nonsense.yaml"
+  executable_name: dls-pmac-control.py

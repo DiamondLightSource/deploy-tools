@@ -1,18 +1,14 @@
 # yaml-language-server: $schema=../../models/schemas/application.json
 
-metadata:
-  name: dls-pmac-control
-  module: controls
-  version: "1.6"
-  type: apptainer
-
-config:
+app_config:
   app_type: apptainer
+
+  name: dls-pmac-control
+  version: "1.6"
+
   container:
     path: ghcr.io/DiamondLight ...
     version: "2.4"
-
-  global_args: "-e"
 
   entrypoints:
     - executable_name: dls-pmac-control.py
@@ -27,3 +23,4 @@ config:
   global_options:
     mounts:
       - /dls_sw
+    command_args: "-e"

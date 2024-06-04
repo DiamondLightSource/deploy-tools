@@ -1,0 +1,49 @@
+# yaml-language-server: $schema=../../models/schemas/module.json
+
+metadata:
+  name: controls-tools
+  version: "3.2"
+  description: "A set of applications that makes a Controls engineer very happy"
+
+  dependencies:
+    - name: other-thing
+      version: "0.8"
+
+  env_vars:
+    - name: EPICS_BASE
+      value: "/dls_sw/epics/R3.14.12.7/base"
+    - name: DEBUG
+      value: "YES"
+
+applications:
+  - app_config:
+      app_type: apptainer
+
+      name: dls-pmac-control
+      version: "1.6"
+
+      container:
+        path: ghcr.io/DiamondLight ...
+        version: "2.4"
+
+      entrypoints:
+        - executable_name: dls-pmac-control.py
+          options:
+            apptainer_args: "-i"
+
+        - executable_name: dls-pmac-inspect.py
+          options:
+            mounts:
+              - /dls
+
+      global_options:
+        mounts:
+          - /dls_sw
+        command_args: "-e"
+  - app_config:
+      app_type: runfile
+
+      name: cs-studio
+      command_path: css.sh
+      command_args: "-f ~/nonsense.yaml"
+      executable_name: dls-pmac-control.py

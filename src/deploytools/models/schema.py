@@ -16,8 +16,8 @@ app.command()
 
 
 schemas: Dict[str, type[BaseModel]] = {
-    "application.json": ApplicationModel,
     "module.json": ModuleModel,
+    "application.json": ApplicationModel,
 }
 
 

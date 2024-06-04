@@ -1,28 +1,5 @@
 {
   "$defs": {
-    "AppMetadataModel": {
-      "properties": {
-        "name": {
-          "title": "Name",
-          "type": "string"
-        },
-        "module": {
-          "title": "Module",
-          "type": "string"
-        },
-        "version": {
-          "title": "Version",
-          "type": "string"
-        }
-      },
-      "required": [
-        "name",
-        "module",
-        "version"
-      ],
-      "title": "AppMetadataModel",
-      "type": "object"
-    },
     "ApptainerModel": {
       "properties": {
         "app_type": {
@@ -31,6 +8,14 @@
             "apptainer"
           ],
           "title": "App Type",
+          "type": "string"
+        },
+        "name": {
+          "title": "Name",
+          "type": "string"
+        },
+        "version": {
+          "title": "Version",
           "type": "string"
         },
         "container": {
@@ -49,6 +34,8 @@
       },
       "required": [
         "app_type",
+        "name",
+        "version",
         "container",
         "entrypoints",
         "global_options"
@@ -106,28 +93,14 @@
     "EntrypointOptionsModel": {
       "properties": {
         "apptainer_args": {
-          "anyOf": [
-            {
-              "type": "string"
-            },
-            {
-              "type": "null"
-            }
-          ],
-          "default": null,
-          "title": "Apptainer Args"
+          "default": "",
+          "title": "Apptainer Args",
+          "type": "string"
         },
         "command_args": {
-          "anyOf": [
-            {
-              "type": "string"
-            },
-            {
-              "type": "null"
-            }
-          ],
-          "default": null,
-          "title": "Command Args"
+          "default": "",
+          "title": "Command Args",
+          "type": "string"
         },
         "mounts": {
           "default": [],
@@ -141,7 +114,7 @@
       "title": "EntrypointOptionsModel",
       "type": "object"
     },
-    "RunfileModel": {
+    "RunFileModel": {
       "properties": {
         "app_type": {
           "const": "runfile",
@@ -151,33 +124,35 @@
           "title": "App Type",
           "type": "string"
         },
-        "path": {
-          "title": "Path",
+        "name": {
+          "title": "Name",
           "type": "string"
         },
-        "global_args": {
-          "title": "Global Args",
+        "command_path": {
+          "title": "Command Path",
+          "type": "string"
+        },
+        "command_args": {
+          "default": "",
+          "title": "Command Args",
           "type": "string"
         }
       },
       "required": [
         "app_type",
-        "path",
-        "global_args"
+        "name",
+        "command_path"
       ],
-      "title": "RunfileModel",
+      "title": "RunFileModel",
       "type": "object"
     }
   },
   "properties": {
-    "metadata": {
-      "$ref": "#/$defs/AppMetadataModel"
-    },
-    "config": {
+    "app_config": {
       "discriminator": {
         "mapping": {
           "apptainer": "#/$defs/ApptainerModel",
-          "runfile": "#/$defs/RunfileModel"
+          "runfile": "#/$defs/RunFileModel"
         },
         "propertyName": "app_type"
       },
@@ -186,15 +161,14 @@
           "$ref": "#/$defs/ApptainerModel"
         },
         {
-          "$ref": "#/$defs/RunfileModel"
+          "$ref": "#/$defs/RunFileModel"
         }
       ],
-      "title": "Config"
+      "title": "App Config"
     }
   },
   "required": [
-    "metadata",
-    "config"
+    "app_config"
   ],
   "title": "ApplicationModel",
   "type": "object"
