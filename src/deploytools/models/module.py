@@ -26,6 +26,3 @@ class ModuleMetadataModel(BaseModel):
 class ModuleModel(BaseModel):
     metadata: ModuleMetadataModel
     applications: list[ApplicationModel]
-
-    def add_application(self, application: ApplicationModel):
-        self.applications.append(application)

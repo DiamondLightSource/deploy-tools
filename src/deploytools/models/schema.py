@@ -2,7 +2,7 @@ import json
 from pathlib import Path
 
 import typer
-import yaml
+from pydantic import BaseModel
 from typing_extensions import Annotated
 
 from .application import ApplicationModel
@@ -12,17 +12,10 @@ app = typer.Typer()
 
 app.command()
 
-ConfigClass = ModuleModel | ApplicationModel
-
-schemas: dict[str, type[ConfigClass]] = {
+schemas: dict[str, type[BaseModel]] = {
     "module.json": ModuleModel,
     "application.json": ApplicationModel,
 }
-
-
-def get_from_yaml(model: type[ConfigClass], file_path: Path) -> ConfigClass:
-    with open(file_path) as f:
-        return model(**yaml.safe_load(f))
 
 
 def generate(
