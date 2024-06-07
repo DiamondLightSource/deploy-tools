@@ -2,19 +2,23 @@ from pathlib import Path
 
 from jinja2 import Environment, PackageLoader
 
-from .models.module import ModuleMetadataModel
+from .models.module import ModuleModel
 
 APPTAINER_LAUNCH_FILE = "apptainer-launch"
 
 
-class Module:
-    def __init__(self):
+class ModuleCreator:
+    def __init__(self, root_folder: Path):
         self._env = Environment(loader=PackageLoader("deploytools"))
+        self._root_folder = root_folder
+        self._modules_root = self._root_folder / "modulefiles"
+        self._entrypoints_root = self._root_folder / "entrypoints"
 
-    def create_module_file(
-        self, config: ModuleMetadataModel, output_folder: Path, entrypoint_folder: Path
-    ):
+    def create_module_file(self, module: ModuleModel):
         template = self._env.get_template("module")
+
+        config = module.metadata
+        entrypoint_folder = self._entrypoints_root / config.name / config.version
 
         description = config.description
         if description is None:
@@ -27,8 +31,8 @@ class Module:
             "entrypoint_folder": entrypoint_folder,
         }
 
-        output_file = output_folder / config.name / config.version
-        output_file.parent.mkdir(exist_ok=True, parents=True)
+        module_file = self._modules_root / config.name / config.version
+        module_file.parent.mkdir(exist_ok=True, parents=True)
 
-        with open(output_file, "w") as f:
+        with open(module_file, "w") as f:
             f.write(template.render(**parameters))

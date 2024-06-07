@@ -5,20 +5,25 @@ from pathlib import Path
 from jinja2 import Environment, PackageLoader
 
 from .models.apptainer import ApptainerModel
+from .models.module import ModuleModel
 
 APPTAINER_LAUNCH_FILE = "apptainer-launch"
 
 
-class Apptainer:
-    def __init__(self):
+class ApptainerCreator:
+    def __init__(self, root_folder: Path):
         self._env = Environment(loader=PackageLoader("deploytools"))
+        self._root_folder = root_folder
+        self._entrypoints_root = self._root_folder / "entrypoints"
+        self._sif_root = self._root_folder / "sif_files"
 
     def generate_sif_file(
         self,
         config: ApptainerModel,
-        output_folder: Path,
     ):
-        output_path = output_folder / ":".join((config.name, (config.version + ".sif")))
+        output_path = self._sif_root / ":".join(
+            (config.name, (config.version + ".sif"))
+        )
 
         if not output_path.is_absolute:
             raise Exception("Sif file output path must be absolute")
@@ -38,8 +43,11 @@ class Apptainer:
     def create_entrypoint_files(
         self,
         config: ApptainerModel,
-        output_folder: Path,
+        module: ModuleModel,
     ):
+        output_folder = (
+            self._entrypoints_root / module.metadata.name / module.metadata.version
+        )
         template = self._env.get_template("apptainer_entrypoint")
 
         for entrypoint in config.entrypoints:
@@ -74,9 +82,12 @@ class Apptainer:
             with open(output_file, "w") as f:
                 f.write(template.render(**parameters))
 
-    def create_apptainer_launch_file(self, output_folder: Path, sif_folder: Path):
+    def create_apptainer_launch_file(self, module: ModuleModel):
+        output_folder = (
+            self._entrypoints_root / module.metadata.name / module.metadata.version
+        )
         output_file = output_folder / APPTAINER_LAUNCH_FILE
 
         template = self._env.get_template(APPTAINER_LAUNCH_FILE)
         with open(output_file, "w") as f:
-            f.write(template.render(sif_folder=str(sif_folder)))
+            f.write(template.render(sif_folder=str(self._sif_root)))
