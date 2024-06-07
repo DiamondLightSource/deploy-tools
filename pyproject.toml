@@ -38,6 +38,7 @@ dev = [
 [project.scripts]
 deploytools = "deploytools.__main__:main"
 generate-schema = "deploytools.models.schema:main"
+deploy-modules = "deploytools.deploy:main"
 
 [project.urls]
 GitHub = "https://github.com/MJGaughran/deploytools"

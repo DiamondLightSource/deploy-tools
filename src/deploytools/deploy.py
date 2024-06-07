@@ -1,11 +1,19 @@
 from pathlib import Path
 
+import typer
+from typing_extensions import Annotated
+
 from .apptainer import ApptainerCreator
 from .models.apptainer import ApptainerModel
+from .models.load import load_deployments
 from .models.module import ModuleModel
 from .models.runfile import RunFileModel
 from .module import ModuleCreator
 from .runfile import RunFileCreator
+
+app = typer.Typer()
+
+app.command()
 
 
 def create_module_files(modules: list[ModuleModel], root_folder: Path):
@@ -31,3 +39,32 @@ def create_entrypoints(modules: list[ModuleModel], root_folder: Path):
                     apptainer_creator.create_entrypoint_files(config, module)
                 case RunFileModel():
                     runfile_creator.create_entrypoint_file(config, module)
+
+
+def deploy(
+    root_folder: Annotated[
+        Path,
+        typer.Argument(
+            exists=True,
+            file_okay=False,
+            dir_okay=True,
+            writable=True,
+        ),
+    ],
+    config_folder: Annotated[
+        Path,
+        typer.Argument(
+            exists=True,
+            file_okay=False,
+            dir_okay=True,
+        ),
+    ],
+):
+    modules = load_deployments(config_folder)
+
+    create_entrypoints(modules, root_folder)
+    create_module_files(modules, root_folder)
+
+
+def main():
+    typer.run(deploy)
