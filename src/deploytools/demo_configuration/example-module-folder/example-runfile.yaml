@@ -4,6 +4,4 @@ app_config:
   app_type: runfile
 
   name: cs-studio
-  command_path: css.sh
-  command_args: "-f ~/nonsense.yaml"
-  executable_name: dls-pmac-control.py
+  command_path: /dls_sw/prod/tools/RHEL7-x86_64/cs-studio/dls-4.7.4/prefix/bin/css.sh

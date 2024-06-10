@@ -1,3 +1,4 @@
+import os
 from pathlib import Path
 
 import typer
@@ -41,6 +42,10 @@ def create_entrypoints(modules: list[ModuleModel], root_folder: Path):
                     runfile_creator.create_entrypoint_file(config, module)
 
 
+def dir_empty(dir_path: Path):
+    return not next(os.scandir(dir_path), None)
+
+
 def deploy(
     root_folder: Annotated[
         Path,
@@ -60,6 +65,9 @@ def deploy(
         ),
     ],
 ):
+    # For testing
+    assert dir_empty(root_folder), "Root folder for deployment must be empty"
+
     modules = load_deployments(config_folder)
 
     create_entrypoints(modules, root_folder)

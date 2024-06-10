@@ -1,0 +1,44 @@
+# yaml-language-server: $schema=../models/schemas/module.json
+
+metadata:
+  name: deploytools-demo
+  version: "0.1"
+  description: "Demonstration of the deploytools process"
+
+  dependencies:
+    - name: git
+      version: "2.44.0"
+
+  env_vars:
+    - name: EPICS_BASE
+      value: "/dls_sw/epics/R3.14.12.7/base"
+    - name: EXAMPLE_VALUE
+      value: "THIS_IS_SOMETHING"
+
+applications:
+  - app_config:
+      app_type: apptainer
+
+      name: dls-pmac-control
+      version: "1.6"
+
+      container:
+        path: docker://ghcr.io/apptainer/lolcow
+        version: "latest"
+
+      entrypoints:
+        - executable_name: dls-pmac-control
+          command: "cowsay"
+          options:
+            command_args: "I don't think this is pmac-control"
+
+      global_options:
+        mounts:
+          - "/dls_sw"
+
+  - app_config:
+      app_type: runfile
+
+      name: see-var
+      command_path: echo
+      command_args: "$EXAMPLE_VALUE"

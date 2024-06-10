@@ -21,21 +21,22 @@ class ApptainerCreator:
         self,
         config: ApptainerModel,
     ):
+        self._sif_root.mkdir(exist_ok=True)
         output_path = self._sif_root / ":".join(
             (config.name, (config.version + ".sif"))
         )
 
-        if not output_path.is_absolute:
+        if not output_path.is_absolute():
             raise Exception("Sif file output path must be absolute")
 
-        if output_path.exists:
+        if output_path.exists():
             raise Exception("Sif file with this version already exists")
 
         commands = [
             "apptainer",
             "pull",
             output_path,
-            "/".join((config.container.path, config.container.version)),
+            ":".join((config.container.path, config.container.version)),
         ]
 
         subprocess.run(commands, check=True)
@@ -48,6 +49,7 @@ class ApptainerCreator:
         output_folder = (
             self._entrypoints_root / module.metadata.name / module.metadata.version
         )
+        output_folder.mkdir(parents=True, exist_ok=True)
         template = self._env.get_template("apptainer_entrypoint")
 
         for entrypoint in config.entrypoints:
@@ -55,39 +57,45 @@ class ApptainerCreator:
 
             mounts = ",".join(
                 chain(config.global_options.mounts, entrypoint.options.mounts)
-            )
+            ).strip()
 
             apptainer_args = " ".join(
                 (
                     config.global_options.apptainer_args,
                     entrypoint.options.apptainer_args,
                 )
-            )
+            ).strip()
 
             command_args = " ".join(
                 (
                     config.global_options.command_args,
                     entrypoint.options.command_args,
                 )
-            )
+            ).strip()
 
             parameters = {
                 "mounts": mounts,
                 "apptainer_args": apptainer_args,
                 "sif_name": config.name,
                 "sif_version": config.version,
+                "command": entrypoint.command,
                 "command_args": command_args,
             }
 
             with open(output_file, "w") as f:
                 f.write(template.render(**parameters))
 
+            output_file.chmod(0o755)
+
     def create_apptainer_launch_file(self, module: ModuleModel):
         output_folder = (
             self._entrypoints_root / module.metadata.name / module.metadata.version
         )
+        output_folder.mkdir(parents=True, exist_ok=True)
         output_file = output_folder / APPTAINER_LAUNCH_FILE
 
         template = self._env.get_template(APPTAINER_LAUNCH_FILE)
         with open(output_file, "w") as f:
             f.write(template.render(sif_folder=str(self._sif_root)))
+
+        output_file.chmod(0o755)

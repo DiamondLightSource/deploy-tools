@@ -15,7 +15,7 @@ class ModuleCreator:
         self._entrypoints_root = self._root_folder / "entrypoints"
 
     def create_module_file(self, module: ModuleModel):
-        template = self._env.get_template("module")
+        template = self._env.get_template("modulefile")
 
         config = module.metadata
         entrypoint_folder = self._entrypoints_root / config.name / config.version

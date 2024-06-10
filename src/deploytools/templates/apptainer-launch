@@ -21,10 +21,10 @@ if [[ ! -d ${sif_folder} ]]; then
     exit 1
 fi
 
-sif_name=${sif_folder}/${DEPLOYTOOLS_SIF_NAME}:${DEPLOYTOOLS_SIF_VERSION}.sif
+sif_file=${sif_folder}/${DEPLOYTOOLS_SIF_NAME}:${DEPLOYTOOLS_SIF_VERSION}.sif
 
 # Raise an error if sif file does not exist
-if [[ ! -f ${sif_name} ]]; then
+if [[ ! -f ${sif_file} ]]; then
     echo "ERROR: sif file ${sif_file} does not exist" 1>&2
     exit 1
 fi
@@ -33,4 +33,4 @@ opts="--env DISPLAY=${DISPLAY}"
 opts=${opts}" ${DEPLOYTOOLS_ARGS}"
 
 set -x
-apptainer exec -B ${DEPLOYTOOLS_MOUNTS} ${opts} ${sif_name} ${DEPLOYTOOLS_COMMAND} "${DEPLOYTOOLS_COMMAND_ARGS}" "${@}"
+apptainer exec -B ${DEPLOYTOOLS_MOUNTS} ${opts} ${sif_file} ${DEPLOYTOOLS_COMMAND} "${DEPLOYTOOLS_COMMAND_ARGS}" "${@}"

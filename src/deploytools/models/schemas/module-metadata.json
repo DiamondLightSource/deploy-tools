@@ -1,0 +1,91 @@
+{
+  "$defs": {
+    "EnvVarModel": {
+      "properties": {
+        "name": {
+          "title": "Name",
+          "type": "string"
+        },
+        "value": {
+          "title": "Value",
+          "type": "string"
+        }
+      },
+      "required": [
+        "name",
+        "value"
+      ],
+      "title": "EnvVarModel",
+      "type": "object"
+    },
+    "ModuleDependencyModel": {
+      "properties": {
+        "name": {
+          "title": "Name",
+          "type": "string"
+        },
+        "version": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Version"
+        }
+      },
+      "required": [
+        "name",
+        "version"
+      ],
+      "title": "ModuleDependencyModel",
+      "type": "object"
+    }
+  },
+  "properties": {
+    "name": {
+      "title": "Name",
+      "type": "string"
+    },
+    "version": {
+      "title": "Version",
+      "type": "string"
+    },
+    "description": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Description"
+    },
+    "dependencies": {
+      "default": [],
+      "items": {
+        "$ref": "#/$defs/ModuleDependencyModel"
+      },
+      "title": "Dependencies",
+      "type": "array"
+    },
+    "env_vars": {
+      "default": [],
+      "items": {
+        "$ref": "#/$defs/EnvVarModel"
+      },
+      "title": "Env Vars",
+      "type": "array"
+    }
+  },
+  "required": [
+    "name",
+    "version"
+  ],
+  "title": "ModuleMetadataModel",
+  "type": "object"
+}

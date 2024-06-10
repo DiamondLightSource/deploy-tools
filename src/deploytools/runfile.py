@@ -22,6 +22,7 @@ class RunFileCreator:
         output_folder = (
             self._entrypoints_root / module.metadata.name / module.metadata.version
         )
+        output_folder.mkdir(parents=True, exist_ok=True)
         output_file = output_folder / config.name
 
         parameters = {
@@ -31,3 +32,5 @@ class RunFileCreator:
 
         with open(output_file, "w") as f:
             f.write(template.render(**parameters))
+
+        output_file.chmod(0o755)
