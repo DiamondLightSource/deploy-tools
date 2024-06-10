@@ -8,4 +8,8 @@ module-whatis "{{ module_description }}"
 setenv {{ var.name }} {{ var.value }}
 {% endfor %}
 
+{% for module in dependencies %}
+module load {{ module.name }}/{{ module.version }}
+{% endfor %}
+
 prepend-path PATH "{{ entrypoint_folder }}"

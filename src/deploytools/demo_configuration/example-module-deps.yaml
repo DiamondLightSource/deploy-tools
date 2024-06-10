@@ -1,0 +1,14 @@
+# yaml-language-server: $schema=../models/schemas/module.json
+
+metadata:
+  name: dependencies-demo
+  version: "0.2"
+  description: "Demonstration of deploytools dependencies"
+
+  dependencies:
+    - name: deploytools-demo
+      version: "0.1"
+    - name: example-module-folder
+      version: "0.1"
+
+applications: []

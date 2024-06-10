@@ -28,6 +28,7 @@ class ModuleCreator:
             "module_name": config.name,
             "module_description": description,
             "env_vars": config.env_vars,
+            "dependencies": config.dependencies,
             "entrypoint_folder": entrypoint_folder,
         }
 

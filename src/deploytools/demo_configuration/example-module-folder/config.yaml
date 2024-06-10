@@ -4,10 +4,6 @@ name: example-module-folder
 version: "0.1"
 description: "Demonstration of a module configuration folder"
 
-dependencies:
-  - name: git
-    version: "2.40.0"
-
 env_vars:
   - name: OTHER_VALUE
     value: "CAN_SEE_THIS"
