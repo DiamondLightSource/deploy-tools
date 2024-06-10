@@ -26,8 +26,8 @@ class ModuleCreator:
 
         parameters = {
             "module_name": config.name,
-            "module_version": config.version,
             "module_description": description,
+            "env_vars": config.env_vars,
             "entrypoint_folder": entrypoint_folder,
         }
 

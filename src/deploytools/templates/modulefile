@@ -4,4 +4,8 @@
 ##
 module-whatis "{{ module_description }}"
 
+{% for var in env_vars %}
+setenv {{ var.name }} {{ var.value }}
+{% endfor %}
+
 prepend-path PATH "{{ entrypoint_folder }}"
