@@ -33,4 +33,4 @@ opts="--env DISPLAY=${DISPLAY}"
 opts=${opts}" ${DEPLOYTOOLS_ARGS}"
 
 set -x
-apptainer exec -B ${DEPLOYTOOLS_MOUNTS} ${opts} ${sif_file} ${DEPLOYTOOLS_COMMAND} "${DEPLOYTOOLS_COMMAND_ARGS}" "${@}"
+apptainer exec -B ${DEPLOYTOOLS_MOUNTS} ${opts} ${sif_file} ${DEPLOYTOOLS_COMMAND} ${DEPLOYTOOLS_COMMAND_ARGS} "${@}"
