@@ -30,7 +30,7 @@ if [[ ! -f ${sif_file} ]]; then
 fi
 
 opts="--env DISPLAY=${DISPLAY}"
-opts=${opts}" ${DEPLOYTOOLS_ARGS}"
+opts=${opts}" ${DEPLOYTOOLS_APPTAINER_ARGS}"
 
 set -x
 apptainer exec -B ${DEPLOYTOOLS_MOUNTS} ${opts} ${sif_file} ${DEPLOYTOOLS_COMMAND} ${DEPLOYTOOLS_COMMAND_ARGS} "${@}"
