@@ -16,21 +16,17 @@ applications:
       app_type: apptainer
 
       name: dls-pmac-control
-      version: "1.6"
+      version: "3.2.0b1"
 
       container:
-        path: docker://ghcr.io/apptainer/lolcow
-        version: "latest"
+        path: docker://ghcr.io/diamondlightsource/dls-pmac-control
+        version: "3.2.0b1"
 
       entrypoints:
         - executable_name: dls-pmac-control
-          command: cowsay
+          command: dls-pmac-control
           options:
-            command_args: I don't think this is pmac-control
-
-      global_options:
-        mounts:
-          - "/dls_sw"
+            apptainer_args: -e
 
   - app_config:
       app_type: runfile
