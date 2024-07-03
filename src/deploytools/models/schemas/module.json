@@ -64,8 +64,7 @@
         "name",
         "version",
         "container",
-        "entrypoints",
-        "global_options"
+        "entrypoints"
       ],
       "title": "ApptainerModel",
       "type": "object"
@@ -111,8 +110,7 @@
         }
       },
       "required": [
-        "executable_name",
-        "options"
+        "executable_name"
       ],
       "title": "EntrypointModel",
       "type": "object"

@@ -1,6 +1,6 @@
 from typing import Literal, Optional, Sequence
 
-from pydantic import BaseModel
+from pydantic import BaseModel, Field
 
 
 class EntrypointOptionsModel(BaseModel):
@@ -12,7 +12,7 @@ class EntrypointOptionsModel(BaseModel):
 class EntrypointModel(BaseModel):
     executable_name: str
     command: Optional[str] = None
-    options: EntrypointOptionsModel
+    options: EntrypointOptionsModel = Field(default_factory=EntrypointOptionsModel)
 
 
 class ContainerImageModel(BaseModel):
@@ -26,4 +26,6 @@ class ApptainerModel(BaseModel):
     version: str
     container: ContainerImageModel
     entrypoints: Sequence[EntrypointModel]
-    global_options: EntrypointOptionsModel
+    global_options: EntrypointOptionsModel = Field(
+        default_factory=EntrypointOptionsModel
+    )
