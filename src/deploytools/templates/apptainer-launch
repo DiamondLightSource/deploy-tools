@@ -29,8 +29,13 @@ if [[ ! -f ${sif_file} ]]; then
     exit 1
 fi
 
+# Set up mounts if any have been configured
+if [[ ! -z ${DEPLOYTOOLS_MOUNTS} ]]; then
+    mounts="-B ${DEPLOYTOOLS_MOUNTS}"
+fi
+
 opts="--env DISPLAY=${DISPLAY}"
 opts=${opts}" ${DEPLOYTOOLS_APPTAINER_ARGS}"
 
 set -x
-apptainer exec -B ${DEPLOYTOOLS_MOUNTS} ${opts} ${sif_file} ${DEPLOYTOOLS_COMMAND} ${DEPLOYTOOLS_COMMAND_ARGS} "${@}"
+apptainer exec ${mounts} ${opts} ${sif_file} ${DEPLOYTOOLS_COMMAND} ${DEPLOYTOOLS_COMMAND_ARGS} "${@}"
