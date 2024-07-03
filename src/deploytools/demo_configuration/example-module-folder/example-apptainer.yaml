@@ -8,18 +8,18 @@ app_config:
 
   container:
     path: docker://ghcr.io/apptainer/lolcow
-    version: "latest"
+    version: latest
 
   entrypoints:
     - executable_name: cowsay-hello
-      command: "cowsay"
+      command: cowsay
       options:
-        command_args: "Hello"
+        command_args: Hello
 
     - executable_name: show-directory
-      command: "ls"
+      command: ls
       options:
-        command_args: "-al /dls_sw"
+        command_args: -al /dls_sw
 
   global_options:
     mounts:
