@@ -19,8 +19,8 @@ app_config:
     - executable_name: show-directory
       command: ls
       options:
-        command_args: -al /dls_sw
+        command_args: -al /dls_sw_test
 
   global_options:
     mounts:
-      - /dls_sw
+      - /dls_sw:/dls_sw_test:ro

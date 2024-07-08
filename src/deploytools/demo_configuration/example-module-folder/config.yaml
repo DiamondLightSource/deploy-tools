@@ -6,4 +6,4 @@ description: Demonstration of a module configuration folder
 
 env_vars:
   - name: OTHER_VALUE
-    value: CAN_SEE_THIS
+    value: Test message OTHER_VALUE from example-module-folder

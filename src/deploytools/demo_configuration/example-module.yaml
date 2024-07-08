@@ -1,15 +1,13 @@
 # yaml-language-server: $schema=../models/schemas/module.json
 
 metadata:
-  name: deploytools-demo
+  name: example-module-file
   version: "0.1"
   description: Demonstration of the deploytools process
 
   env_vars:
-    - name: EPICS_BASE
-      value: /dls_sw/epics/R3.14.12.7/base
     - name: EXAMPLE_VALUE
-      value: THIS_IS_SOMETHING
+      value: Test message EXAMPLE_VALUE from example-module-file
 
 applications:
   - app_config:
@@ -31,6 +29,6 @@ applications:
   - app_config:
       app_type: runfile
 
-      name: see-var
+      name: test-echo-module-file
       command_path: echo
       command_args: $EXAMPLE_VALUE

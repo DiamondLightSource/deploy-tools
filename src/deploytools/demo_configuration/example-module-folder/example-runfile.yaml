@@ -3,5 +3,6 @@
 app_config:
   app_type: runfile
 
-  name: cs-studio
-  command_path: /dls_sw/prod/tools/RHEL7-x86_64/cs-studio/dls-4.7.4/prefix/bin/css.sh
+  name: test-echo-module-folder
+  command_path: echo
+  command_args: $OTHER_VALUE
