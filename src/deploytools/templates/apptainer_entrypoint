@@ -7,4 +7,4 @@ export DEPLOYTOOLS_SIF_VERSION="{{ sif_version }}"
 export DEPLOYTOOLS_COMMAND="{{ command }}"
 export DEPLOYTOOLS_COMMAND_ARGS="{{ command_args }}"
 
-apptainer-launch "${@}"
+$(dirname "$0")/apptainer-launch "${@}"

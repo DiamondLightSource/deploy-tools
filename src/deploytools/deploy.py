@@ -36,7 +36,7 @@ def create_entrypoints(modules: list[ModuleModel], root_folder: Path):
 
             match config:
                 case ApptainerModel():
-                    apptainer_creator.generate_sif_file(config)
+                    apptainer_creator.generate_sif_file(config, module)
                     apptainer_creator.create_entrypoint_files(config, module)
                     includes_apptainer = True
                 case RunFileModel():
