@@ -29,7 +29,7 @@ def create_entrypoints(modules: list[ModuleModel], root_folder: Path):
     runfile_creator = RunFileCreator(root_folder)
 
     for module in modules:
-        apptainer_creator.create_apptainer_launch_file(module)
+        includes_apptainer = False
 
         for application in module.applications:
             config = application.app_config
@@ -38,8 +38,12 @@ def create_entrypoints(modules: list[ModuleModel], root_folder: Path):
                 case ApptainerModel():
                     apptainer_creator.generate_sif_file(config)
                     apptainer_creator.create_entrypoint_files(config, module)
+                    includes_apptainer = True
                 case RunFileModel():
                     runfile_creator.create_entrypoint_file(config, module)
+
+        if includes_apptainer:
+            apptainer_creator.create_apptainer_launch_file(module)
 
 
 def dir_empty(dir_path: Path):
