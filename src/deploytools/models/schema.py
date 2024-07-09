@@ -6,6 +6,7 @@ from pydantic import BaseModel
 from typing_extensions import Annotated
 
 from .application import ApplicationModel
+from .deployment import DeploymentModel
 from .module import ModuleMetadataModel, ModuleModel
 
 app = typer.Typer()
@@ -16,6 +17,7 @@ schemas: dict[str, type[BaseModel]] = {
     "module.json": ModuleModel,
     "module-metadata.json": ModuleMetadataModel,
     "application.json": ApplicationModel,
+    "deployment.json": DeploymentModel,
 }
 
 

@@ -1,0 +1,298 @@
+{
+  "$defs": {
+    "ApplicationModel": {
+      "properties": {
+        "app_config": {
+          "discriminator": {
+            "mapping": {
+              "apptainer": "#/$defs/ApptainerModel",
+              "runfile": "#/$defs/RunFileModel"
+            },
+            "propertyName": "app_type"
+          },
+          "oneOf": [
+            {
+              "$ref": "#/$defs/ApptainerModel"
+            },
+            {
+              "$ref": "#/$defs/RunFileModel"
+            }
+          ],
+          "title": "App Config"
+        }
+      },
+      "required": [
+        "app_config"
+      ],
+      "title": "ApplicationModel",
+      "type": "object"
+    },
+    "ApptainerModel": {
+      "properties": {
+        "app_type": {
+          "const": "apptainer",
+          "enum": [
+            "apptainer"
+          ],
+          "title": "App Type",
+          "type": "string"
+        },
+        "name": {
+          "title": "Name",
+          "type": "string"
+        },
+        "version": {
+          "title": "Version",
+          "type": "string"
+        },
+        "container": {
+          "$ref": "#/$defs/ContainerImageModel"
+        },
+        "entrypoints": {
+          "items": {
+            "$ref": "#/$defs/EntrypointModel"
+          },
+          "title": "Entrypoints",
+          "type": "array"
+        },
+        "global_options": {
+          "$ref": "#/$defs/EntrypointOptionsModel"
+        }
+      },
+      "required": [
+        "app_type",
+        "name",
+        "version",
+        "container",
+        "entrypoints"
+      ],
+      "title": "ApptainerModel",
+      "type": "object"
+    },
+    "ContainerImageModel": {
+      "properties": {
+        "path": {
+          "title": "Path",
+          "type": "string"
+        },
+        "version": {
+          "title": "Version",
+          "type": "string"
+        }
+      },
+      "required": [
+        "path",
+        "version"
+      ],
+      "title": "ContainerImageModel",
+      "type": "object"
+    },
+    "EntrypointModel": {
+      "properties": {
+        "executable_name": {
+          "title": "Executable Name",
+          "type": "string"
+        },
+        "command": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Command"
+        },
+        "options": {
+          "$ref": "#/$defs/EntrypointOptionsModel"
+        }
+      },
+      "required": [
+        "executable_name"
+      ],
+      "title": "EntrypointModel",
+      "type": "object"
+    },
+    "EntrypointOptionsModel": {
+      "properties": {
+        "apptainer_args": {
+          "default": "",
+          "title": "Apptainer Args",
+          "type": "string"
+        },
+        "command_args": {
+          "default": "",
+          "title": "Command Args",
+          "type": "string"
+        },
+        "mounts": {
+          "default": [],
+          "items": {
+            "type": "string"
+          },
+          "title": "Mounts",
+          "type": "array"
+        }
+      },
+      "title": "EntrypointOptionsModel",
+      "type": "object"
+    },
+    "EnvVarModel": {
+      "properties": {
+        "name": {
+          "title": "Name",
+          "type": "string"
+        },
+        "value": {
+          "title": "Value",
+          "type": "string"
+        }
+      },
+      "required": [
+        "name",
+        "value"
+      ],
+      "title": "EnvVarModel",
+      "type": "object"
+    },
+    "ModuleDependencyModel": {
+      "properties": {
+        "name": {
+          "title": "Name",
+          "type": "string"
+        },
+        "version": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Version"
+        }
+      },
+      "required": [
+        "name",
+        "version"
+      ],
+      "title": "ModuleDependencyModel",
+      "type": "object"
+    },
+    "ModuleMetadataModel": {
+      "properties": {
+        "name": {
+          "title": "Name",
+          "type": "string"
+        },
+        "version": {
+          "title": "Version",
+          "type": "string"
+        },
+        "description": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Description"
+        },
+        "dependencies": {
+          "default": [],
+          "items": {
+            "$ref": "#/$defs/ModuleDependencyModel"
+          },
+          "title": "Dependencies",
+          "type": "array"
+        },
+        "env_vars": {
+          "default": [],
+          "items": {
+            "$ref": "#/$defs/EnvVarModel"
+          },
+          "title": "Env Vars",
+          "type": "array"
+        }
+      },
+      "required": [
+        "name",
+        "version"
+      ],
+      "title": "ModuleMetadataModel",
+      "type": "object"
+    },
+    "ModuleModel": {
+      "properties": {
+        "metadata": {
+          "$ref": "#/$defs/ModuleMetadataModel"
+        },
+        "applications": {
+          "items": {
+            "$ref": "#/$defs/ApplicationModel"
+          },
+          "title": "Applications",
+          "type": "array"
+        }
+      },
+      "required": [
+        "metadata",
+        "applications"
+      ],
+      "title": "ModuleModel",
+      "type": "object"
+    },
+    "RunFileModel": {
+      "properties": {
+        "app_type": {
+          "const": "runfile",
+          "enum": [
+            "runfile"
+          ],
+          "title": "App Type",
+          "type": "string"
+        },
+        "name": {
+          "title": "Name",
+          "type": "string"
+        },
+        "command_path": {
+          "title": "Command Path",
+          "type": "string"
+        },
+        "command_args": {
+          "default": "",
+          "title": "Command Args",
+          "type": "string"
+        }
+      },
+      "required": [
+        "app_type",
+        "name",
+        "command_path"
+      ],
+      "title": "RunFileModel",
+      "type": "object"
+    }
+  },
+  "properties": {
+    "modules": {
+      "items": {
+        "$ref": "#/$defs/ModuleModel"
+      },
+      "title": "Modules",
+      "type": "array"
+    }
+  },
+  "required": [
+    "modules"
+  ],
+  "title": "DeploymentModel",
+  "type": "object"
+}
