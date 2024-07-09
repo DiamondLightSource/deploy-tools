@@ -4,6 +4,7 @@ from typing import TypeVar
 import yaml
 
 from .application import ApplicationModel
+from .deployment import DeploymentModel
 from .module import ModuleMetadataModel, ModuleModel
 
 T = TypeVar("T", ApplicationModel, ModuleModel, ModuleMetadataModel)
@@ -37,7 +38,7 @@ def load_module_file(file: Path) -> ModuleModel:
     return load_from_yaml(ModuleModel, file)
 
 
-def load_deployments(config_folder: Path) -> list[ModuleModel]:
+def load_deployment(config_folder: Path) -> DeploymentModel:
     modules: list[ModuleModel] = []
     for file in config_folder.glob("*"):
         if file.is_dir():
@@ -45,4 +46,4 @@ def load_deployments(config_folder: Path) -> list[ModuleModel]:
         elif file.suffix == ".yaml":
             modules.append(load_module_file(file))
 
-    return modules
+    return DeploymentModel(modules=modules)

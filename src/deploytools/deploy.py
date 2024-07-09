@@ -6,7 +6,7 @@ from typing_extensions import Annotated
 
 from .apptainer import ApptainerCreator
 from .models.apptainer import ApptainerModel
-from .models.load import load_deployments
+from .models.load import load_deployment
 from .models.module import ModuleModel
 from .models.runfile import RunFileModel
 from .module import ModuleCreator
@@ -72,10 +72,10 @@ def deploy(
     # For testing
     assert dir_empty(root_folder), "Root folder for deployment must be empty"
 
-    modules = load_deployments(config_folder)
+    deployment = load_deployment(config_folder)
 
-    create_entrypoints(modules, root_folder)
-    create_module_files(modules, root_folder)
+    create_entrypoints(deployment.modules, root_folder)
+    create_module_files(deployment.modules, root_folder)
 
 
 def main():
