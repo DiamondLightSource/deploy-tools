@@ -2,10 +2,12 @@ import os
 from pathlib import Path
 
 import typer
+import yaml
 from typing_extensions import Annotated
 
 from .apptainer import ApptainerCreator
 from .models.apptainer import ApptainerModel
+from .models.deployment import DeploymentModel
 from .models.load import load_deployment
 from .models.module import ModuleModel
 from .models.runfile import RunFileModel
@@ -15,6 +17,13 @@ from .runfile import RunFileCreator
 app = typer.Typer()
 
 app.command()
+
+
+def create_deployment_yaml(deployment: DeploymentModel, root_folder: Path):
+    file_path = root_folder / "deployment.yaml"
+
+    with open(file_path, "w") as f:
+        yaml.safe_dump(deployment.model_dump(), f)
 
 
 def create_module_files(modules: list[ModuleModel], root_folder: Path):
@@ -74,6 +83,7 @@ def deploy(
 
     deployment = load_deployment(config_folder)
 
+    create_deployment_yaml(deployment, root_folder)
     create_entrypoints(deployment.modules, root_folder)
     create_module_files(deployment.modules, root_folder)
 
