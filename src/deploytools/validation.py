@@ -18,15 +18,15 @@ class ValidationError(Exception):
 
 
 def validate_deployment(
-    deployment: DeploymentConfig, root_folder: Path
+    deployment: DeploymentConfig, deploy_folder: Path
 ) -> list[ModuleConfig]:
-    last_deployment = get_old_deployment_config(root_folder)
+    last_deployment = get_old_deployment_config(deploy_folder)
     new_modules = get_modules_struct(deployment, validate=True)
     last_modules = get_modules_struct(last_deployment, validate=False)
 
     modified_modules = get_modified_modules(last_modules, new_modules)
 
-    deployed_modules = get_deployed_modules(root_folder)
+    deployed_modules = get_deployed_modules(deploy_folder)
     check_modified_modules_not_previously_deployed(deployed_modules, modified_modules)
 
     modified_list: list[ModuleConfig] = []
@@ -36,8 +36,8 @@ def validate_deployment(
     return modified_list
 
 
-def get_old_deployment_config(root_folder: Path) -> DeploymentConfig:
-    snapshot_path = root_folder / DEPLOYMENT_SNAPSHOT_FILENAME
+def get_old_deployment_config(deploy_folder: Path) -> DeploymentConfig:
+    snapshot_path = deploy_folder / DEPLOYMENT_SNAPSHOT_FILENAME
     if not snapshot_path.exists():
         return DeploymentConfig(modules=[])
 
@@ -87,8 +87,8 @@ def get_modified_modules(
     return modified_modules
 
 
-def get_deployed_modules(root_folder: Path) -> ModuleVersionsStruct:
-    modules_folder = root_folder / "modulefiles"
+def get_deployed_modules(deploy_folder: Path) -> ModuleVersionsStruct:
+    modules_folder = deploy_folder / "modulefiles"
     previous_modules: ModuleVersionsStruct = defaultdict(list)
 
     for module_folder in modules_folder.glob("*"):

@@ -8,17 +8,17 @@ APPTAINER_LAUNCH_FILE = "apptainer-launch"
 
 
 class ModuleCreator:
-    def __init__(self, root_folder: Path):
+    def __init__(self, deploy_folder: Path):
         self._env = Environment(loader=PackageLoader("deploytools"))
-        self._root_folder = root_folder
-        self._modules_root = self._root_folder / "modulefiles"
-        self._entrypoints_root = self._root_folder / "entrypoints"
+        self._deploy_folder = deploy_folder
+        self._modules_folder = self._deploy_folder / "modulefiles"
+        self._entrypoints_folder = self._deploy_folder / "entrypoints"
 
     def create_module_file(self, module: ModuleConfig):
         template = self._env.get_template("modulefile")
 
         config = module.metadata
-        entrypoint_folder = self._entrypoints_root / config.name / config.version
+        entrypoint_folder = self._entrypoints_folder / config.name / config.version
 
         description = config.description
         if description is None:
@@ -32,7 +32,7 @@ class ModuleCreator:
             "entrypoint_folder": entrypoint_folder,
         }
 
-        module_file = self._modules_root / config.name / config.version
+        module_file = self._modules_folder / config.name / config.version
         module_file.parent.mkdir(exist_ok=True, parents=True)
 
         with open(module_file, "w") as f:

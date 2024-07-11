@@ -11,14 +11,14 @@ APPTAINER_LAUNCH_FILE = "apptainer-launch"
 
 
 class ApptainerCreator:
-    def __init__(self, root_folder: Path):
+    def __init__(self, deploy_folder: Path):
         self._env = Environment(loader=PackageLoader("deploytools"))
-        self._root_folder = root_folder
-        self._entrypoints_root = self._root_folder / "entrypoints"
-        self._sif_root = self._root_folder / "sif_files"
+        self._deploy_folder = deploy_folder
+        self._entrypoints_folder = self._deploy_folder / "entrypoints"
+        self._sif_folder = self._deploy_folder / "sif_files"
 
     def generate_sif_file(self, config: ApptainerConfig, module: ModuleConfig):
-        sif_folder = self._sif_root / module.metadata.name / module.metadata.version
+        sif_folder = self._sif_folder / module.metadata.name / module.metadata.version
         sif_folder.mkdir(parents=True, exist_ok=True)
 
         output_path = sif_folder / ":".join((config.name, (config.version + ".sif")))
@@ -40,7 +40,7 @@ class ApptainerCreator:
 
     def create_entrypoint_files(self, config: ApptainerConfig, module: ModuleConfig):
         output_folder = (
-            self._entrypoints_root / module.metadata.name / module.metadata.version
+            self._entrypoints_folder / module.metadata.name / module.metadata.version
         )
         output_folder.mkdir(parents=True, exist_ok=True)
         template = self._env.get_template("apptainer_entrypoint")
@@ -82,11 +82,11 @@ class ApptainerCreator:
 
     def create_apptainer_launch_file(self, module: ModuleConfig):
         output_folder = (
-            self._entrypoints_root / module.metadata.name / module.metadata.version
+            self._entrypoints_folder / module.metadata.name / module.metadata.version
         )
         output_folder.mkdir(parents=True, exist_ok=True)
         output_file = output_folder / APPTAINER_LAUNCH_FILE
-        sif_folder = self._sif_root / module.metadata.name / module.metadata.version
+        sif_folder = self._sif_folder / module.metadata.name / module.metadata.version
 
         template = self._env.get_template(APPTAINER_LAUNCH_FILE)
         with open(output_file, "w") as f:

@@ -7,10 +7,10 @@ from .module import ModuleConfig
 
 
 class RunFileCreator:
-    def __init__(self, root_folder: Path):
+    def __init__(self, deploy_folder: Path):
         self._env = Environment(loader=PackageLoader("deploytools"))
-        self._root_folder = root_folder
-        self._entrypoints_root = self._root_folder / "entrypoints"
+        self._deploy_folder = deploy_folder
+        self._entrypoints_folder = self._deploy_folder / "entrypoints"
 
     def create_entrypoint_file(
         self,
@@ -20,7 +20,7 @@ class RunFileCreator:
         template = self._env.get_template("runfile_entrypoint")
 
         output_folder = (
-            self._entrypoints_root / module.metadata.name / module.metadata.version
+            self._entrypoints_folder / module.metadata.name / module.metadata.version
         )
         output_folder.mkdir(parents=True, exist_ok=True)
         output_file = output_folder / config.name
