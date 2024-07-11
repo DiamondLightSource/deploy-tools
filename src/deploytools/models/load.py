@@ -7,7 +7,7 @@ from .application import ApplicationModel
 from .deployment import DeploymentModel
 from .module import ModuleMetadataModel, ModuleModel
 
-T = TypeVar("T", ApplicationModel, ModuleModel, ModuleMetadataModel)
+T = TypeVar("T", DeploymentModel, ModuleModel, ModuleMetadataModel, ApplicationModel)
 
 CONFIG_FILENAME = "config.yaml"
 
@@ -44,6 +44,6 @@ def load_deployment(config_folder: Path) -> DeploymentModel:
         if file.is_dir():
             modules.append(load_module_folder(file))
         elif file.suffix == ".yaml":
-            modules.append(load_module_file(file))
+            modules.append(load_from_yaml(ModuleModel, file))
 
     return DeploymentModel(modules=modules)

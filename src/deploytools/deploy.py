@@ -1,4 +1,3 @@
-import os
 from pathlib import Path
 
 import typer
@@ -13,14 +12,15 @@ from .models.module import ModuleModel
 from .models.runfile import RunFileModel
 from .module import ModuleCreator
 from .runfile import RunFileCreator
+from .validation import DEPLOYMENT_SNAPSHOT_FILENAME, validate_deployment
 
 app = typer.Typer()
 
 app.command()
 
 
-def create_deployment_yaml(deployment: DeploymentModel, root_folder: Path):
-    file_path = root_folder / "deployment.yaml"
+def create_deployment_snapshot(deployment: DeploymentModel, root_folder: Path):
+    file_path = root_folder / DEPLOYMENT_SNAPSHOT_FILENAME
 
     with open(file_path, "w") as f:
         yaml.safe_dump(deployment.model_dump(), f)
@@ -55,10 +55,6 @@ def create_entrypoints(modules: list[ModuleModel], root_folder: Path):
             apptainer_creator.create_apptainer_launch_file(module)
 
 
-def dir_empty(dir_path: Path):
-    return not next(os.scandir(dir_path), None)
-
-
 def deploy(
     root_folder: Annotated[
         Path,
@@ -78,14 +74,15 @@ def deploy(
         ),
     ],
 ):
-    # For testing
-    assert dir_empty(root_folder), "Root folder for deployment must be empty"
+    assert root_folder.exists(), f"Deployment folder {root_folder} does not exist."
 
     deployment = load_deployment(config_folder)
+    modules_list = validate_deployment(deployment, root_folder)
+    create_deployment_snapshot(deployment, root_folder)
 
-    create_deployment_yaml(deployment, root_folder)
-    create_entrypoints(deployment.modules, root_folder)
-    create_module_files(deployment.modules, root_folder)
+    if modules_list:
+        create_entrypoints(modules_list, root_folder)
+        create_module_files(modules_list, root_folder)
 
 
 def main():
