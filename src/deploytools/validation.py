@@ -2,15 +2,15 @@ from collections import defaultdict
 from pathlib import Path
 from typing import TypeAlias
 
-from .models.deployment import DeploymentModel
+from .models.deployment import DeploymentConfig
 from .models.load import load_from_yaml
-from .models.module import ModuleModel
+from .models.module import ModuleConfig
 
 DEPLOYMENT_SNAPSHOT_FILENAME = "deployment.yaml"
 
 # TODO: Need more sensible names, they're just for convenience in sorting etc
 ModuleVersionsStruct: TypeAlias = dict[str, list[str]]
-ModulesStruct: TypeAlias = dict[str, list[tuple[str, ModuleModel]]]
+ModulesStruct: TypeAlias = dict[str, list[tuple[str, ModuleConfig]]]
 
 
 class ValidationError(Exception):
@@ -18,8 +18,8 @@ class ValidationError(Exception):
 
 
 def validate_deployment(
-    deployment: DeploymentModel, root_folder: Path
-) -> list[ModuleModel]:
+    deployment: DeploymentConfig, root_folder: Path
+) -> list[ModuleConfig]:
     last_deployment = get_old_deployment_config(root_folder)
     new_modules = get_modules_struct(deployment, validate=True)
     last_modules = get_modules_struct(last_deployment, validate=False)
@@ -29,22 +29,22 @@ def validate_deployment(
     deployed_modules = get_deployed_modules(root_folder)
     check_modified_modules_not_previously_deployed(deployed_modules, modified_modules)
 
-    modified_list: list[ModuleModel] = []
+    modified_list: list[ModuleConfig] = []
     for versioned_list in modified_modules.values():
         for _, module in versioned_list:
             modified_list.append(module)
     return modified_list
 
 
-def get_old_deployment_config(root_folder: Path) -> DeploymentModel:
+def get_old_deployment_config(root_folder: Path) -> DeploymentConfig:
     snapshot_path = root_folder / DEPLOYMENT_SNAPSHOT_FILENAME
     if not snapshot_path.exists():
-        return DeploymentModel(modules=[])
+        return DeploymentConfig(modules=[])
 
-    return load_from_yaml(DeploymentModel, snapshot_path)
+    return load_from_yaml(DeploymentConfig, snapshot_path)
 
 
-def get_modules_struct(deployment: DeploymentModel, validate: bool) -> ModulesStruct:
+def get_modules_struct(deployment: DeploymentConfig, validate: bool) -> ModulesStruct:
     modules_struct: ModulesStruct = defaultdict(list)
     for module in deployment.modules:
         name = module.metadata.name

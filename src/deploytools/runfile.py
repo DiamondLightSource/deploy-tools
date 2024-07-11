@@ -2,8 +2,8 @@ from pathlib import Path
 
 from jinja2 import Environment, PackageLoader
 
-from .models.runfile import RunFileModel
-from .module import ModuleModel
+from .models.runfile import RunFileConfig
+from .module import ModuleConfig
 
 
 class RunFileCreator:
@@ -14,8 +14,8 @@ class RunFileCreator:
 
     def create_entrypoint_file(
         self,
-        config: RunFileModel,
-        module: ModuleModel,
+        config: RunFileConfig,
+        module: ModuleConfig,
     ):
         template = self._env.get_template("runfile_entrypoint")
 

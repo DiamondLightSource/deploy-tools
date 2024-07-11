@@ -2,11 +2,11 @@ from typing import Union
 
 from pydantic import BaseModel, Field
 
-from .apptainer import ApptainerModel
-from .runfile import RunFileModel
+from .apptainer import ApptainerConfig
+from .runfile import RunFileConfig
 
 
-class ApplicationModel(BaseModel):
-    app_config: Union[ApptainerModel, RunFileModel] = Field(
+class ApplicationConfig(BaseModel):
+    app_config: Union[ApptainerConfig, RunFileConfig] = Field(
         ..., discriminator="app_type"
     )

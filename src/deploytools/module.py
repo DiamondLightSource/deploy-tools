@@ -2,7 +2,7 @@ from pathlib import Path
 
 from jinja2 import Environment, PackageLoader
 
-from .models.module import ModuleModel
+from .models.module import ModuleConfig
 
 APPTAINER_LAUNCH_FILE = "apptainer-launch"
 
@@ -14,7 +14,7 @@ class ModuleCreator:
         self._modules_root = self._root_folder / "modulefiles"
         self._entrypoints_root = self._root_folder / "entrypoints"
 
-    def create_module_file(self, module: ModuleModel):
+    def create_module_file(self, module: ModuleConfig):
         template = self._env.get_template("modulefile")
 
         config = module.metadata

@@ -3,11 +3,13 @@ from typing import TypeVar
 
 import yaml
 
-from .application import ApplicationModel
-from .deployment import DeploymentModel
-from .module import ModuleMetadataModel, ModuleModel
+from .application import ApplicationConfig
+from .deployment import DeploymentConfig
+from .module import ModuleConfig, ModuleMetadataConfig
 
-T = TypeVar("T", DeploymentModel, ModuleModel, ModuleMetadataModel, ApplicationModel)
+T = TypeVar(
+    "T", DeploymentConfig, ModuleConfig, ModuleMetadataConfig, ApplicationConfig
+)
 
 CONFIG_FILENAME = "config.yaml"
 
@@ -17,9 +19,9 @@ def load_from_yaml(model: type[T], file_path: Path) -> T:
         return model(**yaml.safe_load(f))
 
 
-def load_module_folder(folder: Path) -> ModuleModel:
-    metadata: ModuleMetadataModel = load_from_yaml(
-        ModuleMetadataModel, folder / CONFIG_FILENAME
+def load_module_folder(folder: Path) -> ModuleConfig:
+    metadata: ModuleMetadataConfig = load_from_yaml(
+        ModuleMetadataConfig, folder / CONFIG_FILENAME
     )
 
     applications = []
@@ -28,22 +30,22 @@ def load_module_folder(folder: Path) -> ModuleModel:
         if file.name == CONFIG_FILENAME:
             continue
 
-        applications.append(load_from_yaml(ApplicationModel, file))
+        applications.append(load_from_yaml(ApplicationConfig, file))
 
-    module = ModuleModel(metadata=metadata, applications=applications)
+    module = ModuleConfig(metadata=metadata, applications=applications)
     return module
 
 
-def load_module_file(file: Path) -> ModuleModel:
-    return load_from_yaml(ModuleModel, file)
+def load_module_file(file: Path) -> ModuleConfig:
+    return load_from_yaml(ModuleConfig, file)
 
 
-def load_deployment(config_folder: Path) -> DeploymentModel:
-    modules: list[ModuleModel] = []
+def load_deployment(config_folder: Path) -> DeploymentConfig:
+    modules: list[ModuleConfig] = []
     for file in config_folder.glob("*"):
         if file.is_dir():
             modules.append(load_module_folder(file))
         elif file.suffix == ".yaml":
-            modules.append(load_from_yaml(ModuleModel, file))
+            modules.append(load_from_yaml(ModuleConfig, file))
 
-    return DeploymentModel(modules=modules)
+    return DeploymentConfig(modules=modules)

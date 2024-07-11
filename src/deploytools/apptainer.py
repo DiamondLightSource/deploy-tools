@@ -4,8 +4,8 @@ from pathlib import Path
 
 from jinja2 import Environment, PackageLoader
 
-from .models.apptainer import ApptainerModel
-from .models.module import ModuleModel
+from .models.apptainer import ApptainerConfig
+from .models.module import ModuleConfig
 
 APPTAINER_LAUNCH_FILE = "apptainer-launch"
 
@@ -17,7 +17,7 @@ class ApptainerCreator:
         self._entrypoints_root = self._root_folder / "entrypoints"
         self._sif_root = self._root_folder / "sif_files"
 
-    def generate_sif_file(self, config: ApptainerModel, module: ModuleModel):
+    def generate_sif_file(self, config: ApptainerConfig, module: ModuleConfig):
         sif_folder = self._sif_root / module.metadata.name / module.metadata.version
         sif_folder.mkdir(parents=True, exist_ok=True)
 
@@ -38,7 +38,7 @@ class ApptainerCreator:
 
         subprocess.run(commands, check=True)
 
-    def create_entrypoint_files(self, config: ApptainerModel, module: ModuleModel):
+    def create_entrypoint_files(self, config: ApptainerConfig, module: ModuleConfig):
         output_folder = (
             self._entrypoints_root / module.metadata.name / module.metadata.version
         )
@@ -80,7 +80,7 @@ class ApptainerCreator:
 
             output_file.chmod(0o755)
 
-    def create_apptainer_launch_file(self, module: ModuleModel):
+    def create_apptainer_launch_file(self, module: ModuleConfig):
         output_folder = (
             self._entrypoints_root / module.metadata.name / module.metadata.version
         )

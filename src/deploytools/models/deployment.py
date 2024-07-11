@@ -1,7 +1,7 @@
 from pydantic import BaseModel
 
-from .module import ModuleModel
+from .module import ModuleConfig
 
 
-class DeploymentModel(BaseModel):
-    modules: list[ModuleModel]
+class DeploymentConfig(BaseModel):
+    modules: list[ModuleConfig]
