@@ -1,6 +1,7 @@
 from collections import defaultdict
 from pathlib import Path
 
+from .archive import ARCHIVE_DIR
 from .deployment import (
     ModulesByName,
     ModuleVersionsByName,
@@ -25,7 +26,19 @@ def validate_deployment(
     deployed_versions = get_deployed_versions(deploy_folder)
 
     modified_modules = get_modified_modules(last_modules, new_modules)
-    check_modified_modules_not_previously_deployed(deployed_versions, modified_modules)
+    member, name, version = are_modules_in_deployment(
+        deployed_versions, modified_modules
+    )
+    if member:
+        raise ValidationError(f"Module {name}/{version} already deployed.")
+
+    archive_folder = deploy_folder / ARCHIVE_DIR
+    archived_versions = get_deployed_versions(archive_folder)
+    member, name, version = are_modules_in_deployment(
+        archived_versions, modified_modules
+    )
+    if member:
+        raise ValidationError(f"Module {name}/{version} already exists in archive.")
 
     modified_list: list[ModuleConfig] = []
     for versioned_list in modified_modules.values():
@@ -61,12 +74,12 @@ def get_modified_modules(
     return modified_modules
 
 
-def check_modified_modules_not_previously_deployed(
-    deployed_modules: ModuleVersionsByName, modified_modules: ModulesByName
-):
-    for name, modules_list in modified_modules.items():
+def are_modules_in_deployment(
+    deployed_versions: ModuleVersionsByName, modules: ModulesByName
+) -> tuple[bool, str, str]:
+    for name, modules_list in modules.items():
         for version, _ in modules_list:
-            if version in deployed_modules[name]:
-                raise ValidationError(
-                    f"Module previously deployed for name: {name} and version {version}"
-                )
+            if version in deployed_versions[name]:
+                return True, name, version
+
+    return False, "", ""
