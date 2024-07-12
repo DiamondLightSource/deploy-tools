@@ -66,7 +66,7 @@ def deploy(
         ),
     ],
 ):
-    assert deploy_folder.exists(), f"Deployment folder {deploy_folder} does not exist."
+    assert deploy_folder.exists(), f"Deployment folder does not exist:\n{deploy_folder}"
 
     deployment = load_deployment(config_folder)
     modules_list = validate_deployment(deployment, deploy_folder)

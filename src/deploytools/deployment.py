@@ -41,7 +41,7 @@ def load_deployment_snapshot(deploy_folder: Path, allow_empty=True) -> Deploymen
         if allow_empty:
             return DeploymentConfig(modules=[])
 
-        raise DeploymentError(f"Snapshot path does not exist:\n{snapshot_path}")
+        raise DeploymentError(f"Deployment snapshot does not exist:\n{snapshot_path}")
 
     return load_from_yaml(DeploymentConfig, snapshot_path)
 
@@ -54,7 +54,7 @@ def get_modules_by_name(deployment: DeploymentConfig, validate: bool) -> Modules
 
         if validate and version in modules_struct[name]:
             raise DeploymentError(
-                f"Module {name} has multiple configurations for version {version}"
+                f"Module {name} has multiple configurations for version {version}."
             )
 
         modules_struct[name].append((version, module))

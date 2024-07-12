@@ -67,8 +67,7 @@ def get_modified_modules(
 
             if not new_config == old_modules_map[version]:
                 raise ValidationError(
-                    f"Module {name} with version {version} modified without updating"
-                    " configuration"
+                    f"Module {name}/{version} modified without updating version."
                 )
 
     return modified_modules

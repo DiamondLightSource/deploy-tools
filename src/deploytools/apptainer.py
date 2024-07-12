@@ -11,6 +11,10 @@ from .models.module import ModuleConfig
 APPTAINER_LAUNCH_FILE = "apptainer-launch"
 
 
+class ApptainerError(Exception):
+    pass
+
+
 class ApptainerCreator:
     def __init__(self, deploy_folder: Path):
         self._env = Environment(loader=PackageLoader("deploytools"))
@@ -25,10 +29,14 @@ class ApptainerCreator:
         output_path = sif_folder / ":".join((config.name, (config.version + ".sif")))
 
         if not output_path.is_absolute():
-            raise Exception("Sif file output path must be absolute")
+            raise ApptainerError(
+                f"Sif file output path must be absolute:\n{output_path}"
+            )
 
         if output_path.exists():
-            raise Exception("Sif file with this name and version already exists")
+            raise ApptainerError(
+                f"Sif file with name and version already exists:\n{output_path}"
+            )
 
         commands = [
             "apptainer",

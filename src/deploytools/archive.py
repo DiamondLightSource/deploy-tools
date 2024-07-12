@@ -54,8 +54,7 @@ def check_module_and_version_not_in_deployment_config(
     for v, _ in modules[name]:
         if v == version:
             raise ArchiveError(
-                f"Version {version} still exists in latest deployment configuration for"
-                f" {name}."
+                f"Module {name}/{version} already exists in deployment configuration."
             )
 
 
@@ -76,7 +75,7 @@ def check_archive_free_for_module_and_version(
         full_path = archive_folder / subdir / name / version
         if full_path.exists():
             raise ArchiveError(
-                f"Path {full_path} already exists. Cannot archive {name}/{version}."
+                f"Cannot archive {name}/{version}. Path already exists:\n{full_path}"
             )
 
 
