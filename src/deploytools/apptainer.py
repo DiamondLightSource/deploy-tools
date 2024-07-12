@@ -4,6 +4,7 @@ from pathlib import Path
 
 from jinja2 import Environment, PackageLoader
 
+from .deployment import DEPLOYMENT_ENTRYPOINTS_DIR, DEPLOYMENT_SIF_FILES_DIR
 from .models.apptainer import ApptainerConfig
 from .models.module import ModuleConfig
 
@@ -14,8 +15,8 @@ class ApptainerCreator:
     def __init__(self, deploy_folder: Path):
         self._env = Environment(loader=PackageLoader("deploytools"))
         self._deploy_folder = deploy_folder
-        self._entrypoints_folder = self._deploy_folder / "entrypoints"
-        self._sif_folder = self._deploy_folder / "sif_files"
+        self._entrypoints_folder = self._deploy_folder / DEPLOYMENT_ENTRYPOINTS_DIR
+        self._sif_folder = self._deploy_folder / DEPLOYMENT_SIF_FILES_DIR
 
     def generate_sif_file(self, config: ApptainerConfig, module: ModuleConfig):
         sif_folder = self._sif_folder / module.metadata.name / module.metadata.version

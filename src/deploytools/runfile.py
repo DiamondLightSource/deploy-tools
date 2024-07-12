@@ -2,6 +2,7 @@ from pathlib import Path
 
 from jinja2 import Environment, PackageLoader
 
+from .deployment import DEPLOYMENT_ENTRYPOINTS_DIR
 from .models.runfile import RunFileConfig
 from .module import ModuleConfig
 
@@ -10,7 +11,7 @@ class RunFileCreator:
     def __init__(self, deploy_folder: Path):
         self._env = Environment(loader=PackageLoader("deploytools"))
         self._deploy_folder = deploy_folder
-        self._entrypoints_folder = self._deploy_folder / "entrypoints"
+        self._entrypoints_folder = self._deploy_folder / DEPLOYMENT_ENTRYPOINTS_DIR
 
     def create_entrypoint_file(
         self,

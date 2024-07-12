@@ -12,6 +12,9 @@ ModuleVersionsByName: TypeAlias = dict[str, list[str]]
 ModulesByName: TypeAlias = dict[str, list[tuple[str, ModuleConfig]]]
 
 DEPLOYMENT_SNAPSHOT_FILENAME = "deployment.yaml"
+DEPLOYMENT_ENTRYPOINTS_DIR = "entrypoints"
+DEPLOYMENT_MODULEFILES_DIR = "modulefiles"
+DEPLOYMENT_SIF_FILES_DIR = "sif_files"
 
 
 class DeploymentError(Exception):
@@ -54,7 +57,7 @@ def get_modules_by_name(deployment: DeploymentConfig, validate: bool) -> Modules
 
 
 def get_deployed_versions(deploy_folder: Path) -> ModuleVersionsByName:
-    modules_folder = deploy_folder / "modulefiles"
+    modules_folder = deploy_folder / DEPLOYMENT_MODULEFILES_DIR
     previous_modules: ModuleVersionsByName = defaultdict(list)
 
     for module_folder in modules_folder.glob("*"):
