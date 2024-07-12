@@ -83,3 +83,9 @@ def move_module(name: str, version: str, src_folder: Path, dest_folder: Path):
             dest_path = dest_folder / subdir / name / version
             dest_path.parent.mkdir(parents=True, exist_ok=True)
             shutil.move(src_path, dest_path)
+
+        try:
+            # Delete the module name directory if it is empty
+            src_path.parent.rmdir()
+        except OSError:
+            pass
