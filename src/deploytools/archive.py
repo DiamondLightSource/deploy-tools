@@ -5,9 +5,7 @@ import typer
 from typing_extensions import Annotated
 
 from .deployment import (
-    DEPLOYMENT_ENTRYPOINTS_DIR,
-    DEPLOYMENT_MODULEFILES_DIR,
-    DEPLOYMENT_SIF_FILES_DIR,
+    DEPLOYMENT_SUBDIRS,
     get_deployed_versions,
     get_modules_by_name,
     load_deployment_snapshot,
@@ -16,12 +14,6 @@ from .deployment import (
 app = typer.Typer()
 
 app.command()
-
-PATHS_TO_ARCHIVE = [
-    DEPLOYMENT_ENTRYPOINTS_DIR,
-    DEPLOYMENT_MODULEFILES_DIR,
-    DEPLOYMENT_SIF_FILES_DIR,
-]
 
 
 class ArchiveError(Exception):
@@ -84,7 +76,7 @@ def check_module_and_version_in_previous_deployment(
 def check_archive_free_for_module_and_version(
     name: str, version: str, archive_folder: Path
 ):
-    for subdir in PATHS_TO_ARCHIVE:
+    for subdir in DEPLOYMENT_SUBDIRS:
         full_path = archive_folder / subdir / name / version
         if full_path.exists():
             raise ArchiveError(
@@ -95,7 +87,7 @@ def check_archive_free_for_module_and_version(
 def move_module_paths(
     name: str, version: str, deploy_folder: Path, archive_folder: Path
 ):
-    for subdir in PATHS_TO_ARCHIVE:
+    for subdir in DEPLOYMENT_SUBDIRS:
         deploy_path = deploy_folder / subdir / name / version
 
         # Not all modules require the use of all 3 sub dirs
