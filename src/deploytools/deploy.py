@@ -11,7 +11,7 @@ from .models.module import ModuleConfig
 from .models.runfile import RunFileConfig
 from .module import ModuleCreator
 from .runfile import RunFileCreator
-from .validation import validate_deployment
+from .validate import validate_deployment
 
 app = typer.Typer()
 
