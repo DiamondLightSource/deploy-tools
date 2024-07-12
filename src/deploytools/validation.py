@@ -1,15 +1,15 @@
 from collections import defaultdict
 from pathlib import Path
-from typing import TypeAlias
 
+from .deployment import (
+    ModulesByName,
+    ModuleVersionsByName,
+    get_deployed_versions,
+    get_modules_by_name,
+    load_deployment_snapshot,
+)
 from .models.deployment import DeploymentConfig
-from .models.load import load_from_yaml
 from .models.module import ModuleConfig
-
-DEPLOYMENT_SNAPSHOT_FILENAME = "deployment.yaml"
-
-ModuleVersionsByName: TypeAlias = dict[str, list[str]]
-ModulesByName: TypeAlias = dict[str, list[tuple[str, ModuleConfig]]]
 
 
 class ValidationError(Exception):
@@ -19,44 +19,19 @@ class ValidationError(Exception):
 def validate_deployment(
     deployment: DeploymentConfig, deploy_folder: Path
 ) -> list[ModuleConfig]:
-    last_deployment = get_old_deployment_config(deploy_folder)
-    new_modules = get_modules_struct(deployment, validate=True)
-    last_modules = get_modules_struct(last_deployment, validate=False)
+    last_deployment = load_deployment_snapshot(deploy_folder)
+    new_modules = get_modules_by_name(deployment, validate=True)
+    last_modules = get_modules_by_name(last_deployment, validate=False)
+    deployed_versions = get_deployed_versions(deploy_folder)
 
     modified_modules = get_modified_modules(last_modules, new_modules)
-
-    deployed_modules = get_deployed_modules(deploy_folder)
-    check_modified_modules_not_previously_deployed(deployed_modules, modified_modules)
+    check_modified_modules_not_previously_deployed(deployed_versions, modified_modules)
 
     modified_list: list[ModuleConfig] = []
     for versioned_list in modified_modules.values():
         for _, module in versioned_list:
             modified_list.append(module)
     return modified_list
-
-
-def get_old_deployment_config(deploy_folder: Path) -> DeploymentConfig:
-    snapshot_path = deploy_folder / DEPLOYMENT_SNAPSHOT_FILENAME
-    if not snapshot_path.exists():
-        return DeploymentConfig(modules=[])
-
-    return load_from_yaml(DeploymentConfig, snapshot_path)
-
-
-def get_modules_struct(deployment: DeploymentConfig, validate: bool) -> ModulesByName:
-    modules_struct: ModulesByName = defaultdict(list)
-    for module in deployment.modules:
-        name = module.metadata.name
-        version = module.metadata.version
-
-        if validate and version in modules_struct[name]:
-            raise ValidationError(
-                f"Module {name} has multiple configurations for version {version}"
-            )
-
-        modules_struct[name].append((version, module))
-
-    return modules_struct
 
 
 def get_modified_modules(
@@ -84,17 +59,6 @@ def get_modified_modules(
                 )
 
     return modified_modules
-
-
-def get_deployed_modules(deploy_folder: Path) -> ModuleVersionsByName:
-    modules_folder = deploy_folder / "modulefiles"
-    previous_modules: ModuleVersionsByName = defaultdict(list)
-
-    for module_folder in modules_folder.glob("*"):
-        for version_folder in module_folder.glob("*"):
-            previous_modules[module_folder.name].append(version_folder.name)
-
-    return previous_modules
 
 
 def check_modified_modules_not_previously_deployed(

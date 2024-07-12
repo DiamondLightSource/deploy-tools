@@ -1,29 +1,21 @@
 from pathlib import Path
 
 import typer
-import yaml
 from typing_extensions import Annotated
 
 from .apptainer import ApptainerCreator
+from .deployment import create_deployment_snapshot
 from .models.apptainer import ApptainerConfig
-from .models.deployment import DeploymentConfig
 from .models.load import load_deployment
 from .models.module import ModuleConfig
 from .models.runfile import RunFileConfig
 from .module import ModuleCreator
 from .runfile import RunFileCreator
-from .validation import DEPLOYMENT_SNAPSHOT_FILENAME, validate_deployment
+from .validation import validate_deployment
 
 app = typer.Typer()
 
 app.command()
-
-
-def create_deployment_snapshot(deployment: DeploymentConfig, deploy_folder: Path):
-    file_path = deploy_folder / DEPLOYMENT_SNAPSHOT_FILENAME
-
-    with open(file_path, "w") as f:
-        yaml.safe_dump(deployment.model_dump(), f)
 
 
 def create_module_files(modules: list[ModuleConfig], deploy_folder: Path):
