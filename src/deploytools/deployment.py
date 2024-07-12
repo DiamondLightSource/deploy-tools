@@ -69,8 +69,8 @@ def get_deployed_versions(deploy_folder: Path) -> ModuleVersionsByName:
     previous_modules: ModuleVersionsByName = defaultdict(list)
 
     for module_folder in modules_folder.glob("*"):
-        for version_folder in module_folder.glob("*"):
-            previous_modules[module_folder.name].append(version_folder.name)
+        for version_path in module_folder.glob("*"):
+            previous_modules[module_folder.name].append(version_path.name)
 
     return previous_modules
 
