@@ -16,6 +16,9 @@ app = typer.Typer()
 app.command()
 
 
+ARCHIVE_DIR = "archived"
+
+
 class ArchiveError(Exception):
     pass
 
@@ -32,16 +35,9 @@ def archive(
             writable=True,
         ),
     ],
-    archive_folder: Annotated[
-        Path,
-        typer.Argument(
-            exists=True,
-            file_okay=False,
-            dir_okay=True,
-            writable=True,
-        ),
-    ],
 ):
+    archive_folder = deploy_folder / ARCHIVE_DIR
+
     check_module_and_version_not_in_deployment_config(name, version, deploy_folder)
     check_module_and_version_in_previous_deployment(name, version, deploy_folder)
     check_archive_free_for_module_and_version(name, version, archive_folder)

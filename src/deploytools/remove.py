@@ -5,6 +5,7 @@ from pathlib import Path
 import typer
 from typing_extensions import Annotated
 
+from .archive import ARCHIVE_DIR
 from .deployment import (
     DEPLOYMENT_SUBDIRS,
     get_deployed_versions,
@@ -22,7 +23,7 @@ class RemovalError(Exception):
 def remove(
     name: str,
     version: str,
-    archive_folder: Annotated[
+    deploy_folder: Annotated[
         Path,
         typer.Argument(
             exists=True,
@@ -32,6 +33,7 @@ def remove(
         ),
     ],
 ):
+    archive_folder = deploy_folder / ARCHIVE_DIR
     check_module_and_version_in_archived_deployment(name, version, archive_folder)
     remove_module_paths(name, version, archive_folder)
 
