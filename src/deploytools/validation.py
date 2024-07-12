@@ -8,9 +8,8 @@ from .models.module import ModuleConfig
 
 DEPLOYMENT_SNAPSHOT_FILENAME = "deployment.yaml"
 
-# TODO: Need more sensible names, they're just for convenience in sorting etc
-ModuleVersionsStruct: TypeAlias = dict[str, list[str]]
-ModulesStruct: TypeAlias = dict[str, list[tuple[str, ModuleConfig]]]
+ModuleVersionsByName: TypeAlias = dict[str, list[str]]
+ModulesByName: TypeAlias = dict[str, list[tuple[str, ModuleConfig]]]
 
 
 class ValidationError(Exception):
@@ -44,8 +43,8 @@ def get_old_deployment_config(deploy_folder: Path) -> DeploymentConfig:
     return load_from_yaml(DeploymentConfig, snapshot_path)
 
 
-def get_modules_struct(deployment: DeploymentConfig, validate: bool) -> ModulesStruct:
-    modules_struct: ModulesStruct = defaultdict(list)
+def get_modules_struct(deployment: DeploymentConfig, validate: bool) -> ModulesByName:
+    modules_struct: ModulesByName = defaultdict(list)
     for module in deployment.modules:
         name = module.metadata.name
         version = module.metadata.version
@@ -61,12 +60,12 @@ def get_modules_struct(deployment: DeploymentConfig, validate: bool) -> ModulesS
 
 
 def get_modified_modules(
-    old_modules: ModulesStruct, new_modules: ModulesStruct
-) -> ModulesStruct:
+    old_modules: ModulesByName, new_modules: ModulesByName
+) -> ModulesByName:
     """Get list of modules that have been modified since last deployment.
 
     We do not care about deleted modules / versions as they require no deployment."""
-    modified_modules: ModulesStruct = defaultdict(list)
+    modified_modules: ModulesByName = defaultdict(list)
     for name in new_modules:
         if name not in old_modules:
             modified_modules[name] = new_modules[name]
@@ -87,9 +86,9 @@ def get_modified_modules(
     return modified_modules
 
 
-def get_deployed_modules(deploy_folder: Path) -> ModuleVersionsStruct:
+def get_deployed_modules(deploy_folder: Path) -> ModuleVersionsByName:
     modules_folder = deploy_folder / "modulefiles"
-    previous_modules: ModuleVersionsStruct = defaultdict(list)
+    previous_modules: ModuleVersionsByName = defaultdict(list)
 
     for module_folder in modules_folder.glob("*"):
         for version_folder in module_folder.glob("*"):
@@ -99,7 +98,7 @@ def get_deployed_modules(deploy_folder: Path) -> ModuleVersionsStruct:
 
 
 def check_modified_modules_not_previously_deployed(
-    deployed_modules: ModuleVersionsStruct, modified_modules: ModulesStruct
+    deployed_modules: ModuleVersionsByName, modified_modules: ModulesByName
 ):
     for name, modules_list in modified_modules.items():
         for version, _ in modules_list:
