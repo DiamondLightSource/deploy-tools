@@ -93,7 +93,7 @@ def move_module_paths(
         # Not all modules require the use of all 3 sub dirs
         if deploy_path.exists():
             archive_path = archive_folder / subdir / name / version
-            archive_path.parent.mkdir(parents=True, exist_ok=False)
+            archive_path.parent.mkdir(parents=True, exist_ok=True)
             shutil.move(deploy_path, archive_path)
 
 
