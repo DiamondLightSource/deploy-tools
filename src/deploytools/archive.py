@@ -1,4 +1,3 @@
-import shutil
 from pathlib import Path
 
 import typer
@@ -9,6 +8,7 @@ from .deployment import (
     get_deployed_versions,
     get_modules_by_name,
     load_deployment_snapshot,
+    move_module,
 )
 
 app = typer.Typer()
@@ -42,7 +42,7 @@ def archive(
     check_module_and_version_in_previous_deployment(name, version, deploy_folder)
     check_archive_free_for_module_and_version(name, version, archive_folder)
 
-    move_module_paths(name, version, deploy_folder, archive_folder)
+    move_module(name, version, deploy_folder, archive_folder)
 
 
 def check_module_and_version_not_in_deployment_config(
@@ -54,7 +54,7 @@ def check_module_and_version_not_in_deployment_config(
     for v, _ in modules[name]:
         if v == version:
             raise ArchiveError(
-                f"Module {name}/{version} already exists in deployment configuration."
+                f"Module {name}/{version} still exists in deployment configuration."
             )
 
 
@@ -77,19 +77,6 @@ def check_archive_free_for_module_and_version(
             raise ArchiveError(
                 f"Cannot archive {name}/{version}. Path already exists:\n{full_path}"
             )
-
-
-def move_module_paths(
-    name: str, version: str, deploy_folder: Path, archive_folder: Path
-):
-    for subdir in DEPLOYMENT_SUBDIRS:
-        deploy_path = deploy_folder / subdir / name / version
-
-        # Not all modules require the use of all 3 sub dirs
-        if deploy_path.exists():
-            archive_path = archive_folder / subdir / name / version
-            archive_path.parent.mkdir(parents=True, exist_ok=True)
-            shutil.move(deploy_path, archive_path)
 
 
 def main():

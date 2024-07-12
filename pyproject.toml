@@ -40,6 +40,7 @@ deploytools = "deploytools.__main__:main"
 generate-schema = "deploytools.models.schema:main"
 deploy-modules = "deploytools.deploy:main"
 archive-module = "deploytools.archive:main"
+restore-module = "deploytools.restore:main"
 remove-module = "deploytools.remove:main"
 
 [project.urls]
