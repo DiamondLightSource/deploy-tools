@@ -1,15 +1,10 @@
-import os
-import shutil
 from pathlib import Path
 
 import typer
 from typing_extensions import Annotated
 
 from .archive import ARCHIVE_DIR
-from .deployment import (
-    DEPLOYMENT_SUBDIRS,
-    get_deployed_versions,
-)
+from .deployment import get_deployed_versions, remove_module
 
 app = typer.Typer()
 
@@ -35,7 +30,7 @@ def remove(
 ):
     archive_folder = deploy_folder / ARCHIVE_DIR
     check_module_and_version_in_archived_deployment(name, version, archive_folder)
-    remove_module_paths(name, version, archive_folder)
+    remove_module(name, version, archive_folder)
 
 
 def check_module_and_version_in_archived_deployment(
@@ -46,21 +41,6 @@ def check_module_and_version_in_archived_deployment(
         raise RemovalError(
             f"Version {version} has not previously been archived for {name}."
         )
-
-
-def remove_module_paths(name: str, version: str, archive_folder: Path):
-    for subdir in DEPLOYMENT_SUBDIRS:
-        archive_path = archive_folder / subdir / name / version
-        if archive_path.is_dir():
-            shutil.rmtree(archive_path)
-        else:
-            os.remove(archive_path)
-
-        try:
-            # Delete the module name directory if it is empty
-            archive_path.parent.rmdir()
-        except OSError:
-            pass
 
 
 def main():
