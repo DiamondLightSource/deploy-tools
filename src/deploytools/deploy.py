@@ -11,40 +11,11 @@ from .models.module import ModuleConfig
 from .models.runfile import RunFileConfig
 from .module import ModuleCreator
 from .runfile import RunFileCreator
-from .validate import validate_deployment
+from .validation import validate_deployment
 
 app = typer.Typer()
 
 app.command()
-
-
-def create_module_files(modules: list[ModuleConfig], deploy_folder: Path):
-    creator = ModuleCreator(deploy_folder)
-
-    for module in modules:
-        creator.create_module_file(module)
-
-
-def create_entrypoints(modules: list[ModuleConfig], deploy_folder: Path):
-    apptainer_creator = ApptainerCreator(deploy_folder)
-    runfile_creator = RunFileCreator(deploy_folder)
-
-    for module in modules:
-        includes_apptainer = False
-
-        for application in module.applications:
-            config = application.app_config
-
-            match config:
-                case ApptainerConfig():
-                    apptainer_creator.generate_sif_file(config, module)
-                    apptainer_creator.create_entrypoint_files(config, module)
-                    includes_apptainer = True
-                case RunFileConfig():
-                    runfile_creator.create_entrypoint_file(config, module)
-
-        if includes_apptainer:
-            apptainer_creator.create_apptainer_launch_file(module)
 
 
 def deploy(
@@ -75,6 +46,35 @@ def deploy(
     if modules_list:
         create_entrypoints(modules_list, deploy_folder)
         create_module_files(modules_list, deploy_folder)
+
+
+def create_module_files(modules: list[ModuleConfig], deploy_folder: Path):
+    creator = ModuleCreator(deploy_folder)
+
+    for module in modules:
+        creator.create_module_file(module)
+
+
+def create_entrypoints(modules: list[ModuleConfig], deploy_folder: Path):
+    apptainer_creator = ApptainerCreator(deploy_folder)
+    runfile_creator = RunFileCreator(deploy_folder)
+
+    for module in modules:
+        includes_apptainer = False
+
+        for application in module.applications:
+            config = application.app_config
+
+            match config:
+                case ApptainerConfig():
+                    apptainer_creator.generate_sif_file(config, module)
+                    apptainer_creator.create_entrypoint_files(config, module)
+                    includes_apptainer = True
+                case RunFileConfig():
+                    runfile_creator.create_entrypoint_file(config, module)
+
+        if includes_apptainer:
+            apptainer_creator.create_apptainer_launch_file(module)
 
 
 def main():
