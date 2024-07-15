@@ -28,6 +28,7 @@ def remove(
         ),
     ],
 ):
+    """Remove an archived module."""
     archive_folder = deploy_folder / ARCHIVE_DIR
     check_module_and_version_in_archived_deployment(name, version, archive_folder)
     remove_module(name, version, archive_folder)

@@ -36,6 +36,9 @@ def archive(
         ),
     ],
 ):
+    """Archive a module by moving it to a separate directory.
+
+    There is no expectation that the module will work correctly after archiving."""
     archive_folder = deploy_folder / ARCHIVE_DIR
 
     check_module_and_version_not_in_deployment_config(name, version, deploy_folder)

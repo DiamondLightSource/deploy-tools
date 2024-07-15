@@ -9,6 +9,8 @@ MODULEFILE_TEMPLATE = "modulefile"
 
 
 class ModuleCreator:
+    """Class for creating modulefiles, including optional dependencies and env vars."""
+
     def __init__(self, deploy_folder: Path):
         self._env = Environment(loader=PackageLoader("deploytools"))
         self._deploy_folder = deploy_folder

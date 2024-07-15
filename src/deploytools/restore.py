@@ -32,6 +32,7 @@ def restore(
         ),
     ],
 ):
+    """Restore a previously archived module."""
     archive_folder = deploy_folder / ARCHIVE_DIR
 
     check_archive_includes_module_and_version(name, version, archive_folder)

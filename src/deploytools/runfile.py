@@ -10,6 +10,8 @@ RUNFILE_ENTRYPOINT_TEMPLATE = "runfile_entrypoint"
 
 
 class RunFileCreator:
+    """Class for creating 'runfile' entrypoints, which run an executable on a path."""
+
     def __init__(self, deploy_folder: Path):
         self._env = Environment(loader=PackageLoader("deploytools"))
         self._deploy_folder = deploy_folder

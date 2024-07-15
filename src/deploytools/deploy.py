@@ -37,6 +37,7 @@ def deploy(
         ),
     ],
 ):
+    """Validate and deploy modules that have been updated since the last deployment."""
     assert deploy_folder.exists(), f"Deployment folder does not exist:\n{deploy_folder}"
 
     deployment = load_deployment(config_folder)

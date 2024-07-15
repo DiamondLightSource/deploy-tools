@@ -17,6 +17,8 @@ class ApptainerError(Exception):
 
 
 class ApptainerCreator:
+    """Class for creating apptainer entrypoints using a specified image and command."""
+
     def __init__(self, deploy_folder: Path):
         self._env = Environment(loader=PackageLoader("deploytools"))
         self._deploy_folder = deploy_folder

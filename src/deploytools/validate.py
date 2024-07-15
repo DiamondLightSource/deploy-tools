@@ -30,6 +30,9 @@ def validate(
         ),
     ],
 ):
+    """Validate deployment configuration and print a list of modules for deployment.
+
+    This is the same validation that the deploy-modules command uses."""
     assert deploy_folder.exists(), f"Deployment folder does not exist:\n{deploy_folder}"
 
     deployment = load_deployment(config_folder)

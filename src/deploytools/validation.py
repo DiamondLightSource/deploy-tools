@@ -26,18 +26,18 @@ def validate_deployment(
     deployed_versions = get_deployed_versions(deploy_folder)
 
     modified_modules = get_modified_modules(last_modules, new_modules)
-    member, name, version = are_modules_in_deployment(
+    is_member, name, version = are_modules_in_deployment(
         deployed_versions, modified_modules
     )
-    if member:
+    if is_member:
         raise ValidationError(f"Module {name}/{version} already deployed.")
 
     archive_folder = deploy_folder / ARCHIVE_DIR
     archived_versions = get_deployed_versions(archive_folder)
-    member, name, version = are_modules_in_deployment(
+    is_member, name, version = are_modules_in_deployment(
         archived_versions, modified_modules
     )
-    if member:
+    if is_member:
         raise ValidationError(f"Module {name}/{version} already exists in archive.")
 
     modified_list: list[ModuleConfig] = []
