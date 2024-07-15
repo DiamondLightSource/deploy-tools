@@ -13,10 +13,72 @@
             "problemMatcher": [],
         },
         {
-            "label": "Update schema",
+            "label": "Generate schema",
             "type": "shell",
-            "command": "generate-schema ${workspaceFolder}/src/deploytools/models/schemas/",
+            "command": "generate-schema ${input:schema-folder}",
+            "problemMatcher": []
+        },
+        {
+            "label": "Deploy modules",
+            "type": "shell",
+            "command": "deploy-modules ${input:deploy-folder} ${input:config-folder}",
+            "problemMatcher": []
+        },
+        {
+            "label": "Validate deployment",
+            "type": "shell",
+            "command": "validate-deployment ${input:deploy-folder} ${input:config-folder}",
+            "problemMatcher": []
+        },
+        {
+            "label": "Archive module",
+            "type": "shell",
+            "command": "archive-module ${input:module-name} ${input:module-version} ${input:deploy-folder}",
+            "problemMatcher": []
+        },
+        {
+            "label": "Restore module",
+            "type": "shell",
+            "command": "restore-module ${input:module-name} ${input:module-version} ${input:deploy-folder}",
+            "problemMatcher": []
+        },
+        {
+            "label": "Remove module",
+            "type": "shell",
+            "command": "remove-module ${input:module-name} ${input:module-version} ${input:deploy-folder}",
             "problemMatcher": []
         }
+    ],
+    "inputs": [
+        {
+            "id": "schema-folder",
+            "description": "Schema output folder",
+            "default": "${workspaceFolder}/src/deploytools/models/schemas/",
+            "type": "promptString"
+        },
+        {
+            "id": "deploy-folder",
+            "description": "Deployment output folder",
+            "default": "${workspaceFolder}/demo-output/",
+            "type": "promptString"
+        },
+        {
+            "id": "config-folder",
+            "description": "Configuration folder",
+            "default": "${workspaceFolder}/src/deploytools/demo_configuration/",
+            "type": "promptString"
+        },
+        {
+            "id": "module-name",
+            "description": "Module name",
+            "default": "example-module-file",
+            "type": "promptString"
+        },
+        {
+            "id": "module-version",
+            "description": "Module version",
+            "default": "0.1",
+            "type": "promptString"
+        },
     ]
 }
