@@ -25,6 +25,12 @@
             "problemMatcher": []
         },
         {
+            "label": "Clean deployment",
+            "type": "shell",
+            "command": "rm -r ${workspaceFolder}/demo-output/ && mkdir ${workspaceFolder}/demo-output/",
+            "problemMatcher": []
+        },
+        {
             "label": "Validate deployment",
             "type": "shell",
             "command": "validate-deployment ${input:deploy-folder} ${input:config-folder}",
