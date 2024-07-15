@@ -6,6 +6,8 @@ from .deployment import DEPLOYMENT_ENTRYPOINTS_DIR
 from .models.runfile import RunFileConfig
 from .module import ModuleConfig
 
+RUNFILE_ENTRYPOINT_TEMPLATE = "runfile_entrypoint"
+
 
 class RunFileCreator:
     def __init__(self, deploy_folder: Path):
@@ -18,7 +20,7 @@ class RunFileCreator:
         config: RunFileConfig,
         module: ModuleConfig,
     ):
-        template = self._env.get_template("runfile_entrypoint")
+        template = self._env.get_template(RUNFILE_ENTRYPOINT_TEMPLATE)
 
         output_folder = (
             self._entrypoints_folder / module.metadata.name / module.metadata.version

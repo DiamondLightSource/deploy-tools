@@ -9,6 +9,7 @@ from .models.apptainer import ApptainerConfig
 from .models.module import ModuleConfig
 
 APPTAINER_LAUNCH_FILE = "apptainer-launch"
+APPTAINER_ENTRYPOINT_TEMPLATE = "apptainer_entrypoint"
 
 
 class ApptainerError(Exception):
@@ -52,7 +53,7 @@ class ApptainerCreator:
             self._entrypoints_folder / module.metadata.name / module.metadata.version
         )
         output_folder.mkdir(parents=True, exist_ok=True)
-        template = self._env.get_template("apptainer_entrypoint")
+        template = self._env.get_template(APPTAINER_ENTRYPOINT_TEMPLATE)
 
         for entrypoint in config.entrypoints:
             output_file = output_folder / entrypoint.executable_name

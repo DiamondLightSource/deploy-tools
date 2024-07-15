@@ -5,7 +5,7 @@ from jinja2 import Environment, PackageLoader
 from .deployment import DEPLOYMENT_ENTRYPOINTS_DIR, DEPLOYMENT_MODULEFILES_DIR
 from .models.module import ModuleConfig
 
-APPTAINER_LAUNCH_FILE = "apptainer-launch"
+MODULEFILE_TEMPLATE = "modulefile"
 
 
 class ModuleCreator:
@@ -16,7 +16,7 @@ class ModuleCreator:
         self._entrypoints_folder = self._deploy_folder / DEPLOYMENT_ENTRYPOINTS_DIR
 
     def create_module_file(self, module: ModuleConfig):
-        template = self._env.get_template("modulefile")
+        template = self._env.get_template(MODULEFILE_TEMPLATE)
 
         config = module.metadata
         entrypoint_folder = self._entrypoints_folder / config.name / config.version
