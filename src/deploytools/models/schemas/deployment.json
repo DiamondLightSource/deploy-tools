@@ -1,21 +1,21 @@
 {
   "$defs": {
-    "ApplicationModel": {
+    "ApplicationConfig": {
       "properties": {
         "app_config": {
           "discriminator": {
             "mapping": {
-              "apptainer": "#/$defs/ApptainerModel",
-              "runfile": "#/$defs/RunFileModel"
+              "apptainer": "#/$defs/ApptainerConfig",
+              "runfile": "#/$defs/RunFileConfig"
             },
             "propertyName": "app_type"
           },
           "oneOf": [
             {
-              "$ref": "#/$defs/ApptainerModel"
+              "$ref": "#/$defs/ApptainerConfig"
             },
             {
-              "$ref": "#/$defs/RunFileModel"
+              "$ref": "#/$defs/RunFileConfig"
             }
           ],
           "title": "App Config"
@@ -24,10 +24,10 @@
       "required": [
         "app_config"
       ],
-      "title": "ApplicationModel",
+      "title": "ApplicationConfig",
       "type": "object"
     },
-    "ApptainerModel": {
+    "ApptainerConfig": {
       "properties": {
         "app_type": {
           "const": "apptainer",
@@ -46,17 +46,17 @@
           "type": "string"
         },
         "container": {
-          "$ref": "#/$defs/ContainerImageModel"
+          "$ref": "#/$defs/ContainerImageConfig"
         },
         "entrypoints": {
           "items": {
-            "$ref": "#/$defs/EntrypointModel"
+            "$ref": "#/$defs/EntrypointConfig"
           },
           "title": "Entrypoints",
           "type": "array"
         },
         "global_options": {
-          "$ref": "#/$defs/EntrypointOptionsModel"
+          "$ref": "#/$defs/EntrypointOptionsConfig"
         }
       },
       "required": [
@@ -66,10 +66,10 @@
         "container",
         "entrypoints"
       ],
-      "title": "ApptainerModel",
+      "title": "ApptainerConfig",
       "type": "object"
     },
-    "ContainerImageModel": {
+    "ContainerImageConfig": {
       "properties": {
         "path": {
           "title": "Path",
@@ -84,10 +84,10 @@
         "path",
         "version"
       ],
-      "title": "ContainerImageModel",
+      "title": "ContainerImageConfig",
       "type": "object"
     },
-    "EntrypointModel": {
+    "EntrypointConfig": {
       "properties": {
         "executable_name": {
           "title": "Executable Name",
@@ -106,16 +106,16 @@
           "title": "Command"
         },
         "options": {
-          "$ref": "#/$defs/EntrypointOptionsModel"
+          "$ref": "#/$defs/EntrypointOptionsConfig"
         }
       },
       "required": [
         "executable_name"
       ],
-      "title": "EntrypointModel",
+      "title": "EntrypointConfig",
       "type": "object"
     },
-    "EntrypointOptionsModel": {
+    "EntrypointOptionsConfig": {
       "properties": {
         "apptainer_args": {
           "default": "",
@@ -136,10 +136,10 @@
           "type": "array"
         }
       },
-      "title": "EntrypointOptionsModel",
+      "title": "EntrypointOptionsConfig",
       "type": "object"
     },
-    "EnvVarModel": {
+    "EnvVarConfig": {
       "properties": {
         "name": {
           "title": "Name",
@@ -154,10 +154,30 @@
         "name",
         "value"
       ],
-      "title": "EnvVarModel",
+      "title": "EnvVarConfig",
       "type": "object"
     },
-    "ModuleDependencyModel": {
+    "ModuleConfig": {
+      "properties": {
+        "metadata": {
+          "$ref": "#/$defs/ModuleMetadataConfig"
+        },
+        "applications": {
+          "items": {
+            "$ref": "#/$defs/ApplicationConfig"
+          },
+          "title": "Applications",
+          "type": "array"
+        }
+      },
+      "required": [
+        "metadata",
+        "applications"
+      ],
+      "title": "ModuleConfig",
+      "type": "object"
+    },
+    "ModuleDependencyConfig": {
       "properties": {
         "name": {
           "title": "Name",
@@ -179,10 +199,10 @@
         "name",
         "version"
       ],
-      "title": "ModuleDependencyModel",
+      "title": "ModuleDependencyConfig",
       "type": "object"
     },
-    "ModuleMetadataModel": {
+    "ModuleMetadataConfig": {
       "properties": {
         "name": {
           "title": "Name",
@@ -207,7 +227,7 @@
         "dependencies": {
           "default": [],
           "items": {
-            "$ref": "#/$defs/ModuleDependencyModel"
+            "$ref": "#/$defs/ModuleDependencyConfig"
           },
           "title": "Dependencies",
           "type": "array"
@@ -215,7 +235,7 @@
         "env_vars": {
           "default": [],
           "items": {
-            "$ref": "#/$defs/EnvVarModel"
+            "$ref": "#/$defs/EnvVarConfig"
           },
           "title": "Env Vars",
           "type": "array"
@@ -225,30 +245,10 @@
         "name",
         "version"
       ],
-      "title": "ModuleMetadataModel",
+      "title": "ModuleMetadataConfig",
       "type": "object"
     },
-    "ModuleModel": {
-      "properties": {
-        "metadata": {
-          "$ref": "#/$defs/ModuleMetadataModel"
-        },
-        "applications": {
-          "items": {
-            "$ref": "#/$defs/ApplicationModel"
-          },
-          "title": "Applications",
-          "type": "array"
-        }
-      },
-      "required": [
-        "metadata",
-        "applications"
-      ],
-      "title": "ModuleModel",
-      "type": "object"
-    },
-    "RunFileModel": {
+    "RunFileConfig": {
       "properties": {
         "app_type": {
           "const": "runfile",
@@ -277,14 +277,14 @@
         "name",
         "command_path"
       ],
-      "title": "RunFileModel",
+      "title": "RunFileConfig",
       "type": "object"
     }
   },
   "properties": {
     "modules": {
       "items": {
-        "$ref": "#/$defs/ModuleModel"
+        "$ref": "#/$defs/ModuleConfig"
       },
       "title": "Modules",
       "type": "array"
@@ -293,6 +293,6 @@
   "required": [
     "modules"
   ],
-  "title": "DeploymentModel",
+  "title": "DeploymentConfig",
   "type": "object"
 }

@@ -1,6 +1,6 @@
 {
   "$defs": {
-    "ApptainerModel": {
+    "ApptainerConfig": {
       "properties": {
         "app_type": {
           "const": "apptainer",
@@ -19,17 +19,17 @@
           "type": "string"
         },
         "container": {
-          "$ref": "#/$defs/ContainerImageModel"
+          "$ref": "#/$defs/ContainerImageConfig"
         },
         "entrypoints": {
           "items": {
-            "$ref": "#/$defs/EntrypointModel"
+            "$ref": "#/$defs/EntrypointConfig"
           },
           "title": "Entrypoints",
           "type": "array"
         },
         "global_options": {
-          "$ref": "#/$defs/EntrypointOptionsModel"
+          "$ref": "#/$defs/EntrypointOptionsConfig"
         }
       },
       "required": [
@@ -39,10 +39,10 @@
         "container",
         "entrypoints"
       ],
-      "title": "ApptainerModel",
+      "title": "ApptainerConfig",
       "type": "object"
     },
-    "ContainerImageModel": {
+    "ContainerImageConfig": {
       "properties": {
         "path": {
           "title": "Path",
@@ -57,10 +57,10 @@
         "path",
         "version"
       ],
-      "title": "ContainerImageModel",
+      "title": "ContainerImageConfig",
       "type": "object"
     },
-    "EntrypointModel": {
+    "EntrypointConfig": {
       "properties": {
         "executable_name": {
           "title": "Executable Name",
@@ -79,16 +79,16 @@
           "title": "Command"
         },
         "options": {
-          "$ref": "#/$defs/EntrypointOptionsModel"
+          "$ref": "#/$defs/EntrypointOptionsConfig"
         }
       },
       "required": [
         "executable_name"
       ],
-      "title": "EntrypointModel",
+      "title": "EntrypointConfig",
       "type": "object"
     },
-    "EntrypointOptionsModel": {
+    "EntrypointOptionsConfig": {
       "properties": {
         "apptainer_args": {
           "default": "",
@@ -109,10 +109,10 @@
           "type": "array"
         }
       },
-      "title": "EntrypointOptionsModel",
+      "title": "EntrypointOptionsConfig",
       "type": "object"
     },
-    "RunFileModel": {
+    "RunFileConfig": {
       "properties": {
         "app_type": {
           "const": "runfile",
@@ -141,7 +141,7 @@
         "name",
         "command_path"
       ],
-      "title": "RunFileModel",
+      "title": "RunFileConfig",
       "type": "object"
     }
   },
@@ -149,17 +149,17 @@
     "app_config": {
       "discriminator": {
         "mapping": {
-          "apptainer": "#/$defs/ApptainerModel",
-          "runfile": "#/$defs/RunFileModel"
+          "apptainer": "#/$defs/ApptainerConfig",
+          "runfile": "#/$defs/RunFileConfig"
         },
         "propertyName": "app_type"
       },
       "oneOf": [
         {
-          "$ref": "#/$defs/ApptainerModel"
+          "$ref": "#/$defs/ApptainerConfig"
         },
         {
-          "$ref": "#/$defs/RunFileModel"
+          "$ref": "#/$defs/RunFileConfig"
         }
       ],
       "title": "App Config"
@@ -168,6 +168,6 @@
   "required": [
     "app_config"
   ],
-  "title": "ApplicationModel",
+  "title": "ApplicationConfig",
   "type": "object"
 }
