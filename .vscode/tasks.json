@@ -11,6 +11,12 @@
                 "cwd": "${workspaceRoot}"
             },
             "problemMatcher": [],
+        },
+        {
+            "label": "Update schema",
+            "type": "shell",
+            "command": "generate-schema ${workspaceFolder}/src/deploytools/models/schemas/",
+            "problemMatcher": []
         }
     ]
 }
