@@ -42,7 +42,3 @@ def check_module_and_version_in_archived_deployment(
         raise RemovalError(
             f"Version {version} has not previously been archived for {name}."
         )
-
-
-def main():
-    typer.run(remove)

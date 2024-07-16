@@ -45,7 +45,3 @@ def validate(
 
     for module in modules_list:
         print(f"{module.metadata.name}/{module.metadata.version}")
-
-
-def main():
-    typer.run(validate)

@@ -37,12 +37,6 @@ dev = [
 
 [project.scripts]
 deploytools = "deploytools.__main__:main"
-generate-schema = "deploytools.models.schema:main"
-deploy-modules = "deploytools.deploy:main"
-archive-module = "deploytools.archive:main"
-restore-module = "deploytools.restore:main"
-remove-module = "deploytools.remove:main"
-validate-deployment = "deploytools.validate:main"
 
 [project.urls]
 GitHub = "https://github.com/MJGaughran/deploytools"

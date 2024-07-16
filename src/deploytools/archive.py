@@ -80,7 +80,3 @@ def check_archive_free_for_module_and_version(
             raise ArchiveError(
                 f"Cannot archive {name}/{version}. Path already exists:\n{full_path}"
             )
-
-
-def main():
-    typer.run(archive)

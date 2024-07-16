@@ -21,7 +21,7 @@ schemas: dict[str, type[BaseModel]] = {
 }
 
 
-def generate(
+def schema(
     folder_path: Annotated[
         Path,
         typer.Argument(
@@ -32,12 +32,9 @@ def generate(
         ),
     ],
 ):
+    """Generate JSON schema for yaml configuration files."""
     for filename, model in schemas.items():
         out_path = folder_path / filename
         schema = model.model_json_schema()
         with open(out_path, "w+") as f:
             json.dump(schema, f, indent=2)
-
-
-def main():
-    typer.run(generate)

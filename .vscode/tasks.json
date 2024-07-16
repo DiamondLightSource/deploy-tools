@@ -15,13 +15,13 @@
         {
             "label": "Generate schema",
             "type": "shell",
-            "command": "generate-schema ${input:schema-folder}",
+            "command": "deploytools schema ${input:schema-folder}",
             "problemMatcher": []
         },
         {
             "label": "Deploy modules",
             "type": "shell",
-            "command": "deploy-modules ${input:deploy-folder} ${input:config-folder}",
+            "command": "deploytools deploy ${input:deploy-folder} ${input:config-folder}",
             "problemMatcher": []
         },
         {
@@ -33,25 +33,25 @@
         {
             "label": "Validate deployment",
             "type": "shell",
-            "command": "validate-deployment ${input:deploy-folder} ${input:config-folder}",
+            "command": "deploytools validate ${input:deploy-folder} ${input:config-folder}",
             "problemMatcher": []
         },
         {
             "label": "Archive module",
             "type": "shell",
-            "command": "archive-module ${input:module-name} ${input:module-version} ${input:deploy-folder}",
+            "command": "deploytools archive ${input:module-name} ${input:module-version} ${input:deploy-folder}",
             "problemMatcher": []
         },
         {
             "label": "Restore module",
             "type": "shell",
-            "command": "restore-module ${input:module-name} ${input:module-version} ${input:deploy-folder}",
+            "command": "deploytools restore ${input:module-name} ${input:module-version} ${input:deploy-folder}",
             "problemMatcher": []
         },
         {
             "label": "Remove module",
             "type": "shell",
-            "command": "remove-module ${input:module-name} ${input:module-version} ${input:deploy-folder}",
+            "command": "deploytools remove ${input:module-name} ${input:module-version} ${input:deploy-folder}",
             "problemMatcher": []
         }
     ],

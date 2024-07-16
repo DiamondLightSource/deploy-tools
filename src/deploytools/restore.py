@@ -59,7 +59,3 @@ def check_archive_includes_module_and_version(
         raise RestoreError(
             f"Module {name}/{version} does not exist in archive. Cannot restore."
         )
-
-
-def main():
-    typer.run(restore)

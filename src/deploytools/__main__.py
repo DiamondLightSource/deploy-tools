@@ -1,16 +1,46 @@
-from argparse import ArgumentParser
+import typer
 
 from . import __version__
+from .archive import archive
+from .deploy import deploy
+from .models.schema import schema
+from .remove import remove
+from .restore import restore
+from .validate import validate
 
 __all__ = ["main"]
 
 
-def main(args=None):
-    parser = ArgumentParser()
-    parser.add_argument("-v", "--version", action="version", version=__version__)
-    args = parser.parse_args(args)
+app = typer.Typer(no_args_is_help=True)
+
+command = app.command(no_args_is_help=True)
+
+command(archive)
+command(deploy)
+command(remove)
+command(restore)
+command(validate)
+command(schema)
 
 
-# test with: python -m deploytools
-if __name__ == "__main__":
-    main()
+def version_callback(value: bool):
+    if value:
+        typer.echo(__version__)
+        raise typer.Exit()
+
+
+@app.callback()
+def common(
+    ctx: typer.Context,
+    version: bool = typer.Option(
+        None,
+        "--version",
+        help="Show program's version number and exit",
+        callback=version_callback,
+    ),
+):
+    pass
+
+
+def main():
+    app()

@@ -76,7 +76,3 @@ def create_entrypoints(modules: list[ModuleConfig], deploy_folder: Path):
 
         if includes_apptainer:
             apptainer_creator.create_apptainer_launch_file(module)
-
-
-def main():
-    typer.run(deploy)
