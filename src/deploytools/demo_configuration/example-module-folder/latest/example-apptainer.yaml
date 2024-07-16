@@ -1,4 +1,4 @@
-# yaml-language-server: $schema=../../models/schemas/application.json
+# yaml-language-server: $schema=/workspaces/deploytools/src/deploytools/models/schemas/application.json
 
 app_config:
   app_type: apptainer

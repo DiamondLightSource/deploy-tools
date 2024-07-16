@@ -1,4 +1,4 @@
-# yaml-language-server: $schema=../models/schemas/module.json
+# yaml-language-server: $schema=/workspaces/deploytools/src/deploytools/models/schemas/module.json
 
 metadata:
   name: example-module-file
