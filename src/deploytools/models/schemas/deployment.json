@@ -6,7 +6,7 @@
           "discriminator": {
             "mapping": {
               "apptainer": "#/$defs/ApptainerConfig",
-              "runfile": "#/$defs/RunFileConfig"
+              "command": "#/$defs/CommandConfig"
             },
             "propertyName": "app_type"
           },
@@ -15,7 +15,7 @@
               "$ref": "#/$defs/ApptainerConfig"
             },
             {
-              "$ref": "#/$defs/RunFileConfig"
+              "$ref": "#/$defs/CommandConfig"
             }
           ],
           "title": "App Config"
@@ -67,6 +67,38 @@
         "entrypoints"
       ],
       "title": "ApptainerConfig",
+      "type": "object"
+    },
+    "CommandConfig": {
+      "properties": {
+        "app_type": {
+          "const": "command",
+          "enum": [
+            "command"
+          ],
+          "title": "App Type",
+          "type": "string"
+        },
+        "name": {
+          "title": "Name",
+          "type": "string"
+        },
+        "command_path": {
+          "title": "Command Path",
+          "type": "string"
+        },
+        "command_args": {
+          "default": "",
+          "title": "Command Args",
+          "type": "string"
+        }
+      },
+      "required": [
+        "app_type",
+        "name",
+        "command_path"
+      ],
+      "title": "CommandConfig",
       "type": "object"
     },
     "ContainerImageConfig": {
@@ -246,38 +278,6 @@
         "version"
       ],
       "title": "ModuleMetadataConfig",
-      "type": "object"
-    },
-    "RunFileConfig": {
-      "properties": {
-        "app_type": {
-          "const": "runfile",
-          "enum": [
-            "runfile"
-          ],
-          "title": "App Type",
-          "type": "string"
-        },
-        "name": {
-          "title": "Name",
-          "type": "string"
-        },
-        "command_path": {
-          "title": "Command Path",
-          "type": "string"
-        },
-        "command_args": {
-          "default": "",
-          "title": "Command Args",
-          "type": "string"
-        }
-      },
-      "required": [
-        "app_type",
-        "name",
-        "command_path"
-      ],
-      "title": "RunFileConfig",
       "type": "object"
     }
   },

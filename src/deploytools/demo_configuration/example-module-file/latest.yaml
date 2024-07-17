@@ -27,7 +27,7 @@ applications:
             apptainer_args: -e
 
   - app_config:
-      app_type: runfile
+      app_type: command
 
       name: test-echo-module-file
       command_path: echo

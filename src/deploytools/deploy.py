@@ -4,13 +4,13 @@ import typer
 from typing_extensions import Annotated
 
 from .apptainer import ApptainerCreator
+from .command import CommandCreator
 from .deployment import create_deployment_snapshot
 from .models.apptainer import ApptainerConfig
+from .models.command import CommandConfig
 from .models.load import load_deployment
 from .models.module import ModuleConfig
-from .models.runfile import RunFileConfig
 from .module import ModuleCreator
-from .runfile import RunFileCreator
 from .validation import validate_deployment
 
 app = typer.Typer()
@@ -58,7 +58,7 @@ def create_module_files(modules: list[ModuleConfig], deploy_folder: Path):
 
 def create_entrypoints(modules: list[ModuleConfig], deploy_folder: Path):
     apptainer_creator = ApptainerCreator(deploy_folder)
-    runfile_creator = RunFileCreator(deploy_folder)
+    command_creator = CommandCreator(deploy_folder)
 
     for module in modules:
         includes_apptainer = False
@@ -71,8 +71,8 @@ def create_entrypoints(modules: list[ModuleConfig], deploy_folder: Path):
                     apptainer_creator.generate_sif_file(config, module)
                     apptainer_creator.create_entrypoint_files(config, module)
                     includes_apptainer = True
-                case RunFileConfig():
-                    runfile_creator.create_entrypoint_file(config, module)
+                case CommandConfig():
+                    command_creator.create_entrypoint_file(config, module)
 
         if includes_apptainer:
             apptainer_creator.create_apptainer_launch_file(module)

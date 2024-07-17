@@ -3,14 +3,14 @@ from pathlib import Path
 from jinja2 import Environment, PackageLoader
 
 from .deployment import DEPLOYMENT_ENTRYPOINTS_DIR
-from .models.runfile import RunFileConfig
+from .models.command import CommandConfig
 from .module import ModuleConfig
 
-RUNFILE_ENTRYPOINT_TEMPLATE = "runfile_entrypoint"
+COMMAND_ENTRYPOINT_TEMPLATE = "command_entrypoint"
 
 
-class RunFileCreator:
-    """Class for creating 'runfile' entrypoints, which run an executable on a path."""
+class CommandCreator:
+    """Class for creating 'command' entrypoints, which run an executable on a path."""
 
     def __init__(self, deploy_folder: Path):
         self._env = Environment(loader=PackageLoader("deploytools"))
@@ -19,10 +19,10 @@ class RunFileCreator:
 
     def create_entrypoint_file(
         self,
-        config: RunFileConfig,
+        config: CommandConfig,
         module: ModuleConfig,
     ):
-        template = self._env.get_template(RUNFILE_ENTRYPOINT_TEMPLATE)
+        template = self._env.get_template(COMMAND_ENTRYPOINT_TEMPLATE)
 
         output_folder = (
             self._entrypoints_folder / module.metadata.name / module.metadata.version
