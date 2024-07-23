@@ -6,10 +6,6 @@ from typing_extensions import Annotated
 from .archive import ARCHIVE_DIR
 from .deployment import get_deployed_versions, remove_module
 
-app = typer.Typer()
-
-app.command()
-
 
 class RemovalError(Exception):
     pass

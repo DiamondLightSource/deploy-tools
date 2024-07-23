@@ -6,10 +6,6 @@ from typing_extensions import Annotated
 from .models.load import load_deployment
 from .validation import validate_deployment
 
-app = typer.Typer()
-
-app.command()
-
 
 def validate(
     deploy_folder: Annotated[

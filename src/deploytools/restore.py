@@ -10,10 +10,6 @@ from .deployment import (
     move_module,
 )
 
-app = typer.Typer()
-
-app.command()
-
 
 class RestoreError(Exception):
     pass

@@ -15,10 +15,6 @@ from .module import ModuleCreator
 from .shell import ShellCreator
 from .validation import validate_deployment
 
-app = typer.Typer()
-
-app.command()
-
 
 def deploy(
     deploy_folder: Annotated[

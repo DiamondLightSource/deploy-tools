@@ -9,10 +9,6 @@ from .application import ApplicationConfig
 from .deployment import DeploymentConfig
 from .module import ModuleConfig, ModuleMetadataConfig
 
-app = typer.Typer()
-
-app.command()
-
 SCHEMA_NAMES: dict[str, type[BaseModel]] = {
     "module.json": ModuleConfig,
     "module-metadata.json": ModuleMetadataConfig,

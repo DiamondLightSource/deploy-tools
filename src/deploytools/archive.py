@@ -11,11 +11,6 @@ from .deployment import (
     move_module,
 )
 
-app = typer.Typer()
-
-app.command()
-
-
 ARCHIVE_DIR = "archived"
 
 
