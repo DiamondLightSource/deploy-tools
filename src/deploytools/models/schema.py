@@ -13,7 +13,7 @@ app = typer.Typer()
 
 app.command()
 
-schemas: dict[str, type[BaseModel]] = {
+SCHEMA_NAMES: dict[str, type[BaseModel]] = {
     "module.json": ModuleConfig,
     "module-metadata.json": ModuleMetadataConfig,
     "application.json": ApplicationConfig,
@@ -33,7 +33,7 @@ def schema(
     ],
 ):
     """Generate JSON schema for yaml configuration files."""
-    for filename, model in schemas.items():
+    for filename, model in SCHEMA_NAMES.items():
         out_path = folder_path / filename
         schema = model.model_json_schema()
         with open(out_path, "w+") as f:
