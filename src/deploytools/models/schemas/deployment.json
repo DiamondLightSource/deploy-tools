@@ -6,7 +6,8 @@
           "discriminator": {
             "mapping": {
               "apptainer": "#/$defs/ApptainerConfig",
-              "command": "#/$defs/CommandConfig"
+              "command": "#/$defs/CommandConfig",
+              "shell": "#/$defs/ShellConfig"
             },
             "propertyName": "app_type"
           },
@@ -16,6 +17,9 @@
             },
             {
               "$ref": "#/$defs/CommandConfig"
+            },
+            {
+              "$ref": "#/$defs/ShellConfig"
             }
           ],
           "title": "App Config"
@@ -278,6 +282,36 @@
         "version"
       ],
       "title": "ModuleMetadataConfig",
+      "type": "object"
+    },
+    "ShellConfig": {
+      "properties": {
+        "app_type": {
+          "const": "shell",
+          "enum": [
+            "shell"
+          ],
+          "title": "App Type",
+          "type": "string"
+        },
+        "name": {
+          "title": "Name",
+          "type": "string"
+        },
+        "script": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Script",
+          "type": "array"
+        }
+      },
+      "required": [
+        "app_type",
+        "name",
+        "script"
+      ],
+      "title": "ShellConfig",
       "type": "object"
     }
   },

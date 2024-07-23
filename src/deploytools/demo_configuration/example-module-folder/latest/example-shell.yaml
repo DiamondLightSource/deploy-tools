@@ -1,0 +1,10 @@
+# yaml-language-server: $schema=/workspaces/deploytools/src/deploytools/models/schemas/application.json
+
+app_config:
+  app_type: shell
+
+  name: test-shell-script
+  script:
+    - "echo This is the first line of a shell script"
+    - "echo and this is the second line."
+    - "echo Your input is ${1}"

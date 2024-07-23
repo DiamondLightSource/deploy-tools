@@ -10,7 +10,9 @@ from .models.apptainer import ApptainerConfig
 from .models.command import CommandConfig
 from .models.load import load_deployment
 from .models.module import ModuleConfig
+from .models.shell import ShellConfig
 from .module import ModuleCreator
+from .shell import ShellCreator
 from .validation import validate_deployment
 
 app = typer.Typer()
@@ -59,6 +61,7 @@ def create_module_files(modules: list[ModuleConfig], deploy_folder: Path):
 def create_entrypoints(modules: list[ModuleConfig], deploy_folder: Path):
     apptainer_creator = ApptainerCreator(deploy_folder)
     command_creator = CommandCreator(deploy_folder)
+    shell_creator = ShellCreator(deploy_folder)
 
     for module in modules:
         includes_apptainer = False
@@ -73,6 +76,8 @@ def create_entrypoints(modules: list[ModuleConfig], deploy_folder: Path):
                     includes_apptainer = True
                 case CommandConfig():
                     command_creator.create_entrypoint_file(config, module)
+                case ShellConfig():
+                    shell_creator.create_entrypoint_file(config, module)
 
         if includes_apptainer:
             apptainer_creator.create_apptainer_launch_file(module)

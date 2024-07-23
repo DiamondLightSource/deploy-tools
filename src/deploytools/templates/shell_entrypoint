@@ -1,0 +1,5 @@
+#! /bin/bash
+
+{% for line in script -%}
+{{ line }}
+{% endfor %}
