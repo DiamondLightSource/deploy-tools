@@ -63,6 +63,19 @@ def load_deployment(config_folder: Path) -> DeploymentConfig:
                     f"configuration directory:\n{module_folder}"
                 )
 
+            version_match = (
+                module.metadata.version == version_path.name
+                or version_path.suffix == ".yaml"
+                and not version_path.is_dir()
+                and module.metadata.version == version_path.stem
+            )
+
+            if not version_match:
+                raise LoadError(
+                    f"Module version {module.metadata.version} does not match path in "
+                    f"configuration directory:\n{version_path}"
+                )
+
             modules.append(module)
 
     return DeploymentConfig(modules=modules)
