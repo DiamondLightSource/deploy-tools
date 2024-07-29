@@ -37,9 +37,9 @@
             "problemMatcher": []
         },
         {
-            "label": "Archive module",
+            "label": "Deprecate module",
             "type": "shell",
-            "command": "deploytools archive ${input:module-name} ${input:module-version} ${input:deploy-folder}",
+            "command": "deploytools deprecate ${input:module-name} ${input:module-version} ${input:deploy-folder}",
             "problemMatcher": []
         },
         {

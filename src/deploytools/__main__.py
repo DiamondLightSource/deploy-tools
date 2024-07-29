@@ -1,8 +1,8 @@
 import typer
 
 from . import __version__
-from .archive import archive
 from .deploy import deploy
+from .deprecate import deprecate
 from .models.schema import schema
 from .remove import remove
 from .restore import restore
@@ -15,7 +15,7 @@ app = typer.Typer(no_args_is_help=True)
 
 command = app.command(no_args_is_help=True)
 
-command(archive)
+command(deprecate)
 command(deploy)
 command(remove)
 command(restore)

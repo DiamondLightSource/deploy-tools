@@ -3,12 +3,12 @@ from pathlib import Path
 import typer
 from typing_extensions import Annotated
 
-from .archive import ARCHIVE_DIR
 from .deployment import (
     DEPLOYMENT_MODULEFILES_DIR,
     get_deployed_versions,
     move_module,
 )
+from .deprecate import DEPRECATED_DIR
 
 
 class RestoreError(Exception):
@@ -28,13 +28,15 @@ def restore(
         ),
     ],
 ):
-    """Restore a previously archived module."""
-    archive_folder = deploy_folder / ARCHIVE_DIR
+    """Restore a previously deprecated module."""
+    deprecated_folder = deploy_folder / DEPRECATED_DIR
 
-    check_archive_includes_module_and_version(name, version, archive_folder)
+    check_deprecated_folder_includes_module_and_version(
+        name, version, deprecated_folder
+    )
     check_module_and_version_not_in_deployment(name, version, deploy_folder)
 
-    move_module(name, version, archive_folder, deploy_folder)
+    move_module(name, version, deprecated_folder, deploy_folder)
 
 
 def check_module_and_version_not_in_deployment(
@@ -47,11 +49,11 @@ def check_module_and_version_not_in_deployment(
         )
 
 
-def check_archive_includes_module_and_version(
-    name: str, version: str, archive_folder: Path
+def check_deprecated_folder_includes_module_and_version(
+    name: str, version: str, deprecated_folder: Path
 ):
-    full_path = archive_folder / DEPLOYMENT_MODULEFILES_DIR / name / version
+    full_path = deprecated_folder / DEPLOYMENT_MODULEFILES_DIR / name / version
     if not full_path.exists():
         raise RestoreError(
-            f"Module {name}/{version} does not exist in archive. Cannot restore."
+            f"Module {name}/{version} has not been deprecated. Cannot restore."
         )

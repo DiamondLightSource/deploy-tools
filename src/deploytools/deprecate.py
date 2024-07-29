@@ -11,14 +11,14 @@ from .deployment import (
     move_module,
 )
 
-ARCHIVE_DIR = "archived"
+DEPRECATED_DIR = "deprecated"
 
 
-class ArchiveError(Exception):
+class DeprecateError(Exception):
     pass
 
 
-def archive(
+def deprecate(
     name: str,
     version: str,
     deploy_folder: Annotated[
@@ -31,16 +31,16 @@ def archive(
         ),
     ],
 ):
-    """Archive a module by moving it to a separate directory.
+    """Deprecate a module by moving it to a separate directory.
 
     There is no expectation that the module will work correctly after archiving."""
-    archive_folder = deploy_folder / ARCHIVE_DIR
+    deprecated_folder = deploy_folder / DEPRECATED_DIR
 
     check_module_and_version_not_in_deployment_config(name, version, deploy_folder)
     check_module_and_version_in_previous_deployment(name, version, deploy_folder)
-    check_archive_free_for_module_and_version(name, version, archive_folder)
+    check_deprecated_free_for_module_and_version(name, version, deprecated_folder)
 
-    move_module(name, version, deploy_folder, archive_folder)
+    move_module(name, version, deploy_folder, deprecated_folder)
 
 
 def check_module_and_version_not_in_deployment_config(
@@ -51,7 +51,7 @@ def check_module_and_version_not_in_deployment_config(
 
     for v, _ in modules[name]:
         if v == version:
-            raise ArchiveError(
+            raise DeprecateError(
                 f"Module {name}/{version} still exists in deployment configuration."
             )
 
@@ -61,17 +61,17 @@ def check_module_and_version_in_previous_deployment(
 ):
     versions = get_deployed_versions(deploy_folder)
     if version not in versions[name]:
-        raise ArchiveError(
+        raise DeprecateError(
             f"Version {version} has not previously been deployed for {name}."
         )
 
 
-def check_archive_free_for_module_and_version(
-    name: str, version: str, archive_folder: Path
+def check_deprecated_free_for_module_and_version(
+    name: str, version: str, deprecated_folder: Path
 ):
     for subdir in DEPLOYMENT_SUBDIRS:
-        full_path = archive_folder / subdir / name / version
+        full_path = deprecated_folder / subdir / name / version
         if full_path.exists():
-            raise ArchiveError(
-                f"Cannot archive {name}/{version}. Path already exists:\n{full_path}"
+            raise DeprecateError(
+                f"Cannot deprecate {name}/{version}. Path already exists:\n{full_path}"
             )

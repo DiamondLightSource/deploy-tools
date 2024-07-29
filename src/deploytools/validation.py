@@ -1,7 +1,6 @@
 from collections import defaultdict
 from pathlib import Path
 
-from .archive import ARCHIVE_DIR
 from .deployment import (
     ModulesByName,
     ModuleVersionsByName,
@@ -9,6 +8,7 @@ from .deployment import (
     get_modules_by_name,
     load_deployment_snapshot,
 )
+from .deprecate import DEPRECATED_DIR
 from .models.deployment import DeploymentConfig
 from .models.module import ModuleConfig
 
@@ -32,13 +32,13 @@ def validate_deployment(
     if is_member:
         raise ValidationError(f"Module {name}/{version} already deployed.")
 
-    archive_folder = deploy_folder / ARCHIVE_DIR
-    archived_versions = get_deployed_versions(archive_folder)
+    deprecated_folder = deploy_folder / DEPRECATED_DIR
+    deprecated_versions = get_deployed_versions(deprecated_folder)
     is_member, name, version = are_modules_in_deployment(
-        archived_versions, modified_modules
+        deprecated_versions, modified_modules
     )
     if is_member:
-        raise ValidationError(f"Module {name}/{version} already exists in archive.")
+        raise ValidationError(f"Module {name}/{version} exists as deprecated module.")
 
     modified_list: list[ModuleConfig] = []
     for versioned_list in modified_modules.values():
