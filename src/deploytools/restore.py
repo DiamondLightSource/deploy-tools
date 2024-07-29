@@ -6,7 +6,7 @@ from typing_extensions import Annotated
 from .deployment import (
     DEPLOYMENT_MODULEFILES_DIR,
     get_deployed_versions,
-    move_module,
+    move_modulefile,
 )
 from .deprecate import DEPRECATED_DIR
 
@@ -36,7 +36,7 @@ def restore(
     )
     check_module_and_version_not_in_deployment(name, version, deploy_folder)
 
-    move_module(name, version, deprecated_folder, deploy_folder)
+    move_modulefile(name, version, deprecated_folder, deploy_folder)
 
 
 def check_module_and_version_not_in_deployment(

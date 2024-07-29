@@ -4,11 +4,11 @@ import typer
 from typing_extensions import Annotated
 
 from .deployment import (
-    DEPLOYMENT_SUBDIRS,
+    DEPLOYMENT_MODULEFILES_DIR,
     get_deployed_versions,
     get_modules_by_name,
     load_deployment_snapshot,
-    move_module,
+    move_modulefile,
 )
 
 DEPRECATED_DIR = "deprecated"
@@ -40,7 +40,7 @@ def deprecate(
     check_module_and_version_in_previous_deployment(name, version, deploy_folder)
     check_deprecated_free_for_module_and_version(name, version, deprecated_folder)
 
-    move_module(name, version, deploy_folder, deprecated_folder)
+    move_modulefile(name, version, deploy_folder, deprecated_folder)
 
 
 def check_module_and_version_not_in_deployment_config(
@@ -69,9 +69,8 @@ def check_module_and_version_in_previous_deployment(
 def check_deprecated_free_for_module_and_version(
     name: str, version: str, deprecated_folder: Path
 ):
-    for subdir in DEPLOYMENT_SUBDIRS:
-        full_path = deprecated_folder / subdir / name / version
-        if full_path.exists():
-            raise DeprecateError(
-                f"Cannot deprecate {name}/{version}. Path already exists:\n{full_path}"
-            )
+    full_path = deprecated_folder / DEPLOYMENT_MODULEFILES_DIR / name / version
+    if full_path.exists():
+        raise DeprecateError(
+            f"Cannot deprecate {name}/{version}. Path already exists:\n{full_path}"
+        )

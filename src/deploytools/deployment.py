@@ -1,4 +1,3 @@
-import os
 import shutil
 from collections import defaultdict
 from pathlib import Path
@@ -75,34 +74,15 @@ def get_deployed_versions(deploy_folder: Path) -> ModuleVersionsByName:
     return previous_modules
 
 
-def move_module(name: str, version: str, src_folder: Path, dest_folder: Path):
-    for subdir in DEPLOYMENT_SUBDIRS:
-        src_path = src_folder / subdir / name / version
+def move_modulefile(name: str, version: str, src_folder: Path, dest_folder: Path):
+    src_path = src_folder / DEPLOYMENT_MODULEFILES_DIR / name / version
 
-        # Not all modules require the use of all 3 sub dirs
-        if src_path.exists():
-            dest_path = dest_folder / subdir / name / version
-            dest_path.parent.mkdir(parents=True, exist_ok=True)
-            shutil.move(src_path, dest_path)
+    dest_path = dest_folder / DEPLOYMENT_MODULEFILES_DIR / name / version
+    dest_path.parent.mkdir(parents=True, exist_ok=True)
+    shutil.move(src_path, dest_path)
 
-        try:
-            # Delete the module name directory if it is empty
-            src_path.parent.rmdir()
-        except OSError:
-            pass
-
-
-def remove_module(name: str, version: str, src_folder: Path):
-    for subdir in DEPLOYMENT_SUBDIRS:
-        src_path = src_folder / subdir / name / version
-
-        if src_path.is_dir():
-            shutil.rmtree(src_path)
-        else:
-            os.remove(src_path)
-
-        try:
-            # Delete the module name directory if it is empty
-            src_path.parent.rmdir()
-        except OSError:
-            pass
+    try:
+        # Delete the module name directory if it is empty
+        src_path.parent.rmdir()
+    except OSError:
+        pass
