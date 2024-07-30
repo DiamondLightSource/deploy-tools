@@ -7,10 +7,8 @@ import yaml
 
 from .models.deployment import DeploymentConfig
 from .models.load import load_from_yaml
-from .models.module import ModuleConfig
 
 ModuleVersionsByName: TypeAlias = dict[str, list[str]]
-ModulesByName: TypeAlias = dict[str, list[tuple[str, ModuleConfig]]]
 
 DEPLOYMENT_SNAPSHOT_FILENAME = "deployment.yaml"
 DEPLOYMENT_ENTRYPOINTS_DIR = "entrypoints"
@@ -40,27 +38,11 @@ def load_deployment_snapshot(deploy_folder: Path, allow_empty=True) -> Deploymen
 
     if not snapshot_path.exists():
         if allow_empty:
-            return DeploymentConfig(modules=[])
+            return DeploymentConfig(modules={})
 
         raise DeploymentError(f"Deployment snapshot does not exist:\n{snapshot_path}")
 
     return load_from_yaml(DeploymentConfig, snapshot_path)
-
-
-def get_modules_by_name(deployment: DeploymentConfig, validate: bool) -> ModulesByName:
-    modules_struct: ModulesByName = defaultdict(list)
-    for module in deployment.modules:
-        name = module.metadata.name
-        version = module.metadata.version
-
-        if validate and version in modules_struct[name]:
-            raise DeploymentError(
-                f"Module {name} has multiple configurations for version {version}."
-            )
-
-        modules_struct[name].append((version, module))
-
-    return modules_struct
 
 
 def get_deployed_versions(deploy_folder: Path) -> ModuleVersionsByName:

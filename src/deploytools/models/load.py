@@ -4,7 +4,7 @@ from typing import TypeVar
 import yaml
 
 from .application import ApplicationConfig
-from .deployment import DeploymentConfig
+from .deployment import DeploymentConfig, ModulesByNameAndVersion, ModulesByVersion
 from .module import ModuleConfig, ModuleMetadataConfig
 
 T = TypeVar(
@@ -51,16 +51,28 @@ def load_module(path: Path) -> ModuleConfig:
 
 
 def load_deployment(config_folder: Path) -> DeploymentConfig:
-    modules: list[ModuleConfig] = []
+    modules: ModulesByNameAndVersion = {}
     for module_folder in config_folder.glob("*"):
         if not module_folder.is_dir():
             raise LoadError(f"Module path is not directory: {module_folder}")
 
+        module_name = module_folder.name
+        versioned_modules: ModulesByVersion = {}
+
         for version_path in module_folder.glob("*"):
             module = load_module(version_path)
-
             check_filepath_matches_module_metadata(version_path, module.metadata)
-            modules.append(module)
+            version = module.metadata.version
+
+            if version in versioned_modules:
+                raise LoadError(
+                    f"Version {version} already exists for {module_name}:\n"
+                    f"{version_path}"
+                )
+
+            versioned_modules[version] = module
+
+        modules[module_name] = versioned_modules
 
     return DeploymentConfig(modules=modules)
 

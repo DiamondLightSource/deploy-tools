@@ -317,11 +317,14 @@
   },
   "properties": {
     "modules": {
-      "items": {
-        "$ref": "#/$defs/ModuleConfig"
+      "additionalProperties": {
+        "additionalProperties": {
+          "$ref": "#/$defs/ModuleConfig"
+        },
+        "type": "object"
       },
       "title": "Modules",
-      "type": "array"
+      "type": "object"
     }
   },
   "required": [

@@ -6,7 +6,6 @@ from typing_extensions import Annotated
 from .deployment import (
     DEPLOYMENT_MODULEFILES_DIR,
     get_deployed_versions,
-    get_modules_by_name,
     load_deployment_snapshot,
     move_modulefile,
 )
@@ -47,13 +46,11 @@ def check_module_and_version_not_in_deployment_config(
     name: str, version: str, deploy_folder: Path
 ):
     deployment = load_deployment_snapshot(deploy_folder, allow_empty=False)
-    modules = get_modules_by_name(deployment, validate=False)
 
-    for v, _ in modules[name]:
-        if v == version:
-            raise DeprecateError(
-                f"Module {name}/{version} still exists in deployment configuration."
-            )
+    if version in deployment.modules[name]:
+        raise DeprecateError(
+            f"Module {name}/{version} still exists in deployment configuration."
+        )
 
 
 def check_module_and_version_in_previous_deployment(
