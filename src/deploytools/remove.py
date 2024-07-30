@@ -57,13 +57,17 @@ def remove_deprecated_module(
 ):
     modulefile_path = deprecated_folder / DEPLOYMENT_MODULEFILES_DIR / name / version
     os.remove(modulefile_path)
+    delete_folder_if_empty(modulefile_path.parent)
 
     for subdir in REMOVE_SUBDIRS:
         src_path = deploy_folder / subdir / name / version
         shutil.rmtree(src_path)
 
-        try:
-            # Delete the module name directory if it is empty
-            src_path.parent.rmdir()
-        except OSError:
-            pass
+        delete_folder_if_empty(src_path.parent)
+
+
+def delete_folder_if_empty(path: Path):
+    try:
+        path.rmdir()
+    except OSError:
+        pass
