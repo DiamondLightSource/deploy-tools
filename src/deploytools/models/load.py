@@ -11,7 +11,8 @@ T = TypeVar(
     "T", DeploymentConfig, ModuleConfig, ModuleMetadataConfig, ApplicationConfig
 )
 
-CONFIG_FILENAME = "config.yaml"
+YAML_FILE_SUFFIX = ".yaml"
+CONFIG_FILENAME = "config" + YAML_FILE_SUFFIX
 
 
 class LoadError(Exception):
@@ -43,7 +44,7 @@ def load_module_folder(folder: Path) -> ModuleConfig:
 def load_module(path: Path) -> ModuleConfig:
     if path.is_dir():
         return load_module_folder(path)
-    elif path.suffix == ".yaml":
+    elif path.suffix == YAML_FILE_SUFFIX:
         return load_from_yaml(ModuleConfig, path)
 
     raise LoadError(f"Unexpected file in configuration directory:\n{path}")
@@ -57,25 +58,37 @@ def load_deployment(config_folder: Path) -> DeploymentConfig:
 
         for version_path in module_folder.glob("*"):
             module = load_module(version_path)
-            if not module.metadata.name == module_folder.name:
-                raise LoadError(
-                    f"Module name {module.metadata.name} does not match path in "
-                    f"configuration directory:\n{module_folder}"
-                )
 
-            version_match = (
-                module.metadata.version == version_path.name
-                or version_path.suffix == ".yaml"
-                and not version_path.is_dir()
-                and module.metadata.version == version_path.stem
-            )
-
-            if not version_match:
-                raise LoadError(
-                    f"Module version {module.metadata.version} does not match path in "
-                    f"configuration directory:\n{version_path}"
-                )
-
+            check_filepath_matches_module_metadata(version_path, module.metadata)
             modules.append(module)
 
     return DeploymentConfig(modules=modules)
+
+
+def check_filepath_matches_module_metadata(
+    version_path: Path, metadata: ModuleMetadataConfig
+):
+    name_path = version_path.parent
+
+    if not metadata.name == name_path.name:
+        raise LoadError(
+            f"Module name {metadata.name} does not match path in configuration "
+            f"directory:\n{version_path}"
+        )
+
+    if version_path.is_dir() and version_path.suffix == YAML_FILE_SUFFIX:
+        raise LoadError(
+            f"Module directory has incorrect suffix {YAML_FILE_SUFFIX}:\n{version_path}"
+        )
+
+    version_match = (
+        metadata.version == version_path.name
+        or version_path.suffix == YAML_FILE_SUFFIX
+        and metadata.version == version_path.stem
+    )
+
+    if not version_match:
+        raise LoadError(
+            f"Module version {metadata.version} does not match path in configuration "
+            f"directory:\n{version_path}"
+        )
