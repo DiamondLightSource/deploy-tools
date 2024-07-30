@@ -30,9 +30,7 @@ def deprecate(
         ),
     ],
 ):
-    """Deprecate a module by moving it to a separate directory.
-
-    There is no expectation that the module will work correctly after archiving."""
+    """Deprecate a module by moving the modulefile to a 'deprecated' directory."""
     deprecated_folder = deploy_folder / DEPRECATED_DIR
 
     check_module_and_version_not_in_deployment_config(name, version, deploy_folder)
