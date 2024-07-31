@@ -21,6 +21,7 @@ class ModuleMetadataConfig(BaseModel):
     description: Optional[str] = None
     dependencies: Sequence[ModuleDependencyConfig] = []
     env_vars: Sequence[EnvVarConfig] = []
+    deprecated: bool = False
 
 
 class ModuleConfig(BaseModel):

@@ -255,6 +255,11 @@
           },
           "title": "Env Vars",
           "type": "array"
+        },
+        "deprecated": {
+          "default": false,
+          "title": "Deprecated",
+          "type": "boolean"
         }
       },
       "required": [

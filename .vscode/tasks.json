@@ -19,9 +19,9 @@
             "problemMatcher": []
         },
         {
-            "label": "Deploy modules",
+            "label": "Sync modules",
             "type": "shell",
-            "command": "deploytools deploy ${input:deploy-folder} ${input:config-folder}",
+            "command": "deploytools sync ${input:deploy-folder} ${input:config-folder}",
             "problemMatcher": []
         },
         {
@@ -36,24 +36,6 @@
             "command": "deploytools validate ${input:deploy-folder} ${input:config-folder}",
             "problemMatcher": []
         },
-        {
-            "label": "Deprecate module",
-            "type": "shell",
-            "command": "deploytools deprecate ${input:module-name} ${input:module-version} ${input:deploy-folder}",
-            "problemMatcher": []
-        },
-        {
-            "label": "Restore module",
-            "type": "shell",
-            "command": "deploytools restore ${input:module-name} ${input:module-version} ${input:deploy-folder}",
-            "problemMatcher": []
-        },
-        {
-            "label": "Remove module",
-            "type": "shell",
-            "command": "deploytools remove ${input:module-name} ${input:module-version} ${input:deploy-folder}",
-            "problemMatcher": []
-        }
     ],
     "inputs": [
         {
@@ -72,18 +54,6 @@
             "id": "config-folder",
             "description": "Configuration folder",
             "default": "${workspaceFolder}/src/deploytools/demo_configuration/",
-            "type": "promptString"
-        },
-        {
-            "id": "module-name",
-            "description": "Module name",
-            "default": "example-module-file",
-            "type": "promptString"
-        },
-        {
-            "id": "module-version",
-            "description": "Module version",
-            "default": "0.1",
             "type": "promptString"
         },
     ]

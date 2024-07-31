@@ -1,14 +1,11 @@
 from pathlib import Path
 
-import typer
-from typing_extensions import Annotated
-
 from .deployment import (
     DEPLOYMENT_MODULEFILES_DIR,
     get_deployed_versions,
-    load_deployment_snapshot,
     move_modulefile,
 )
+from .models.module import ModuleConfig
 
 DEPRECATED_DIR = "deprecated"
 
@@ -17,47 +14,37 @@ class DeprecateError(Exception):
     pass
 
 
-def deprecate(
-    name: str,
-    version: str,
-    deploy_folder: Annotated[
-        Path,
-        typer.Argument(
-            exists=True,
-            file_okay=False,
-            dir_okay=True,
-            writable=True,
-        ),
-    ],
-):
-    """Deprecate a module by moving the modulefile to a 'deprecated' directory."""
+def check_deprecate(modules: list[ModuleConfig], deploy_folder: Path):
     deprecated_folder = deploy_folder / DEPRECATED_DIR
 
-    check_module_and_version_not_in_deployment_config(name, version, deploy_folder)
-    check_module_and_version_in_previous_deployment(name, version, deploy_folder)
-    check_deprecated_free_for_module_and_version(name, version, deprecated_folder)
+    for module in modules:
+        name = module.metadata.name
+        version = module.metadata.version
 
-    move_modulefile(name, version, deploy_folder, deprecated_folder)
-
-
-def check_module_and_version_not_in_deployment_config(
-    name: str, version: str, deploy_folder: Path
-):
-    deployment = load_deployment_snapshot(deploy_folder, allow_empty=False)
-
-    if version in deployment.modules[name]:
-        raise DeprecateError(
-            f"Module {name}/{version} still exists in deployment configuration."
-        )
+        check_module_and_version_exist_in_deployment(name, version, deploy_folder)
+        check_deprecated_free_for_module_and_version(name, version, deprecated_folder)
 
 
-def check_module_and_version_in_previous_deployment(
+def deprecate(modules: list[ModuleConfig], deploy_folder: Path):
+    """Deprecate a list of modules.
+
+    This will move the modulefile to a 'deprecated' directory."""
+    deprecated_folder = deploy_folder / DEPRECATED_DIR
+
+    for module in modules:
+        name = module.metadata.name
+        version = module.metadata.version
+
+        move_modulefile(name, version, deploy_folder, deprecated_folder)
+
+
+def check_module_and_version_exist_in_deployment(
     name: str, version: str, deploy_folder: Path
 ):
     versions = get_deployed_versions(deploy_folder)
     if version not in versions[name]:
         raise DeprecateError(
-            f"Version {version} has not previously been deployed for {name}."
+            f"Cannot deprecate {name}/{version}. Not found in deployment area."
         )
 
 

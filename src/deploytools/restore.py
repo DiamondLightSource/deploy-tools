@@ -1,59 +1,43 @@
 from pathlib import Path
 
-import typer
-from typing_extensions import Annotated
-
 from .deployment import (
     DEPLOYMENT_MODULEFILES_DIR,
     get_deployed_versions,
     move_modulefile,
 )
 from .deprecate import DEPRECATED_DIR
+from .models.module import ModuleConfig
 
 
 class RestoreError(Exception):
     pass
 
 
-def restore(
-    name: str,
-    version: str,
-    deploy_folder: Annotated[
-        Path,
-        typer.Argument(
-            exists=True,
-            file_okay=False,
-            dir_okay=True,
-            writable=True,
-        ),
-    ],
-):
+def check_restore(modules: list[ModuleConfig], deploy_folder: Path):
+    deprecated_folder = deploy_folder / DEPRECATED_DIR
+    deployed_versions = get_deployed_versions(deploy_folder)
+
+    for module in modules:
+        name = module.metadata.name
+        version = module.metadata.version
+
+        modulefile = deprecated_folder / DEPLOYMENT_MODULEFILES_DIR / name / version
+        if not modulefile.exists():
+            raise RestoreError(
+                f"Cannot restore {name}/{version}. Not found in deprecated area."
+            )
+
+        if version in deployed_versions[name]:
+            raise RestoreError(
+                f"Cannot restore {name}/{version}. Already found in deployment area."
+            )
+
+
+def restore(modules: list[ModuleConfig], deploy_folder: Path):
     """Restore a previously deprecated module."""
     deprecated_folder = deploy_folder / DEPRECATED_DIR
 
-    check_deprecated_folder_includes_module_and_version(
-        name, version, deprecated_folder
-    )
-    check_module_and_version_not_in_deployment(name, version, deploy_folder)
-
-    move_modulefile(name, version, deprecated_folder, deploy_folder)
-
-
-def check_module_and_version_not_in_deployment(
-    name: str, version: str, deploy_folder: Path
-):
-    versions = get_deployed_versions(deploy_folder)
-    if version in versions[name]:
-        raise RestoreError(
-            f"Module {name}/{version} already exists in deployment. Cannot restore"
-        )
-
-
-def check_deprecated_folder_includes_module_and_version(
-    name: str, version: str, deprecated_folder: Path
-):
-    full_path = deprecated_folder / DEPLOYMENT_MODULEFILES_DIR / name / version
-    if not full_path.exists():
-        raise RestoreError(
-            f"Module {name}/{version} has not been deprecated. Cannot restore."
-        )
+    for module in modules:
+        name = module.metadata.name
+        version = module.metadata.version
+        move_modulefile(name, version, deprecated_folder, deploy_folder)

@@ -1,12 +1,9 @@
-from collections import defaultdict
+from dataclasses import dataclass, field
 from pathlib import Path
 
 from .deployment import (
-    ModuleVersionsByName,
-    get_deployed_versions,
     load_deployment_snapshot,
 )
-from .deprecate import DEPRECATED_DIR
 from .models.deployment import DeploymentConfig, ModulesByNameAndVersion
 from .models.module import ModuleConfig
 
@@ -15,67 +12,79 @@ class ValidationError(Exception):
     pass
 
 
+@dataclass
+class UpdateGroup:
+    added: list[ModuleConfig] = field(default_factory=list)
+    deprecated: list[ModuleConfig] = field(default_factory=list)
+    restored: list[ModuleConfig] = field(default_factory=list)
+    removed: list[ModuleConfig] = field(default_factory=list)
+
+
 def validate_deployment(
     deployment: DeploymentConfig, deploy_folder: Path
-) -> list[ModuleConfig]:
+) -> UpdateGroup:
     last_deployment = load_deployment_snapshot(deploy_folder)
     new_modules = deployment.modules
-    last_modules = last_deployment.modules
-    deployed_versions = get_deployed_versions(deploy_folder)
+    old_modules = last_deployment.modules
 
-    modified_modules = get_modified_modules(last_modules, new_modules)
-    is_member, name, version = are_modules_in_deployment(
-        deployed_versions, modified_modules
-    )
-    if is_member:
-        raise ValidationError(f"Module {name}/{version} already deployed.")
+    update_group = get_update_group(old_modules, new_modules)
 
-    deprecated_folder = deploy_folder / DEPRECATED_DIR
-    deprecated_versions = get_deployed_versions(deprecated_folder)
-    is_member, name, version = are_modules_in_deployment(
-        deprecated_versions, modified_modules
-    )
-    if is_member:
-        raise ValidationError(f"Module {name}/{version} exists as deprecated module.")
-
-    modified_list: list[ModuleConfig] = []
-    for versioned_modules in modified_modules.values():
-        modified_list.extend(versioned_modules.values())
-
-    return modified_list
+    return update_group
 
 
-def get_modified_modules(
+def get_update_group(
     old_modules: ModulesByNameAndVersion, new_modules: ModulesByNameAndVersion
-) -> ModulesByNameAndVersion:
-    """Get list of modules that have been modified since last deployment.
-
-    We do not care about deleted modules / versions as they require no deployment."""
-    modified_modules: ModulesByNameAndVersion = defaultdict(dict)
+) -> UpdateGroup:
+    """Get set of modules that have been updated since last deployment."""
+    group: UpdateGroup = UpdateGroup()
     for name in new_modules:
         if name not in old_modules:
-            modified_modules[name] = new_modules[name]
+            group.added.extend(new_modules[name].values())
             continue
 
-        for version, new_config in new_modules[name].items():
+        for version, new_module in new_modules[name].items():
             if version not in old_modules[name]:
-                modified_modules[name][version] = new_config
+                group.added.append(new_module)
                 continue
 
-            if not new_config == old_modules[name][version]:
+            old_module = old_modules[name][version]
+
+            if is_modified(old_module, new_module):
                 raise ValidationError(
                     f"Module {name}/{version} modified without updating version."
                 )
 
-    return modified_modules
+            if old_module.metadata.deprecated == new_module.metadata.deprecated:
+                continue
+
+            if not old_module.metadata.deprecated and new_module.metadata.deprecated:
+                group.deprecated.append(new_module)
+            else:
+                group.restored.append(new_module)
+
+    for name in old_modules:
+        if name not in new_modules:
+            group.removed.extend(old_modules[name].values())
+            continue
+
+        for version, old_module in old_modules[name].items():
+            if version not in new_modules[name]:
+                group.removed.append(old_module)
+
+    for module in group.removed:
+        if not module.metadata.deprecated:
+            raise ValidationError(
+                f"Module {name}/{version} removed without prior deprecation."
+            )
+
+    return group
 
 
-def are_modules_in_deployment(
-    deployed_versions: ModuleVersionsByName, modules: ModulesByNameAndVersion
-) -> tuple[bool, str, str]:
-    for name, versioned_modules in modules.items():
-        for version in versioned_modules:
-            if version in deployed_versions[name]:
-                return True, name, version
+def is_modified(old_module: ModuleConfig, new_module: ModuleConfig):
+    old_copy = old_module.model_copy(deep=True)
+    new_copy = new_module.model_copy(deep=True)
 
-    return False, "", ""
+    new_copy.metadata.deprecated = False
+    old_copy.metadata.deprecated = False
+
+    return not new_copy == old_copy

@@ -2,9 +2,6 @@ import os
 import shutil
 from pathlib import Path
 
-import typer
-from typing_extensions import Annotated
-
 from .deployment import (
     DEPLOYMENT_ENTRYPOINTS_DIR,
     DEPLOYMENT_MODULEFILES_DIR,
@@ -12,6 +9,7 @@ from .deployment import (
     get_deployed_versions,
 )
 from .deprecate import DEPRECATED_DIR
+from .models.module import ModuleConfig
 
 REMOVE_SUBDIRS = [
     DEPLOYMENT_ENTRYPOINTS_DIR,
@@ -23,32 +21,32 @@ class RemovalError(Exception):
     pass
 
 
-def remove(
-    name: str,
-    version: str,
-    deploy_folder: Annotated[
-        Path,
-        typer.Argument(
-            exists=True,
-            file_okay=False,
-            dir_okay=True,
-            writable=True,
-        ),
-    ],
-):
+def check_remove(modules: list[ModuleConfig], deploy_folder: Path):
+    deprecated_folder = deploy_folder / DEPRECATED_DIR
+
+    for module in modules:
+        name = module.metadata.name
+        version = module.metadata.version
+        check_module_and_version_in_deprecated(name, version, deprecated_folder)
+
+
+def remove(modules: list[ModuleConfig], deploy_folder: Path):
     """Remove a deprecated module."""
     deprecated_folder = deploy_folder / DEPRECATED_DIR
-    check_module_and_version_in_deprecated_deployment(name, version, deprecated_folder)
-    remove_deprecated_module(name, version, deprecated_folder, deploy_folder)
+
+    for module in modules:
+        name = module.metadata.name
+        version = module.metadata.version
+        remove_deprecated_module(name, version, deprecated_folder, deploy_folder)
 
 
-def check_module_and_version_in_deprecated_deployment(
+def check_module_and_version_in_deprecated(
     name: str, version: str, deprecated_folder: Path
 ):
     versions = get_deployed_versions(deprecated_folder)
     if version not in versions[name]:
         raise RemovalError(
-            f"Version {version} has not previously been deprecated for {name}."
+            f"Cannot remove {name}/{version}. Not found in deprecated area."
         )
 
 

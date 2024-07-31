@@ -1,47 +1,21 @@
 from pathlib import Path
 
-import typer
-from typing_extensions import Annotated
-
 from .apptainer import ApptainerCreator
 from .command import CommandCreator
-from .deployment import create_deployment_snapshot
 from .models.apptainer import ApptainerConfig
 from .models.command import CommandConfig
-from .models.load import load_deployment
 from .models.module import ModuleConfig
 from .models.shell import ShellConfig
 from .module import ModuleCreator
 from .shell import ShellCreator
-from .validation import validate_deployment
 
 
-def deploy(
-    deploy_folder: Annotated[
-        Path,
-        typer.Argument(
-            exists=True,
-            file_okay=False,
-            dir_okay=True,
-            writable=True,
-        ),
-    ],
-    config_folder: Annotated[
-        Path,
-        typer.Argument(
-            exists=True,
-            file_okay=False,
-            dir_okay=True,
-        ),
-    ],
-):
-    """Validate and deploy modules that have been updated since the last deployment."""
+def check_deploy(deploy_folder: Path):
     assert deploy_folder.exists(), f"Deployment folder does not exist:\n{deploy_folder}"
 
-    deployment = load_deployment(config_folder)
-    modules_list = validate_deployment(deployment, deploy_folder)
-    create_deployment_snapshot(deployment, deploy_folder)
 
+def deploy(modules_list: list[ModuleConfig], deploy_folder: Path):
+    """Deploy modules from the provided list."""
     if modules_list:
         create_entrypoints(modules_list, deploy_folder)
         create_module_files(modules_list, deploy_folder)
