@@ -6,6 +6,7 @@ from typing_extensions import Annotated
 
 from .deploy import check_deploy
 from .deprecate import check_deprecate
+from .layout import Layout
 from .models.deployment import DeploymentConfig, ModulesByNameAndVersion
 from .models.load import load_deployment
 from .models.module import ModuleConfig
@@ -51,18 +52,19 @@ def validate(
 
     This is the same validation that the deploytools sync command uses."""
     deployment = load_deployment(config_folder)
-    update_group = validate_deployment(deployment, deployment_root)
+    layout = Layout(deployment_root)
+    update_group = validate_deployment(deployment, layout)
 
-    check_actions(update_group, deployment_root)
+    check_actions(update_group, layout)
 
     display_updates(update_group)
 
 
-def check_actions(update_group: UpdateGroup, deployment_root: Path):
-    check_deploy(deployment_root)
-    check_deprecate(update_group.deprecated, deployment_root)
-    check_restore(update_group.restored, deployment_root)
-    check_remove(update_group.removed, deployment_root)
+def check_actions(update_group: UpdateGroup, layout: Layout):
+    check_deploy(layout)
+    check_deprecate(update_group.deprecated, layout)
+    check_restore(update_group.restored, layout)
+    check_remove(update_group.removed, layout)
 
 
 def display_updates(update_group: UpdateGroup):
@@ -85,10 +87,8 @@ def display_updates(update_group: UpdateGroup):
         print()
 
 
-def validate_deployment(
-    deployment: DeploymentConfig, deployment_root: Path
-) -> UpdateGroup:
-    last_deployment = load_snapshot(deployment_root)
+def validate_deployment(deployment: DeploymentConfig, layout: Layout) -> UpdateGroup:
+    last_deployment = load_snapshot(layout)
     new_modules = deployment.modules
     old_modules = last_deployment.modules
 

@@ -1,7 +1,6 @@
-from pathlib import Path
-
 from .apptainer import ApptainerCreator
 from .command import CommandCreator
+from .layout import Layout
 from .models.apptainer import ApptainerConfig
 from .models.command import CommandConfig
 from .models.module import ModuleConfig
@@ -14,29 +13,30 @@ class DeployError(Exception):
     pass
 
 
-def check_deploy(deployment_root: Path):
-    if not deployment_root.exists():
+def check_deploy(layout: Layout):
+    deployment_root = layout.get_deployment_root()
+    if not layout.get_deployment_root().exists():
         raise DeployError(f"Deployment root does not exist:\n{deployment_root}")
 
 
-def deploy(modules_list: list[ModuleConfig], deplyment_root: Path):
+def deploy(modules_list: list[ModuleConfig], layout: Layout):
     """Deploy modules from the provided list."""
     if modules_list:
-        create_entrypoints(modules_list, deplyment_root)
-        create_module_files(modules_list, deplyment_root)
+        create_entrypoints(modules_list, layout)
+        create_module_files(modules_list, layout)
 
 
-def create_module_files(modules: list[ModuleConfig], deployment_root: Path):
-    creator = ModuleCreator(deployment_root)
+def create_module_files(modules: list[ModuleConfig], layout: Layout):
+    creator = ModuleCreator(layout)
 
     for module in modules:
         creator.create_module_file(module)
 
 
-def create_entrypoints(modules: list[ModuleConfig], deployment_root: Path):
-    apptainer_creator = ApptainerCreator(deployment_root)
-    command_creator = CommandCreator(deployment_root)
-    shell_creator = ShellCreator(deployment_root)
+def create_entrypoints(modules: list[ModuleConfig], layout: Layout):
+    apptainer_creator = ApptainerCreator(layout)
+    command_creator = CommandCreator(layout)
+    shell_creator = ShellCreator(layout)
 
     for module in modules:
         for application in module.applications:

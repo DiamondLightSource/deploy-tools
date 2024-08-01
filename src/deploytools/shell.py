@@ -1,6 +1,4 @@
-from pathlib import Path
-
-from .layout import ENTRYPOINTS_ROOT_NAME
+from .layout import Layout
 from .models.shell import ShellConfig
 from .module import ModuleConfig
 from .templater import Templater, TemplateType
@@ -9,9 +7,9 @@ from .templater import Templater, TemplateType
 class ShellCreator:
     """Class for creating 'shell' entrypoints, which run bash scripts."""
 
-    def __init__(self, deployment_root: Path):
+    def __init__(self, layout: Layout):
         self._templater = Templater()
-        self._entrypoints_root = deployment_root / ENTRYPOINTS_ROOT_NAME
+        self._entrypoints_root = layout.get_entrypoints_root()
 
     def create_entrypoint_file(
         self,

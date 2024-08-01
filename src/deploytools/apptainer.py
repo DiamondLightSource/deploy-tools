@@ -1,8 +1,7 @@
 import subprocess
 from itertools import chain
-from pathlib import Path
 
-from .layout import ENTRYPOINTS_ROOT_NAME, SIF_FILES_ROOT_NAME
+from .layout import Layout
 from .models.apptainer import ApptainerConfig
 from .models.module import ModuleConfig, ModuleMetadataConfig
 from .templater import Templater, TemplateType
@@ -15,10 +14,10 @@ class ApptainerError(Exception):
 class ApptainerCreator:
     """Class for creating apptainer entrypoints using a specified image and command."""
 
-    def __init__(self, deployment_root: Path):
+    def __init__(self, layout: Layout):
         self._templater = Templater()
-        self._entrypoints_root = deployment_root / ENTRYPOINTS_ROOT_NAME
-        self._sif_root = deployment_root / SIF_FILES_ROOT_NAME
+        self._entrypoints_root = layout.get_entrypoints_root()
+        self._sif_root = layout.get_sif_files_root()
 
     def generate_sif_file(self, config: ApptainerConfig, module: ModuleConfig):
         sif_file = self.get_sif_file_path(config, module.metadata)

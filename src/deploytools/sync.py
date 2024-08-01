@@ -5,6 +5,7 @@ from typing_extensions import Annotated
 
 from .deploy import deploy
 from .deprecate import deprecate
+from .layout import Layout
 from .models.load import load_deployment
 from .remove import remove
 from .restore import restore
@@ -33,16 +34,17 @@ def sync(
 ):
     """Sync deployment folder with current configuration"""
     deployment = load_deployment(config_folder)
-    update_group = validate_deployment(deployment, deployment_root)
+    layout = Layout(deployment_root)
+    update_group = validate_deployment(deployment, layout)
 
-    check_actions(update_group, deployment_root)
+    check_actions(update_group, layout)
 
-    create_snapshot(deployment, deployment_root)
-    perform_actions(update_group, deployment_root)
+    create_snapshot(deployment, layout)
+    perform_actions(update_group, layout)
 
 
-def perform_actions(update_group: UpdateGroup, deployment_root: Path):
-    deploy(update_group.added, deployment_root)
-    deprecate(update_group.deprecated, deployment_root)
-    restore(update_group.restored, deployment_root)
-    remove(update_group.removed, deployment_root)
+def perform_actions(update_group: UpdateGroup, layout: Layout):
+    deploy(update_group.added, layout)
+    deprecate(update_group.deprecated, layout)
+    restore(update_group.restored, layout)
+    remove(update_group.removed, layout)

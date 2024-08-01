@@ -3,10 +3,7 @@ from collections import defaultdict
 from pathlib import Path
 from typing import TypeAlias
 
-from .layout import (
-    ENTRYPOINTS_ROOT_NAME,
-    MODULEFILES_ROOT_NAME,
-)
+from .layout import Layout
 from .models.module import ModuleConfig
 from .templater import Templater, TemplateType
 
@@ -16,10 +13,10 @@ ModuleVersionsByName: TypeAlias = dict[str, list[str]]
 class ModuleCreator:
     """Class for creating modulefiles, including optional dependencies and env vars."""
 
-    def __init__(self, deployment_root: Path):
+    def __init__(self, layout: Layout):
         self._templater = Templater()
-        self._modulefiles_root = deployment_root / MODULEFILES_ROOT_NAME
-        self._entrypoints_root = deployment_root / ENTRYPOINTS_ROOT_NAME
+        self._modulefiles_root = layout.get_modulefiles_root()
+        self._entrypoints_root = layout.get_entrypoints_root()
 
     def create_module_file(self, module: ModuleConfig):
         template = self._templater.get_template(TemplateType.MODULEFILE)
@@ -46,9 +43,9 @@ class ModuleCreator:
 
 
 def move_modulefile(name: str, version: str, src_folder: Path, dest_folder: Path):
-    src_path = src_folder / MODULEFILES_ROOT_NAME / name / version
+    src_path = src_folder / name / version
 
-    dest_path = dest_folder / MODULEFILES_ROOT_NAME / name / version
+    dest_path = dest_folder / name / version
     dest_path.parent.mkdir(parents=True, exist_ok=True)
     shutil.move(src_path, dest_path)
 
@@ -59,12 +56,14 @@ def move_modulefile(name: str, version: str, src_folder: Path, dest_folder: Path
         pass
 
 
-def get_deployed_module_versions(deployment_root: Path) -> ModuleVersionsByName:
-    modulefiles_root = deployment_root / MODULEFILES_ROOT_NAME
-    previous_modules: ModuleVersionsByName = defaultdict(list)
+def get_deployed_module_versions(
+    layout: Layout, deprecated=False
+) -> ModuleVersionsByName:
+    modulefiles_root = layout.get_modulefiles_root(deprecated=deprecated)
+    found_modules: ModuleVersionsByName = defaultdict(list)
 
     for module_folder in modulefiles_root.glob("*"):
         for version_path in module_folder.glob("*"):
-            previous_modules[module_folder.name].append(version_path.name)
+            found_modules[module_folder.name].append(version_path.name)
 
-    return previous_modules
+    return found_modules

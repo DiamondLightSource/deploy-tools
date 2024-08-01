@@ -1,6 +1,4 @@
-from pathlib import Path
-
-from .layout import ENTRYPOINTS_ROOT_NAME
+from .layout import Layout
 from .models.command import CommandConfig
 from .module import ModuleConfig
 from .templater import Templater, TemplateType
@@ -9,9 +7,9 @@ from .templater import Templater, TemplateType
 class CommandCreator:
     """Class for creating 'command' entrypoints, which run an executable on a path."""
 
-    def __init__(self, deployment_root: Path):
+    def __init__(self, layout: Layout):
         self._templater = Templater()
-        self._entrypoints_root = deployment_root / ENTRYPOINTS_ROOT_NAME
+        self._entrypoints_root = layout.get_entrypoints_root()
 
     def create_entrypoint_file(
         self,
