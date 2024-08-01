@@ -2,7 +2,7 @@ from dataclasses import dataclass, field
 from pathlib import Path
 
 from .deployment import (
-    load_deployment_snapshot,
+    load_snapshot,
 )
 from .models.deployment import DeploymentConfig, ModulesByNameAndVersion
 from .models.module import ModuleConfig
@@ -21,9 +21,9 @@ class UpdateGroup:
 
 
 def validate_deployment(
-    deployment: DeploymentConfig, deploy_folder: Path
+    deployment: DeploymentConfig, deployment_root: Path
 ) -> UpdateGroup:
-    last_deployment = load_deployment_snapshot(deploy_folder)
+    last_deployment = load_snapshot(deployment_root)
     new_modules = deployment.modules
     old_modules = last_deployment.modules
 

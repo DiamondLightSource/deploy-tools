@@ -12,7 +12,7 @@ from .validation import UpdateGroup, validate_deployment
 
 
 def validate(
-    deploy_folder: Annotated[
+    deployment_root: Annotated[
         Path,
         typer.Argument(
             exists=True,
@@ -33,21 +33,23 @@ def validate(
     """Validate deployment configuration and print a list of modules for deployment.
 
     This is the same validation that the deploytools sync command uses."""
-    assert deploy_folder.exists(), f"Deployment folder does not exist:\n{deploy_folder}"
+    assert (
+        deployment_root.exists()
+    ), f"Deployment folder does not exist:\n{deployment_root}"
 
     deployment = load_deployment(config_folder)
-    update_group = validate_deployment(deployment, deploy_folder)
+    update_group = validate_deployment(deployment, deployment_root)
 
-    check_actions(update_group, deploy_folder)
+    check_actions(update_group, deployment_root)
 
     display_updates(update_group)
 
 
-def check_actions(update_group: UpdateGroup, deploy_folder: Path):
-    check_deploy(deploy_folder)
-    check_deprecate(update_group.deprecated, deploy_folder)
-    check_restore(update_group.restored, deploy_folder)
-    check_remove(update_group.removed, deploy_folder)
+def check_actions(update_group: UpdateGroup, deployment_root: Path):
+    check_deploy(deployment_root)
+    check_deprecate(update_group.deprecated, deployment_root)
+    check_restore(update_group.restored, deployment_root)
+    check_remove(update_group.removed, deployment_root)
 
 
 def display_updates(update_group: UpdateGroup):

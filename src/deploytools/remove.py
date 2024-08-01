@@ -21,29 +21,29 @@ class RemovalError(Exception):
     pass
 
 
-def check_remove(modules: list[ModuleConfig], deploy_folder: Path):
-    deprecated_folder = deploy_folder / DEPRECATED_DIR
+def check_remove(modules: list[ModuleConfig], deployment_root: Path):
+    deprecated_root = deployment_root / DEPRECATED_DIR
 
     for module in modules:
         name = module.metadata.name
         version = module.metadata.version
-        check_module_and_version_in_deprecated(name, version, deprecated_folder)
+        check_module_and_version_in_deprecated(name, version, deprecated_root)
 
 
-def remove(modules: list[ModuleConfig], deploy_folder: Path):
+def remove(modules: list[ModuleConfig], deployment_root: Path):
     """Remove a deprecated module."""
-    deprecated_folder = deploy_folder / DEPRECATED_DIR
+    deprecated_root = deployment_root / DEPRECATED_DIR
 
     for module in modules:
         name = module.metadata.name
         version = module.metadata.version
-        remove_deprecated_module(name, version, deprecated_folder, deploy_folder)
+        remove_deprecated_module(name, version, deprecated_root, deployment_root)
 
 
 def check_module_and_version_in_deprecated(
-    name: str, version: str, deprecated_folder: Path
+    name: str, version: str, deprecated_root: Path
 ):
-    versions = get_deployed_versions(deprecated_folder)
+    versions = get_deployed_versions(deprecated_root)
     if version not in versions[name]:
         raise RemovalError(
             f"Cannot remove {name}/{version}. Not found in deprecated area."
@@ -51,14 +51,14 @@ def check_module_and_version_in_deprecated(
 
 
 def remove_deprecated_module(
-    name: str, version: str, deprecated_folder: Path, deploy_folder: Path
+    name: str, version: str, deprecated_root: Path, deployment_root: Path
 ):
-    modulefile_path = deprecated_folder / DEPLOYMENT_MODULEFILES_DIR / name / version
-    os.remove(modulefile_path)
-    delete_folder_if_empty(modulefile_path.parent)
+    module_file = deprecated_root / DEPLOYMENT_MODULEFILES_DIR / name / version
+    os.remove(module_file)
+    delete_folder_if_empty(module_file.parent)
 
     for subdir in REMOVE_SUBDIRS:
-        src_path = deploy_folder / subdir / name / version
+        src_path = deployment_root / subdir / name / version
         shutil.rmtree(src_path)
 
         delete_folder_if_empty(src_path.parent)

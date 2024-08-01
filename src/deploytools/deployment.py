@@ -26,30 +26,30 @@ class DeploymentError(Exception):
     pass
 
 
-def create_deployment_snapshot(deployment: DeploymentConfig, deploy_folder: Path):
-    file_path = deploy_folder / DEPLOYMENT_SNAPSHOT_FILENAME
+def create_snapshot(deployment: DeploymentConfig, deployment_root: Path):
+    snapshot_file = deployment_root / DEPLOYMENT_SNAPSHOT_FILENAME
 
-    with open(file_path, "w") as f:
+    with open(snapshot_file, "w") as f:
         yaml.safe_dump(deployment.model_dump(), f)
 
 
-def load_deployment_snapshot(deploy_folder: Path, allow_empty=True) -> DeploymentConfig:
-    snapshot_path = deploy_folder / DEPLOYMENT_SNAPSHOT_FILENAME
+def load_snapshot(deployment_root: Path, allow_empty=True) -> DeploymentConfig:
+    snapshot_file = deployment_root / DEPLOYMENT_SNAPSHOT_FILENAME
 
-    if not snapshot_path.exists():
+    if not snapshot_file.exists():
         if allow_empty:
             return DeploymentConfig(modules={})
 
-        raise DeploymentError(f"Deployment snapshot does not exist:\n{snapshot_path}")
+        raise DeploymentError(f"Deployment snapshot does not exist:\n{snapshot_file}")
 
-    return load_from_yaml(DeploymentConfig, snapshot_path)
+    return load_from_yaml(DeploymentConfig, snapshot_file)
 
 
-def get_deployed_versions(deploy_folder: Path) -> ModuleVersionsByName:
-    modules_folder = deploy_folder / DEPLOYMENT_MODULEFILES_DIR
+def get_deployed_versions(deployment_root: Path) -> ModuleVersionsByName:
+    modulefiles_root = deployment_root / DEPLOYMENT_MODULEFILES_DIR
     previous_modules: ModuleVersionsByName = defaultdict(list)
 
-    for module_folder in modules_folder.glob("*"):
+    for module_folder in modulefiles_root.glob("*"):
         for version_path in module_folder.glob("*"):
             previous_modules[module_folder.name].append(version_path.name)
 

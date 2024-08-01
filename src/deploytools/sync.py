@@ -4,7 +4,7 @@ import typer
 from typing_extensions import Annotated
 
 from .deploy import deploy
-from .deployment import create_deployment_snapshot
+from .deployment import create_snapshot
 from .deprecate import deprecate
 from .models.load import load_deployment
 from .remove import remove
@@ -14,7 +14,7 @@ from .validation import UpdateGroup, validate_deployment
 
 
 def sync(
-    deploy_folder: Annotated[
+    deployment_root: Annotated[
         Path,
         typer.Argument(
             exists=True,
@@ -34,16 +34,16 @@ def sync(
 ):
     """Sync deployment folder with current configuration"""
     deployment = load_deployment(config_folder)
-    update_group = validate_deployment(deployment, deploy_folder)
+    update_group = validate_deployment(deployment, deployment_root)
 
-    check_actions(update_group, deploy_folder)
+    check_actions(update_group, deployment_root)
 
-    create_deployment_snapshot(deployment, deploy_folder)
-    perform_actions(update_group, deploy_folder)
+    create_snapshot(deployment, deployment_root)
+    perform_actions(update_group, deployment_root)
 
 
-def perform_actions(update_group: UpdateGroup, deploy_folder: Path):
-    deploy(update_group.added, deploy_folder)
-    deprecate(update_group.deprecated, deploy_folder)
-    restore(update_group.restored, deploy_folder)
-    remove(update_group.removed, deploy_folder)
+def perform_actions(update_group: UpdateGroup, deployment_root: Path):
+    deploy(update_group.added, deployment_root)
+    deprecate(update_group.deprecated, deployment_root)
+    restore(update_group.restored, deployment_root)
+    remove(update_group.removed, deployment_root)

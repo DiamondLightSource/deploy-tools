@@ -14,34 +14,34 @@ class DeprecateError(Exception):
     pass
 
 
-def check_deprecate(modules: list[ModuleConfig], deploy_folder: Path):
-    deprecated_folder = deploy_folder / DEPRECATED_DIR
+def check_deprecate(modules: list[ModuleConfig], deployment_root: Path):
+    deprecated_root = deployment_root / DEPRECATED_DIR
 
     for module in modules:
         name = module.metadata.name
         version = module.metadata.version
 
-        check_module_and_version_exist_in_deployment(name, version, deploy_folder)
-        check_deprecated_free_for_module_and_version(name, version, deprecated_folder)
+        check_module_and_version_exist_in_deployment(name, version, deployment_root)
+        check_deprecated_free_for_module_and_version(name, version, deprecated_root)
 
 
-def deprecate(modules: list[ModuleConfig], deploy_folder: Path):
+def deprecate(modules: list[ModuleConfig], deployment_root: Path):
     """Deprecate a list of modules.
 
     This will move the modulefile to a 'deprecated' directory."""
-    deprecated_folder = deploy_folder / DEPRECATED_DIR
+    deprecated_root = deployment_root / DEPRECATED_DIR
 
     for module in modules:
         name = module.metadata.name
         version = module.metadata.version
 
-        move_modulefile(name, version, deploy_folder, deprecated_folder)
+        move_modulefile(name, version, deployment_root, deprecated_root)
 
 
 def check_module_and_version_exist_in_deployment(
-    name: str, version: str, deploy_folder: Path
+    name: str, version: str, deployment_root: Path
 ):
-    versions = get_deployed_versions(deploy_folder)
+    versions = get_deployed_versions(deployment_root)
     if version not in versions[name]:
         raise DeprecateError(
             f"Cannot deprecate {name}/{version}. Not found in deployment area."
@@ -49,10 +49,10 @@ def check_module_and_version_exist_in_deployment(
 
 
 def check_deprecated_free_for_module_and_version(
-    name: str, version: str, deprecated_folder: Path
+    name: str, version: str, deprecated_root: Path
 ):
-    full_path = deprecated_folder / DEPLOYMENT_MODULEFILES_DIR / name / version
-    if full_path.exists():
+    module_file = deprecated_root / DEPLOYMENT_MODULEFILES_DIR / name / version
+    if module_file.exists():
         raise DeprecateError(
-            f"Cannot deprecate {name}/{version}. Path already exists:\n{full_path}"
+            f"Cannot deprecate {name}/{version}. Path already exists:\n{module_file}"
         )

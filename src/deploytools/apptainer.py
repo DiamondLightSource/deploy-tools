@@ -18,11 +18,10 @@ class ApptainerError(Exception):
 class ApptainerCreator:
     """Class for creating apptainer entrypoints using a specified image and command."""
 
-    def __init__(self, deploy_folder: Path):
+    def __init__(self, deployment_root: Path):
         self._env = Environment(loader=PackageLoader("deploytools"))
-        self._deploy_folder = deploy_folder
-        self._entrypoints_folder = self._deploy_folder / DEPLOYMENT_ENTRYPOINTS_DIR
-        self._sif_folder = self._deploy_folder / DEPLOYMENT_SIF_FILES_DIR
+        self._entrypoints_root = deployment_root / DEPLOYMENT_ENTRYPOINTS_DIR
+        self._sif_root = deployment_root / DEPLOYMENT_SIF_FILES_DIR
 
     def generate_sif_file(self, config: ApptainerConfig, module: ModuleConfig):
         sif_file = self.get_sif_file_path(config, module.metadata)
@@ -40,10 +39,10 @@ class ApptainerCreator:
         subprocess.run(commands, check=True)
 
     def create_entrypoint_files(self, config: ApptainerConfig, module: ModuleConfig):
-        output_folder = (
-            self._entrypoints_folder / module.metadata.name / module.metadata.version
+        entrypoints_folder = (
+            self._entrypoints_root / module.metadata.name / module.metadata.version
         )
-        output_folder.mkdir(parents=True, exist_ok=True)
+        entrypoints_folder.mkdir(parents=True, exist_ok=True)
         template = self._env.get_template(APPTAINER_ENTRYPOINT_TEMPLATE)
 
         sif_file = self.get_sif_file_path(config, module.metadata)
@@ -51,7 +50,7 @@ class ApptainerCreator:
         global_options = config.global_options
         for entrypoint in config.entrypoints:
             options = entrypoint.options
-            entrypoint_file = output_folder / entrypoint.executable_name
+            entrypoint_file = entrypoints_folder / entrypoint.executable_name
 
             mounts = ",".join(chain(global_options.mounts, options.mounts)).strip()
 
@@ -77,7 +76,7 @@ class ApptainerCreator:
     def get_sif_file_path(
         self, config: ApptainerConfig, metadata: ModuleMetadataConfig
     ):
-        sif_parent = self._sif_folder / metadata.name / metadata.version
+        sif_parent = self._sif_root / metadata.name / metadata.version
         sif_file = sif_parent / f"{config.name}:{config.version}.sif"
 
         return sif_file

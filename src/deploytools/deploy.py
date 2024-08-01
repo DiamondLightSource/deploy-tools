@@ -10,28 +10,33 @@ from .module import ModuleCreator
 from .shell import ShellCreator
 
 
-def check_deploy(deploy_folder: Path):
-    assert deploy_folder.exists(), f"Deployment folder does not exist:\n{deploy_folder}"
+class RemovalError(Exception):
+    pass
 
 
-def deploy(modules_list: list[ModuleConfig], deploy_folder: Path):
+def check_deploy(deployment_root: Path):
+    if not deployment_root.exists():
+        raise RemovalError(f"Deployment root does not exist:\n{deployment_root}")
+
+
+def deploy(modules_list: list[ModuleConfig], deplyment_root: Path):
     """Deploy modules from the provided list."""
     if modules_list:
-        create_entrypoints(modules_list, deploy_folder)
-        create_module_files(modules_list, deploy_folder)
+        create_entrypoints(modules_list, deplyment_root)
+        create_module_files(modules_list, deplyment_root)
 
 
-def create_module_files(modules: list[ModuleConfig], deploy_folder: Path):
-    creator = ModuleCreator(deploy_folder)
+def create_module_files(modules: list[ModuleConfig], deployment_root: Path):
+    creator = ModuleCreator(deployment_root)
 
     for module in modules:
         creator.create_module_file(module)
 
 
-def create_entrypoints(modules: list[ModuleConfig], deploy_folder: Path):
-    apptainer_creator = ApptainerCreator(deploy_folder)
-    command_creator = CommandCreator(deploy_folder)
-    shell_creator = ShellCreator(deploy_folder)
+def create_entrypoints(modules: list[ModuleConfig], deployment_root: Path):
+    apptainer_creator = ApptainerCreator(deployment_root)
+    command_creator = CommandCreator(deployment_root)
+    shell_creator = ShellCreator(deployment_root)
 
     for module in modules:
         for application in module.applications:

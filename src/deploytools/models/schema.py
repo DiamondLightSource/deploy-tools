@@ -18,7 +18,7 @@ SCHEMA_NAMES: dict[str, type[BaseModel]] = {
 
 
 def schema(
-    folder_path: Annotated[
+    output_path: Annotated[
         Path,
         typer.Argument(
             exists=True,
@@ -30,7 +30,7 @@ def schema(
 ):
     """Generate JSON schema for yaml configuration files."""
     for filename, model in SCHEMA_NAMES.items():
-        out_path = folder_path / filename
+        out_path = output_path / filename
         schema = model.model_json_schema()
         with open(out_path, "w+") as f:
             json.dump(schema, f, indent=2)

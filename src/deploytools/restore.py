@@ -13,16 +13,16 @@ class RestoreError(Exception):
     pass
 
 
-def check_restore(modules: list[ModuleConfig], deploy_folder: Path):
-    deprecated_folder = deploy_folder / DEPRECATED_DIR
-    deployed_versions = get_deployed_versions(deploy_folder)
+def check_restore(modules: list[ModuleConfig], deployment_root: Path):
+    deprecated_root = deployment_root / DEPRECATED_DIR
+    deployed_versions = get_deployed_versions(deployment_root)
 
     for module in modules:
         name = module.metadata.name
         version = module.metadata.version
 
-        modulefile = deprecated_folder / DEPLOYMENT_MODULEFILES_DIR / name / version
-        if not modulefile.exists():
+        module_file = deprecated_root / DEPLOYMENT_MODULEFILES_DIR / name / version
+        if not module_file.exists():
             raise RestoreError(
                 f"Cannot restore {name}/{version}. Not found in deprecated area."
             )
@@ -33,11 +33,11 @@ def check_restore(modules: list[ModuleConfig], deploy_folder: Path):
             )
 
 
-def restore(modules: list[ModuleConfig], deploy_folder: Path):
+def restore(modules: list[ModuleConfig], deployment_root: Path):
     """Restore a previously deprecated module."""
-    deprecated_folder = deploy_folder / DEPRECATED_DIR
+    deprecated_root = deployment_root / DEPRECATED_DIR
 
     for module in modules:
         name = module.metadata.name
         version = module.metadata.version
-        move_modulefile(name, version, deprecated_folder, deploy_folder)
+        move_modulefile(name, version, deprecated_root, deployment_root)
