@@ -1,12 +1,11 @@
 from pathlib import Path
 
-from .deployment import (
-    DEPLOYMENT_MODULEFILES_DIR,
-    get_deployed_versions,
-)
 from .deprecate import DEPRECATED_DIR
+from .layout import (
+    DEPLOYMENT_MODULEFILES_DIR,
+)
 from .models.module import ModuleConfig
-from .module import move_modulefile
+from .module import get_deployed_module_versions, move_modulefile
 
 
 class RestoreError(Exception):
@@ -15,7 +14,7 @@ class RestoreError(Exception):
 
 def check_restore(modules: list[ModuleConfig], deployment_root: Path):
     deprecated_root = deployment_root / DEPRECATED_DIR
-    deployed_versions = get_deployed_versions(deployment_root)
+    deployed_versions = get_deployed_module_versions(deployment_root)
 
     for module in modules:
         name = module.metadata.name

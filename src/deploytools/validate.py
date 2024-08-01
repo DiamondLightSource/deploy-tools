@@ -5,15 +5,15 @@ import typer
 from typing_extensions import Annotated
 
 from .deploy import check_deploy
-from .deployment import (
-    load_snapshot,
-)
 from .deprecate import check_deprecate
 from .models.deployment import DeploymentConfig, ModulesByNameAndVersion
 from .models.load import load_deployment
 from .models.module import ModuleConfig
 from .remove import check_remove
 from .restore import check_restore
+from .snapshot import (
+    load_snapshot,
+)
 
 
 class ValidationError(Exception):

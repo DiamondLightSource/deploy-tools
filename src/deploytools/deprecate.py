@@ -1,11 +1,10 @@
 from pathlib import Path
 
-from .deployment import (
+from .layout import (
     DEPLOYMENT_MODULEFILES_DIR,
-    get_deployed_versions,
 )
 from .models.module import ModuleConfig
-from .module import move_modulefile
+from .module import get_deployed_module_versions, move_modulefile
 
 DEPRECATED_DIR = "deprecated"
 
@@ -41,7 +40,7 @@ def deprecate(modules: list[ModuleConfig], deployment_root: Path):
 def check_module_and_version_exist_in_deployment(
     name: str, version: str, deployment_root: Path
 ):
-    versions = get_deployed_versions(deployment_root)
+    versions = get_deployed_module_versions(deployment_root)
     if version not in versions[name]:
         raise DeprecateError(
             f"Cannot deprecate {name}/{version}. Not found in deployment area."

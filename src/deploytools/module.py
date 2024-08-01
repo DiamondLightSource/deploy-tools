@@ -1,9 +1,16 @@
 import shutil
+from collections import defaultdict
 from pathlib import Path
+from typing import TypeAlias
 
-from .deployment import DEPLOYMENT_ENTRYPOINTS_DIR, DEPLOYMENT_MODULEFILES_DIR
+from .layout import (
+    DEPLOYMENT_ENTRYPOINTS_DIR,
+    DEPLOYMENT_MODULEFILES_DIR,
+)
 from .models.module import ModuleConfig
 from .templater import Templater, TemplateType
+
+ModuleVersionsByName: TypeAlias = dict[str, list[str]]
 
 
 class ModuleCreator:
@@ -50,3 +57,14 @@ def move_modulefile(name: str, version: str, src_folder: Path, dest_folder: Path
         src_path.parent.rmdir()
     except OSError:
         pass
+
+
+def get_deployed_module_versions(deployment_root: Path) -> ModuleVersionsByName:
+    modulefiles_root = deployment_root / DEPLOYMENT_MODULEFILES_DIR
+    previous_modules: ModuleVersionsByName = defaultdict(list)
+
+    for module_folder in modulefiles_root.glob("*"):
+        for version_path in module_folder.glob("*"):
+            previous_modules[module_folder.name].append(version_path.name)
+
+    return previous_modules

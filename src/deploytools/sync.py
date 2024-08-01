@@ -4,11 +4,11 @@ import typer
 from typing_extensions import Annotated
 
 from .deploy import deploy
-from .deployment import create_snapshot
 from .deprecate import deprecate
 from .models.load import load_deployment
 from .remove import remove
 from .restore import restore
+from .snapshot import create_snapshot
 from .validate import UpdateGroup, check_actions, validate_deployment
 
 

@@ -2,14 +2,14 @@ import os
 import shutil
 from pathlib import Path
 
-from .deployment import (
+from .deprecate import DEPRECATED_DIR
+from .layout import (
     DEPLOYMENT_ENTRYPOINTS_DIR,
     DEPLOYMENT_MODULEFILES_DIR,
     DEPLOYMENT_SIF_FILES_DIR,
-    get_deployed_versions,
 )
-from .deprecate import DEPRECATED_DIR
 from .models.module import ModuleConfig
+from .module import get_deployed_module_versions
 
 REMOVE_SUBDIRS = [
     DEPLOYMENT_ENTRYPOINTS_DIR,
@@ -43,7 +43,7 @@ def remove(modules: list[ModuleConfig], deployment_root: Path):
 def check_module_and_version_in_deprecated(
     name: str, version: str, deprecated_root: Path
 ):
-    versions = get_deployed_versions(deprecated_root)
+    versions = get_deployed_module_versions(deprecated_root)
     if version not in versions[name]:
         raise RemovalError(
             f"Cannot remove {name}/{version}. Not found in deprecated area."

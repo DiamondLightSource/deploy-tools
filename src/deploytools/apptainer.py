@@ -2,7 +2,7 @@ import subprocess
 from itertools import chain
 from pathlib import Path
 
-from .deployment import DEPLOYMENT_ENTRYPOINTS_DIR, DEPLOYMENT_SIF_FILES_DIR
+from .layout import DEPLOYMENT_ENTRYPOINTS_DIR, DEPLOYMENT_SIF_FILES_DIR
 from .models.apptainer import ApptainerConfig
 from .models.module import ModuleConfig, ModuleMetadataConfig
 from .templater import Templater, TemplateType

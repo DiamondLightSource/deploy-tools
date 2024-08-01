@@ -1,6 +1,6 @@
 from pathlib import Path
 
-from .deployment import DEPLOYMENT_ENTRYPOINTS_DIR
+from .layout import DEPLOYMENT_ENTRYPOINTS_DIR
 from .models.command import CommandConfig
 from .module import ModuleConfig
 from .templater import Templater, TemplateType

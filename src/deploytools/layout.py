@@ -1,0 +1,13 @@
+"""Constants describing the layout of the deployment area."""
+
+DEPLOYMENT_ENTRYPOINTS_DIR = "entrypoints"
+DEPLOYMENT_MODULEFILES_DIR = "modulefiles"
+DEPLOYMENT_SIF_FILES_DIR = "sif_files"
+
+DEPLOYMENT_SUBDIRS = [
+    DEPLOYMENT_ENTRYPOINTS_DIR,
+    DEPLOYMENT_MODULEFILES_DIR,
+    DEPLOYMENT_SIF_FILES_DIR,
+]
+
+DEPLOYMENT_SNAPSHOT_FILENAME = "deployment.yaml"
