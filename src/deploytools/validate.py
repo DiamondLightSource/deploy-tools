@@ -139,7 +139,8 @@ def get_update_group(
     for module in group.removed:
         if not module.metadata.deprecated:
             raise ValidationError(
-                f"Module {name}/{version} removed without prior deprecation."
+                f"Module {module.metadata.name}/{module.metadata.version} removed"
+                "without prior deprecation."
             )
 
     return group
