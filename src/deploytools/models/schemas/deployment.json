@@ -1,26 +1,26 @@
 {
   "$defs": {
-    "ApplicationConfig": {
+    "Application": {
       "additionalProperties": false,
       "properties": {
         "app_config": {
           "discriminator": {
             "mapping": {
-              "apptainer": "#/$defs/ApptainerConfig",
-              "command": "#/$defs/CommandConfig",
-              "shell": "#/$defs/ShellConfig"
+              "apptainer": "#/$defs/Apptainer",
+              "command": "#/$defs/Command",
+              "shell": "#/$defs/Shell"
             },
             "propertyName": "app_type"
           },
           "oneOf": [
             {
-              "$ref": "#/$defs/ApptainerConfig"
+              "$ref": "#/$defs/Apptainer"
             },
             {
-              "$ref": "#/$defs/CommandConfig"
+              "$ref": "#/$defs/Command"
             },
             {
-              "$ref": "#/$defs/ShellConfig"
+              "$ref": "#/$defs/Shell"
             }
           ],
           "title": "App Config"
@@ -29,10 +29,10 @@
       "required": [
         "app_config"
       ],
-      "title": "ApplicationConfig",
+      "title": "Application",
       "type": "object"
     },
-    "ApptainerConfig": {
+    "Apptainer": {
       "additionalProperties": false,
       "properties": {
         "app_type": {
@@ -52,17 +52,17 @@
           "type": "string"
         },
         "container": {
-          "$ref": "#/$defs/ContainerImageConfig"
+          "$ref": "#/$defs/ContainerImage"
         },
         "entrypoints": {
           "items": {
-            "$ref": "#/$defs/EntrypointConfig"
+            "$ref": "#/$defs/Entrypoint"
           },
           "title": "Entrypoints",
           "type": "array"
         },
         "global_options": {
-          "$ref": "#/$defs/EntrypointOptionsConfig"
+          "$ref": "#/$defs/EntrypointOptions"
         }
       },
       "required": [
@@ -72,10 +72,10 @@
         "container",
         "entrypoints"
       ],
-      "title": "ApptainerConfig",
+      "title": "Apptainer",
       "type": "object"
     },
-    "CommandConfig": {
+    "Command": {
       "additionalProperties": false,
       "properties": {
         "app_type": {
@@ -105,10 +105,10 @@
         "name",
         "command_path"
       ],
-      "title": "CommandConfig",
+      "title": "Command",
       "type": "object"
     },
-    "ContainerImageConfig": {
+    "ContainerImage": {
       "additionalProperties": false,
       "properties": {
         "path": {
@@ -124,10 +124,43 @@
         "path",
         "version"
       ],
-      "title": "ContainerImageConfig",
+      "title": "ContainerImage",
       "type": "object"
     },
-    "EntrypointConfig": {
+    "DefaultVersion": {
+      "additionalProperties": false,
+      "properties": {
+        "name": {
+          "title": "Name",
+          "type": "string"
+        },
+        "version": {
+          "title": "Version",
+          "type": "string"
+        }
+      },
+      "required": [
+        "name",
+        "version"
+      ],
+      "title": "DefaultVersion",
+      "type": "object"
+    },
+    "DeploymentSettings": {
+      "additionalProperties": false,
+      "properties": {
+        "default_versions": {
+          "items": {
+            "$ref": "#/$defs/DefaultVersion"
+          },
+          "title": "Default Versions",
+          "type": "array"
+        }
+      },
+      "title": "DeploymentSettings",
+      "type": "object"
+    },
+    "Entrypoint": {
       "additionalProperties": false,
       "properties": {
         "executable_name": {
@@ -147,16 +180,16 @@
           "title": "Command"
         },
         "options": {
-          "$ref": "#/$defs/EntrypointOptionsConfig"
+          "$ref": "#/$defs/EntrypointOptions"
         }
       },
       "required": [
         "executable_name"
       ],
-      "title": "EntrypointConfig",
+      "title": "Entrypoint",
       "type": "object"
     },
-    "EntrypointOptionsConfig": {
+    "EntrypointOptions": {
       "additionalProperties": false,
       "properties": {
         "apptainer_args": {
@@ -178,10 +211,10 @@
           "type": "array"
         }
       },
-      "title": "EntrypointOptionsConfig",
+      "title": "EntrypointOptions",
       "type": "object"
     },
-    "EnvVarConfig": {
+    "EnvVar": {
       "additionalProperties": false,
       "properties": {
         "name": {
@@ -197,18 +230,18 @@
         "name",
         "value"
       ],
-      "title": "EnvVarConfig",
+      "title": "EnvVar",
       "type": "object"
     },
-    "ModuleConfig": {
+    "Module": {
       "additionalProperties": false,
       "properties": {
         "metadata": {
-          "$ref": "#/$defs/ModuleMetadataConfig"
+          "$ref": "#/$defs/ModuleMetadata"
         },
         "applications": {
           "items": {
-            "$ref": "#/$defs/ApplicationConfig"
+            "$ref": "#/$defs/Application"
           },
           "title": "Applications",
           "type": "array"
@@ -218,10 +251,10 @@
         "metadata",
         "applications"
       ],
-      "title": "ModuleConfig",
+      "title": "Module",
       "type": "object"
     },
-    "ModuleDependencyConfig": {
+    "ModuleDependency": {
       "additionalProperties": false,
       "properties": {
         "name": {
@@ -244,10 +277,10 @@
         "name",
         "version"
       ],
-      "title": "ModuleDependencyConfig",
+      "title": "ModuleDependency",
       "type": "object"
     },
-    "ModuleMetadataConfig": {
+    "ModuleMetadata": {
       "additionalProperties": false,
       "properties": {
         "name": {
@@ -273,7 +306,7 @@
         "dependencies": {
           "default": [],
           "items": {
-            "$ref": "#/$defs/ModuleDependencyConfig"
+            "$ref": "#/$defs/ModuleDependency"
           },
           "title": "Dependencies",
           "type": "array"
@@ -281,7 +314,7 @@
         "env_vars": {
           "default": [],
           "items": {
-            "$ref": "#/$defs/EnvVarConfig"
+            "$ref": "#/$defs/EnvVar"
           },
           "title": "Env Vars",
           "type": "array"
@@ -296,10 +329,10 @@
         "name",
         "version"
       ],
-      "title": "ModuleMetadataConfig",
+      "title": "ModuleMetadata",
       "type": "object"
     },
-    "ShellConfig": {
+    "Shell": {
       "additionalProperties": false,
       "properties": {
         "app_type": {
@@ -327,16 +360,19 @@
         "name",
         "script"
       ],
-      "title": "ShellConfig",
+      "title": "Shell",
       "type": "object"
     }
   },
   "additionalProperties": false,
   "properties": {
+    "settings": {
+      "$ref": "#/$defs/DeploymentSettings"
+    },
     "modules": {
       "additionalProperties": {
         "additionalProperties": {
-          "$ref": "#/$defs/ModuleConfig"
+          "$ref": "#/$defs/Module"
         },
         "type": "object"
       },
@@ -345,8 +381,9 @@
     }
   },
   "required": [
+    "settings",
     "modules"
   ],
-  "title": "DeploymentConfig",
+  "title": "Deployment",
   "type": "object"
 }

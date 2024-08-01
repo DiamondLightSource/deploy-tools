@@ -1,7 +1,7 @@
 import yaml
 
 from .layout import Layout
-from .models.deployment import Deployment
+from .models.deployment import Deployment, DeploymentSettings
 from .models.load import load_from_yaml
 
 
@@ -21,7 +21,7 @@ def load_snapshot(layout: Layout, allow_empty=True) -> Deployment:
 
     if not snapshot_file.exists():
         if allow_empty:
-            return Deployment(modules={})
+            return Deployment(settings=DeploymentSettings(), modules={})
 
         raise SnapshotError(f"Deployment snapshot does not exist:\n{snapshot_file}")
 

@@ -1,6 +1,6 @@
 {
   "$defs": {
-    "ApptainerConfig": {
+    "Apptainer": {
       "additionalProperties": false,
       "properties": {
         "app_type": {
@@ -20,17 +20,17 @@
           "type": "string"
         },
         "container": {
-          "$ref": "#/$defs/ContainerImageConfig"
+          "$ref": "#/$defs/ContainerImage"
         },
         "entrypoints": {
           "items": {
-            "$ref": "#/$defs/EntrypointConfig"
+            "$ref": "#/$defs/Entrypoint"
           },
           "title": "Entrypoints",
           "type": "array"
         },
         "global_options": {
-          "$ref": "#/$defs/EntrypointOptionsConfig"
+          "$ref": "#/$defs/EntrypointOptions"
         }
       },
       "required": [
@@ -40,10 +40,10 @@
         "container",
         "entrypoints"
       ],
-      "title": "ApptainerConfig",
+      "title": "Apptainer",
       "type": "object"
     },
-    "CommandConfig": {
+    "Command": {
       "additionalProperties": false,
       "properties": {
         "app_type": {
@@ -73,10 +73,10 @@
         "name",
         "command_path"
       ],
-      "title": "CommandConfig",
+      "title": "Command",
       "type": "object"
     },
-    "ContainerImageConfig": {
+    "ContainerImage": {
       "additionalProperties": false,
       "properties": {
         "path": {
@@ -92,10 +92,10 @@
         "path",
         "version"
       ],
-      "title": "ContainerImageConfig",
+      "title": "ContainerImage",
       "type": "object"
     },
-    "EntrypointConfig": {
+    "Entrypoint": {
       "additionalProperties": false,
       "properties": {
         "executable_name": {
@@ -115,16 +115,16 @@
           "title": "Command"
         },
         "options": {
-          "$ref": "#/$defs/EntrypointOptionsConfig"
+          "$ref": "#/$defs/EntrypointOptions"
         }
       },
       "required": [
         "executable_name"
       ],
-      "title": "EntrypointConfig",
+      "title": "Entrypoint",
       "type": "object"
     },
-    "EntrypointOptionsConfig": {
+    "EntrypointOptions": {
       "additionalProperties": false,
       "properties": {
         "apptainer_args": {
@@ -146,10 +146,10 @@
           "type": "array"
         }
       },
-      "title": "EntrypointOptionsConfig",
+      "title": "EntrypointOptions",
       "type": "object"
     },
-    "ShellConfig": {
+    "Shell": {
       "additionalProperties": false,
       "properties": {
         "app_type": {
@@ -177,7 +177,7 @@
         "name",
         "script"
       ],
-      "title": "ShellConfig",
+      "title": "Shell",
       "type": "object"
     }
   },
@@ -186,21 +186,21 @@
     "app_config": {
       "discriminator": {
         "mapping": {
-          "apptainer": "#/$defs/ApptainerConfig",
-          "command": "#/$defs/CommandConfig",
-          "shell": "#/$defs/ShellConfig"
+          "apptainer": "#/$defs/Apptainer",
+          "command": "#/$defs/Command",
+          "shell": "#/$defs/Shell"
         },
         "propertyName": "app_type"
       },
       "oneOf": [
         {
-          "$ref": "#/$defs/ApptainerConfig"
+          "$ref": "#/$defs/Apptainer"
         },
         {
-          "$ref": "#/$defs/CommandConfig"
+          "$ref": "#/$defs/Command"
         },
         {
-          "$ref": "#/$defs/ShellConfig"
+          "$ref": "#/$defs/Shell"
         }
       ],
       "title": "App Config"
@@ -209,6 +209,6 @@
   "required": [
     "app_config"
   ],
-  "title": "ApplicationConfig",
+  "title": "Application",
   "type": "object"
 }

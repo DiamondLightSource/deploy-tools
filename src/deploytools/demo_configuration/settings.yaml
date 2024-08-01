@@ -1,0 +1,7 @@
+# yaml-language-server: $schema=/workspaces/deploytools/src/deploytools/models/schemas/deployment-settings.json
+
+default_versions:
+  - name: example-module-deps
+    version: "0.2"
+  - name: example-module-file
+    version: "0.1"

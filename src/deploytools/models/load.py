@@ -4,13 +4,19 @@ from typing import TypeVar
 import yaml
 
 from .application import Application
-from .deployment import Deployment, ModulesByNameAndVersion, ModulesByVersion
+from .deployment import (
+    Deployment,
+    DeploymentSettings,
+    ModulesByNameAndVersion,
+    ModulesByVersion,
+)
 from .module import Module, ModuleMetadata
 
-T = TypeVar("T", Deployment, Module, ModuleMetadata, Application)
+T = TypeVar("T", Deployment, Module, ModuleMetadata, Application, DeploymentSettings)
 
 YAML_FILE_SUFFIX = ".yaml"
-CONFIG_FILENAME = "config" + YAML_FILE_SUFFIX
+MODULE_CONFIG = "config" + YAML_FILE_SUFFIX
+DEPLOYMENT_SETTINGS = "settings" + YAML_FILE_SUFFIX
 
 
 class LoadError(Exception):
@@ -23,12 +29,12 @@ def load_from_yaml(model: type[T], file_path: Path) -> T:
 
 
 def load_module_folder(folder: Path) -> Module:
-    metadata: ModuleMetadata = load_from_yaml(ModuleMetadata, folder / CONFIG_FILENAME)
+    metadata: ModuleMetadata = load_from_yaml(ModuleMetadata, folder / MODULE_CONFIG)
 
     applications = []
 
     for file in folder.glob("*"):
-        if file.name == CONFIG_FILENAME:
+        if file.name == MODULE_CONFIG:
             continue
 
         applications.append(load_from_yaml(Application, file))
@@ -47,15 +53,19 @@ def load_module(path: Path) -> Module:
 
 
 def load_deployment(config_folder: Path) -> Deployment:
+    settings = DeploymentSettings()
     modules: ModulesByNameAndVersion = {}
-    for module_folder in config_folder.glob("*"):
-        if not module_folder.is_dir():
-            raise LoadError(f"Module path is not directory: {module_folder}")
+    for path in config_folder.glob("*"):
+        if not path.is_dir():
+            if path.name == DEPLOYMENT_SETTINGS:
+                settings = load_from_yaml(DeploymentSettings, path)
+                continue
+            raise LoadError(f"Module path is not directory: {path}")
 
-        module_name = module_folder.name
+        module_name = path.name
         versioned_modules: ModulesByVersion = {}
 
-        for version_path in module_folder.glob("*"):
+        for version_path in path.glob("*"):
             module = load_module(version_path)
             check_filepath_matches_module_metadata(version_path, module.metadata)
             version = module.metadata.version
@@ -70,7 +80,7 @@ def load_deployment(config_folder: Path) -> Deployment:
 
         modules[module_name] = versioned_modules
 
-    return Deployment(modules=modules)
+    return Deployment(settings=settings, modules=modules)
 
 
 def check_filepath_matches_module_metadata(

@@ -1,0 +1,35 @@
+{
+  "$defs": {
+    "DefaultVersion": {
+      "additionalProperties": false,
+      "properties": {
+        "name": {
+          "title": "Name",
+          "type": "string"
+        },
+        "version": {
+          "title": "Version",
+          "type": "string"
+        }
+      },
+      "required": [
+        "name",
+        "version"
+      ],
+      "title": "DefaultVersion",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "default_versions": {
+      "items": {
+        "$ref": "#/$defs/DefaultVersion"
+      },
+      "title": "Default Versions",
+      "type": "array"
+    }
+  },
+  "title": "DeploymentSettings",
+  "type": "object"
+}

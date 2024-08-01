@@ -6,7 +6,7 @@ from pydantic import BaseModel
 from typing_extensions import Annotated
 
 from .application import Application
-from .deployment import Deployment
+from .deployment import Deployment, DeploymentSettings
 from .module import Module, ModuleMetadata
 
 SCHEMA_NAMES: dict[str, type[BaseModel]] = {
@@ -14,6 +14,7 @@ SCHEMA_NAMES: dict[str, type[BaseModel]] = {
     "module-metadata.json": ModuleMetadata,
     "application.json": Application,
     "deployment.json": Deployment,
+    "deployment-settings.json": DeploymentSettings,
 }
 
 

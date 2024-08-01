@@ -1,6 +1,6 @@
 {
   "$defs": {
-    "EnvVarConfig": {
+    "EnvVar": {
       "additionalProperties": false,
       "properties": {
         "name": {
@@ -16,10 +16,10 @@
         "name",
         "value"
       ],
-      "title": "EnvVarConfig",
+      "title": "EnvVar",
       "type": "object"
     },
-    "ModuleDependencyConfig": {
+    "ModuleDependency": {
       "additionalProperties": false,
       "properties": {
         "name": {
@@ -42,7 +42,7 @@
         "name",
         "version"
       ],
-      "title": "ModuleDependencyConfig",
+      "title": "ModuleDependency",
       "type": "object"
     }
   },
@@ -71,7 +71,7 @@
     "dependencies": {
       "default": [],
       "items": {
-        "$ref": "#/$defs/ModuleDependencyConfig"
+        "$ref": "#/$defs/ModuleDependency"
       },
       "title": "Dependencies",
       "type": "array"
@@ -79,7 +79,7 @@
     "env_vars": {
       "default": [],
       "items": {
-        "$ref": "#/$defs/EnvVarConfig"
+        "$ref": "#/$defs/EnvVar"
       },
       "title": "Env Vars",
       "type": "array"
@@ -94,6 +94,6 @@
     "name",
     "version"
   ],
-  "title": "ModuleMetadataConfig",
+  "title": "ModuleMetadata",
   "type": "object"
 }
