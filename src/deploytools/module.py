@@ -4,7 +4,7 @@ from pathlib import Path
 from typing import TypeAlias
 
 from .layout import Layout
-from .models.module import ModuleConfig
+from .models.module import Module
 from .templater import Templater, TemplateType
 
 ModuleVersionsByName: TypeAlias = dict[str, list[str]]
@@ -18,7 +18,7 @@ class ModuleCreator:
         self._modulefiles_root = layout.get_modulefiles_root()
         self._entrypoints_root = layout.get_entrypoints_root()
 
-    def create_module_file(self, module: ModuleConfig):
+    def create_module_file(self, module: Module):
         template = self._templater.get_template(TemplateType.MODULEFILE)
 
         config = module.metadata

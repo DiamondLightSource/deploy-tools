@@ -7,9 +7,9 @@ from typing_extensions import Annotated
 from .deploy import check_deploy
 from .deprecate import check_deprecate
 from .layout import Layout
-from .models.deployment import DeploymentConfig, ModulesByNameAndVersion
+from .models.deployment import Deployment, ModulesByNameAndVersion
 from .models.load import load_deployment
-from .models.module import ModuleConfig
+from .models.module import Module
 from .remove import check_remove
 from .restore import check_restore
 from .snapshot import (
@@ -23,10 +23,10 @@ class ValidationError(Exception):
 
 @dataclass
 class UpdateGroup:
-    added: list[ModuleConfig] = field(default_factory=list)
-    deprecated: list[ModuleConfig] = field(default_factory=list)
-    restored: list[ModuleConfig] = field(default_factory=list)
-    removed: list[ModuleConfig] = field(default_factory=list)
+    added: list[Module] = field(default_factory=list)
+    deprecated: list[Module] = field(default_factory=list)
+    restored: list[Module] = field(default_factory=list)
+    removed: list[Module] = field(default_factory=list)
 
 
 def validate(
@@ -87,7 +87,7 @@ def display_updates(update_group: UpdateGroup):
         print()
 
 
-def validate_deployment(deployment: DeploymentConfig, layout: Layout) -> UpdateGroup:
+def validate_deployment(deployment: Deployment, layout: Layout) -> UpdateGroup:
     last_deployment = load_snapshot(layout)
     new_modules = deployment.modules
     old_modules = last_deployment.modules
@@ -146,7 +146,7 @@ def get_update_group(
     return group
 
 
-def is_modified(old_module: ModuleConfig, new_module: ModuleConfig):
+def is_modified(old_module: Module, new_module: Module):
     old_copy = old_module.model_copy(deep=True)
     new_copy = new_module.model_copy(deep=True)
 

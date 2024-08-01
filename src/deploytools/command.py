@@ -1,6 +1,6 @@
 from .layout import Layout
-from .models.command import CommandConfig
-from .module import ModuleConfig
+from .models.command import Command
+from .module import Module
 from .templater import Templater, TemplateType
 
 
@@ -13,8 +13,8 @@ class CommandCreator:
 
     def create_entrypoint_file(
         self,
-        config: CommandConfig,
-        module: ModuleConfig,
+        config: Command,
+        module: Module,
     ):
         template = self._templater.get_template(TemplateType.COMMAND_ENTRYPOINT)
 

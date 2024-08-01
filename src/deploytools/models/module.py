@@ -2,28 +2,28 @@ from typing import Optional, Sequence
 
 from pydantic import BaseModel
 
-from .application import ApplicationConfig
+from .application import Application
 
 
-class ModuleDependencyConfig(BaseModel, extra="forbid"):
+class ModuleDependency(BaseModel, extra="forbid"):
     name: str
     version: Optional[str]
 
 
-class EnvVarConfig(BaseModel, extra="forbid"):
+class EnvVar(BaseModel, extra="forbid"):
     name: str
     value: str
 
 
-class ModuleMetadataConfig(BaseModel, extra="forbid"):
+class ModuleMetadata(BaseModel, extra="forbid"):
     name: str
     version: str
     description: Optional[str] = None
-    dependencies: Sequence[ModuleDependencyConfig] = []
-    env_vars: Sequence[EnvVarConfig] = []
+    dependencies: Sequence[ModuleDependency] = []
+    env_vars: Sequence[EnvVar] = []
     deprecated: bool = False
 
 
-class ModuleConfig(BaseModel, extra="forbid"):
-    metadata: ModuleMetadataConfig
-    applications: list[ApplicationConfig]
+class Module(BaseModel, extra="forbid"):
+    metadata: ModuleMetadata
+    applications: list[Application]

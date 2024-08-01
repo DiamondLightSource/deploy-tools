@@ -2,11 +2,11 @@ from typing import TypeAlias
 
 from pydantic import BaseModel
 
-from .module import ModuleConfig
+from .module import Module
 
-ModulesByVersion: TypeAlias = dict[str, ModuleConfig]
+ModulesByVersion: TypeAlias = dict[str, Module]
 ModulesByNameAndVersion: TypeAlias = dict[str, ModulesByVersion]
 
 
-class DeploymentConfig(BaseModel, extra="forbid"):
+class Deployment(BaseModel, extra="forbid"):
     modules: ModulesByNameAndVersion

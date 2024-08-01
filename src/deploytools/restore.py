@@ -1,5 +1,5 @@
 from .layout import Layout
-from .models.module import ModuleConfig
+from .models.module import Module
 from .module import get_deployed_module_versions, move_modulefile
 
 
@@ -7,7 +7,7 @@ class RestoreError(Exception):
     pass
 
 
-def check_restore(modules: list[ModuleConfig], layout: Layout):
+def check_restore(modules: list[Module], layout: Layout):
     deprecated_modulefiles_root = layout.get_modulefiles_root(deprecated=True)
     deployed_versions = get_deployed_module_versions(layout)
 
@@ -27,7 +27,7 @@ def check_restore(modules: list[ModuleConfig], layout: Layout):
             )
 
 
-def restore(modules: list[ModuleConfig], layout: Layout):
+def restore(modules: list[Module], layout: Layout):
     """Restore a previously deprecated module."""
     deployment_modulefiles_root = layout.get_modulefiles_root()
     deprecated_modulefiles_root = layout.get_modulefiles_root(deprecated=True)

@@ -2,8 +2,8 @@ import subprocess
 from itertools import chain
 
 from .layout import Layout
-from .models.apptainer import ApptainerConfig
-from .models.module import ModuleConfig, ModuleMetadataConfig
+from .models.apptainer import Apptainer
+from .models.module import Module, ModuleMetadata
 from .templater import Templater, TemplateType
 
 
@@ -19,7 +19,7 @@ class ApptainerCreator:
         self._entrypoints_root = layout.get_entrypoints_root()
         self._sif_root = layout.get_sif_files_root()
 
-    def generate_sif_file(self, config: ApptainerConfig, module: ModuleConfig):
+    def generate_sif_file(self, config: Apptainer, module: Module):
         sif_file = self.get_sif_file_path(config, module.metadata)
         sif_file.parent.mkdir(parents=True, exist_ok=True)
 
@@ -34,7 +34,7 @@ class ApptainerCreator:
         commands = ["apptainer", "pull", sif_file, container_path]
         subprocess.run(commands, check=True)
 
-    def create_entrypoint_files(self, config: ApptainerConfig, module: ModuleConfig):
+    def create_entrypoint_files(self, config: Apptainer, module: Module):
         entrypoints_folder = (
             self._entrypoints_root / module.metadata.name / module.metadata.version
         )
@@ -66,9 +66,7 @@ class ApptainerCreator:
 
             self._templater.create(entrypoint_file, template, params, executable=True)
 
-    def get_sif_file_path(
-        self, config: ApptainerConfig, metadata: ModuleMetadataConfig
-    ):
+    def get_sif_file_path(self, config: Apptainer, metadata: ModuleMetadata):
         sif_parent = self._sif_root / metadata.name / metadata.version
         sif_file = sif_parent / f"{config.name}:{config.version}.sif"
 

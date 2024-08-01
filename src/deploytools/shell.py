@@ -1,6 +1,6 @@
 from .layout import Layout
-from .models.shell import ShellConfig
-from .module import ModuleConfig
+from .models.shell import Shell
+from .module import Module
 from .templater import Templater, TemplateType
 
 
@@ -13,8 +13,8 @@ class ShellCreator:
 
     def create_entrypoint_file(
         self,
-        config: ShellConfig,
-        module: ModuleConfig,
+        config: Shell,
+        module: Module,
     ):
         template = self._templater.get_template(TemplateType.SHELL_ENTRYPOINT)
 

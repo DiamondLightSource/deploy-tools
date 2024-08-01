@@ -3,7 +3,7 @@ import shutil
 from pathlib import Path
 
 from .layout import Layout
-from .models.module import ModuleConfig
+from .models.module import Module
 from .module import get_deployed_module_versions
 
 
@@ -11,14 +11,14 @@ class RemovalError(Exception):
     pass
 
 
-def check_remove(modules: list[ModuleConfig], layout: Layout):
+def check_remove(modules: list[Module], layout: Layout):
     for module in modules:
         name = module.metadata.name
         version = module.metadata.version
         check_module_and_version_in_deprecated(name, version, layout)
 
 
-def remove(modules: list[ModuleConfig], layout: Layout):
+def remove(modules: list[Module], layout: Layout):
     """Remove a deprecated module."""
     for module in modules:
         name = module.metadata.name
