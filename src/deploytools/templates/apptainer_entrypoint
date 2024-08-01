@@ -1,10 +1,35 @@
 #! /bin/bash
 
-export DEPLOYTOOLS_MOUNTS="{{ mounts }}"
-export DEPLOYTOOLS_APPTAINER_ARGS="{{ apptainer_args }}"
-export DEPLOYTOOLS_SIF_NAME="{{ sif_name }}"
-export DEPLOYTOOLS_SIF_VERSION="{{ sif_version }}"
-export DEPLOYTOOLS_COMMAND="{{ command }}"
-export DEPLOYTOOLS_COMMAND_ARGS="{{ command_args }}"
+# Arguments:
+# ${@} = Remaining args to pass to the command
 
-$(dirname "$0")/apptainer-launch "${@}"
+# Halt on error
+set -e
+
+# Mounts for container
+mounts="{{ mounts }}"
+# Additional arguments for apptainer
+apptainer_args="{{ apptainer_args }}"
+# Sif file path
+sif_file="{{ sif_file }}"
+# Command to run in container
+command="{{ command }}"
+# Options and arguments to pass to command
+command_args="{{ command_args }}"
+
+# Raise an error if sif file does not exist
+if [[ ! -f ${sif_file} ]]; then
+    echo "ERROR: sif file ${sif_file} does not exist" 1>&2
+    exit 1
+fi
+
+# Set up mounts if any have been configured
+if [[ ! -z ${mounts} ]]; then
+    opts="-B ${mounts}"
+fi
+
+opts=${opts}" --env DISPLAY=${DISPLAY}"
+opts=${opts}" ${apptainer_args}"
+
+set -x
+apptainer exec ${opts} ${sif_file} ${command} ${command_args} "${@}"

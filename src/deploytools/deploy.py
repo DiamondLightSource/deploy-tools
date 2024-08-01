@@ -34,8 +34,6 @@ def create_entrypoints(modules: list[ModuleConfig], deploy_folder: Path):
     shell_creator = ShellCreator(deploy_folder)
 
     for module in modules:
-        includes_apptainer = False
-
         for application in module.applications:
             config = application.app_config
 
@@ -43,11 +41,7 @@ def create_entrypoints(modules: list[ModuleConfig], deploy_folder: Path):
                 case ApptainerConfig():
                     apptainer_creator.generate_sif_file(config, module)
                     apptainer_creator.create_entrypoint_files(config, module)
-                    includes_apptainer = True
                 case CommandConfig():
                     command_creator.create_entrypoint_file(config, module)
                 case ShellConfig():
                     shell_creator.create_entrypoint_file(config, module)
-
-        if includes_apptainer:
-            apptainer_creator.create_apptainer_launch_file(module)
