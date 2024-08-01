@@ -9,8 +9,7 @@ from .deprecate import deprecate
 from .models.load import load_deployment
 from .remove import remove
 from .restore import restore
-from .validate import check_actions
-from .validation import UpdateGroup, validate_deployment
+from .validate import UpdateGroup, check_actions, validate_deployment
 
 
 def sync(
