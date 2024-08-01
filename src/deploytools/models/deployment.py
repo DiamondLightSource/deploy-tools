@@ -8,5 +8,5 @@ ModulesByVersion: TypeAlias = dict[str, ModuleConfig]
 ModulesByNameAndVersion: TypeAlias = dict[str, ModulesByVersion]
 
 
-class DeploymentConfig(BaseModel):
+class DeploymentConfig(BaseModel, extra="forbid"):
     modules: ModulesByNameAndVersion

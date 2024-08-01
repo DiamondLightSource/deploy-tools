@@ -1,6 +1,7 @@
 {
   "$defs": {
     "ApplicationConfig": {
+      "additionalProperties": false,
       "properties": {
         "app_config": {
           "discriminator": {
@@ -32,6 +33,7 @@
       "type": "object"
     },
     "ApptainerConfig": {
+      "additionalProperties": false,
       "properties": {
         "app_type": {
           "const": "apptainer",
@@ -74,6 +76,7 @@
       "type": "object"
     },
     "CommandConfig": {
+      "additionalProperties": false,
       "properties": {
         "app_type": {
           "const": "command",
@@ -106,6 +109,7 @@
       "type": "object"
     },
     "ContainerImageConfig": {
+      "additionalProperties": false,
       "properties": {
         "path": {
           "title": "Path",
@@ -124,6 +128,7 @@
       "type": "object"
     },
     "EntrypointConfig": {
+      "additionalProperties": false,
       "properties": {
         "executable_name": {
           "title": "Executable Name",
@@ -152,6 +157,7 @@
       "type": "object"
     },
     "EntrypointOptionsConfig": {
+      "additionalProperties": false,
       "properties": {
         "apptainer_args": {
           "default": "",
@@ -176,6 +182,7 @@
       "type": "object"
     },
     "EnvVarConfig": {
+      "additionalProperties": false,
       "properties": {
         "name": {
           "title": "Name",
@@ -194,6 +201,7 @@
       "type": "object"
     },
     "ModuleDependencyConfig": {
+      "additionalProperties": false,
       "properties": {
         "name": {
           "title": "Name",
@@ -219,6 +227,7 @@
       "type": "object"
     },
     "ModuleMetadataConfig": {
+      "additionalProperties": false,
       "properties": {
         "name": {
           "title": "Name",
@@ -270,6 +279,7 @@
       "type": "object"
     },
     "ShellConfig": {
+      "additionalProperties": false,
       "properties": {
         "app_type": {
           "const": "shell",
@@ -300,6 +310,7 @@
       "type": "object"
     }
   },
+  "additionalProperties": false,
   "properties": {
     "metadata": {
       "$ref": "#/$defs/ModuleMetadataConfig"

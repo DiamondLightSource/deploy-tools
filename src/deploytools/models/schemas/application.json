@@ -1,6 +1,7 @@
 {
   "$defs": {
     "ApptainerConfig": {
+      "additionalProperties": false,
       "properties": {
         "app_type": {
           "const": "apptainer",
@@ -43,6 +44,7 @@
       "type": "object"
     },
     "CommandConfig": {
+      "additionalProperties": false,
       "properties": {
         "app_type": {
           "const": "command",
@@ -75,6 +77,7 @@
       "type": "object"
     },
     "ContainerImageConfig": {
+      "additionalProperties": false,
       "properties": {
         "path": {
           "title": "Path",
@@ -93,6 +96,7 @@
       "type": "object"
     },
     "EntrypointConfig": {
+      "additionalProperties": false,
       "properties": {
         "executable_name": {
           "title": "Executable Name",
@@ -121,6 +125,7 @@
       "type": "object"
     },
     "EntrypointOptionsConfig": {
+      "additionalProperties": false,
       "properties": {
         "apptainer_args": {
           "default": "",
@@ -145,6 +150,7 @@
       "type": "object"
     },
     "ShellConfig": {
+      "additionalProperties": false,
       "properties": {
         "app_type": {
           "const": "shell",
@@ -175,6 +181,7 @@
       "type": "object"
     }
   },
+  "additionalProperties": false,
   "properties": {
     "app_config": {
       "discriminator": {

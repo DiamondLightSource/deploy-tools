@@ -7,7 +7,7 @@ from .command import CommandConfig
 from .shell import ShellConfig
 
 
-class ApplicationConfig(BaseModel):
+class ApplicationConfig(BaseModel, extra="forbid"):
     app_config: Union[ApptainerConfig, CommandConfig, ShellConfig] = Field(
         ..., discriminator="app_type"
     )
