@@ -84,11 +84,11 @@ def display_updates(update_group: UpdateGroup):
         "removed": update_group.removed,
     }
 
-    for description, modules in display_config.items():
+    for action, modules in display_config.items():
         if not modules:
-            print(f"No modules to be {description}.")
+            print(f"No modules to be {action}.")
         else:
-            print(f"Modules to be {description}:")
+            print(f"Modules to be {action}:")
 
         for module in modules:
             print(f"{module.metadata.name}/{module.metadata.version}")
