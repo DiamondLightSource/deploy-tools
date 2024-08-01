@@ -19,8 +19,8 @@ class ApptainerCreator:
         self._entrypoints_root = layout.get_entrypoints_root()
         self._sif_root = layout.get_sif_files_root()
 
-    def generate_sif_file(self, config: Apptainer, module: Module):
-        sif_file = self.get_sif_file_path(config, module.metadata)
+    def _generate_sif_file(self, config: Apptainer, module: Module):
+        sif_file = self._get_sif_file_path(config, module.metadata)
         sif_file.parent.mkdir(parents=True, exist_ok=True)
 
         if not sif_file.is_absolute():
@@ -35,13 +35,15 @@ class ApptainerCreator:
         subprocess.run(commands, check=True)
 
     def create_entrypoint_files(self, config: Apptainer, module: Module):
+        self._generate_sif_file(config, module)
+
         entrypoints_folder = (
             self._entrypoints_root / module.metadata.name / module.metadata.version
         )
         entrypoints_folder.mkdir(parents=True, exist_ok=True)
         template = self._templater.get_template(TemplateType.APPTAINER_ENTRYPOINT)
 
-        sif_file = self.get_sif_file_path(config, module.metadata)
+        sif_file = self._get_sif_file_path(config, module.metadata)
 
         global_options = config.global_options
         for entrypoint in config.entrypoints:
@@ -66,7 +68,7 @@ class ApptainerCreator:
 
             self._templater.create(entrypoint_file, template, params, executable=True)
 
-    def get_sif_file_path(self, config: Apptainer, metadata: ModuleMetadata):
+    def _get_sif_file_path(self, config: Apptainer, metadata: ModuleMetadata):
         sif_parent = self._sif_root / metadata.name / metadata.version
         sif_file = sif_parent / f"{config.name}:{config.version}.sif"
 

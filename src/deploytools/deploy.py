@@ -19,32 +19,23 @@ def check_deploy(layout: Layout):
         raise DeployError(f"Deployment root does not exist:\n{deployment_root}")
 
 
-def deploy(modules_list: list[Module], layout: Layout):
+def deploy(modules: list[Module], layout: Layout) -> None:
     """Deploy modules from the provided list."""
-    if modules_list:
-        create_entrypoints(modules_list, layout)
-        create_module_files(modules_list, layout)
+    if not modules:
+        return
 
-
-def create_module_files(modules: list[Module], layout: Layout):
-    creator = ModuleCreator(layout)
-
-    for module in modules:
-        creator.create_module_file(module)
-
-
-def create_entrypoints(modules: list[Module], layout: Layout):
+    module_creator = ModuleCreator(layout)
     apptainer_creator = ApptainerCreator(layout)
     command_creator = CommandCreator(layout)
     shell_creator = ShellCreator(layout)
 
     for module in modules:
+        module_creator.create_module_file(module)
+
         for application in module.applications:
             config = application.app_config
-
             match config:
                 case Apptainer():
-                    apptainer_creator.generate_sif_file(config, module)
                     apptainer_creator.create_entrypoint_files(config, module)
                 case Command():
                     command_creator.create_entrypoint_file(config, module)
