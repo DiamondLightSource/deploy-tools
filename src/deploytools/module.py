@@ -1,3 +1,4 @@
+import shutil
 from pathlib import Path
 
 from jinja2 import Environment, PackageLoader
@@ -39,3 +40,17 @@ class ModuleCreator:
 
         with open(module_file, "w") as f:
             f.write(template.render(**parameters))
+
+
+def move_modulefile(name: str, version: str, src_folder: Path, dest_folder: Path):
+    src_path = src_folder / DEPLOYMENT_MODULEFILES_DIR / name / version
+
+    dest_path = dest_folder / DEPLOYMENT_MODULEFILES_DIR / name / version
+    dest_path.parent.mkdir(parents=True, exist_ok=True)
+    shutil.move(src_path, dest_path)
+
+    try:
+        # Delete the module name directory if it is empty
+        src_path.parent.rmdir()
+    except OSError:
+        pass

@@ -3,10 +3,10 @@ from pathlib import Path
 from .deployment import (
     DEPLOYMENT_MODULEFILES_DIR,
     get_deployed_versions,
-    move_modulefile,
 )
 from .deprecate import DEPRECATED_DIR
 from .models.module import ModuleConfig
+from .module import move_modulefile
 
 
 class RestoreError(Exception):

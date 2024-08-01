@@ -1,4 +1,3 @@
-import shutil
 from collections import defaultdict
 from pathlib import Path
 from typing import TypeAlias
@@ -54,17 +53,3 @@ def get_deployed_versions(deployment_root: Path) -> ModuleVersionsByName:
             previous_modules[module_folder.name].append(version_path.name)
 
     return previous_modules
-
-
-def move_modulefile(name: str, version: str, src_folder: Path, dest_folder: Path):
-    src_path = src_folder / DEPLOYMENT_MODULEFILES_DIR / name / version
-
-    dest_path = dest_folder / DEPLOYMENT_MODULEFILES_DIR / name / version
-    dest_path.parent.mkdir(parents=True, exist_ok=True)
-    shutil.move(src_path, dest_path)
-
-    try:
-        # Delete the module name directory if it is empty
-        src_path.parent.rmdir()
-    except OSError:
-        pass

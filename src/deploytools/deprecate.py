@@ -3,9 +3,9 @@ from pathlib import Path
 from .deployment import (
     DEPLOYMENT_MODULEFILES_DIR,
     get_deployed_versions,
-    move_modulefile,
 )
 from .models.module import ModuleConfig
+from .module import move_modulefile
 
 DEPRECATED_DIR = "deprecated"
 
