@@ -10,13 +10,13 @@ from .module import ModuleCreator
 from .shell import ShellCreator
 
 
-class RemovalError(Exception):
+class DeployError(Exception):
     pass
 
 
 def check_deploy(deployment_root: Path):
     if not deployment_root.exists():
-        raise RemovalError(f"Deployment root does not exist:\n{deployment_root}")
+        raise DeployError(f"Deployment root does not exist:\n{deployment_root}")
 
 
 def deploy(modules_list: list[ModuleConfig], deplyment_root: Path):
