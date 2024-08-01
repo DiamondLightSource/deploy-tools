@@ -127,34 +127,16 @@
       "title": "ContainerImage",
       "type": "object"
     },
-    "DefaultVersion": {
-      "additionalProperties": false,
-      "properties": {
-        "name": {
-          "title": "Name",
-          "type": "string"
-        },
-        "version": {
-          "title": "Version",
-          "type": "string"
-        }
-      },
-      "required": [
-        "name",
-        "version"
-      ],
-      "title": "DefaultVersion",
-      "type": "object"
-    },
     "DeploymentSettings": {
       "additionalProperties": false,
       "properties": {
         "default_versions": {
-          "items": {
-            "$ref": "#/$defs/DefaultVersion"
+          "additionalProperties": {
+            "type": "string"
           },
+          "default": {},
           "title": "Default Versions",
-          "type": "array"
+          "type": "object"
         }
       },
       "title": "DeploymentSettings",

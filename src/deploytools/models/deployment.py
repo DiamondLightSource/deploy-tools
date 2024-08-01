@@ -1,20 +1,16 @@
 from typing import TypeAlias
 
-from pydantic import BaseModel, Field
+from pydantic import BaseModel
 
 from .module import Module
 
 ModulesByVersion: TypeAlias = dict[str, Module]
 ModulesByNameAndVersion: TypeAlias = dict[str, ModulesByVersion]
-
-
-class DefaultVersion(BaseModel, extra="forbid"):
-    name: str
-    version: str
+DefaultVersionsByName: TypeAlias = dict[str, str]
 
 
 class DeploymentSettings(BaseModel, extra="forbid"):
-    default_versions: list[DefaultVersion] = Field(default_factory=list)
+    default_versions: DefaultVersionsByName = {}
 
 
 class Deployment(BaseModel, extra="forbid"):

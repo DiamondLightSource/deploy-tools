@@ -4,10 +4,11 @@ from pathlib import Path
 import typer
 from typing_extensions import Annotated
 
+from .default_versions import check_default_versions
 from .deploy import check_deploy
 from .deprecate import check_deprecate
 from .layout import Layout
-from .models.deployment import Deployment, ModulesByNameAndVersion
+from .models.deployment import Deployment, DeploymentSettings, ModulesByNameAndVersion
 from .models.load import load_deployment
 from .models.module import Module
 from .remove import check_remove
@@ -55,16 +56,24 @@ def validate(
     layout = Layout(deployment_root)
     update_group = validate_deployment(deployment, layout)
 
-    check_actions(update_group, layout)
+    check_actions(update_group, layout, deployment.settings)
 
     display_updates(update_group)
 
 
-def check_actions(update_group: UpdateGroup, layout: Layout):
+def check_actions(
+    update_group: UpdateGroup, layout: Layout, settings: DeploymentSettings
+):
     check_deploy(layout)
     check_deprecate(update_group.deprecated, layout)
     check_restore(update_group.restored, layout)
     check_remove(update_group.removed, layout)
+    check_default_versions(
+        settings.default_versions,
+        update_group.added + update_group.restored,
+        update_group.deprecated,
+        layout,
+    )
 
 
 def display_updates(update_group: UpdateGroup):

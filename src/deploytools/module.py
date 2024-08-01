@@ -4,10 +4,13 @@ from pathlib import Path
 from typing import TypeAlias
 
 from .layout import Layout
+from .models.deployment import DefaultVersionsByName
 from .models.module import Module
 from .templater import Templater, TemplateType
 
 ModuleVersionsByName: TypeAlias = dict[str, list[str]]
+
+VERSION_FILENAME = ".version"
 
 
 class ModuleCreator:
@@ -15,6 +18,7 @@ class ModuleCreator:
 
     def __init__(self, layout: Layout):
         self._templater = Templater()
+        self._layout = layout
         self._modulefiles_root = layout.get_modulefiles_root()
         self._entrypoints_root = layout.get_entrypoints_root()
 
@@ -40,6 +44,25 @@ class ModuleCreator:
         module_file.parent.mkdir(exist_ok=True, parents=True)
 
         self._templater.create(module_file, template, params)
+
+    def update_default_versions(
+        self, default_versions: DefaultVersionsByName, layout: Layout
+    ):
+        template = self._templater.get_template(TemplateType.MODULEFILE_VERSION)
+        deployed_modules = get_deployed_module_versions(layout)
+
+        for name in deployed_modules:
+            version_file = self._modulefiles_root / name / VERSION_FILENAME
+
+            if name in default_versions:
+                version = default_versions[name]
+                params = {
+                    "version": version,
+                }
+
+                self._templater.create(version_file, template, params)
+            else:
+                version_file.unlink(missing_ok=True)
 
 
 def move_modulefile(name: str, version: str, src_folder: Path, dest_folder: Path):
