@@ -50,10 +50,6 @@ def validate(
     """Validate deployment configuration and print a list of modules for deployment.
 
     This is the same validation that the deploytools sync command uses."""
-    assert (
-        deployment_root.exists()
-    ), f"Deployment folder does not exist:\n{deployment_root}"
-
     deployment = load_deployment(config_folder)
     update_group = validate_deployment(deployment, deployment_root)
 
