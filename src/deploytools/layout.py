@@ -1,13 +1,8 @@
 """Constants describing the layout of the deployment area."""
 
-DEPLOYMENT_ENTRYPOINTS_DIR = "entrypoints"
-DEPLOYMENT_MODULEFILES_DIR = "modulefiles"
-DEPLOYMENT_SIF_FILES_DIR = "sif_files"
-
-DEPLOYMENT_SUBDIRS = [
-    DEPLOYMENT_ENTRYPOINTS_DIR,
-    DEPLOYMENT_MODULEFILES_DIR,
-    DEPLOYMENT_SIF_FILES_DIR,
-]
+ENTRYPOINTS_ROOT_NAME = "entrypoints"
+MODULEFILES_ROOT_NAME = "modulefiles"
+SIF_FILES_ROOT_NAME = "sif_files"
+DEPRECATED_ROOT_NAME = "deprecated"
 
 DEPLOYMENT_SNAPSHOT_FILENAME = "deployment.yaml"

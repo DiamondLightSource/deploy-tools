@@ -2,9 +2,9 @@ from pathlib import Path
 
 import yaml
 
-from deploytools.layout import DEPLOYMENT_SNAPSHOT_FILENAME
-from deploytools.models.deployment import DeploymentConfig
-from deploytools.models.load import load_from_yaml
+from .layout import DEPLOYMENT_SNAPSHOT_FILENAME
+from .models.deployment import DeploymentConfig
+from .models.load import load_from_yaml
 
 
 class SnapshotError(Exception):

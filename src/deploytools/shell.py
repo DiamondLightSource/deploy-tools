@@ -1,6 +1,6 @@
 from pathlib import Path
 
-from .layout import DEPLOYMENT_ENTRYPOINTS_DIR
+from .layout import ENTRYPOINTS_ROOT_NAME
 from .models.shell import ShellConfig
 from .module import ModuleConfig
 from .templater import Templater, TemplateType
@@ -11,7 +11,7 @@ class ShellCreator:
 
     def __init__(self, deployment_root: Path):
         self._templater = Templater()
-        self._entrypoints_root = deployment_root / DEPLOYMENT_ENTRYPOINTS_DIR
+        self._entrypoints_root = deployment_root / ENTRYPOINTS_ROOT_NAME
 
     def create_entrypoint_file(
         self,

@@ -1,12 +1,11 @@
 from pathlib import Path
 
 from .layout import (
-    DEPLOYMENT_MODULEFILES_DIR,
+    DEPRECATED_ROOT_NAME,
+    MODULEFILES_ROOT_NAME,
 )
 from .models.module import ModuleConfig
 from .module import get_deployed_module_versions, move_modulefile
-
-DEPRECATED_DIR = "deprecated"
 
 
 class DeprecateError(Exception):
@@ -14,7 +13,7 @@ class DeprecateError(Exception):
 
 
 def check_deprecate(modules: list[ModuleConfig], deployment_root: Path):
-    deprecated_root = deployment_root / DEPRECATED_DIR
+    deprecated_root = deployment_root / DEPRECATED_ROOT_NAME
 
     for module in modules:
         name = module.metadata.name
@@ -28,7 +27,7 @@ def deprecate(modules: list[ModuleConfig], deployment_root: Path):
     """Deprecate a list of modules.
 
     This will move the modulefile to a 'deprecated' directory."""
-    deprecated_root = deployment_root / DEPRECATED_DIR
+    deprecated_root = deployment_root / DEPRECATED_ROOT_NAME
 
     for module in modules:
         name = module.metadata.name
@@ -50,7 +49,7 @@ def check_module_and_version_exist_in_deployment(
 def check_deprecated_free_for_module_and_version(
     name: str, version: str, deprecated_root: Path
 ):
-    module_file = deprecated_root / DEPLOYMENT_MODULEFILES_DIR / name / version
+    module_file = deprecated_root / MODULEFILES_ROOT_NAME / name / version
     if module_file.exists():
         raise DeprecateError(
             f"Cannot deprecate {name}/{version}. Path already exists:\n{module_file}"

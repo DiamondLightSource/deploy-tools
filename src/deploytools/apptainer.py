@@ -2,7 +2,7 @@ import subprocess
 from itertools import chain
 from pathlib import Path
 
-from .layout import DEPLOYMENT_ENTRYPOINTS_DIR, DEPLOYMENT_SIF_FILES_DIR
+from .layout import ENTRYPOINTS_ROOT_NAME, SIF_FILES_ROOT_NAME
 from .models.apptainer import ApptainerConfig
 from .models.module import ModuleConfig, ModuleMetadataConfig
 from .templater import Templater, TemplateType
@@ -17,8 +17,8 @@ class ApptainerCreator:
 
     def __init__(self, deployment_root: Path):
         self._templater = Templater()
-        self._entrypoints_root = deployment_root / DEPLOYMENT_ENTRYPOINTS_DIR
-        self._sif_root = deployment_root / DEPLOYMENT_SIF_FILES_DIR
+        self._entrypoints_root = deployment_root / ENTRYPOINTS_ROOT_NAME
+        self._sif_root = deployment_root / SIF_FILES_ROOT_NAME
 
     def generate_sif_file(self, config: ApptainerConfig, module: ModuleConfig):
         sif_file = self.get_sif_file_path(config, module.metadata)

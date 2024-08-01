@@ -4,8 +4,8 @@ from pathlib import Path
 from typing import TypeAlias
 
 from .layout import (
-    DEPLOYMENT_ENTRYPOINTS_DIR,
-    DEPLOYMENT_MODULEFILES_DIR,
+    ENTRYPOINTS_ROOT_NAME,
+    MODULEFILES_ROOT_NAME,
 )
 from .models.module import ModuleConfig
 from .templater import Templater, TemplateType
@@ -18,8 +18,8 @@ class ModuleCreator:
 
     def __init__(self, deployment_root: Path):
         self._templater = Templater()
-        self._modulefiles_root = deployment_root / DEPLOYMENT_MODULEFILES_DIR
-        self._entrypoints_root = deployment_root / DEPLOYMENT_ENTRYPOINTS_DIR
+        self._modulefiles_root = deployment_root / MODULEFILES_ROOT_NAME
+        self._entrypoints_root = deployment_root / ENTRYPOINTS_ROOT_NAME
 
     def create_module_file(self, module: ModuleConfig):
         template = self._templater.get_template(TemplateType.MODULEFILE)
@@ -46,9 +46,9 @@ class ModuleCreator:
 
 
 def move_modulefile(name: str, version: str, src_folder: Path, dest_folder: Path):
-    src_path = src_folder / DEPLOYMENT_MODULEFILES_DIR / name / version
+    src_path = src_folder / MODULEFILES_ROOT_NAME / name / version
 
-    dest_path = dest_folder / DEPLOYMENT_MODULEFILES_DIR / name / version
+    dest_path = dest_folder / MODULEFILES_ROOT_NAME / name / version
     dest_path.parent.mkdir(parents=True, exist_ok=True)
     shutil.move(src_path, dest_path)
 
@@ -60,7 +60,7 @@ def move_modulefile(name: str, version: str, src_folder: Path, dest_folder: Path
 
 
 def get_deployed_module_versions(deployment_root: Path) -> ModuleVersionsByName:
-    modulefiles_root = deployment_root / DEPLOYMENT_MODULEFILES_DIR
+    modulefiles_root = deployment_root / MODULEFILES_ROOT_NAME
     previous_modules: ModuleVersionsByName = defaultdict(list)
 
     for module_folder in modulefiles_root.glob("*"):

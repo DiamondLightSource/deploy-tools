@@ -2,18 +2,18 @@ import os
 import shutil
 from pathlib import Path
 
-from .deprecate import DEPRECATED_DIR
 from .layout import (
-    DEPLOYMENT_ENTRYPOINTS_DIR,
-    DEPLOYMENT_MODULEFILES_DIR,
-    DEPLOYMENT_SIF_FILES_DIR,
+    DEPRECATED_ROOT_NAME,
+    ENTRYPOINTS_ROOT_NAME,
+    MODULEFILES_ROOT_NAME,
+    SIF_FILES_ROOT_NAME,
 )
 from .models.module import ModuleConfig
 from .module import get_deployed_module_versions
 
 REMOVE_SUBDIRS = [
-    DEPLOYMENT_ENTRYPOINTS_DIR,
-    DEPLOYMENT_SIF_FILES_DIR,
+    ENTRYPOINTS_ROOT_NAME,
+    SIF_FILES_ROOT_NAME,
 ]
 
 
@@ -22,7 +22,7 @@ class RemovalError(Exception):
 
 
 def check_remove(modules: list[ModuleConfig], deployment_root: Path):
-    deprecated_root = deployment_root / DEPRECATED_DIR
+    deprecated_root = deployment_root / DEPRECATED_ROOT_NAME
 
     for module in modules:
         name = module.metadata.name
@@ -32,7 +32,7 @@ def check_remove(modules: list[ModuleConfig], deployment_root: Path):
 
 def remove(modules: list[ModuleConfig], deployment_root: Path):
     """Remove a deprecated module."""
-    deprecated_root = deployment_root / DEPRECATED_DIR
+    deprecated_root = deployment_root / DEPRECATED_ROOT_NAME
 
     for module in modules:
         name = module.metadata.name
@@ -53,7 +53,7 @@ def check_module_and_version_in_deprecated(
 def remove_deprecated_module(
     name: str, version: str, deprecated_root: Path, deployment_root: Path
 ):
-    module_file = deprecated_root / DEPLOYMENT_MODULEFILES_DIR / name / version
+    module_file = deprecated_root / MODULEFILES_ROOT_NAME / name / version
     os.remove(module_file)
     delete_folder_if_empty(module_file.parent)
 
