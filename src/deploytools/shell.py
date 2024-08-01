@@ -1,19 +1,16 @@
 from pathlib import Path
 
-from jinja2 import Environment, PackageLoader
-
 from .deployment import DEPLOYMENT_ENTRYPOINTS_DIR
 from .models.shell import ShellConfig
 from .module import ModuleConfig
-
-SHELL_ENTRYPOINT_TEMPLATE = "shell_entrypoint"
+from .templater import Templater, TemplateType
 
 
 class ShellCreator:
     """Class for creating 'shell' entrypoints, which run bash scripts."""
 
     def __init__(self, deployment_root: Path):
-        self._env = Environment(loader=PackageLoader("deploytools"))
+        self._templater = Templater()
         self._entrypoints_root = deployment_root / DEPLOYMENT_ENTRYPOINTS_DIR
 
     def create_entrypoint_file(
@@ -21,7 +18,7 @@ class ShellCreator:
         config: ShellConfig,
         module: ModuleConfig,
     ):
-        template = self._env.get_template(SHELL_ENTRYPOINT_TEMPLATE)
+        template = self._templater.get_template(TemplateType.SHELL_ENTRYPOINT)
 
         entrypoints_folder = (
             self._entrypoints_root / module.metadata.name / module.metadata.version
@@ -33,7 +30,4 @@ class ShellCreator:
             "script": config.script,
         }
 
-        with open(entrypoint_file, "w") as f:
-            f.write(template.render(**parameters))
-
-        entrypoint_file.chmod(0o755)
+        self._templater.create(entrypoint_file, template, parameters, executable=True)

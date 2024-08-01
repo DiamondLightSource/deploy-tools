@@ -1,19 +1,16 @@
 from pathlib import Path
 
-from jinja2 import Environment, PackageLoader
-
 from .deployment import DEPLOYMENT_ENTRYPOINTS_DIR
 from .models.command import CommandConfig
 from .module import ModuleConfig
-
-COMMAND_ENTRYPOINT_TEMPLATE = "command_entrypoint"
+from .templater import Templater, TemplateType
 
 
 class CommandCreator:
     """Class for creating 'command' entrypoints, which run an executable on a path."""
 
     def __init__(self, deployment_root: Path):
-        self._env = Environment(loader=PackageLoader("deploytools"))
+        self._templater = Templater()
         self._entrypoints_root = deployment_root / DEPLOYMENT_ENTRYPOINTS_DIR
 
     def create_entrypoint_file(
@@ -21,7 +18,7 @@ class CommandCreator:
         config: CommandConfig,
         module: ModuleConfig,
     ):
-        template = self._env.get_template(COMMAND_ENTRYPOINT_TEMPLATE)
+        template = self._templater.get_template(TemplateType.COMMAND_ENTRYPOINT)
 
         entrypoints_folder = (
             self._entrypoints_root / module.metadata.name / module.metadata.version
@@ -29,12 +26,9 @@ class CommandCreator:
         entrypoints_folder.mkdir(parents=True, exist_ok=True)
         entrypoint_file = entrypoints_folder / config.name
 
-        parameters = {
+        params = {
             "command_path": config.command_path,
             "command_args": config.command_args,
         }
 
-        with open(entrypoint_file, "w") as f:
-            f.write(template.render(**parameters))
-
-        entrypoint_file.chmod(0o755)
+        self._templater.create(entrypoint_file, template, params, executable=True)

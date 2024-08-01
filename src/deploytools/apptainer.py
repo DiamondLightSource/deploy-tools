@@ -2,13 +2,10 @@ import subprocess
 from itertools import chain
 from pathlib import Path
 
-from jinja2 import Environment, PackageLoader
-
 from .deployment import DEPLOYMENT_ENTRYPOINTS_DIR, DEPLOYMENT_SIF_FILES_DIR
 from .models.apptainer import ApptainerConfig
 from .models.module import ModuleConfig, ModuleMetadataConfig
-
-APPTAINER_ENTRYPOINT_TEMPLATE = "apptainer_entrypoint"
+from .templater import Templater, TemplateType
 
 
 class ApptainerError(Exception):
@@ -19,7 +16,7 @@ class ApptainerCreator:
     """Class for creating apptainer entrypoints using a specified image and command."""
 
     def __init__(self, deployment_root: Path):
-        self._env = Environment(loader=PackageLoader("deploytools"))
+        self._templater = Templater()
         self._entrypoints_root = deployment_root / DEPLOYMENT_ENTRYPOINTS_DIR
         self._sif_root = deployment_root / DEPLOYMENT_SIF_FILES_DIR
 
@@ -43,7 +40,7 @@ class ApptainerCreator:
             self._entrypoints_root / module.metadata.name / module.metadata.version
         )
         entrypoints_folder.mkdir(parents=True, exist_ok=True)
-        template = self._env.get_template(APPTAINER_ENTRYPOINT_TEMPLATE)
+        template = self._templater.get_template(TemplateType.APPTAINER_ENTRYPOINT)
 
         sif_file = self.get_sif_file_path(config, module.metadata)
 
@@ -60,7 +57,7 @@ class ApptainerCreator:
             command_args = f"{global_options.command_args} {options.command_args}"
             command_args.strip()
 
-            parameters = {
+            params = {
                 "mounts": mounts,
                 "apptainer_args": apptainer_args,
                 "sif_file": sif_file,
@@ -68,10 +65,7 @@ class ApptainerCreator:
                 "command_args": command_args,
             }
 
-            with open(entrypoint_file, "w") as f:
-                f.write(template.render(**parameters))
-
-            entrypoint_file.chmod(0o755)
+            self._templater.create(entrypoint_file, template, params, executable=True)
 
     def get_sif_file_path(
         self, config: ApptainerConfig, metadata: ModuleMetadataConfig
