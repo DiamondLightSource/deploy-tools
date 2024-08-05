@@ -1,6 +1,5 @@
 import os
 import shutil
-from pathlib import Path
 
 from .layout import Layout
 from .models.module import Module
@@ -37,18 +36,8 @@ def check_module_and_version_in_deprecated(name: str, version: str, layout: Layo
 def remove_deprecated_module(name: str, version: str, layout: Layout):
     module_file = layout.deprecated_modulefiles_root / name / version
     os.remove(module_file)
-    delete_folder_if_empty(module_file.parent)
 
     to_remove = [layout.entrypoints_root, layout.sif_files_root]
     for path in to_remove:
         src_path = path / name / version
         shutil.rmtree(src_path)
-
-        delete_folder_if_empty(src_path.parent)
-
-
-def delete_folder_if_empty(path: Path):
-    try:
-        path.rmdir()
-    except OSError:
-        pass

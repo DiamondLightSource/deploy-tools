@@ -41,3 +41,6 @@ class Layout:
     @property
     def snapshot_file(self) -> Path:
         return self._root / self.DEPLOYMENT_SNAPSHOT_FILENAME
+
+    def get_application_paths(self) -> list[Path]:
+        return [self.entrypoints_root, self.sif_files_root]

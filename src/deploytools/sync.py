@@ -10,6 +10,7 @@ from .layout import Layout
 from .models.deployment import DeploymentSettings
 from .models.load import load_deployment
 from .remove import remove
+from .remove_name_folders import remove_name_folders
 from .restore import restore
 from .snapshot import create_snapshot
 from .validate import UpdateGroup, check_actions, validate_deployment
@@ -52,4 +53,8 @@ def perform_actions(
     deprecate(update_group.deprecated, layout)
     restore(update_group.restored, layout)
     remove(update_group.removed, layout)
+
     apply_default_versions(settings.default_versions, layout)
+    remove_name_folders(
+        update_group.deprecated, update_group.restored, update_group.removed, layout
+    )
