@@ -53,10 +53,10 @@ class ApptainerCreator:
             mounts = ",".join(chain(global_options.mounts, options.mounts)).strip()
 
             apptainer_args = f"{global_options.apptainer_args} {options.apptainer_args}"
-            apptainer_args.strip()
+            apptainer_args = apptainer_args.strip()
 
             command_args = f"{global_options.command_args} {options.command_args}"
-            command_args.strip()
+            command_args = command_args.strip()
 
             params = {
                 "mounts": mounts,
