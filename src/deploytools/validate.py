@@ -85,10 +85,7 @@ def display_updates(update_group: UpdateGroup):
     }
 
     for action, modules in display_config.items():
-        if not modules:
-            print(f"No modules to be {action}.")
-        else:
-            print(f"Modules to be {action}:")
+        print(f"Modules to be {action}:")
 
         for module in modules:
             print(f"{module.metadata.name}/{module.metadata.version}")
@@ -98,12 +95,10 @@ def display_updates(update_group: UpdateGroup):
 
 def validate_deployment(deployment: Deployment, layout: Layout) -> UpdateGroup:
     last_deployment = load_snapshot(layout)
-    new_modules = deployment.modules
     old_modules = last_deployment.modules
+    new_modules = deployment.modules
 
-    update_group = get_update_group(old_modules, new_modules)
-
-    return update_group
+    return get_update_group(old_modules, new_modules)
 
 
 def get_update_group(
@@ -128,12 +123,9 @@ def get_update_group(
                     f"Module {name}/{version} modified without updating version."
                 )
 
-            if old_module.metadata.deprecated == new_module.metadata.deprecated:
-                continue
-
             if not old_module.metadata.deprecated and new_module.metadata.deprecated:
                 group.deprecated.append(new_module)
-            else:
+            elif old_module.metadata.deprecated and not new_module.metadata.deprecated:
                 group.restored.append(new_module)
 
     for name in old_modules:
@@ -148,7 +140,7 @@ def get_update_group(
     for module in group.removed:
         if not module.metadata.deprecated:
             raise ValidationError(
-                f"Module {module.metadata.name}/{module.metadata.version} removed"
+                f"Module {module.metadata.name}/{module.metadata.version} removed "
                 "without prior deprecation."
             )
 
@@ -156,10 +148,7 @@ def get_update_group(
 
 
 def is_modified(old_module: Module, new_module: Module):
-    old_copy = old_module.model_copy(deep=True)
     new_copy = new_module.model_copy(deep=True)
+    new_copy.metadata.deprecated = old_module.metadata.deprecated
 
-    new_copy.metadata.deprecated = False
-    old_copy.metadata.deprecated = False
-
-    return not new_copy == old_copy
+    return not new_copy == old_module

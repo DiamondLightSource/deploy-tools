@@ -14,8 +14,8 @@ class DeployError(Exception):
 
 
 def check_deploy(layout: Layout):
-    deployment_root = layout.get_deployment_root()
-    if not layout.get_deployment_root().exists():
+    deployment_root = layout.deployment_root
+    if not layout.deployment_root.exists():
         raise DeployError(f"Deployment root does not exist:\n{deployment_root}")
 
 

@@ -16,8 +16,8 @@ class ApptainerCreator:
 
     def __init__(self, layout: Layout):
         self._templater = Templater()
-        self._entrypoints_root = layout.get_entrypoints_root()
-        self._sif_root = layout.get_sif_files_root()
+        self._entrypoints_root = layout.entrypoints_root
+        self._sif_root = layout.sif_files_root
 
     def _generate_sif_file(self, config: Apptainer, module: Module):
         sif_file = self._get_sif_file_path(config, module.metadata)
@@ -70,6 +70,4 @@ class ApptainerCreator:
 
     def _get_sif_file_path(self, config: Apptainer, metadata: ModuleMetadata):
         sif_parent = self._sif_root / metadata.name / metadata.version
-        sif_file = sif_parent / f"{config.name}:{config.version}.sif"
-
-        return sif_file
+        return sif_parent / f"{config.name}:{config.version}.sif"

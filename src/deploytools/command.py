@@ -9,7 +9,7 @@ class CommandCreator:
 
     def __init__(self, layout: Layout):
         self._templater = Templater()
-        self._entrypoints_root = layout.get_entrypoints_root()
+        self._entrypoints_root = layout.entrypoints_root
 
     def create_entrypoint_file(
         self,

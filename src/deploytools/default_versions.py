@@ -24,7 +24,7 @@ def check_default_versions(
     )
 
     for name, versions in final_deployed_modules.items():
-        version_file = layout.get_modulefiles_root() / name / VERSION_FILENAME
+        version_file = layout.modulefiles_root / name / VERSION_FILENAME
         if version_file.is_dir():
             raise DefaultVersionsError(
                 f"Version file {version_file} is directory; cannot update or remove."

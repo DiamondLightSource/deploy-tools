@@ -19,8 +19,8 @@ class ModuleCreator:
     def __init__(self, layout: Layout):
         self._templater = Templater()
         self._layout = layout
-        self._modulefiles_root = layout.get_modulefiles_root()
-        self._entrypoints_root = layout.get_entrypoints_root()
+        self._modulefiles_root = layout.modulefiles_root
+        self._entrypoints_root = layout.entrypoints_root
 
     def create_module_file(self, module: Module):
         template = self._templater.get_template(TemplateType.MODULEFILE)
@@ -82,7 +82,9 @@ def move_modulefile(name: str, version: str, src_folder: Path, dest_folder: Path
 def get_deployed_module_versions(
     layout: Layout, deprecated=False
 ) -> ModuleVersionsByName:
-    modulefiles_root = layout.get_modulefiles_root(deprecated=deprecated)
+    modulefiles_root = (
+        layout.deprecated_modulefiles_root if deprecated else layout.modulefiles_root
+    )
     found_modules: ModuleVersionsByName = defaultdict(list)
 
     for module_folder in modulefiles_root.glob("*"):

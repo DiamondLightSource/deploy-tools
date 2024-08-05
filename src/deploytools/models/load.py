@@ -31,16 +31,13 @@ def load_from_yaml(model: type[T], file_path: Path) -> T:
 def load_module_folder(folder: Path) -> Module:
     metadata: ModuleMetadata = load_from_yaml(ModuleMetadata, folder / MODULE_CONFIG)
 
-    applications = []
+    applications = [
+        load_from_yaml(Application, file)
+        for file in folder.glob("*")
+        if file.name != MODULE_CONFIG
+    ]
 
-    for file in folder.glob("*"):
-        if file.name == MODULE_CONFIG:
-            continue
-
-        applications.append(load_from_yaml(Application, file))
-
-    module = Module(metadata=metadata, applications=applications)
-    return module
+    return Module(metadata=metadata, applications=applications)
 
 
 def load_module(path: Path) -> Module:
@@ -86,17 +83,12 @@ def load_deployment(config_folder: Path) -> Deployment:
 def check_filepath_matches_module_metadata(
     version_path: Path, metadata: ModuleMetadata
 ):
-    name_path = version_path.parent
-
-    if not metadata.name == name_path.name:
-        raise LoadError(
-            f"Module name {metadata.name} does not match path in configuration "
-            f"directory:\n{version_path}"
-        )
-
     if version_path.is_dir() and version_path.suffix == YAML_FILE_SUFFIX:
+        raise LoadError(f"Module directory has incorrect suffix:\n{version_path}")
+
+    if not metadata.name == version_path.parent.name:
         raise LoadError(
-            f"Module directory has incorrect suffix {YAML_FILE_SUFFIX}:\n{version_path}"
+            f"Module name {metadata.name} does not match path:\n{version_path}"
         )
 
     version_match = (
@@ -107,6 +99,5 @@ def check_filepath_matches_module_metadata(
 
     if not version_match:
         raise LoadError(
-            f"Module version {metadata.version} does not match path in configuration "
-            f"directory:\n{version_path}"
+            f"Module version {metadata.version} does not match path:\n{version_path}"
         )

@@ -20,15 +20,12 @@ def deprecate(modules: list[Module], layout: Layout):
     """Deprecate a list of modules.
 
     This will move the modulefile to a 'deprecated' directory."""
-    deployment_modulefiles_root = layout.get_modulefiles_root()
-    deprecated_modulefiles_root = layout.get_modulefiles_root(deprecated=True)
-
     for module in modules:
-        name = module.metadata.name
-        version = module.metadata.version
-
         move_modulefile(
-            name, version, deployment_modulefiles_root, deprecated_modulefiles_root
+            module.metadata.name,
+            module.metadata.version,
+            layout.modulefiles_root,
+            layout.deprecated_modulefiles_root,
         )
 
 
@@ -45,7 +42,7 @@ def check_module_and_version_exist_in_deployment(
 def check_deprecated_free_for_module_and_version(
     name: str, version: str, layout: Layout
 ):
-    module_file = layout.get_modulefiles_root(deprecated=True) / name / version
+    module_file = layout.deprecated_modulefiles_root / name / version
     if module_file.exists():
         raise DeprecateError(
             f"Cannot deprecate {name}/{version}. Path already exists:\n{module_file}"
