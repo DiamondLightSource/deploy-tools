@@ -11,6 +11,7 @@ from .layout import Layout
 from .models.deployment import Deployment, DeploymentSettings, ModulesByNameAndVersion
 from .models.load import load_deployment
 from .models.module import Module
+from .module import ModuleVersionsByName, get_deployed_module_versions
 from .remove import check_remove
 from .restore import check_restore
 from .snapshot import (
@@ -68,12 +69,9 @@ def check_actions(
     check_deprecate(update_group.deprecated, layout)
     check_restore(update_group.restored, layout)
     check_remove(update_group.removed, layout)
-    check_default_versions(
-        settings.default_versions,
-        update_group.added + update_group.restored,
-        update_group.deprecated,
-        layout,
-    )
+
+    final_deployed_modules = get_final_deployed_module_versions(layout, update_group)
+    check_default_versions(settings.default_versions, final_deployed_modules, layout)
 
 
 def display_updates(update_group: UpdateGroup):
@@ -152,3 +150,19 @@ def is_modified(old_module: Module, new_module: Module):
     new_copy.metadata.deprecated = old_module.metadata.deprecated
 
     return not new_copy == old_module
+
+
+def get_final_deployed_module_versions(
+    layout: Layout, update_group: UpdateGroup
+) -> ModuleVersionsByName:
+    deployed_modules = get_deployed_module_versions(layout)
+    added_modules = update_group.added + update_group.restored
+    removed_modules = update_group.deprecated
+
+    for module in added_modules:
+        deployed_modules[module.metadata.name].append(module.metadata.version)
+
+    for module in removed_modules:
+        deployed_modules[module.metadata.name].remove(module.metadata.version)
+
+    return deployed_modules

@@ -1,12 +1,6 @@
 from .layout import Layout
 from .models.deployment import DefaultVersionsByName
-from .models.module import Module
-from .module import (
-    VERSION_FILENAME,
-    ModuleCreator,
-    ModuleVersionsByName,
-    get_deployed_module_versions,
-)
+from .module import VERSION_FILENAME, ModuleCreator, ModuleVersionsByName
 
 
 class DefaultVersionsError(Exception):
@@ -15,14 +9,9 @@ class DefaultVersionsError(Exception):
 
 def check_default_versions(
     default_versions: DefaultVersionsByName,
-    added_modules: list[Module],
-    removed_modules: list[Module],
+    final_deployed_modules: ModuleVersionsByName,
     layout: Layout,
 ) -> None:
-    final_deployed_modules = get_final_deployed_module_versions(
-        layout, added_modules, removed_modules
-    )
-
     for name, versions in final_deployed_modules.items():
         version_file = layout.modulefiles_root / name / VERSION_FILENAME
         if version_file.is_dir():
@@ -43,17 +32,3 @@ def apply_default_versions(default_versions: DefaultVersionsByName, layout: Layo
     """Update version files for current default settings."""
     module_creator = ModuleCreator(layout)
     module_creator.update_default_versions(default_versions, layout)
-
-
-def get_final_deployed_module_versions(
-    layout: Layout, added_modules: list[Module], removed_modules: list[Module]
-) -> ModuleVersionsByName:
-    deployed_modules = get_deployed_module_versions(layout)
-
-    for module in added_modules:
-        deployed_modules[module.metadata.name].append(module.metadata.version)
-
-    for module in removed_modules:
-        deployed_modules[module.metadata.name].remove(module.metadata.version)
-
-    return deployed_modules
