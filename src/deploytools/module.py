@@ -89,3 +89,13 @@ def get_deployed_module_versions(
             found_modules[module_folder.name].append(version_path.name)
 
     return found_modules
+
+
+def is_module_deployed(name: str, version: str, layout: Layout):
+    module_file = layout.modulefiles_root / name / version
+    return module_file.exists()
+
+
+def is_module_deprecated(name: str, version: str, layout: Layout):
+    module_file = layout.deprecated_modulefiles_root / name / version
+    return module_file.exists()

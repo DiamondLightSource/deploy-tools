@@ -1,6 +1,6 @@
 from .layout import Layout
 from .models.module import Module
-from .module import get_deployed_module_versions, move_modulefile
+from .module import is_module_deployed, is_module_deprecated, move_modulefile
 
 
 class DeprecateError(Exception):
@@ -12,8 +12,15 @@ def check_deprecate(modules: list[Module], layout: Layout):
         name = module.metadata.name
         version = module.metadata.version
 
-        check_module_and_version_exist_in_deployment(name, version, layout)
-        check_deprecated_free_for_module_and_version(name, version, layout)
+        if not is_module_deployed(name, version, layout):
+            raise DeprecateError(
+                f"Cannot deprecate {name}/{version}. Not found in deployment area."
+            )
+
+        if is_module_deprecated(name, version, layout):
+            raise DeprecateError(
+                f"Cannot deprecate {name}/{version}. Already found in deprecated area."
+            )
 
 
 def deprecate(modules: list[Module], layout: Layout):
@@ -26,24 +33,4 @@ def deprecate(modules: list[Module], layout: Layout):
             module.metadata.version,
             layout.modulefiles_root,
             layout.deprecated_modulefiles_root,
-        )
-
-
-def check_module_and_version_exist_in_deployment(
-    name: str, version: str, layout: Layout
-):
-    versions = get_deployed_module_versions(layout)
-    if version not in versions[name]:
-        raise DeprecateError(
-            f"Cannot deprecate {name}/{version}. Not found in deployment area."
-        )
-
-
-def check_deprecated_free_for_module_and_version(
-    name: str, version: str, layout: Layout
-):
-    module_file = layout.deprecated_modulefiles_root / name / version
-    if module_file.exists():
-        raise DeprecateError(
-            f"Cannot deprecate {name}/{version}. Path already exists:\n{module_file}"
         )
