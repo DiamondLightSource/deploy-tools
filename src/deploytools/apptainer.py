@@ -4,7 +4,7 @@ from itertools import chain
 from .layout import Layout
 from .models.apptainer import Apptainer
 from .models.module import Module, ModuleMetadata
-from .templater import Templater, TemplateType
+from .templater import Template, Templater
 
 
 class ApptainerError(Exception):
@@ -41,8 +41,6 @@ class ApptainerCreator:
             self._entrypoints_root / module.metadata.name / module.metadata.version
         )
         entrypoints_folder.mkdir(parents=True, exist_ok=True)
-        template = self._templater.get_template(TemplateType.APPTAINER_ENTRYPOINT)
-
         sif_file = self._get_sif_file_path(config, module.metadata)
 
         global_options = config.global_options
@@ -66,7 +64,9 @@ class ApptainerCreator:
                 "command_args": command_args,
             }
 
-            self._templater.create(entrypoint_file, template, params, executable=True)
+            self._templater.create(
+                entrypoint_file, Template.APPTAINER_ENTRYPOINT, params, executable=True
+            )
 
     def _get_sif_file_path(self, config: Apptainer, metadata: ModuleMetadata):
         sif_parent = self._sif_root / metadata.name / metadata.version

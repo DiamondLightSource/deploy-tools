@@ -1,7 +1,7 @@
 from .layout import Layout
 from .models.shell import Shell
 from .module import Module
-from .templater import Templater, TemplateType
+from .templater import Template, Templater
 
 
 class ShellCreator:
@@ -16,16 +16,14 @@ class ShellCreator:
         config: Shell,
         module: Module,
     ):
-        template = self._templater.get_template(TemplateType.SHELL_ENTRYPOINT)
-
         entrypoints_folder = (
             self._entrypoints_root / module.metadata.name / module.metadata.version
         )
         entrypoints_folder.mkdir(parents=True, exist_ok=True)
         entrypoint_file = entrypoints_folder / config.name
 
-        parameters = {
-            "script": config.script,
-        }
+        parameters = {"script": config.script}
 
-        self._templater.create(entrypoint_file, template, parameters, executable=True)
+        self._templater.create(
+            entrypoint_file, Template.SHELL_ENTRYPOINT, parameters, executable=True
+        )

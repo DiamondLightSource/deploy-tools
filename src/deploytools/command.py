@@ -1,7 +1,7 @@
 from .layout import Layout
 from .models.command import Command
 from .module import Module
-from .templater import Templater, TemplateType
+from .templater import Template, Templater
 
 
 class CommandCreator:
@@ -16,8 +16,6 @@ class CommandCreator:
         config: Command,
         module: Module,
     ):
-        template = self._templater.get_template(TemplateType.COMMAND_ENTRYPOINT)
-
         entrypoints_folder = (
             self._entrypoints_root / module.metadata.name / module.metadata.version
         )
@@ -29,4 +27,6 @@ class CommandCreator:
             "command_args": config.command_args,
         }
 
-        self._templater.create(entrypoint_file, template, params, executable=True)
+        self._templater.create(
+            entrypoint_file, Template.COMMAND_ENTRYPOINT, params, executable=True
+        )

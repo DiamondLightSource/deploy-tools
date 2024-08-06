@@ -6,7 +6,7 @@ from typing import TypeAlias
 from .layout import Layout
 from .models.deployment import DefaultVersionsByName
 from .models.module import Module
-from .templater import Templater, TemplateType
+from .templater import Template, Templater
 
 ModuleVersionsByName: TypeAlias = dict[str, list[str]]
 
@@ -24,8 +24,6 @@ class ModuleCreator:
         self._entrypoints_root = layout.entrypoints_root
 
     def create_module_file(self, module: Module):
-        template = self._templater.get_template(TemplateType.MODULEFILE)
-
         config = module.metadata
         entrypoints_folder = self._entrypoints_root / config.name / config.version
 
@@ -44,24 +42,22 @@ class ModuleCreator:
         module_file = self._modulefiles_root / config.name / config.version
         module_file.parent.mkdir(exist_ok=True, parents=True)
 
-        self._templater.create(module_file, template, params)
+        self._templater.create(module_file, Template.MODULEFILE, params)
 
     def update_default_versions(
         self, default_versions: DefaultVersionsByName, layout: Layout
     ):
-        template = self._templater.get_template(TemplateType.MODULEFILE_VERSION)
         deployed_modules = get_deployed_module_versions(layout)
 
         for name in deployed_modules:
             version_file = self._modulefiles_root / name / VERSION_FILENAME
 
             if name in default_versions:
-                version = default_versions[name]
-                params = {
-                    "version": version,
-                }
+                params = {"version": default_versions[name]}
 
-                self._templater.create(version_file, template, params)
+                self._templater.create(
+                    version_file, Template.MODULEFILE_VERSION, params
+                )
             else:
                 version_file.unlink(missing_ok=True)
 
