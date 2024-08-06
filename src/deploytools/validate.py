@@ -135,12 +135,8 @@ def get_update_group(
             if version not in new_modules[name]:
                 group.removed.append(old_module)
 
-    for module in group.removed:
-        if not module.metadata.deprecated:
-            raise ValidationError(
-                f"Module {module.metadata.name}/{module.metadata.version} removed "
-                "without prior deprecation."
-            )
+    validate_added_modules(group.added)
+    validate_removed_modules(group.removed)
 
     return group
 
@@ -150,6 +146,24 @@ def is_modified(old_module: Module, new_module: Module):
     new_copy.metadata.deprecated = old_module.metadata.deprecated
 
     return not new_copy == old_module
+
+
+def validate_added_modules(modules: list[Module]):
+    for module in modules:
+        if module.metadata.deprecated:
+            raise ValidationError(
+                f"Module {module.metadata.name}/{module.metadata.version} cannot have "
+                f"deprecated status on initial creation."
+            )
+
+
+def validate_removed_modules(modules: list[Module]):
+    for module in modules:
+        if not module.metadata.deprecated:
+            raise ValidationError(
+                f"Module {module.metadata.name}/{module.metadata.version} removed "
+                "without prior deprecation."
+            )
 
 
 def get_final_deployed_module_versions(
