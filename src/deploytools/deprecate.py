@@ -1,6 +1,6 @@
 from .layout import Layout
 from .models.module import Module
-from .module import is_module_deployed, is_module_deprecated, move_modulefile
+from .module import in_deployment_area, in_deprecated_area, move_modulefile
 
 
 class DeprecateError(Exception):
@@ -12,12 +12,12 @@ def check_deprecate(modules: list[Module], layout: Layout):
         name = module.metadata.name
         version = module.metadata.version
 
-        if not is_module_deployed(name, version, layout):
+        if not in_deployment_area(name, version, layout):
             raise DeprecateError(
                 f"Cannot deprecate {name}/{version}. Not found in deployment area."
             )
 
-        if is_module_deprecated(name, version, layout):
+        if in_deprecated_area(name, version, layout):
             raise DeprecateError(
                 f"Cannot deprecate {name}/{version}. Already found in deprecated area."
             )

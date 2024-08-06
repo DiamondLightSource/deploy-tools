@@ -13,6 +13,7 @@ from .remove import remove
 from .remove_name_folders import remove_name_folders
 from .restore import restore
 from .snapshot import create_snapshot
+from .update import update
 from .validate import UpdateGroup, check_actions, validate_deployment
 
 
@@ -50,6 +51,7 @@ def perform_actions(
     update_group: UpdateGroup, layout: Layout, settings: DeploymentSettings
 ):
     deploy(update_group.added, layout)
+    update(update_group.updated, layout)
     deprecate(update_group.deprecated, layout)
     restore(update_group.restored, layout)
     remove(update_group.removed, layout)

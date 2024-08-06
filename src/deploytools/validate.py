@@ -11,12 +11,15 @@ from .layout import Layout
 from .models.deployment import Deployment, DeploymentSettings, ModulesByNameAndVersion
 from .models.load import load_deployment
 from .models.module import Module
-from .module import ModuleVersionsByName, get_deployed_module_versions
+from .module import (
+    ModuleVersionsByName,
+    get_deployed_module_versions,
+    is_module_dev_mode,
+)
 from .remove import check_remove
 from .restore import check_restore
-from .snapshot import (
-    load_snapshot,
-)
+from .snapshot import load_snapshot
+from .update import check_update
 
 
 class ValidationError(Exception):
@@ -26,6 +29,7 @@ class ValidationError(Exception):
 @dataclass
 class UpdateGroup:
     added: list[Module] = field(default_factory=list)
+    updated: list[Module] = field(default_factory=list)
     deprecated: list[Module] = field(default_factory=list)
     restored: list[Module] = field(default_factory=list)
     removed: list[Module] = field(default_factory=list)
@@ -65,7 +69,8 @@ def validate(
 def check_actions(
     update_group: UpdateGroup, layout: Layout, settings: DeploymentSettings
 ):
-    check_deploy(layout)
+    check_deploy(update_group.added, layout)
+    check_update(update_group.updated, layout)
     check_deprecate(update_group.deprecated, layout)
     check_restore(update_group.restored, layout)
     check_remove(update_group.removed, layout)
@@ -77,6 +82,7 @@ def check_actions(
 def display_updates(update_group: UpdateGroup):
     display_config = {
         "deployed": update_group.added,
+        "updated": update_group.updated,
         "deprecated": update_group.deprecated,
         "restored": update_group.restored,
         "removed": update_group.removed,
@@ -117,6 +123,10 @@ def get_update_group(
             old_module = old_modules[name][version]
 
             if is_modified(old_module, new_module):
+                if is_module_dev_mode(new_module):
+                    group.updated.append(new_module)
+                    continue
+
                 raise ValidationError(
                     f"Module {name}/{version} modified without updating version."
                 )
@@ -136,6 +146,8 @@ def get_update_group(
                 group.removed.append(old_module)
 
     validate_added_modules(group.added)
+    validate_updated_modules(group.updated)
+    validate_deprecated_modules(group.deprecated)
     validate_removed_modules(group.removed)
 
     return group
@@ -150,16 +162,43 @@ def is_modified(old_module: Module, new_module: Module):
 
 def validate_added_modules(modules: list[Module]):
     for module in modules:
-        if module.metadata.deprecated:
+        metadata = module.metadata
+        if metadata.deprecated:
+            if is_module_dev_mode(module):
+                raise ValidationError(
+                    f"Module {metadata.name}/{metadata.version} cannot be specified as"
+                    f"deprecated as it is in development mode."
+                )
+
             raise ValidationError(
-                f"Module {module.metadata.name}/{module.metadata.version} cannot have "
-                f"deprecated status on initial creation."
+                f"Module {metadata.name}/{metadata.version} cannot have deprecated "
+                f"status on initial creation."
+            )
+
+
+def validate_updated_modules(modules: list[Module]):
+    for module in modules:
+        metadata = module.metadata
+        if metadata.deprecated:
+            raise ValidationError(
+                f"Module {metadata.name}/{metadata.version} cannot be specified as "
+                f"deprecated as it is in development mode."
+            )
+
+
+def validate_deprecated_modules(modules: list[Module]):
+    for module in modules:
+        if is_module_dev_mode(module):
+            metadata = module.metadata
+            raise ValidationError(
+                f"Module {metadata.name}/{metadata.version} cannot be specified as "
+                f"deprecated as it is in development mode."
             )
 
 
 def validate_removed_modules(modules: list[Module]):
     for module in modules:
-        if not module.metadata.deprecated:
+        if not is_module_dev_mode(module) and not module.metadata.deprecated:
             raise ValidationError(
                 f"Module {module.metadata.name}/{module.metadata.version} removed "
                 "without prior deprecation."

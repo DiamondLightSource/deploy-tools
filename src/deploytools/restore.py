@@ -1,6 +1,6 @@
 from .layout import Layout
 from .models.module import Module
-from .module import is_module_deployed, is_module_deprecated, move_modulefile
+from .module import in_deployment_area, in_deprecated_area, move_modulefile
 
 
 class RestoreError(Exception):
@@ -12,12 +12,12 @@ def check_restore(modules: list[Module], layout: Layout):
         name = module.metadata.name
         version = module.metadata.version
 
-        if not is_module_deprecated(name, version, layout):
+        if not in_deprecated_area(name, version, layout):
             raise RestoreError(
                 f"Cannot restore {name}/{version}. Not found in deprecated area."
             )
 
-        if is_module_deployed(name, version, layout):
+        if in_deployment_area(name, version, layout):
             raise RestoreError(
                 f"Cannot restore {name}/{version}. Already found in deployment area."
             )

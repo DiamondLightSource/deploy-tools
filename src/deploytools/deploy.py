@@ -5,7 +5,7 @@ from .models.apptainer import Apptainer
 from .models.command import Command
 from .models.module import Module
 from .models.shell import Shell
-from .module import ModuleCreator, is_module_deployed
+from .module import ModuleCreator, in_deployment_area
 from .shell import ShellCreator
 
 
@@ -21,7 +21,7 @@ def check_deploy(modules: list[Module], layout: Layout):
         name = module.metadata.name
         version = module.metadata.version
 
-        if is_module_deployed(name, version, layout):
+        if in_deployment_area(name, version, layout):
             raise DeployError(
                 f"Cannot deploy {name}/{version}. Already found in deployment area."
             )

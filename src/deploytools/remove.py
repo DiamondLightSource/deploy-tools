@@ -3,7 +3,7 @@ import shutil
 
 from .layout import Layout
 from .models.module import Module
-from .module import is_module_deprecated
+from .module import in_deployment_area, in_deprecated_area, is_module_dev_mode
 
 
 class RemovalError(Exception):
@@ -15,7 +15,14 @@ def check_remove(modules: list[Module], layout: Layout):
         name = module.metadata.name
         version = module.metadata.version
 
-        if not is_module_deprecated(name, version, layout):
+        if is_module_dev_mode(module):
+            if not in_deployment_area(name, version, layout):
+                raise RemovalError(
+                    f"Cannot remove {name}/{version}. Not found in deployment area."
+                )
+            continue
+
+        if not in_deprecated_area(name, version, layout):
             raise RemovalError(
                 f"Cannot remove {name}/{version}. Not found in deprecated area."
             )
@@ -26,14 +33,28 @@ def remove(modules: list[Module], layout: Layout):
     for module in modules:
         name = module.metadata.name
         version = module.metadata.version
-        remove_deprecated_module(name, version, layout)
+        if is_module_dev_mode(module):
+            remove_deployed_module(name, version, layout)
+        else:
+            remove_deprecated_module(name, version, layout)
+
+
+def remove_deployed_module(name: str, version: str, layout: Layout):
+    module_file = layout.modulefiles_root / name / version
+    os.remove(module_file)
+
+    remove_application_paths(name, version, layout)
 
 
 def remove_deprecated_module(name: str, version: str, layout: Layout):
     module_file = layout.deprecated_modulefiles_root / name / version
     os.remove(module_file)
 
-    to_remove = [layout.entrypoints_root, layout.sif_files_root]
+    remove_application_paths(name, version, layout)
+
+
+def remove_application_paths(name: str, version: str, layout: Layout):
+    to_remove = layout.get_application_paths()
     for path in to_remove:
         src_path = path / name / version
         shutil.rmtree(src_path)

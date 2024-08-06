@@ -11,6 +11,7 @@ from .templater import Templater, TemplateType
 ModuleVersionsByName: TypeAlias = dict[str, list[str]]
 
 VERSION_FILENAME = ".version"
+DEVELOPMENT_VERSION = "dev"
 
 
 class ModuleCreator:
@@ -91,11 +92,15 @@ def get_deployed_module_versions(
     return found_modules
 
 
-def is_module_deployed(name: str, version: str, layout: Layout):
+def in_deployment_area(name: str, version: str, layout: Layout):
     module_file = layout.modulefiles_root / name / version
     return module_file.exists()
 
 
-def is_module_deprecated(name: str, version: str, layout: Layout):
+def in_deprecated_area(name: str, version: str, layout: Layout):
     module_file = layout.deprecated_modulefiles_root / name / version
     return module_file.exists()
+
+
+def is_module_dev_mode(module: Module):
+    return module.metadata.version == DEVELOPMENT_VERSION
