@@ -56,5 +56,6 @@ def remove_deprecated_module(name: str, version: str, layout: Layout):
 def remove_application_paths(name: str, version: str, layout: Layout):
     to_remove = layout.get_application_paths()
     for path in to_remove:
-        src_path = path / name / version
-        shutil.rmtree(src_path)
+        version_path = path / name / version
+        if version_path.exists():
+            shutil.rmtree(version_path)
