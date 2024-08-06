@@ -5,7 +5,7 @@ from .models.apptainer import Apptainer
 from .models.command import Command
 from .models.module import Module
 from .models.shell import Shell
-from .module import ModuleCreator
+from .module import ModuleCreator, is_module_deployed
 from .shell import ShellCreator
 
 
@@ -13,10 +13,18 @@ class DeployError(Exception):
     pass
 
 
-def check_deploy(layout: Layout):
-    deployment_root = layout.deployment_root
+def check_deploy(modules: list[Module], layout: Layout):
     if not layout.deployment_root.exists():
-        raise DeployError(f"Deployment root does not exist:\n{deployment_root}")
+        raise DeployError(f"Deployment root does not exist:\n{layout.deployment_root}")
+
+    for module in modules:
+        name = module.metadata.name
+        version = module.metadata.version
+
+        if is_module_deployed(name, version, layout):
+            raise DeployError(
+                f"Cannot deploy {name}/{version}. Already found in deployment area."
+            )
 
 
 def deploy(modules: list[Module], layout: Layout) -> None:
