@@ -17,8 +17,8 @@ DEVELOPMENT_VERSION = "dev"
 class ModuleCreator:
     """Class for creating modulefiles, including optional dependencies and env vars."""
 
-    def __init__(self, layout: Layout):
-        self._templater = Templater()
+    def __init__(self, templater: Templater, layout: Layout):
+        self._templater = templater
         self._layout = layout
         self._modulefiles_root = layout.modulefiles_root
         self._entrypoints_root = layout.entrypoints_root

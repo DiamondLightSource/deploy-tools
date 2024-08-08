@@ -1,6 +1,7 @@
 from .layout import Layout
 from .models.deployment import DefaultVersionsByName
 from .module import VERSION_FILENAME, ModuleCreator
+from .templater import Templater
 
 
 class DefaultVersionsError(Exception):
@@ -21,5 +22,6 @@ def check_default_versions(
 
 def apply_default_versions(default_versions: DefaultVersionsByName, layout: Layout):
     """Update version files for current default settings."""
-    module_creator = ModuleCreator(layout)
+    templater = Templater()
+    module_creator = ModuleCreator(templater, layout)
     module_creator.update_default_versions(default_versions, layout)

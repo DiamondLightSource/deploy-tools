@@ -7,6 +7,7 @@ from .models.module import Module
 from .models.shell import Shell
 from .module import ModuleCreator, in_deployment_area
 from .shell import ShellCreator
+from .templater import Templater
 
 
 class DeployError(Exception):
@@ -32,10 +33,11 @@ def deploy(modules: list[Module], layout: Layout) -> None:
     if not modules:
         return
 
-    module_creator = ModuleCreator(layout)
-    apptainer_creator = ApptainerCreator(layout)
-    command_creator = CommandCreator(layout)
-    shell_creator = ShellCreator(layout)
+    templater = Templater()
+    module_creator = ModuleCreator(templater, layout)
+    apptainer_creator = ApptainerCreator(templater, layout)
+    command_creator = CommandCreator(templater, layout)
+    shell_creator = ShellCreator(templater, layout)
 
     for module in modules:
         module_creator.create_module_file(module)

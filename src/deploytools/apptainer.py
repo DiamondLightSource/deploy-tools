@@ -14,8 +14,8 @@ class ApptainerError(Exception):
 class ApptainerCreator:
     """Class for creating apptainer entrypoints using a specified image and command."""
 
-    def __init__(self, layout: Layout):
-        self._templater = Templater()
+    def __init__(self, templater: Templater, layout: Layout):
+        self._templater = templater
         self._entrypoints_root = layout.entrypoints_root
         self._sif_root = layout.sif_files_root
 

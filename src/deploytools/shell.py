@@ -7,8 +7,8 @@ from .templater import Template, Templater
 class ShellCreator:
     """Class for creating 'shell' entrypoints, which run bash scripts."""
 
-    def __init__(self, layout: Layout):
-        self._templater = Templater()
+    def __init__(self, templater: Templater, layout: Layout):
+        self._templater = templater
         self._entrypoints_root = layout.entrypoints_root
 
     def create_entrypoint_file(
