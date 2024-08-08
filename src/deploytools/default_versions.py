@@ -20,7 +20,9 @@ def check_default_versions(
             )
 
 
-def apply_default_versions(default_versions: DefaultVersionsByName, layout: Layout):
+def apply_default_versions(
+    default_versions: DefaultVersionsByName, layout: Layout
+) -> None:
     """Update version files for current default settings."""
     templater = Templater()
     module_creator = ModuleCreator(templater, layout)

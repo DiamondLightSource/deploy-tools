@@ -1,10 +1,11 @@
 import subprocess
 from itertools import chain
+from pathlib import Path
 
 from .layout import Layout
 from .models.apptainer import Apptainer
 from .models.module import Module, ModuleMetadata
-from .templater import Template, Templater
+from .templater import Templater, TemplateType
 
 
 class ApptainerError(Exception):
@@ -14,12 +15,12 @@ class ApptainerError(Exception):
 class ApptainerCreator:
     """Class for creating apptainer entrypoints using a specified image and command."""
 
-    def __init__(self, templater: Templater, layout: Layout):
+    def __init__(self, templater: Templater, layout: Layout) -> None:
         self._templater = templater
         self._entrypoints_root = layout.entrypoints_root
         self._sif_root = layout.sif_files_root
 
-    def _generate_sif_file(self, config: Apptainer, module: Module):
+    def _generate_sif_file(self, config: Apptainer, module: Module) -> None:
         sif_file = self._get_sif_file_path(config, module.metadata)
         sif_file.parent.mkdir(parents=True, exist_ok=True)
 
@@ -34,7 +35,7 @@ class ApptainerCreator:
         commands = ["apptainer", "pull", sif_file, container_path]
         subprocess.run(commands, check=True)
 
-    def create_entrypoint_files(self, config: Apptainer, module: Module):
+    def create_entrypoint_files(self, config: Apptainer, module: Module) -> None:
         self._generate_sif_file(config, module)
 
         entrypoints_folder = (
@@ -65,9 +66,12 @@ class ApptainerCreator:
             }
 
             self._templater.create(
-                entrypoint_file, Template.APPTAINER_ENTRYPOINT, params, executable=True
+                entrypoint_file,
+                TemplateType.APPTAINER_ENTRYPOINT,
+                params,
+                executable=True,
             )
 
-    def _get_sif_file_path(self, config: Apptainer, metadata: ModuleMetadata):
+    def _get_sif_file_path(self, config: Apptainer, metadata: ModuleMetadata) -> Path:
         sif_parent = self._sif_root / metadata.name / metadata.version
         return sif_parent / f"{config.name}:{config.version}.sif"

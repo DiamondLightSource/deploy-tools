@@ -9,7 +9,7 @@ class UpdateError(Exception):
     pass
 
 
-def check_update(modules: list[Module], layout: Layout):
+def check_update(modules: list[Module], layout: Layout) -> None:
     for module in modules:
         name = module.metadata.name
         version = module.metadata.version

@@ -1,13 +1,13 @@
 from .layout import Layout
 from .models.shell import Shell
 from .module import Module
-from .templater import Template, Templater
+from .templater import Templater, TemplateType
 
 
 class ShellCreator:
     """Class for creating 'shell' entrypoints, which run bash scripts."""
 
-    def __init__(self, templater: Templater, layout: Layout):
+    def __init__(self, templater: Templater, layout: Layout) -> None:
         self._templater = templater
         self._entrypoints_root = layout.entrypoints_root
 
@@ -15,7 +15,7 @@ class ShellCreator:
         self,
         config: Shell,
         module: Module,
-    ):
+    ) -> None:
         entrypoints_folder = (
             self._entrypoints_root / module.metadata.name / module.metadata.version
         )
@@ -25,5 +25,5 @@ class ShellCreator:
         parameters = {"script": config.script}
 
         self._templater.create(
-            entrypoint_file, Template.SHELL_ENTRYPOINT, parameters, executable=True
+            entrypoint_file, TemplateType.SHELL_ENTRYPOINT, parameters, executable=True
         )

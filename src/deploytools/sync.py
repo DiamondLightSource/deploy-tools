@@ -40,7 +40,7 @@ def sync(
             dir_okay=True,
         ),
     ],
-):
+) -> None:
     """Sync deployment folder with current configuration"""
     deployment = load_deployment(config_folder)
     layout = Layout(deployment_root)
@@ -57,7 +57,7 @@ def sync(
 
 def perform_actions(
     update_group: UpdateGroup, layout: Layout, default_versions: DefaultVersionsByName
-):
+) -> None:
     deploy(update_group.added, layout)
     update(update_group.updated, layout)
     deprecate(update_group.deprecated, layout)

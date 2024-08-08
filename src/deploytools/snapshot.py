@@ -14,7 +14,7 @@ def create_snapshot(deployment: Deployment, layout: Layout) -> None:
         yaml.safe_dump(deployment.model_dump(), f)
 
 
-def load_snapshot(layout: Layout, allow_empty=True) -> Deployment:
+def load_snapshot(layout: Layout, allow_empty: bool = True) -> Deployment:
     if not layout.snapshot_file.exists():
         if allow_empty:
             return Deployment(settings=DeploymentSettings(), modules={})

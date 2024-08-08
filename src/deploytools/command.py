@@ -1,13 +1,13 @@
 from .layout import Layout
 from .models.command import Command
 from .module import Module
-from .templater import Template, Templater
+from .templater import Templater, TemplateType
 
 
 class CommandCreator:
     """Class for creating 'command' entrypoints, which run an executable on a path."""
 
-    def __init__(self, templater: Templater, layout: Layout):
+    def __init__(self, templater: Templater, layout: Layout) -> None:
         self._templater = templater
         self._entrypoints_root = layout.entrypoints_root
 
@@ -15,7 +15,7 @@ class CommandCreator:
         self,
         config: Command,
         module: Module,
-    ):
+    ) -> None:
         entrypoints_folder = (
             self._entrypoints_root / module.metadata.name / module.metadata.version
         )
@@ -28,5 +28,5 @@ class CommandCreator:
         }
 
         self._templater.create(
-            entrypoint_file, Template.COMMAND_ENTRYPOINT, params, executable=True
+            entrypoint_file, TemplateType.COMMAND_ENTRYPOINT, params, executable=True
         )

@@ -7,7 +7,7 @@ class RestoreError(Exception):
     pass
 
 
-def check_restore(modules: list[Module], layout: Layout):
+def check_restore(modules: list[Module], layout: Layout) -> None:
     for module in modules:
         name = module.metadata.name
         version = module.metadata.version
@@ -23,7 +23,7 @@ def check_restore(modules: list[Module], layout: Layout):
             )
 
 
-def restore(modules: list[Module], layout: Layout):
+def restore(modules: list[Module], layout: Layout) -> None:
     """Restore a previously deprecated module."""
     for module in modules:
         name = module.metadata.name

@@ -10,7 +10,7 @@ class RemovalError(Exception):
     pass
 
 
-def check_remove(modules: list[Module], layout: Layout):
+def check_remove(modules: list[Module], layout: Layout) -> None:
     for module in modules:
         name = module.metadata.name
         version = module.metadata.version
@@ -28,7 +28,7 @@ def check_remove(modules: list[Module], layout: Layout):
             )
 
 
-def remove(modules: list[Module], layout: Layout):
+def remove(modules: list[Module], layout: Layout) -> None:
     """Remove a deprecated module."""
     for module in modules:
         name = module.metadata.name
@@ -39,21 +39,21 @@ def remove(modules: list[Module], layout: Layout):
             remove_deprecated_module(name, version, layout)
 
 
-def remove_deployed_module(name: str, version: str, layout: Layout):
+def remove_deployed_module(name: str, version: str, layout: Layout) -> None:
     module_file = layout.modulefiles_root / name / version
     os.remove(module_file)
 
     remove_application_paths(name, version, layout)
 
 
-def remove_deprecated_module(name: str, version: str, layout: Layout):
+def remove_deprecated_module(name: str, version: str, layout: Layout) -> None:
     module_file = layout.deprecated_modulefiles_root / name / version
     os.remove(module_file)
 
     remove_application_paths(name, version, layout)
 
 
-def remove_application_paths(name: str, version: str, layout: Layout):
+def remove_application_paths(name: str, version: str, layout: Layout) -> None:
     to_remove = layout.get_application_paths()
     for path in to_remove:
         version_path = path / name / version

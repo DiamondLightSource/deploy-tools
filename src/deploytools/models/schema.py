@@ -28,7 +28,7 @@ def schema(
             writable=True,
         ),
     ],
-):
+) -> None:
     """Generate JSON schema for yaml configuration files."""
     for filename, model in SCHEMA_NAMES.items():
         out_path = output_path / filename

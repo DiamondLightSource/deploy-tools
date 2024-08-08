@@ -14,7 +14,7 @@ class DeployError(Exception):
     pass
 
 
-def check_deploy(modules: list[Module], layout: Layout):
+def check_deploy(modules: list[Module], layout: Layout) -> None:
     if not layout.deployment_root.exists():
         raise DeployError(f"Deployment root does not exist:\n{layout.deployment_root}")
 

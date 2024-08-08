@@ -60,7 +60,7 @@ def validate(
             dir_okay=True,
         ),
     ],
-):
+) -> None:
     """Validate deployment configuration and print a list of modules for deployment.
 
     This is the same validation that the deploytools sync command uses."""
@@ -77,7 +77,7 @@ def validate(
 
 def check_actions(
     update_group: UpdateGroup, default_versions: DefaultVersionsByName, layout: Layout
-):
+) -> None:
     check_deploy(update_group.added, layout)
     check_update(update_group.updated, layout)
     check_deprecate(update_group.deprecated, layout)
@@ -87,7 +87,7 @@ def check_actions(
     check_default_versions(default_versions, layout)
 
 
-def display_updates(update_group: UpdateGroup):
+def display_updates(update_group: UpdateGroup) -> None:
     display_config = {
         "deployed": update_group.added,
         "updated": update_group.updated,
@@ -161,14 +161,14 @@ def get_update_group(
     return group
 
 
-def is_modified(old_module: Module, new_module: Module):
+def is_modified(old_module: Module, new_module: Module) -> bool:
     new_copy = new_module.model_copy(deep=True)
     new_copy.metadata.deprecated = old_module.metadata.deprecated
 
     return not new_copy == old_module
 
 
-def validate_added_modules(modules: list[Module]):
+def validate_added_modules(modules: list[Module]) -> None:
     for module in modules:
         metadata = module.metadata
         if metadata.deprecated:
@@ -184,7 +184,7 @@ def validate_added_modules(modules: list[Module]):
             )
 
 
-def validate_updated_modules(modules: list[Module]):
+def validate_updated_modules(modules: list[Module]) -> None:
     for module in modules:
         metadata = module.metadata
         if metadata.deprecated:
@@ -194,7 +194,7 @@ def validate_updated_modules(modules: list[Module]):
             )
 
 
-def validate_deprecated_modules(modules: list[Module]):
+def validate_deprecated_modules(modules: list[Module]) -> None:
     for module in modules:
         if is_module_dev_mode(module):
             metadata = module.metadata
@@ -204,7 +204,7 @@ def validate_deprecated_modules(modules: list[Module]):
             )
 
 
-def validate_removed_modules(modules: list[Module]):
+def validate_removed_modules(modules: list[Module]) -> None:
     for module in modules:
         if not is_module_dev_mode(module) and not module.metadata.deprecated:
             raise ValidationError(

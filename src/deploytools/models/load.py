@@ -82,7 +82,7 @@ def load_deployment(config_folder: Path) -> Deployment:
 
 def check_filepath_matches_module_metadata(
     version_path: Path, metadata: ModuleMetadata
-):
+) -> None:
     if version_path.is_dir() and version_path.suffix == YAML_FILE_SUFFIX:
         raise LoadError(f"Module directory has incorrect suffix:\n{version_path}")
 

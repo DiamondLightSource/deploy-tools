@@ -11,7 +11,7 @@ class Layout:
 
     DEPLOYMENT_SNAPSHOT_FILENAME = "deployment.yaml"
 
-    def __init__(self, deployment_root: Path):
+    def __init__(self, deployment_root: Path) -> None:
         self._root = deployment_root
 
     @property

@@ -1,14 +1,15 @@
 from enum import StrEnum
 from pathlib import Path
+from typing import Any
 
-from jinja2 import Environment, PackageLoader
+import jinja2
 
-__all__ = ["Template", "Templater"]
+__all__ = ["TemplateType", "Templater"]
 
 TEMPLATES_PACKAGE = "deploytools"
 
 
-class Template(StrEnum):
+class TemplateType(StrEnum):
     MODULEFILE = "modulefile"
     MODULEFILE_VERSION = "modulefile_version"
     APPTAINER_ENTRYPOINT = "apptainer_entrypoint"
@@ -21,16 +22,16 @@ EXECUTABLE_PERMISSIONS = 0o755
 
 
 class Templater:
-    def __init__(self):
-        self._env = Environment(loader=PackageLoader("deploytools"))
-        self._templates = {}
+    def __init__(self) -> None:
+        self._env = jinja2.Environment(loader=jinja2.PackageLoader("deploytools"))
+        self._templates: dict[str, jinja2.Template] = {}
         self._load_templates()
 
     def create(
         self,
         output_file: Path,
-        template: Template,
-        parameters: dict,
+        template: TemplateType,
+        parameters: dict[str, Any],
         executable: bool = False,
     ) -> None:
         with open(output_file, "w") as f:
@@ -40,5 +41,5 @@ class Templater:
         output_file.chmod(permissions)
 
     def _load_templates(self) -> None:
-        for template_type in Template:
+        for template_type in TemplateType:
             self._templates[template_type] = self._env.get_template(str(template_type))
