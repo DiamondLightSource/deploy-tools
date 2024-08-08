@@ -12,7 +12,7 @@ from .models.load import load_deployment
 from .remove import remove
 from .remove_name_folders import remove_name_folders
 from .restore import restore
-from .snapshot import create_snapshot
+from .snapshot import create_snapshot, load_snapshot
 from .update import update
 from .validate import (
     UpdateGroup,
@@ -44,10 +44,10 @@ def sync(
     """Sync deployment folder with current configuration"""
     deployment = load_deployment(config_folder)
     layout = Layout(deployment_root)
-    update_group = validate_deployment(deployment, layout)
-    default_versions = validate_default_versions(
-        update_group, deployment.settings, layout
-    )
+    snapshot = load_snapshot(layout)
+
+    update_group = validate_deployment(deployment, snapshot)
+    default_versions = validate_default_versions(deployment)
 
     check_actions(update_group, default_versions, layout)
 

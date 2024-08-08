@@ -1,3 +1,4 @@
+from collections import defaultdict
 from copy import deepcopy
 from dataclasses import dataclass, field
 from pathlib import Path
@@ -12,7 +13,6 @@ from .layout import Layout
 from .models.deployment import (
     DefaultVersionsByName,
     Deployment,
-    DeploymentSettings,
     ModulesByNameAndVersion,
 )
 from .models.load import load_deployment
@@ -20,7 +20,6 @@ from .models.module import Module
 from .module import (
     DEVELOPMENT_VERSION,
     ModuleVersionsByName,
-    get_deployed_module_versions,
     is_module_dev_mode,
 )
 from .remove import check_remove
@@ -66,10 +65,10 @@ def validate(
     This is the same validation that the deploytools sync command uses."""
     deployment = load_deployment(config_folder)
     layout = Layout(deployment_root)
-    update_group = validate_deployment(deployment, layout)
-    default_versions = validate_default_versions(
-        update_group, deployment.settings, layout
-    )
+    snapshot = load_snapshot(layout)
+
+    update_group = validate_deployment(deployment, snapshot)
+    default_versions = validate_default_versions(deployment)
 
     check_actions(update_group, default_versions, layout)
     display_updates(update_group)
@@ -105,9 +104,8 @@ def display_updates(update_group: UpdateGroup) -> None:
         print()
 
 
-def validate_deployment(deployment: Deployment, layout: Layout) -> UpdateGroup:
-    last_deployment = load_snapshot(layout)
-    old_modules = last_deployment.modules
+def validate_deployment(deployment: Deployment, snapshot: Deployment) -> UpdateGroup:
+    old_modules = snapshot.modules
     new_modules = deployment.modules
 
     return get_update_group(old_modules, new_modules)
@@ -213,12 +211,10 @@ def validate_removed_modules(modules: list[Module]) -> None:
             )
 
 
-def validate_default_versions(
-    update_group: UpdateGroup, settings: DeploymentSettings, layout: Layout
-) -> DefaultVersionsByName:
-    final_deployed_modules = get_final_deployed_module_versions(update_group, layout)
+def validate_default_versions(deployment: Deployment) -> DefaultVersionsByName:
+    final_deployed_modules = get_final_deployed_module_versions(deployment)
 
-    for name, version in settings.default_versions.items():
+    for name, version in deployment.settings.default_versions.items():
         if version not in final_deployed_modules[name]:
             raise ValidationError(
                 f"Unable to configure {name}/{version} as default; module will not "
@@ -226,26 +222,24 @@ def validate_default_versions(
             )
 
     default_versions = get_all_default_versions(
-        settings.default_versions, final_deployed_modules
+        deployment.settings.default_versions, final_deployed_modules
     )
 
     return default_versions
 
 
 def get_final_deployed_module_versions(
-    update_group: UpdateGroup, layout: Layout
+    deployment: Deployment,
 ) -> ModuleVersionsByName:
-    deployed_modules = get_deployed_module_versions(layout)
-    added_modules = update_group.added + update_group.restored
-    removed_modules = update_group.deprecated
+    final_versions: dict[str, list[str]] = defaultdict(list)
+    for name, module_versions in deployment.modules.items():
+        final_versions[name] = [
+            version
+            for version, module in module_versions.items()
+            if not module.metadata.deprecated
+        ]
 
-    for module in added_modules:
-        deployed_modules[module.metadata.name].append(module.metadata.version)
-
-    for module in removed_modules:
-        deployed_modules[module.metadata.name].remove(module.metadata.version)
-
-    return deployed_modules
+    return final_versions
 
 
 def get_all_default_versions(
