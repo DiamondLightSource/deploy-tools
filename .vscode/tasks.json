@@ -27,7 +27,7 @@
         {
             "label": "Clean deployment",
             "type": "shell",
-            "command": "rm -r ${workspaceFolder}/demo-output/ && mkdir ${workspaceFolder}/demo-output/",
+            "command": "rm -rf ${workspaceFolder}/demo-output/ && mkdir ${workspaceFolder}/demo-output/",
             "problemMatcher": []
         },
         {
