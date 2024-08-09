@@ -11,4 +11,7 @@
     "yaml.schemas": {
         "https://gitlab.com/appsemble/appsemble/-/raw/HEAD/packages/cli/assets/appsemblerc.schema.json": "file:///workspaces/deploytools/src/deploytools/demo_files/applications/example.yaml"
     },
+    "terminal.integrated.env.linux": {
+        "MODULEPATH": "${workspaceFolder}/demo-output/modulefiles/"
+    },
 }
