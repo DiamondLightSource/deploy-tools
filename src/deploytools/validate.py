@@ -108,6 +108,7 @@ def validate_deployment(deployment: Deployment, snapshot: Deployment) -> UpdateG
     old_modules = snapshot.modules
     new_modules = deployment.modules
 
+    validate_module_dependencies(deployment)
     return get_update_group(old_modules, new_modules)
 
 
@@ -259,3 +260,25 @@ def get_all_default_versions(
                 final_defaults[name] = version_list[-2]
 
     return final_defaults
+
+
+def validate_module_dependencies(deployment: Deployment) -> None:
+    final_deployed_modules = get_final_deployed_module_versions(deployment)
+
+    for name, module_versions in deployment.modules.items():
+        for version, module in module_versions.items():
+            for dependency in module.metadata.dependencies:
+                dep_name = dependency.name
+                dep_version = dependency.version
+                if dep_name in final_deployed_modules:
+                    if dep_version is None:
+                        raise ValidationError(
+                            f"Module {name}/{version} must use specific version for "
+                            f"module dependency {dep_name} as it is in configuration."
+                        )
+
+                    if dep_version not in final_deployed_modules[dep_name]:
+                        raise ValidationError(
+                            f"Module {name}/{version} has unknown module dependency "
+                            f"{dep_name}/{dep_version}."
+                        )
