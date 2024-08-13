@@ -14,5 +14,7 @@ class DeploymentSettings(BaseModel, extra="forbid"):
 
 
 class Deployment(BaseModel, extra="forbid"):
+    """Configuration for all modules and applications that should be deployed."""
+
     settings: DeploymentSettings
     modules: ModulesByNameAndVersion

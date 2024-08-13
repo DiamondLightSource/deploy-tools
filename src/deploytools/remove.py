@@ -11,6 +11,7 @@ class RemovalError(Exception):
 
 
 def check_remove(modules: list[Module], layout: Layout) -> None:
+    """Verify that remove() can be run on the current deployment area."""
     for module in modules:
         name = module.metadata.name
         version = module.metadata.version
@@ -29,7 +30,7 @@ def check_remove(modules: list[Module], layout: Layout) -> None:
 
 
 def remove(modules: list[Module], layout: Layout) -> None:
-    """Remove a deprecated module."""
+    """Remove the given modules from the deployment area."""
     for module in modules:
         name = module.metadata.name
         version = module.metadata.version

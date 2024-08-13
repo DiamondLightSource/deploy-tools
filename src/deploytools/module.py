@@ -75,6 +75,7 @@ def move_modulefile(
 def get_deployed_module_versions(
     layout: Layout, deprecated: bool = False
 ) -> ModuleVersionsByName:
+    """Return list of modules that have already been deployed."""
     modulefiles_root = (
         layout.deprecated_modulefiles_root if deprecated else layout.modulefiles_root
     )

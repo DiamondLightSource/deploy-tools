@@ -8,6 +8,7 @@ class RestoreError(Exception):
 
 
 def check_restore(modules: list[Module], layout: Layout) -> None:
+    """Verify that restore() can be run on the current deployment area."""
     for module in modules:
         name = module.metadata.name
         version = module.metadata.version

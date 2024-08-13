@@ -22,6 +22,12 @@ EXECUTABLE_PERMISSIONS = 0o755
 
 
 class Templater:
+    """Used to abstract away the specifics of jinja2 templating.
+
+    File permissions are also managed here to ensure consistency of output between
+    different file types.
+    """
+
     def __init__(self) -> None:
         self._env = jinja2.Environment(loader=jinja2.PackageLoader("deploytools"))
         self._templates: dict[str, jinja2.Template] = {}
@@ -34,6 +40,7 @@ class Templater:
         parameters: dict[str, Any],
         executable: bool = False,
     ) -> None:
+        """Create an output file, using the given template and template parameters."""
         with open(output_file, "w") as f:
             f.write(self._templates[template].render(**parameters))
 

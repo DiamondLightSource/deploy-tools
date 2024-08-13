@@ -10,6 +10,7 @@ class UpdateError(Exception):
 
 
 def check_update(modules: list[Module], layout: Layout) -> None:
+    """Verify that update() can be run on the current deployment area."""
     for module in modules:
         name = module.metadata.name
         version = module.metadata.version

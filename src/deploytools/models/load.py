@@ -24,11 +24,13 @@ class LoadError(Exception):
 
 
 def load_from_yaml(model: type[T], file_path: Path) -> T:
+    """Load a single Pydantic model from a yaml file."""
     with open(file_path) as f:
         return model(**yaml.safe_load(f))
 
 
 def load_module(path: Path) -> Module:
+    """Load Module configuration from a yaml file."""
     if path.is_dir() or not path.suffix == YAML_FILE_SUFFIX:
         raise LoadError(f"Unexpected file in configuration directory:\n{path}")
 
@@ -36,6 +38,7 @@ def load_module(path: Path) -> Module:
 
 
 def load_deployment(config_folder: Path) -> Deployment:
+    """Load Deployment configuration from a yaml file."""
     settings = DeploymentSettings()
     modules: ModulesByNameAndVersion = {}
     for path in config_folder.glob("*"):
@@ -69,6 +72,7 @@ def load_deployment(config_folder: Path) -> Deployment:
 def check_filepath_matches_module_metadata(
     version_path: Path, metadata: ModuleMetadata
 ) -> None:
+    """Ensure the modules file path (in config folder) matches the metadata."""
     if version_path.is_dir() and version_path.suffix == YAML_FILE_SUFFIX:
         raise LoadError(f"Module directory has incorrect suffix:\n{version_path}")
 

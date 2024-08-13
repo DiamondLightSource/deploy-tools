@@ -41,7 +41,9 @@ class UpdateGroup:
 def validate_configuration(deployment_root: Path, config_folder: Path) -> None:
     """Validate deployment configuration and print a list of modules for deployment.
 
-    This is the same validation that the deploytools sync command uses."""
+    The validate_* functions consider only the current and previous deployment
+    to identify what changes need to be made, while check_actions will look at the
+    current deployment area to ensure that the specified actions can be completed."""
     deployment = load_deployment(config_folder)
     layout = Layout(deployment_root)
     snapshot = load_snapshot(layout)
@@ -56,6 +58,7 @@ def validate_configuration(deployment_root: Path, config_folder: Path) -> None:
 def check_actions(
     update_group: UpdateGroup, default_versions: DefaultVersionsByName, layout: Layout
 ) -> None:
+    """Check the deployment area to ensure that all actions can be carried out."""
     check_deploy(update_group.added, layout)
     check_update(update_group.updated, layout)
     check_deprecate(update_group.deprecated, layout)
@@ -84,6 +87,7 @@ def display_updates(update_group: UpdateGroup) -> None:
 
 
 def validate_deployment(deployment: Deployment, snapshot: Deployment) -> UpdateGroup:
+    """Validate configuration to get set of actions that need to be carried out."""
     old_modules = snapshot.modules
     new_modules = deployment.modules
 
@@ -94,7 +98,6 @@ def validate_deployment(deployment: Deployment, snapshot: Deployment) -> UpdateG
 def get_update_group(
     old_modules: ModulesByNameAndVersion, new_modules: ModulesByNameAndVersion
 ) -> UpdateGroup:
-    """Get set of modules that have been updated since last deployment."""
     group: UpdateGroup = UpdateGroup()
     for name in new_modules:
         if name not in old_modules:
@@ -140,6 +143,11 @@ def get_update_group(
 
 
 def is_modified(old_module: Module, new_module: Module) -> bool:
+    """Return whether the two module configuration objects have modified settings.
+
+    The 'deprecated' parameter is excluded as it is used for the deprecate/restore
+    actions, rather than modifying the deployed files.
+    """
     new_copy = new_module.model_copy(deep=True)
     new_copy.metadata.deprecated = old_module.metadata.deprecated
 
@@ -211,7 +219,8 @@ def validate_default_versions(deployment: Deployment) -> DefaultVersionsByName:
 def get_final_deployed_module_versions(
     deployment: Deployment,
 ) -> ModuleVersionsByName:
-    final_versions: dict[str, list[str]] = defaultdict(list)
+    """Return module versions that will exist after sync action has been carried out."""
+    final_versions: ModuleVersionsByName = defaultdict(list)
     for name, module_versions in deployment.modules.items():
         final_versions[name] = [
             version
@@ -226,6 +235,12 @@ def get_all_default_versions(
     initial_defaults: DefaultVersionsByName,
     final_deployed_modules: ModuleVersionsByName,
 ) -> DefaultVersionsByName:
+    """Return the default versions that will be used for all modules in configuration.
+
+    All modules will have a .version file to specify their default, even if they do not
+    specify one in configuration. This is to ensure that 'development' versions are not
+    accidentally used as the default.
+    """
     final_defaults: DefaultVersionsByName = {}
     final_defaults.update(initial_defaults)
 
@@ -242,6 +257,12 @@ def get_all_default_versions(
 
 
 def validate_module_dependencies(deployment: Deployment) -> None:
+    """Ensure that all module dependencies are set appropriately.
+
+    This checks any module dependency names that come from current configuration to
+    ensure they exist. Not specifying a particular version is only valid for
+    dependencies that are managed outside of the current deployment configuration.
+    """
     final_deployed_modules = get_final_deployed_module_versions(deployment)
 
     for name, module_versions in deployment.modules.items():

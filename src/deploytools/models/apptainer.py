@@ -21,6 +21,13 @@ class ContainerImage(BaseModel, extra="forbid"):
 
 
 class Apptainer(BaseModel, extra="forbid"):
+    """Represents an Apptainer application or set of applications.
+
+    This uses apptainer to deploy a portable image of the desired container. Several
+    entrypoints can then be specified to allow for multiple commands to be easily used
+    in the same container image.
+    """
+
     app_type: Literal["apptainer"]
     name: str
     version: str

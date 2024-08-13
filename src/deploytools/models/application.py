@@ -8,4 +8,6 @@ from .shell import Shell
 
 
 class Application(BaseModel, extra="forbid"):
+    """Represents one of several application types in module configuration."""
+
     app_config: Union[Apptainer, Command, Shell] = Field(..., discriminator="app_type")

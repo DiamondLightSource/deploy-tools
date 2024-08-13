@@ -14,7 +14,7 @@ SCHEMA_NAMES: dict[str, type[BaseModel]] = {
 
 
 def generate_schema(output_path: Path) -> None:
-    """Generate JSON schema for yaml configuration files."""
+    """Generate JSON schemas for yaml configuration files."""
     for filename, model in SCHEMA_NAMES.items():
         out_path = output_path / filename
         schema = model.model_json_schema()

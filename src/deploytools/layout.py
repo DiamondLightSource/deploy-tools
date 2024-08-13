@@ -1,9 +1,9 @@
-"""Constants and classes for describing the layout of the deployment area."""
-
 from pathlib import Path
 
 
 class Layout:
+    """Represents the layout of the deployment area."""
+
     ENTRYPOINTS_ROOT_NAME = "entrypoints"
     MODULEFILES_ROOT_NAME = "modulefiles"
     SIF_FILES_ROOT_NAME = "sif_files"

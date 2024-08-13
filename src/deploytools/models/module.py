@@ -25,5 +25,11 @@ class ModuleMetadata(BaseModel, extra="forbid"):
 
 
 class Module(BaseModel, extra="forbid"):
+    """Represents a Module to be deployed.
+
+    Modules can optionally include a set of applications, environment variables to load,
+    and a list of module dependencies.
+    """
+
     metadata: ModuleMetadata
     applications: list[Application]

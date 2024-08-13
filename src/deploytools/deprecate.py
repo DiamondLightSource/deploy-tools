@@ -8,6 +8,7 @@ class DeprecateError(Exception):
 
 
 def check_deprecate(modules: list[Module], layout: Layout) -> None:
+    """Verify that deprecate() can be run on the current deployment area."""
     for module in modules:
         name = module.metadata.name
         version = module.metadata.version
@@ -26,7 +27,10 @@ def check_deprecate(modules: list[Module], layout: Layout) -> None:
 def deprecate(modules: list[Module], layout: Layout) -> None:
     """Deprecate a list of modules.
 
-    This will move the modulefile to a 'deprecated' directory."""
+    This will move the modulefile to a 'deprecated' directory. If the modulefile path is
+    set up to include the 'deprecated' directory, all modulefiles should continue to
+    work.
+    """
     for module in modules:
         move_modulefile(
             module.metadata.name,

@@ -5,7 +5,10 @@ from .templater import Templater, TemplateType
 
 
 class ShellCreator:
-    """Class for creating 'shell' entrypoints, which run bash scripts."""
+    """Class for creating 'shell' entrypoints.
+
+    These shell scripts use 'bash' for improved functionality.
+    """
 
     def __init__(self, templater: Templater, layout: Layout) -> None:
         self._templater = templater

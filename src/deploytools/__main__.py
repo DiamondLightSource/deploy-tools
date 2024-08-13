@@ -76,7 +76,7 @@ def schema(
         ),
     ],
 ) -> None:
-    """Generate JSON schema for yaml configuration files."""
+    """Generate JSON schemas for yaml configuration files."""
     generate_schema(output_path)
 
 

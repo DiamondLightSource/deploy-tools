@@ -20,7 +20,7 @@ from .validate import (
 
 
 def synchronise(deployment_root: Path, config_folder: Path) -> None:
-    """Sync deployment folder with current configuration"""
+    """Synchronise the deployment folder with the current configuration"""
     deployment = load_deployment(config_folder)
     layout = Layout(deployment_root)
     snapshot = load_snapshot(layout)
