@@ -3,9 +3,6 @@ from copy import deepcopy
 from dataclasses import dataclass, field
 from pathlib import Path
 
-import typer
-from typing_extensions import Annotated
-
 from .default_versions import check_default_versions
 from .deploy import check_deploy
 from .deprecate import check_deprecate
@@ -41,25 +38,7 @@ class UpdateGroup:
     removed: list[Module] = field(default_factory=list)
 
 
-def validate(
-    deployment_root: Annotated[
-        Path,
-        typer.Argument(
-            exists=True,
-            file_okay=False,
-            dir_okay=True,
-            writable=True,
-        ),
-    ],
-    config_folder: Annotated[
-        Path,
-        typer.Argument(
-            exists=True,
-            file_okay=False,
-            dir_okay=True,
-        ),
-    ],
-) -> None:
+def validate_configuration(deployment_root: Path, config_folder: Path) -> None:
     """Validate deployment configuration and print a list of modules for deployment.
 
     This is the same validation that the deploytools sync command uses."""

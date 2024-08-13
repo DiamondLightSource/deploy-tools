@@ -1,8 +1,5 @@
 from pathlib import Path
 
-import typer
-from typing_extensions import Annotated
-
 from .default_versions import apply_default_versions
 from .deploy import deploy
 from .deprecate import deprecate
@@ -22,25 +19,7 @@ from .validate import (
 )
 
 
-def sync(
-    deployment_root: Annotated[
-        Path,
-        typer.Argument(
-            exists=True,
-            file_okay=False,
-            dir_okay=True,
-            writable=True,
-        ),
-    ],
-    config_folder: Annotated[
-        Path,
-        typer.Argument(
-            exists=True,
-            file_okay=False,
-            dir_okay=True,
-        ),
-    ],
-) -> None:
+def synchronise(deployment_root: Path, config_folder: Path) -> None:
     """Sync deployment folder with current configuration"""
     deployment = load_deployment(config_folder)
     layout = Layout(deployment_root)

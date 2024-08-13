@@ -1,20 +1,83 @@
+from pathlib import Path
+
 import typer
+from typing_extensions import Annotated
 
 from . import __version__
-from .models.schema import schema
-from .sync import sync
-from .validate import validate
+from .models.schema import generate_schema
+from .sync import synchronise
+from .validate import validate_configuration
 
 __all__ = ["main"]
 
 
 app = typer.Typer(no_args_is_help=True)
 
-command = app.command(no_args_is_help=True)
 
-command(sync)
-command(validate)
-command(schema)
+@app.command(no_args_is_help=True)
+def sync(
+    deployment_root: Annotated[
+        Path,
+        typer.Argument(
+            exists=True,
+            file_okay=False,
+            dir_okay=True,
+            writable=True,
+        ),
+    ],
+    config_folder: Annotated[
+        Path,
+        typer.Argument(
+            exists=True,
+            file_okay=False,
+            dir_okay=True,
+        ),
+    ],
+) -> None:
+    """Sync deployment folder with current configuration"""
+    synchronise(deployment_root, config_folder)
+
+
+@app.command(no_args_is_help=True)
+def validate(
+    deployment_root: Annotated[
+        Path,
+        typer.Argument(
+            exists=True,
+            file_okay=False,
+            dir_okay=True,
+            writable=True,
+        ),
+    ],
+    config_folder: Annotated[
+        Path,
+        typer.Argument(
+            exists=True,
+            file_okay=False,
+            dir_okay=True,
+        ),
+    ],
+) -> None:
+    """Validate deployment configuration and print a list of modules for deployment.
+
+    This is the same validation that the deploytools sync command uses."""
+    validate_configuration(deployment_root, config_folder)
+
+
+@app.command(no_args_is_help=True)
+def schema(
+    output_path: Annotated[
+        Path,
+        typer.Argument(
+            exists=True,
+            file_okay=False,
+            dir_okay=True,
+            writable=True,
+        ),
+    ],
+) -> None:
+    """Generate JSON schema for yaml configuration files."""
+    generate_schema(output_path)
 
 
 def version_callback(value: bool):
