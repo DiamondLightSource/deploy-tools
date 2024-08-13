@@ -6,9 +6,9 @@ metadata:
   description: Demonstration of deploytools dependencies
 
   dependencies:
-    - name: example-module-file
+    - name: dls-pmac-control
       version: "0.1"
-    - name: example-module-folder
+    - name: example-module-apps
       version: "0.1"
 
 applications: []

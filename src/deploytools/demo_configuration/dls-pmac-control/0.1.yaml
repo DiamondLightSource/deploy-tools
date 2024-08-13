@@ -1,13 +1,13 @@
 # yaml-language-server: $schema=/workspaces/deploytools/src/deploytools/models/schemas/module.json
 
 metadata:
-  name: example-module-file
-  version: "0.2"
+  name: dls-pmac-control
+  version: "0.1"
   description: Demonstration of the deploytools process
 
   env_vars:
     - name: EXAMPLE_VALUE
-      value: Test message EXAMPLE_VALUE from example-module-file version 0.2
+      value: Test message EXAMPLE_VALUE from example-module-file version 0.1
 
 applications:
   - app_config:

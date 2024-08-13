@@ -1,8 +1,0 @@
-# yaml-language-server: $schema=/workspaces/deploytools/src/deploytools/models/schemas/application.json
-
-app_config:
-  app_type: command
-
-  name: test-echo-module-folder
-  command_path: echo
-  command_args: $OTHER_VALUE

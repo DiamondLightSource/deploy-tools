@@ -28,25 +28,11 @@ def load_from_yaml(model: type[T], file_path: Path) -> T:
         return model(**yaml.safe_load(f))
 
 
-def load_module_folder(folder: Path) -> Module:
-    metadata: ModuleMetadata = load_from_yaml(ModuleMetadata, folder / MODULE_CONFIG)
-
-    applications = [
-        load_from_yaml(Application, file)
-        for file in folder.glob("*")
-        if file.name != MODULE_CONFIG
-    ]
-
-    return Module(metadata=metadata, applications=applications)
-
-
 def load_module(path: Path) -> Module:
-    if path.is_dir():
-        return load_module_folder(path)
-    elif path.suffix == YAML_FILE_SUFFIX:
-        return load_from_yaml(Module, path)
+    if path.is_dir() or not path.suffix == YAML_FILE_SUFFIX:
+        raise LoadError(f"Unexpected file in configuration directory:\n{path}")
 
-    raise LoadError(f"Unexpected file in configuration directory:\n{path}")
+    return load_from_yaml(Module, path)
 
 
 def load_deployment(config_folder: Path) -> Deployment:

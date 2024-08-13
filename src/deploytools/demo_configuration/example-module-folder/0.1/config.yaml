@@ -1,9 +1,0 @@
-# yaml-language-server: $schema=/workspaces/deploytools/src/deploytools/models/schemas/module-metadata.json
-
-name: example-module-folder
-version: "0.1"
-description: Demonstration of a module configuration folder
-
-env_vars:
-  - name: OTHER_VALUE
-    value: Test message OTHER_VALUE from example-module-folder
