@@ -7,7 +7,7 @@ from .application import Application
 
 class ModuleDependency(BaseModel, extra="forbid"):
     name: str
-    version: Optional[str]
+    version: Optional[str] = None
 
 
 class EnvVar(BaseModel, extra="forbid"):

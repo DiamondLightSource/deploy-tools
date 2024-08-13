@@ -9,7 +9,11 @@ setenv {{ var.name }} "{{ var.value }}"
 {% endfor %}
 
 {% for module in dependencies %}
+{% if module.version == None %}
+module load {{ module.name }}
+{% else %}
 module load {{ module.name }}/{{ module.version }}
+{% endif %}
 {% endfor %}
 
 prepend-path PATH "{{ entrypoint_folder }}"
