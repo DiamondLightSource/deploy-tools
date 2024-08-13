@@ -36,12 +36,6 @@
             "command": "deploytools validate ${input:deploy-folder} ${input:config-folder}",
             "problemMatcher": []
         },
-        {
-            "label": "Setup modules",
-            "type": "shell",
-            "command": "export MODULEPATH=${workspaceFolder}/demo-output/modulefiles/ && module purge",
-            "problemMatcher": []
-        },
     ],
     "inputs": [
         {
