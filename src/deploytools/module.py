@@ -84,12 +84,8 @@ def get_deployed_module_versions(
     )
     found_modules: ModuleVersionsByName = defaultdict(list)
 
-    for module_folder in modulefiles_root.glob("*"):
-        for version_path in module_folder.glob("*"):
-            if version_path.name == VERSION_FILENAME:
-                continue
-
-            found_modules[module_folder.name].append(version_path.name)
+    for version_path in modulefiles_root.glob("*/[!.version]*"):
+        found_modules[version_path.parent.name].append(version_path.name)
 
     return found_modules
 

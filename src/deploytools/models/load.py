@@ -1,3 +1,4 @@
+from collections import defaultdict
 from pathlib import Path
 from typing import TypeVar
 
@@ -8,7 +9,6 @@ from .deployment import (
     Deployment,
     DeploymentSettings,
     ModulesByNameAndVersion,
-    ModulesByVersion,
 )
 from .module import Module, ModuleMetadata
 
@@ -39,32 +39,18 @@ def load_module(path: Path) -> Module:
 
 def load_deployment(config_folder: Path) -> Deployment:
     """Load Deployment configuration from a yaml file."""
-    settings = DeploymentSettings()
-    modules: ModulesByNameAndVersion = {}
-    for path in config_folder.glob("*"):
-        if not path.is_dir():
-            if path.name == DEPLOYMENT_SETTINGS:
-                settings = load_from_yaml(DeploymentSettings, path)
-                continue
-            raise LoadError(f"Unexpected file found:\n{path}")
+    settings = load_from_yaml(DeploymentSettings, config_folder / DEPLOYMENT_SETTINGS)
 
-        module_name = path.name
-        versioned_modules: ModulesByVersion = {}
+    modules: ModulesByNameAndVersion = defaultdict(dict)
+    for version_path in config_folder.glob("*/*"):
+        module = load_module(version_path)
+        # This also guarantees unique module names and versions in configuration
+        check_filepath_matches_module_metadata(version_path, module.metadata)
 
-        for version_path in path.glob("*"):
-            module = load_module(version_path)
-            check_filepath_matches_module_metadata(version_path, module.metadata)
-            version = module.metadata.version
+        name = module.metadata.name
+        version = module.metadata.version
 
-            if version in versioned_modules:
-                raise LoadError(
-                    f"Version {version} already exists for {module_name}:\n"
-                    f"{version_path}"
-                )
-
-            versioned_modules[version] = module
-
-        modules[module_name] = versioned_modules
+        modules[name][version] = module
 
     return Deployment(settings=settings, modules=modules)
 
