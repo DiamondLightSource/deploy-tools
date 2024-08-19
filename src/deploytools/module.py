@@ -56,7 +56,10 @@ class ModuleCreator:
                 params = {"version": default_versions[name]}
 
                 self._templater.create(
-                    version_file, TemplateType.MODULEFILE_VERSION, params
+                    version_file,
+                    TemplateType.MODULEFILE_VERSION,
+                    params,
+                    overwrite=True,
                 )
             else:
                 version_file.unlink(missing_ok=True)

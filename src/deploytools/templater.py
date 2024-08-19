@@ -39,9 +39,11 @@ class Templater:
         template: TemplateType,
         parameters: dict[str, Any],
         executable: bool = False,
+        overwrite: bool = False,
     ) -> None:
         """Create an output file, using the given template and template parameters."""
-        with open(output_file, "w") as f:
+        open_mode = "w" if overwrite else "x"
+        with open(output_file, open_mode) as f:
             f.write(self._templates[template].render(**parameters))
 
         permissions = EXECUTABLE_PERMISSIONS if executable else DEFAULT_PERMISSIONS
