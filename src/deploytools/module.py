@@ -106,3 +106,15 @@ def in_deprecated_area(name: str, version: str, layout: Layout) -> bool:
 
 def is_module_dev_mode(module: Module) -> bool:
     return module.metadata.version == DEVELOPMENT_VERSION
+
+
+def is_modified(module_a: Module, module_b: Module) -> bool:
+    """Return whether the two module configuration objects have modified settings.
+
+    The 'deprecated' parameter is excluded as it is used for the deprecate/restore
+    actions, rather than modifying the deployed files.
+    """
+    new_copy = module_b.model_copy(deep=True)
+    new_copy.metadata.deprecated = module_a.metadata.deprecated
+
+    return not new_copy == module_a

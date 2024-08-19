@@ -17,6 +17,7 @@ from .models.module import Module
 from .module import (
     DEVELOPMENT_VERSION,
     ModuleVersionsByName,
+    is_modified,
     is_module_dev_mode,
 )
 from .remove import check_remove
@@ -159,18 +160,6 @@ def get_update_group(
     validate_removed_modules(group.removed)
 
     return group
-
-
-def is_modified(old_module: Module, new_module: Module) -> bool:
-    """Return whether the two module configuration objects have modified settings.
-
-    The 'deprecated' parameter is excluded as it is used for the deprecate/restore
-    actions, rather than modifying the deployed files.
-    """
-    new_copy = new_module.model_copy(deep=True)
-    new_copy.metadata.deprecated = old_module.metadata.deprecated
-
-    return not new_copy == old_module
 
 
 def validate_added_modules(modules: list[Module]) -> None:
