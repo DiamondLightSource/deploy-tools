@@ -46,7 +46,7 @@ def load_deployment(config_folder: Path) -> Deployment:
             if path.name == DEPLOYMENT_SETTINGS:
                 settings = load_from_yaml(DeploymentSettings, path)
                 continue
-            raise LoadError(f"Module path is not directory: {path}")
+            raise LoadError(f"Unexpected file found:\n{path}")
 
         module_name = path.name
         versioned_modules: ModulesByVersion = {}
