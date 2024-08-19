@@ -2,6 +2,7 @@
   "$defs": {
     "Application": {
       "additionalProperties": false,
+      "description": "Represents one of several application types in module configuration.",
       "properties": {
         "app_config": {
           "discriminator": {
@@ -34,6 +35,7 @@
     },
     "Apptainer": {
       "additionalProperties": false,
+      "description": "Represents an Apptainer application or set of applications.\n\nThis uses apptainer to deploy a portable image of the desired container. Several\nentrypoints can then be specified to allow for multiple commands to be easily used\nin the same container image.",
       "properties": {
         "app_type": {
           "const": "apptainer",
@@ -77,6 +79,7 @@
     },
     "Command": {
       "additionalProperties": false,
+      "description": "Represents a Command application.\n\nThis runs the specified command with the specified arguments, as a bash script. All\nadditional arguments and options on the command line are passed through to this\ncommand.",
       "properties": {
         "app_type": {
           "const": "command",
@@ -217,6 +220,7 @@
     },
     "Module": {
       "additionalProperties": false,
+      "description": "Represents a Module to be deployed.\n\nModules can optionally include a set of applications, environment variables to load,\nand a list of module dependencies.",
       "properties": {
         "metadata": {
           "$ref": "#/$defs/ModuleMetadata"
@@ -316,6 +320,7 @@
     },
     "Shell": {
       "additionalProperties": false,
+      "description": "Represents a Shell application.\n\nThis will run the code specified as a shell script. This currently uses Bash for\nimproved functionality while retaining high compatibility with various Linux\noperating systems.",
       "properties": {
         "app_type": {
           "const": "shell",
@@ -347,6 +352,7 @@
     }
   },
   "additionalProperties": false,
+  "description": "Configuration for all modules and applications that should be deployed.",
   "properties": {
     "settings": {
       "$ref": "#/$defs/DeploymentSettings"
