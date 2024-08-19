@@ -1,5 +1,3 @@
-from typing import Union
-
 from pydantic import BaseModel, Field
 
 from .apptainer import Apptainer
@@ -10,4 +8,4 @@ from .shell import Shell
 class Application(BaseModel, extra="forbid"):
     """Represents one of several application types in module configuration."""
 
-    app_config: Union[Apptainer, Command, Shell] = Field(..., discriminator="app_type")
+    app_config: Apptainer | Command | Shell = Field(..., discriminator="app_type")

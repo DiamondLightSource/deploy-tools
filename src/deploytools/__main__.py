@@ -1,7 +1,7 @@
 from pathlib import Path
+from typing import Annotated
 
 import typer
-from typing_extensions import Annotated
 
 from . import __version__
 from .models.schema import generate_schema

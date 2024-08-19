@@ -1,4 +1,5 @@
-from typing import Literal, Optional, Sequence
+from collections.abc import Sequence
+from typing import Literal
 
 from pydantic import BaseModel, Field
 
@@ -11,7 +12,7 @@ class EntrypointOptions(BaseModel, extra="forbid"):
 
 class Entrypoint(BaseModel, extra="forbid"):
     executable_name: str
-    command: Optional[str] = None
+    command: str | None = None
     options: EntrypointOptions = Field(default_factory=EntrypointOptions)
 
 
