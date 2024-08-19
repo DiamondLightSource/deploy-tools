@@ -1,4 +1,3 @@
-import os
 import shutil
 
 from .layout import Layout
@@ -42,14 +41,14 @@ def remove(modules: list[Module], layout: Layout) -> None:
 
 def remove_deployed_module(name: str, version: str, layout: Layout) -> None:
     module_file = layout.modulefiles_root / name / version
-    os.remove(module_file)
+    module_file.unlink()
 
     remove_application_paths(name, version, layout)
 
 
 def remove_deprecated_module(name: str, version: str, layout: Layout) -> None:
     module_file = layout.deprecated_modulefiles_root / name / version
-    os.remove(module_file)
+    module_file.unlink()
 
     remove_application_paths(name, version, layout)
 
