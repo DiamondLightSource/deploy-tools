@@ -52,7 +52,11 @@ def validate_configuration(deployment_root: Path, config_folder: Path) -> None:
     default_versions = validate_default_versions(deployment)
 
     check_actions(update_group, default_versions, layout)
-    display_updates(update_group)
+
+    print_module_updates(update_group)
+    print_version_updates(
+        snapshot.settings.default_versions, deployment.settings.default_versions
+    )
 
 
 def check_actions(
@@ -68,7 +72,7 @@ def check_actions(
     check_default_versions(default_versions, layout)
 
 
-def display_updates(update_group: UpdateGroup) -> None:
+def print_module_updates(update_group: UpdateGroup) -> None:
     display_config = {
         "deployed": update_group.added,
         "updated": update_group.updated,
@@ -84,6 +88,21 @@ def display_updates(update_group: UpdateGroup) -> None:
             print(f"{module.metadata.name}/{module.metadata.version}")
 
         print()
+
+
+def print_version_updates(
+    old_defaults: DefaultVersionsByName, new_defaults: DefaultVersionsByName
+) -> None:
+    print("Updated module defaults:")
+    module_names = old_defaults.keys() | new_defaults.keys()
+
+    for name in module_names:
+        old = old_defaults.get(name, "None")
+        new = new_defaults.get(name, "None")
+        if not old == new:
+            print(f"{name} {old} -> {new}")
+
+    print()
 
 
 def validate_deployment(deployment: Deployment, snapshot: Deployment) -> UpdateGroup:
