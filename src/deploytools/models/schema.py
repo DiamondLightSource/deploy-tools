@@ -18,5 +18,5 @@ def generate_schema(output_path: Path) -> None:
     for filename, model in SCHEMA_NAMES.items():
         out_path = output_path / filename
         schema = model.model_json_schema()
-        with open(out_path, "w+") as f:
+        with open(out_path, "w") as f:
             json.dump(schema, f, indent=2)
