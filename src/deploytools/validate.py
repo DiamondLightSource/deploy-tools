@@ -253,13 +253,15 @@ def get_all_default_versions(
     final_defaults.update(initial_defaults)
 
     for name in final_deployed_modules:
-        if name not in final_defaults:
-            version_list = deepcopy(final_deployed_modules[name])
-            version_list.sort()
-            if len(version_list) == 1 or not version_list[-1] == DEVELOPMENT_VERSION:
-                final_defaults[name] = version_list[-1]
-            else:
-                final_defaults[name] = version_list[-2]
+        if name in final_defaults:
+            continue
+
+        version_list = deepcopy(final_deployed_modules[name])
+        if DEVELOPMENT_VERSION in version_list:
+            version_list.remove(DEVELOPMENT_VERSION)
+
+        version_list.sort()
+        final_defaults[name] = version_list[-1]
 
     return final_defaults
 
