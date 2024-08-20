@@ -1,9 +1,9 @@
 from typing import Literal
 
-from pydantic import BaseModel
+from .parent import ParentModel
 
 
-class Command(BaseModel, extra="forbid"):
+class Command(ParentModel):
     """Represents a Command application.
 
     This runs the specified command with the specified arguments, as a bash script. All

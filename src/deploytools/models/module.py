@@ -1,21 +1,20 @@
 from collections.abc import Sequence
 
-from pydantic import BaseModel
-
 from .application import Application
+from .parent import ParentModel
 
 
-class ModuleDependency(BaseModel, extra="forbid"):
+class ModuleDependency(ParentModel):
     name: str
     version: str | None = None
 
 
-class EnvVar(BaseModel, extra="forbid"):
+class EnvVar(ParentModel):
     name: str
     value: str
 
 
-class ModuleMetadata(BaseModel, extra="forbid"):
+class ModuleMetadata(ParentModel):
     name: str
     version: str
     description: str | None = None
@@ -24,7 +23,7 @@ class ModuleMetadata(BaseModel, extra="forbid"):
     deprecated: bool = False
 
 
-class Module(BaseModel, extra="forbid"):
+class Module(ParentModel):
     """Represents a Module to be deployed.
 
     Modules can optionally include a set of applications, environment variables to load,

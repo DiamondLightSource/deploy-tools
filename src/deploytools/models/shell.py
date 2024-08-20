@@ -1,9 +1,9 @@
 from typing import Literal
 
-from pydantic import BaseModel
+from .parent import ParentModel
 
 
-class Shell(BaseModel, extra="forbid"):
+class Shell(ParentModel):
     """Represents a Shell application.
 
     This will run the code specified as a shell script. This currently uses Bash for

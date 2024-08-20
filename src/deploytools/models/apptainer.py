@@ -1,27 +1,29 @@
 from collections.abc import Sequence
 from typing import Literal
 
-from pydantic import BaseModel, Field
+from pydantic import Field
+
+from .parent import ParentModel
 
 
-class EntrypointOptions(BaseModel, extra="forbid"):
+class EntrypointOptions(ParentModel):
     apptainer_args: str = ""
     command_args: str = ""
     mounts: Sequence[str] = []
 
 
-class Entrypoint(BaseModel, extra="forbid"):
+class Entrypoint(ParentModel):
     executable_name: str
     command: str | None = None
     options: EntrypointOptions = Field(default_factory=EntrypointOptions)
 
 
-class ContainerImage(BaseModel, extra="forbid"):
+class ContainerImage(ParentModel):
     path: str
     version: str
 
 
-class Apptainer(BaseModel, extra="forbid"):
+class Apptainer(ParentModel):
     """Represents an Apptainer application or set of applications.
 
     This uses apptainer to deploy a portable image of the desired container. Several
