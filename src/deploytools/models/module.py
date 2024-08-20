@@ -1,4 +1,4 @@
-from typing import Optional, Sequence
+from collections.abc import Sequence
 
 from pydantic import BaseModel
 
@@ -7,7 +7,7 @@ from .application import Application
 
 class ModuleDependency(BaseModel, extra="forbid"):
     name: str
-    version: Optional[str] = None
+    version: str | None = None
 
 
 class EnvVar(BaseModel, extra="forbid"):
@@ -18,7 +18,7 @@ class EnvVar(BaseModel, extra="forbid"):
 class ModuleMetadata(BaseModel, extra="forbid"):
     name: str
     version: str
-    description: Optional[str] = None
+    description: str | None = None
     dependencies: Sequence[ModuleDependency] = []
     env_vars: Sequence[EnvVar] = []
     deprecated: bool = False
