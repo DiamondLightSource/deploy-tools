@@ -1,4 +1,5 @@
 import subprocess
+import uuid
 from itertools import chain
 from pathlib import Path
 
@@ -67,11 +68,10 @@ class ApptainerCreator:
         if sif_file.exists():
             raise ApptainerError(f"Sif file output already exists:\n{sif_file}")
 
-        container_path = f"{config.container.path}:{config.container.version}"
-
-        commands = ["apptainer", "pull", sif_file, container_path]
+        commands = ["apptainer", "pull", sif_file, config.container.url]
         subprocess.run(commands, check=True)
 
     def _get_sif_file_path(self, config: Apptainer, metadata: ModuleMetadata) -> Path:
         sif_parent = self._sif_root / metadata.name / metadata.version
-        return sif_parent / f"{config.name}:{config.version}.sif"
+        file_name = uuid.uuid3(uuid.NAMESPACE_URL, config.container.url).hex
+        return sif_parent / f"{file_name}.sif"

@@ -22,6 +22,10 @@ class ContainerImage(ParentModel):
     path: str
     version: str
 
+    @property
+    def url(self):
+        return f"{self.path}:{self.version}"
+
 
 class Apptainer(ParentModel):
     """Represents an Apptainer application or set of applications.
@@ -32,8 +36,6 @@ class Apptainer(ParentModel):
     """
 
     app_type: Literal["apptainer"]
-    name: str
-    version: str
     container: ContainerImage
     entrypoints: Sequence[Entrypoint]
     global_options: EntrypointOptions = Field(default_factory=EntrypointOptions)

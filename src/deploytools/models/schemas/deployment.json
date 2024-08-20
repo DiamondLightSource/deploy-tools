@@ -45,14 +45,6 @@
           "title": "App Type",
           "type": "string"
         },
-        "name": {
-          "title": "Name",
-          "type": "string"
-        },
-        "version": {
-          "title": "Version",
-          "type": "string"
-        },
         "container": {
           "$ref": "#/$defs/ContainerImage"
         },
@@ -69,8 +61,6 @@
       },
       "required": [
         "app_type",
-        "name",
-        "version",
         "container",
         "entrypoints"
       ],

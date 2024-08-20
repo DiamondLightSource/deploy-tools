@@ -13,9 +13,6 @@ applications:
   - app_config:
       app_type: apptainer
 
-      name: cowthing
-      version: "1.6"
-
       container:
         path: docker://ghcr.io/apptainer/lolcow
         version: latest
