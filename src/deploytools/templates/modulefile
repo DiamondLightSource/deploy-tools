@@ -1,0 +1,19 @@
+#%Module1.0
+##
+## {{ module_name }} - {{ module_description }}
+##
+module-whatis "{{ module_description }}"
+
+{% for var in env_vars %}
+setenv {{ var.name }} "{{ var.value }}"
+{% endfor %}
+
+{% for module in dependencies %}
+{% if module.version == None %}
+module load {{ module.name }}
+{% else %}
+module load {{ module.name }}/{{ module.version }}
+{% endif %}
+{% endfor %}
+
+prepend-path PATH "{{ entrypoint_folder }}"

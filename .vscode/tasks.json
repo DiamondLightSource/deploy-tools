@@ -11,6 +11,50 @@
                 "cwd": "${workspaceRoot}"
             },
             "problemMatcher": [],
-        }
+        },
+        {
+            "label": "Generate schema",
+            "type": "shell",
+            "command": "deploytools schema ${input:schema-folder}",
+            "problemMatcher": []
+        },
+        {
+            "label": "Sync modules",
+            "type": "shell",
+            "command": "deploytools sync ${input:deploy-folder} ${input:config-folder}",
+            "problemMatcher": []
+        },
+        {
+            "label": "Clean deployment",
+            "type": "shell",
+            "command": "rm -rf ${workspaceFolder}/demo-output/ && mkdir ${workspaceFolder}/demo-output/",
+            "problemMatcher": []
+        },
+        {
+            "label": "Validate deployment",
+            "type": "shell",
+            "command": "deploytools validate ${input:deploy-folder} ${input:config-folder}",
+            "problemMatcher": []
+        },
+    ],
+    "inputs": [
+        {
+            "id": "schema-folder",
+            "description": "Schema output folder",
+            "default": "${workspaceFolder}/src/deploytools/models/schemas/",
+            "type": "promptString"
+        },
+        {
+            "id": "deploy-folder",
+            "description": "Deployment output folder",
+            "default": "${workspaceFolder}/demo-output/",
+            "type": "promptString"
+        },
+        {
+            "id": "config-folder",
+            "description": "Configuration folder",
+            "default": "${workspaceFolder}/src/deploytools/demo_configuration/",
+            "type": "promptString"
+        },
     ]
 }

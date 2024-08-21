@@ -1,0 +1,3 @@
+#! /bin/bash
+
+{{ command_path }} {{ command_args }} "${@}"

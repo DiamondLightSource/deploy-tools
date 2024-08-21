@@ -1,0 +1,15 @@
+{
+  "additionalProperties": false,
+  "properties": {
+    "default_versions": {
+      "additionalProperties": {
+        "type": "string"
+      },
+      "default": {},
+      "title": "Default Versions",
+      "type": "object"
+    }
+  },
+  "title": "DeploymentSettings",
+  "type": "object"
+}

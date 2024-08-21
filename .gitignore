@@ -68,3 +68,6 @@ lockfiles/
 
 # ruff cache
 .ruff_cache/
+
+# Demo output path for vscode tasks
+demo-output

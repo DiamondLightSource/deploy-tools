@@ -5,27 +5,37 @@
 
 # deploytools
 
-A collection of tools used for deploying applications at Diamond Light Source
-
-This is where you should write a short paragraph that describes what your module does,
-how it does it, and why people should use it.
+A collection of tools used for deploying applications to the shared filesystem at
+Diamond Light Source.
 
 Source          | <https://github.com/MJGaughran/deploytools>
 :---:           | :---:
 Releases        | <https://github.com/MJGaughran/deploytools/releases>
 
-This is where you should put some images or code snippets that illustrate
-some relevant examples. If it is a library then you might put some
-introductory code here:
+The demo_configuration folder can be passed as the config_folder to the deploytools
+commands. The deployment_root just needs to be a writeable location for all files to get
+deployed under.
 
-```python
-from deploytools import __version__
+VSCode configuration has been added to perform the primary functions using defaults that
+reference locations in the VSCode dev container.
 
-print(f"Hello deploytools {__version__}")
-```
-
-Or if it is a commandline tool then you might put some example commands here:
+An additional 'Clean deployment' task has been provided to set up the deployment_root
+correctly. For the moment, this will output everything to a 'demo-output' folder.
 
 ```
-python -m deploytools --version
+deployment_root = /path/to/deployment/root
+config_folder = /path/to/config/folder
+schema_folder = /path/to/schema/folder
+
+# Generate the schema for configuration yaml files
+python -m deploytools schema $schema_folder
+
+# Validate the deployment configuration files, also ensuring that the required updates
+# are compatible with the previous deployments.
+python -m deploytools validate $deployment_root $config_folder
+
+# Synchronise the deployment area with the configuration files. This will first run
+# validation
+python -m deploytools sync $deployment_root $config_folder
+
 ```

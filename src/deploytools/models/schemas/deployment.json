@@ -1,0 +1,367 @@
+{
+  "$defs": {
+    "Application": {
+      "additionalProperties": false,
+      "description": "Represents one of several application types in module configuration.",
+      "properties": {
+        "app_config": {
+          "discriminator": {
+            "mapping": {
+              "apptainer": "#/$defs/Apptainer",
+              "command": "#/$defs/Command",
+              "shell": "#/$defs/Shell"
+            },
+            "propertyName": "app_type"
+          },
+          "oneOf": [
+            {
+              "$ref": "#/$defs/Apptainer"
+            },
+            {
+              "$ref": "#/$defs/Command"
+            },
+            {
+              "$ref": "#/$defs/Shell"
+            }
+          ],
+          "title": "App Config"
+        }
+      },
+      "required": [
+        "app_config"
+      ],
+      "title": "Application",
+      "type": "object"
+    },
+    "Apptainer": {
+      "additionalProperties": false,
+      "description": "Represents an Apptainer application or set of applications.\n\nThis uses apptainer to deploy a portable image of the desired container. Several\nentrypoints can then be specified to allow for multiple commands to be easily used\nin the same container image.",
+      "properties": {
+        "app_type": {
+          "const": "apptainer",
+          "enum": [
+            "apptainer"
+          ],
+          "title": "App Type",
+          "type": "string"
+        },
+        "container": {
+          "$ref": "#/$defs/ContainerImage"
+        },
+        "entrypoints": {
+          "items": {
+            "$ref": "#/$defs/Entrypoint"
+          },
+          "title": "Entrypoints",
+          "type": "array"
+        },
+        "global_options": {
+          "$ref": "#/$defs/EntrypointOptions"
+        }
+      },
+      "required": [
+        "app_type",
+        "container",
+        "entrypoints"
+      ],
+      "title": "Apptainer",
+      "type": "object"
+    },
+    "Command": {
+      "additionalProperties": false,
+      "description": "Represents a Command application.\n\nThis runs the specified command with the specified arguments, as a bash script. All\nadditional arguments and options on the command line are passed through to this\ncommand.",
+      "properties": {
+        "app_type": {
+          "const": "command",
+          "enum": [
+            "command"
+          ],
+          "title": "App Type",
+          "type": "string"
+        },
+        "name": {
+          "title": "Name",
+          "type": "string"
+        },
+        "command_path": {
+          "title": "Command Path",
+          "type": "string"
+        },
+        "command_args": {
+          "default": "",
+          "title": "Command Args",
+          "type": "string"
+        }
+      },
+      "required": [
+        "app_type",
+        "name",
+        "command_path"
+      ],
+      "title": "Command",
+      "type": "object"
+    },
+    "ContainerImage": {
+      "additionalProperties": false,
+      "properties": {
+        "path": {
+          "title": "Path",
+          "type": "string"
+        },
+        "version": {
+          "title": "Version",
+          "type": "string"
+        }
+      },
+      "required": [
+        "path",
+        "version"
+      ],
+      "title": "ContainerImage",
+      "type": "object"
+    },
+    "DeploymentSettings": {
+      "additionalProperties": false,
+      "properties": {
+        "default_versions": {
+          "additionalProperties": {
+            "type": "string"
+          },
+          "default": {},
+          "title": "Default Versions",
+          "type": "object"
+        }
+      },
+      "title": "DeploymentSettings",
+      "type": "object"
+    },
+    "Entrypoint": {
+      "additionalProperties": false,
+      "properties": {
+        "executable_name": {
+          "title": "Executable Name",
+          "type": "string"
+        },
+        "command": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Command"
+        },
+        "options": {
+          "$ref": "#/$defs/EntrypointOptions"
+        }
+      },
+      "required": [
+        "executable_name"
+      ],
+      "title": "Entrypoint",
+      "type": "object"
+    },
+    "EntrypointOptions": {
+      "additionalProperties": false,
+      "properties": {
+        "apptainer_args": {
+          "default": "",
+          "title": "Apptainer Args",
+          "type": "string"
+        },
+        "command_args": {
+          "default": "",
+          "title": "Command Args",
+          "type": "string"
+        },
+        "mounts": {
+          "default": [],
+          "items": {
+            "type": "string"
+          },
+          "title": "Mounts",
+          "type": "array"
+        }
+      },
+      "title": "EntrypointOptions",
+      "type": "object"
+    },
+    "EnvVar": {
+      "additionalProperties": false,
+      "properties": {
+        "name": {
+          "title": "Name",
+          "type": "string"
+        },
+        "value": {
+          "title": "Value",
+          "type": "string"
+        }
+      },
+      "required": [
+        "name",
+        "value"
+      ],
+      "title": "EnvVar",
+      "type": "object"
+    },
+    "Module": {
+      "additionalProperties": false,
+      "description": "Represents a Module to be deployed.\n\nModules can optionally include a set of applications, environment variables to load,\nand a list of module dependencies.",
+      "properties": {
+        "metadata": {
+          "$ref": "#/$defs/ModuleMetadata"
+        },
+        "applications": {
+          "items": {
+            "$ref": "#/$defs/Application"
+          },
+          "title": "Applications",
+          "type": "array"
+        }
+      },
+      "required": [
+        "metadata",
+        "applications"
+      ],
+      "title": "Module",
+      "type": "object"
+    },
+    "ModuleDependency": {
+      "additionalProperties": false,
+      "properties": {
+        "name": {
+          "title": "Name",
+          "type": "string"
+        },
+        "version": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Version"
+        }
+      },
+      "required": [
+        "name"
+      ],
+      "title": "ModuleDependency",
+      "type": "object"
+    },
+    "ModuleMetadata": {
+      "additionalProperties": false,
+      "properties": {
+        "name": {
+          "title": "Name",
+          "type": "string"
+        },
+        "version": {
+          "title": "Version",
+          "type": "string"
+        },
+        "description": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Description"
+        },
+        "dependencies": {
+          "default": [],
+          "items": {
+            "$ref": "#/$defs/ModuleDependency"
+          },
+          "title": "Dependencies",
+          "type": "array"
+        },
+        "env_vars": {
+          "default": [],
+          "items": {
+            "$ref": "#/$defs/EnvVar"
+          },
+          "title": "Env Vars",
+          "type": "array"
+        },
+        "deprecated": {
+          "default": false,
+          "title": "Deprecated",
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "name",
+        "version"
+      ],
+      "title": "ModuleMetadata",
+      "type": "object"
+    },
+    "Shell": {
+      "additionalProperties": false,
+      "description": "Represents a Shell application.\n\nThis will run the code specified as a shell script. This currently uses Bash for\nimproved functionality while retaining high compatibility with various Linux\noperating systems.",
+      "properties": {
+        "app_type": {
+          "const": "shell",
+          "enum": [
+            "shell"
+          ],
+          "title": "App Type",
+          "type": "string"
+        },
+        "name": {
+          "title": "Name",
+          "type": "string"
+        },
+        "script": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Script",
+          "type": "array"
+        }
+      },
+      "required": [
+        "app_type",
+        "name",
+        "script"
+      ],
+      "title": "Shell",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "description": "Configuration for all modules and applications that should be deployed.",
+  "properties": {
+    "settings": {
+      "$ref": "#/$defs/DeploymentSettings"
+    },
+    "modules": {
+      "additionalProperties": {
+        "additionalProperties": {
+          "$ref": "#/$defs/Module"
+        },
+        "type": "object"
+      },
+      "title": "Modules",
+      "type": "object"
+    }
+  },
+  "required": [
+    "settings",
+    "modules"
+  ],
+  "title": "Deployment",
+  "type": "object"
+}

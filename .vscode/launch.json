@@ -18,6 +18,65 @@
                 // Enable break on exception when debugging tests (see: tests/conftest.py)
                 "PYTEST_RAISE": "1",
             },
-        }
+        },
+        {
+            "name": "Debug Schema Generation",
+            "type": "debugpy",
+            "request": "launch",
+            "justMyCode": false,
+            "program": "/venv/bin/deploytools",
+            "args": "schema ${input:schema-folder}",
+            "console": "integratedTerminal",
+            "env": {
+                // Enable break on exception when debugging tests (see: tests/conftest.py)
+                "PYTEST_RAISE": "1",
+            },
+        },
+        {
+            "name": "Debug Validation",
+            "type": "debugpy",
+            "request": "launch",
+            "justMyCode": false,
+            "program": "/venv/bin/deploytools",
+            "args": "validate ${input:deploy-folder} ${input:config-folder}",
+            "console": "integratedTerminal",
+            "env": {
+                // Enable break on exception when debugging tests (see: tests/conftest.py)
+                "PYTEST_RAISE": "1",
+            },
+        },
+        {
+            "name": "Debug Sync",
+            "type": "debugpy",
+            "request": "launch",
+            "justMyCode": false,
+            "program": "/venv/bin/deploytools",
+            "args": "sync ${input:deploy-folder} ${input:config-folder}",
+            "console": "integratedTerminal",
+            "env": {
+                // Enable break on exception when debugging tests (see: tests/conftest.py)
+                "PYTEST_RAISE": "1",
+            },
+        },
+    ],
+    "inputs": [
+        {
+            "id": "schema-folder",
+            "description": "Schema output folder",
+            "default": "${workspaceFolder}/src/deploytools/models/schemas/",
+            "type": "promptString"
+        },
+        {
+            "id": "deploy-folder",
+            "description": "Deployment output folder",
+            "default": "${workspaceFolder}/demo-output/",
+            "type": "promptString"
+        },
+        {
+            "id": "config-folder",
+            "description": "Configuration folder",
+            "default": "${workspaceFolder}/src/deploytools/demo_configuration/",
+            "type": "promptString"
+        },
     ]
 }
