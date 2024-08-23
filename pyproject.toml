@@ -37,7 +37,7 @@ dev = [
 deploytools = "deploytools.__main__:main"
 
 [project.urls]
-GitHub = "https://github.com/MJGaughran/deploytools"
+GitHub = "https://github.com/DiamondLightSource/deploytools"
 
 [[project.authors]] # Further authors may be added by duplicating this section
 email = "martin.gaughran@diamond.ac.uk"
