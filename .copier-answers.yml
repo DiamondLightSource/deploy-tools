@@ -3,7 +3,7 @@ _commit: 2.2.0
 _src_path: gh:DiamondLightSource/python-copier-template
 author_email: martin.gaughran@diamond.ac.uk
 author_name: Martin Gaughran
-component_owner: ''
+component_owner: group:default/sscc
 description: A set of tools used for deploying applications to a shared filesystem.
 distribution_name: deploytools
 docker: false

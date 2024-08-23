@@ -7,4 +7,4 @@ metadata:
 spec:
   type: documentation
   lifecycle: experimental
-  owner: 
+  owner: group:default/sscc
