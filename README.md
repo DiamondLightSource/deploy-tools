@@ -5,8 +5,10 @@
 
 # deploytools
 
-A collection of tools used for deploying applications to the shared filesystem at
-Diamond Light Source.
+A set of tools used for deploying applications to a shared filesystem.
+
+This is used for deploying containerised desktop applications to many users who have
+access to a shared filesystem.
 
 Source          | <https://github.com/MJGaughran/deploytools>
 :---:           | :---:

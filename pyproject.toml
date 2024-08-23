@@ -11,7 +11,7 @@ classifiers = [
     "Programming Language :: Python :: 3.11",
     "Programming Language :: Python :: 3.12",
 ]
-description = "A collection of tools used for deploying applications at Diamond Light Source"
+description = "A set of tools used for deploying applications to a shared filesystem."
 dependencies = [
     "typer",
 ] # Add project dependencies here, e.g. ["click", "numpy"]
