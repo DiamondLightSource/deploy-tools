@@ -13,6 +13,9 @@ classifiers = [
 description = "A set of tools used for deploying applications to a shared filesystem."
 dependencies = [
     "typer",
+    "pydantic",
+    "jinja2",
+    "pyyaml",
 ] # Add project dependencies here, e.g. ["click", "numpy"]
 dynamic = ["version"]
 license.file = "LICENSE"
