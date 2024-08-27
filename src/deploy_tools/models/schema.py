@@ -20,3 +20,4 @@ def generate_schema(output_path: Path) -> None:
         schema = model.model_json_schema()
         with open(out_path, "w") as f:
             json.dump(schema, f, indent=2)
+            f.write("\n")  # json.dump does not add final newline

@@ -1,10 +1,10 @@
 apiVersion: backstage.io/v1alpha1
 kind: Component
 metadata:
-  name: deploytools
-  title: deploytools
-  description: A collection of tools used for deploying applications at Diamond Light Source
+  name: dls-deploy-tools
+  title: deploy-tools
+  description: A set of tools used for deploying applications to a shared filesystem.
 spec:
   type: documentation
   lifecycle: experimental
-  owner: 
+  owner: group:default/sscc

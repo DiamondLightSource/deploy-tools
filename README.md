@@ -1,18 +1,21 @@
-[![CI](https://github.com/MJGaughran/deploytools/actions/workflows/ci.yml/badge.svg)](https://github.com/MJGaughran/deploytools/actions/workflows/ci.yml)
-[![Coverage](https://codecov.io/gh/MJGaughran/deploytools/branch/main/graph/badge.svg)](https://codecov.io/gh/MJGaughran/deploytools)
-
+[![CI](https://github.com/DiamondLightSource/deploy-tools/actions/workflows/ci.yml/badge.svg)](https://github.com/DiamondLightSource/deploy-tools/actions/workflows/ci.yml)
+[![Coverage](https://codecov.io/gh/DiamondLightSource/deploy-tools/branch/main/graph/badge.svg)](https://codecov.io/gh/DiamondLightSource/deploy-tools)
+[![PyPI](https://img.shields.io/pypi/v/dls-deploy-tools.svg)](https://pypi.org/project/dls-deploy-tools)
 [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
 
-# deploytools
+# deploy_tools
 
-A collection of tools used for deploying applications to the shared filesystem at
-Diamond Light Source.
+A set of tools used for deploying applications to a shared filesystem.
 
-Source          | <https://github.com/MJGaughran/deploytools>
+This is used for deploying containerised desktop applications to many users who have
+access to a shared filesystem.
+
+Source          | <https://github.com/DiamondLightSource/deploy-tools>
 :---:           | :---:
-Releases        | <https://github.com/MJGaughran/deploytools/releases>
+PyPI            | `pip install dls-deploy-tools`
+Releases        | <https://github.com/DiamondLightSource/deploy-tools/releases>
 
-The demo_configuration folder can be passed as the config_folder to the deploytools
+The demo_configuration folder can be passed as the config_folder to the deploy-tools
 commands. The deployment_root just needs to be a writeable location for all files to get
 deployed under.
 
@@ -28,14 +31,14 @@ config_folder = /path/to/config/folder
 schema_folder = /path/to/schema/folder
 
 # Generate the schema for configuration yaml files
-python -m deploytools schema $schema_folder
+python -m deploy_tools schema $schema_folder
 
 # Validate the deployment configuration files, also ensuring that the required updates
 # are compatible with the previous deployments.
-python -m deploytools validate $deployment_root $config_folder
+python -m deploy_tools validate $deployment_root $config_folder
 
 # Synchronise the deployment area with the configuration files. This will first run
 # validation
-python -m deploytools sync $deployment_root $config_folder
+python -m deploy_tools sync $deployment_root $config_folder
 
 ```

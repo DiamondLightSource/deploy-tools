@@ -60,7 +60,7 @@ def validate(
 ) -> None:
     """Validate deployment configuration and print a list of modules for deployment.
 
-    This is the same validation that the deploytools sync command uses."""
+    This is the same validation that the deploy-tools sync command uses."""
     validate_configuration(deployment_root, config_folder)
 
 

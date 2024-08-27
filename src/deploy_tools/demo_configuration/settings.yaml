@@ -1,0 +1,4 @@
+# yaml-language-server: $schema=/workspaces/deploy-tools/src/deploy_tools/models/schemas/deployment-settings.json
+
+default_versions:
+  dls-pmac-control: "0.1"

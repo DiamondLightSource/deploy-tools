@@ -120,6 +120,21 @@
       "title": "ContainerImage",
       "type": "object"
     },
+    "DeploymentSettings": {
+      "additionalProperties": false,
+      "properties": {
+        "default_versions": {
+          "additionalProperties": {
+            "type": "string"
+          },
+          "default": {},
+          "title": "Default Versions",
+          "type": "object"
+        }
+      },
+      "title": "DeploymentSettings",
+      "type": "object"
+    },
     "Entrypoint": {
       "additionalProperties": false,
       "properties": {
@@ -191,6 +206,28 @@
         "value"
       ],
       "title": "EnvVar",
+      "type": "object"
+    },
+    "Module": {
+      "additionalProperties": false,
+      "description": "Represents a Module to be deployed.\n\nModules can optionally include a set of applications, environment variables to load,\nand a list of module dependencies.",
+      "properties": {
+        "metadata": {
+          "$ref": "#/$defs/ModuleMetadata"
+        },
+        "applications": {
+          "items": {
+            "$ref": "#/$defs/Application"
+          },
+          "title": "Applications",
+          "type": "array"
+        }
+      },
+      "required": [
+        "metadata",
+        "applications"
+      ],
+      "title": "Module",
       "type": "object"
     },
     "ModuleDependency": {
@@ -305,23 +342,26 @@
     }
   },
   "additionalProperties": false,
-  "description": "Represents a Module to be deployed.\n\nModules can optionally include a set of applications, environment variables to load,\nand a list of module dependencies.",
+  "description": "Configuration for all modules and applications that should be deployed.",
   "properties": {
-    "metadata": {
-      "$ref": "#/$defs/ModuleMetadata"
+    "settings": {
+      "$ref": "#/$defs/DeploymentSettings"
     },
-    "applications": {
-      "items": {
-        "$ref": "#/$defs/Application"
+    "modules": {
+      "additionalProperties": {
+        "additionalProperties": {
+          "$ref": "#/$defs/Module"
+        },
+        "type": "object"
       },
-      "title": "Applications",
-      "type": "array"
+      "title": "Modules",
+      "type": "object"
     }
   },
   "required": [
-    "metadata",
-    "applications"
+    "settings",
+    "modules"
   ],
-  "title": "Module",
+  "title": "Deployment",
   "type": "object"
 }
