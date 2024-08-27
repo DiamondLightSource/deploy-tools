@@ -6,7 +6,7 @@ import jinja2
 
 __all__ = ["TemplateType", "Templater"]
 
-TEMPLATES_PACKAGE = "deploytools"
+TEMPLATES_PACKAGE = "deploy_tools"
 
 
 class TemplateType(StrEnum):
@@ -29,7 +29,7 @@ class Templater:
     """
 
     def __init__(self) -> None:
-        self._env = jinja2.Environment(loader=jinja2.PackageLoader("deploytools"))
+        self._env = jinja2.Environment(loader=jinja2.PackageLoader(TEMPLATES_PACKAGE))
         self._templates: dict[str, jinja2.Template] = {}
         self._load_templates()
 
