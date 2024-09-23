@@ -1,9 +1,11 @@
 # Changes here will be overwritten by Copier
-_commit: 2.2.0
+_commit: 2.3.0
 _src_path: gh:DiamondLightSource/python-copier-template
 author_email: martin.gaughran@diamond.ac.uk
 author_name: Martin Gaughran
+component_lifecycle: experimental
 component_owner: group:default/sscc
+component_type: library
 description: A set of tools used for deploying applications to a shared filesystem.
 distribution_name: dls-deploy-tools
 docker: false
