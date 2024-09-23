@@ -13,6 +13,7 @@ access to a shared filesystem.
 Source          | <https://github.com/DiamondLightSource/deploy-tools>
 :---:           | :---:
 PyPI            | `pip install dls-deploy-tools`
+Docker          | `docker run ghcr.io/diamondlightsource/deploy-tools:latest`
 Releases        | <https://github.com/DiamondLightSource/deploy-tools/releases>
 
 The demo_configuration folder can be passed as the config_folder to the deploy-tools
