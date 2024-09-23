@@ -5,6 +5,6 @@ metadata:
   title: deploy-tools
   description: A set of tools used for deploying applications to a shared filesystem.
 spec:
-  type: documentation
+  type: library
   lifecycle: experimental
   owner: group:default/sscc
