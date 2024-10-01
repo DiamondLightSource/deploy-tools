@@ -22,10 +22,8 @@ WORKDIR /context
 RUN touch dev-requirements.txt && pip install -c dev-requirements.txt .
 
 # The runtime stage copies the built venv into a slim runtime container
-FROM python:${PYTHON_VERSION}-slim as runtime
+FROM build as runtime
 # Add apt-get system dependecies for runtime here if needed
-COPY --from=build /venv/ /venv/
-ENV PATH=/venv/bin:$PATH
 
 ENTRYPOINT ["deploy-tools"]
 CMD ["--version"]
