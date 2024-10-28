@@ -18,14 +18,14 @@ class ApptainerCreator:
 
     def __init__(self, templater: Templater, layout: Layout) -> None:
         self._templater = templater
-        self._entrypoints_root = layout.entrypoints_root
-        self._sif_root = layout.sif_files_root
+        self._layout = layout
 
     def create_entrypoint_files(self, config: Apptainer, module: Module) -> None:
         self._generate_sif_file(config, module)
+        metadata = module.metadata
 
-        entrypoints_folder = (
-            self._entrypoints_root / module.metadata.name / module.metadata.version
+        entrypoints_folder = self._layout.get_entrypoints_folder(
+            metadata.name, metadata.version
         )
         entrypoints_folder.mkdir(parents=True, exist_ok=True)
         sif_file = self._get_sif_file_path(config, module.metadata)
@@ -72,6 +72,6 @@ class ApptainerCreator:
         subprocess.run(commands, check=True)
 
     def _get_sif_file_path(self, config: Apptainer, metadata: ModuleMetadata) -> Path:
-        sif_parent = self._sif_root / metadata.name / metadata.version
+        sif_folder = self._layout.get_sif_files_folder(metadata.name, metadata.version)
         file_name = uuid.uuid3(uuid.NAMESPACE_URL, config.container.url).hex
-        return sif_parent / f"{file_name}.sif"
+        return sif_folder / f"{file_name}.sif"

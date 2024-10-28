@@ -21,12 +21,9 @@ def remove_name_folders(
     for module in restored:
         delete_name_folder(module.metadata.name, layout.deprecated_modulefiles_root)
 
-    app_roots = layout.get_application_paths()
     for module in removed:
         delete_name_folder(module.metadata.name, layout.deprecated_modulefiles_root)
-
-        for root in app_roots:
-            delete_name_folder(module.metadata.name, root)
+        delete_name_folder(module.metadata.name, layout.modules_root)
 
 
 def delete_name_folder(name: str, area_root: Path) -> None:
