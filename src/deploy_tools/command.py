@@ -11,7 +11,7 @@ class CommandCreator:
         self._templater = templater
         self._layout = layout
 
-    def create_entrypoint_file(
+    def create_application_files(
         self,
         config: Command,
         module: Module,

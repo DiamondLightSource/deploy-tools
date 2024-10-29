@@ -20,7 +20,7 @@ class ApptainerCreator:
         self._templater = templater
         self._layout = layout
 
-    def create_entrypoint_files(self, config: Apptainer, module: Module) -> None:
+    def create_application_files(self, config: Apptainer, module: Module) -> None:
         self._generate_sif_file(config, module)
         metadata = module.metadata
 

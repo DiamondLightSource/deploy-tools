@@ -47,8 +47,8 @@ def deploy(modules: list[Module], layout: Layout) -> None:
             config = application.app_config
             match config:
                 case Apptainer():
-                    apptainer_creator.create_entrypoint_files(config, module)
+                    apptainer_creator.create_application_files(config, module)
                 case Command():
-                    command_creator.create_entrypoint_file(config, module)
+                    command_creator.create_application_files(config, module)
                 case Shell():
-                    shell_creator.create_entrypoint_file(config, module)
+                    shell_creator.create_application_files(config, module)
