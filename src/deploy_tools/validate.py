@@ -230,11 +230,14 @@ def get_final_deployed_module_versions(
     """Return module versions that will exist after sync action has been carried out."""
     final_versions: ModuleVersionsByName = defaultdict(list)
     for name, module_versions in deployment.modules.items():
-        final_versions[name] = [
+        versions = [
             version
             for version, module in module_versions.items()
             if not module.metadata.deprecated
         ]
+
+        if versions:
+            final_versions[name] = versions
 
     return final_versions
 
