@@ -11,6 +11,7 @@ from .templater import Templater, TemplateType
 ModuleVersionsByName: TypeAlias = dict[str, list[str]]
 
 VERSION_FILENAME = ".version"
+VERSION_GLOB = "*/[!.version]*"
 DEVELOPMENT_VERSION = "dev"
 
 
@@ -85,7 +86,7 @@ def get_deployed_module_versions(
     )
     found_modules: ModuleVersionsByName = defaultdict(list)
 
-    for version_path in modulefiles_root.glob("*/[!.version]*"):
+    for version_path in modulefiles_root.glob(VERSION_GLOB):
         found_modules[version_path.parent.name].append(version_path.name)
 
     return found_modules
