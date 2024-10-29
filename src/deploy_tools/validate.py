@@ -49,7 +49,7 @@ def validate_configuration(deployment_root: Path, config_folder: Path) -> None:
     layout = Layout(deployment_root)
     snapshot = load_snapshot(layout)
 
-    update_group = validate_deployment(deployment, snapshot)
+    update_group = validate_update_group(deployment, snapshot)
     default_versions = validate_default_versions(deployment)
 
     check_actions(update_group, default_versions, layout)
@@ -106,7 +106,7 @@ def print_version_updates(
     print()
 
 
-def validate_deployment(deployment: Deployment, snapshot: Deployment) -> UpdateGroup:
+def validate_update_group(deployment: Deployment, snapshot: Deployment) -> UpdateGroup:
     """Validate configuration to get set of actions that need to be carried out."""
     old_modules = snapshot.modules
     new_modules = deployment.modules
