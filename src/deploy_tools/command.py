@@ -9,15 +9,15 @@ class CommandCreator:
 
     def __init__(self, templater: Templater, layout: Layout) -> None:
         self._templater = templater
-        self._entrypoints_root = layout.entrypoints_root
+        self._layout = layout
 
     def create_entrypoint_file(
         self,
         config: Command,
         module: Module,
     ) -> None:
-        entrypoints_folder = (
-            self._entrypoints_root / module.metadata.name / module.metadata.version
+        entrypoints_folder = self._layout.get_entrypoints_folder(
+            module.metadata.name, module.metadata.version
         )
         entrypoints_folder.mkdir(parents=True, exist_ok=True)
         entrypoint_file = entrypoints_folder / config.name

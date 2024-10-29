@@ -15,7 +15,7 @@ from .validate import (
     UpdateGroup,
     check_actions,
     validate_default_versions,
-    validate_deployment,
+    validate_update_group,
 )
 
 
@@ -25,7 +25,7 @@ def synchronise(deployment_root: Path, config_folder: Path) -> None:
     layout = Layout(deployment_root)
     snapshot = load_snapshot(layout)
 
-    update_group = validate_deployment(deployment, snapshot)
+    update_group = validate_update_group(deployment, snapshot)
     default_versions = validate_default_versions(deployment)
 
     check_actions(update_group, default_versions, layout)

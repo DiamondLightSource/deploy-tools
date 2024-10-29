@@ -49,7 +49,7 @@ def validate_configuration(deployment_root: Path, config_folder: Path) -> None:
     layout = Layout(deployment_root)
     snapshot = load_snapshot(layout)
 
-    update_group = validate_deployment(deployment, snapshot)
+    update_group = validate_update_group(deployment, snapshot)
     default_versions = validate_default_versions(deployment)
 
     check_actions(update_group, default_versions, layout)
@@ -106,7 +106,7 @@ def print_version_updates(
     print()
 
 
-def validate_deployment(deployment: Deployment, snapshot: Deployment) -> UpdateGroup:
+def validate_update_group(deployment: Deployment, snapshot: Deployment) -> UpdateGroup:
     """Validate configuration to get set of actions that need to be carried out."""
     old_modules = snapshot.modules
     new_modules = deployment.modules
@@ -230,11 +230,14 @@ def get_final_deployed_module_versions(
     """Return module versions that will exist after sync action has been carried out."""
     final_versions: ModuleVersionsByName = defaultdict(list)
     for name, module_versions in deployment.modules.items():
-        final_versions[name] = [
+        versions = [
             version
             for version, module in module_versions.items()
             if not module.metadata.deprecated
         ]
+
+        if versions:
+            final_versions[name] = versions
 
     return final_versions
 

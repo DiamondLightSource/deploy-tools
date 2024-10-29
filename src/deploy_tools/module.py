@@ -11,6 +11,7 @@ from .templater import Templater, TemplateType
 ModuleVersionsByName: TypeAlias = dict[str, list[str]]
 
 VERSION_FILENAME = ".version"
+VERSION_GLOB = "*/[!.version]*"
 DEVELOPMENT_VERSION = "dev"
 
 
@@ -21,25 +22,26 @@ class ModuleCreator:
         self._templater = templater
         self._layout = layout
         self._modulefiles_root = layout.modulefiles_root
-        self._entrypoints_root = layout.entrypoints_root
 
     def create_module_file(self, module: Module) -> None:
-        config = module.metadata
-        entrypoints_folder = self._entrypoints_root / config.name / config.version
+        metadata = module.metadata
+        entrypoints_folder = self._layout.get_entrypoints_folder(
+            metadata.name, metadata.version
+        )
 
-        description = config.description
+        description = metadata.description
         if description is None:
-            description = f"Scripts for {config.name}"
+            description = f"Scripts for {metadata.name}"
 
         params = {
-            "module_name": config.name,
+            "module_name": metadata.name,
             "module_description": description,
-            "env_vars": config.env_vars,
-            "dependencies": config.dependencies,
+            "env_vars": metadata.env_vars,
+            "dependencies": metadata.dependencies,
             "entrypoint_folder": entrypoints_folder,
         }
 
-        module_file = self._modulefiles_root / config.name / config.version
+        module_file = self._modulefiles_root / metadata.name / metadata.version
         module_file.parent.mkdir(exist_ok=True, parents=True)
 
         self._templater.create(module_file, TemplateType.MODULEFILE, params)
@@ -84,7 +86,7 @@ def get_deployed_module_versions(
     )
     found_modules: ModuleVersionsByName = defaultdict(list)
 
-    for version_path in modulefiles_root.glob("*/[!.version]*"):
+    for version_path in modulefiles_root.glob(VERSION_GLOB):
         found_modules[version_path.parent.name].append(version_path.name)
 
     return found_modules

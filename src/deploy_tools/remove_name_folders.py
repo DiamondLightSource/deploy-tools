@@ -1,7 +1,9 @@
+import shutil
 from pathlib import Path
 
 from .layout import Layout
 from .models.module import Module
+from .module import VERSION_GLOB
 
 
 class RemoveNameFoldersError(Exception):
@@ -16,17 +18,24 @@ def remove_name_folders(
 ) -> None:
     """Remove module name folders where all versions have been removed."""
     for module in deprecated:
-        delete_name_folder(module.metadata.name, layout.modulefiles_root)
+        delete_modulefile_name_folder(module.metadata.name, layout.modulefiles_root)
 
     for module in restored:
-        delete_name_folder(module.metadata.name, layout.deprecated_modulefiles_root)
+        delete_modulefile_name_folder(
+            module.metadata.name, layout.deprecated_modulefiles_root
+        )
 
-    app_roots = layout.get_application_paths()
     for module in removed:
-        delete_name_folder(module.metadata.name, layout.deprecated_modulefiles_root)
+        delete_modulefile_name_folder(
+            module.metadata.name, layout.deprecated_modulefiles_root
+        )
+        delete_name_folder(module.metadata.name, layout.modules_root)
 
-        for root in app_roots:
-            delete_name_folder(module.metadata.name, root)
+
+def delete_modulefile_name_folder(name: str, modulefiles_root: Path) -> None:
+    modulefiles_name_path = modulefiles_root / name
+    if modulefiles_name_path.glob(VERSION_GLOB):
+        shutil.rmtree(modulefiles_name_path)
 
 
 def delete_name_folder(name: str, area_root: Path) -> None:

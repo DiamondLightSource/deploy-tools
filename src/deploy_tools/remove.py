@@ -43,19 +43,17 @@ def remove_deployed_module(name: str, version: str, layout: Layout) -> None:
     module_file = layout.modulefiles_root / name / version
     module_file.unlink()
 
-    remove_application_paths(name, version, layout)
+    remove_module(name, version, layout)
 
 
 def remove_deprecated_module(name: str, version: str, layout: Layout) -> None:
     module_file = layout.deprecated_modulefiles_root / name / version
     module_file.unlink()
 
-    remove_application_paths(name, version, layout)
+    remove_module(name, version, layout)
 
 
-def remove_application_paths(name: str, version: str, layout: Layout) -> None:
-    to_remove = layout.get_application_paths()
-    for path in to_remove:
-        version_path = path / name / version
-        if version_path.exists():
-            shutil.rmtree(version_path)
+def remove_module(name: str, version: str, layout: Layout) -> None:
+    module_folder = layout.get_module_folder(name, version)
+    if module_folder.exists():
+        shutil.rmtree(module_folder)
