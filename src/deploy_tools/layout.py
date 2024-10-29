@@ -15,17 +15,14 @@ class Layout:
     def __init__(self, deployment_root: Path) -> None:
         self._root = deployment_root
 
+    def get_module_folder(self, name: str, version: str) -> Path:
+        return self.modules_root / name / version
+
     def get_entrypoints_folder(self, name: str, version: str):
-        return self.modules_root / name / version / self.ENTRYPOINTS_FOLDER
+        return self.get_module_folder(name, version) / self.ENTRYPOINTS_FOLDER
 
     def get_sif_files_folder(self, name: str, version: str):
-        return self.modules_root / name / version / self.SIF_FILES_FOLDER
-
-    def get_application_paths(self, name: str, version: str) -> list[Path]:
-        return [
-            self.get_entrypoints_folder(name, version),
-            self.get_sif_files_folder(name, version),
-        ]
+        return self.get_module_folder(name, version) / self.SIF_FILES_FOLDER
 
     @property
     def deployment_root(self) -> Path:
