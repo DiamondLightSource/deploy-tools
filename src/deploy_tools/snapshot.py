@@ -22,7 +22,7 @@ def create_snapshot(deployment: Deployment, layout: Layout) -> None:
 def load_snapshot(layout: Layout, allow_empty: bool = True) -> Deployment:
     if not layout.snapshot_file.exists():
         if allow_empty:
-            return Deployment(settings=DeploymentSettings(), modules={})
+            return Deployment(settings=DeploymentSettings(), releases={})
 
         raise SnapshotError(f"Cannot load deployment snapshot:\n{layout.snapshot_file}")
 

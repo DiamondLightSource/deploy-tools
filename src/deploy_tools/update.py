@@ -12,8 +12,8 @@ class UpdateError(Exception):
 def check_update(modules: list[Module], layout: Layout) -> None:
     """Verify that update() can be run on the current deployment area."""
     for module in modules:
-        name = module.metadata.name
-        version = module.metadata.version
+        name = module.name
+        version = module.version
 
         if not in_deployment_area(name, version, layout):
             raise UpdateError(
@@ -24,8 +24,8 @@ def check_update(modules: list[Module], layout: Layout) -> None:
 def update(modules: list[Module], layout: Layout) -> None:
     """Update development modules from the provided list."""
     for module in modules:
-        name = module.metadata.name
-        version = module.metadata.version
+        name = module.name
+        version = module.version
 
         remove_deployed_module(name, version, layout)
 

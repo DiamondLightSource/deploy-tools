@@ -10,8 +10,8 @@ class RestoreError(Exception):
 def check_restore(modules: list[Module], layout: Layout) -> None:
     """Verify that restore() can be run on the current deployment area."""
     for module in modules:
-        name = module.metadata.name
-        version = module.metadata.version
+        name = module.name
+        version = module.version
 
         if not in_deprecated_area(name, version, layout):
             raise RestoreError(
@@ -27,8 +27,8 @@ def check_restore(modules: list[Module], layout: Layout) -> None:
 def restore(modules: list[Module], layout: Layout) -> None:
     """Restore a previously deprecated module."""
     for module in modules:
-        name = module.metadata.name
-        version = module.metadata.version
+        name = module.name
+        version = module.version
         move_modulefile(
             name, version, layout.deprecated_modulefiles_root, layout.modulefiles_root
         )

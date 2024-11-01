@@ -12,8 +12,8 @@ class RemovalError(Exception):
 def check_remove(modules: list[Module], layout: Layout) -> None:
     """Verify that remove() can be run on the current deployment area."""
     for module in modules:
-        name = module.metadata.name
-        version = module.metadata.version
+        name = module.name
+        version = module.version
 
         if is_module_dev_mode(module):
             if not in_deployment_area(name, version, layout):
@@ -31,8 +31,8 @@ def check_remove(modules: list[Module], layout: Layout) -> None:
 def remove(modules: list[Module], layout: Layout) -> None:
     """Remove the given modules from the deployment area."""
     for module in modules:
-        name = module.metadata.name
-        version = module.metadata.version
+        name = module.name
+        version = module.version
         if is_module_dev_mode(module):
             remove_deployed_module(name, version, layout)
         else:

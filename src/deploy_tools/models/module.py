@@ -14,15 +14,6 @@ class EnvVar(ParentModel):
     value: str
 
 
-class ModuleMetadata(ParentModel):
-    name: str
-    version: str
-    description: str | None = None
-    dependencies: Sequence[ModuleDependency] = []
-    env_vars: Sequence[EnvVar] = []
-    deprecated: bool = False
-
-
 class Module(ParentModel):
     """Represents a Module to be deployed.
 
@@ -30,5 +21,16 @@ class Module(ParentModel):
     and a list of module dependencies.
     """
 
-    metadata: ModuleMetadata
+    name: str
+    version: str
+    description: str | None = None
+    dependencies: Sequence[ModuleDependency] = []
+    env_vars: Sequence[EnvVar] = []
     applications: list[Application]
+
+
+class Release(ParentModel):
+    """Represents a Module to be deployed along with its lifecycle status."""
+
+    module: Module
+    deprecated: bool = False

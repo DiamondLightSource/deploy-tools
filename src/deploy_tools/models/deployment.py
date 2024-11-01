@@ -1,10 +1,10 @@
 from typing import TypeAlias
 
-from .module import Module
+from .module import Release
 from .parent import ParentModel
 
-ModulesByVersion: TypeAlias = dict[str, Module]
-ModulesByNameAndVersion: TypeAlias = dict[str, ModulesByVersion]
+ReleasesByVersion: TypeAlias = dict[str, Release]
+ReleasesByNameAndVersion: TypeAlias = dict[str, ReleasesByVersion]
 DefaultVersionsByName: TypeAlias = dict[str, str]
 
 
@@ -16,4 +16,4 @@ class Deployment(ParentModel):
     """Configuration for all modules and applications that should be deployed."""
 
     settings: DeploymentSettings
-    modules: ModulesByNameAndVersion
+    releases: ReleasesByNameAndVersion

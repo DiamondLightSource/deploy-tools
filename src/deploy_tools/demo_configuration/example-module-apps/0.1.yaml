@@ -1,6 +1,6 @@
-# yaml-language-server: $schema=/workspaces/deploy-tools/src/deploy_tools/models/schemas/module.json
+# yaml-language-server: $schema=/workspaces/deploy-tools/src/deploy_tools/models/schemas/release.json
 
-metadata:
+module:
   name: example-module-apps
   version: "0.1"
   description: Demonstration of a module configuration folder
@@ -9,41 +9,41 @@ metadata:
     - name: OTHER_VALUE
       value: Test message OTHER_VALUE from example-module-folder
 
-applications:
-  - app_config:
-      app_type: apptainer
+  applications:
+    - app_config:
+        app_type: apptainer
 
-      container:
-        path: docker://ghcr.io/apptainer/lolcow
-        version: latest
+        container:
+          path: docker://ghcr.io/apptainer/lolcow
+          version: latest
 
-      entrypoints:
-        - executable_name: cowsay-hello
-          command: cowsay
-          options:
-            command_args: Hello
+        entrypoints:
+          - executable_name: cowsay-hello
+            command: cowsay
+            options:
+              command_args: Hello
 
-        - executable_name: show-directory
-          command: ls
-          options:
-            command_args: -al /dls_sw_test
+          - executable_name: show-directory
+            command: ls
+            options:
+              command_args: -al /dls_sw_test
 
-      global_options:
-        mounts:
-          - /dls_sw:/dls_sw_test:ro
+        global_options:
+          mounts:
+            - /dls_sw:/dls_sw_test:ro
 
-  - app_config:
-      app_type: command
+    - app_config:
+        app_type: command
 
-      name: test-echo-module-folder
-      command_path: echo
-      command_args: $OTHER_VALUE
+        name: test-echo-module-folder
+        command_path: echo
+        command_args: $OTHER_VALUE
 
-  - app_config:
-      app_type: shell
+    - app_config:
+        app_type: shell
 
-      name: test-shell-script
-      script:
-        - "echo This is the first line of a shell script"
-        - "echo and this is the second line."
-        - "echo Your input is ${1}"
+        name: test-shell-script
+        script:
+          - "echo This is the first line of a shell script"
+          - "echo and this is the second line."
+          - "echo Your input is ${1}"

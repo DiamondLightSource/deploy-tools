@@ -20,7 +20,7 @@ class ShellCreator:
         module: Module,
     ) -> None:
         entrypoints_folder = self._layout.get_entrypoints_folder(
-            module.metadata.name, module.metadata.version
+            module.name, module.version
         )
         entrypoints_folder.mkdir(parents=True, exist_ok=True)
         entrypoint_file = entrypoints_folder / config.name

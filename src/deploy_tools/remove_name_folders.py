@@ -18,18 +18,14 @@ def remove_name_folders(
 ) -> None:
     """Remove module name folders where all versions have been removed."""
     for module in deprecated:
-        delete_modulefile_name_folder(module.metadata.name, layout.modulefiles_root)
+        delete_modulefile_name_folder(module.name, layout.modulefiles_root)
 
     for module in restored:
-        delete_modulefile_name_folder(
-            module.metadata.name, layout.deprecated_modulefiles_root
-        )
+        delete_modulefile_name_folder(module.name, layout.deprecated_modulefiles_root)
 
     for module in removed:
-        delete_modulefile_name_folder(
-            module.metadata.name, layout.deprecated_modulefiles_root
-        )
-        delete_name_folder(module.metadata.name, layout.modules_root)
+        delete_modulefile_name_folder(module.name, layout.deprecated_modulefiles_root)
+        delete_name_folder(module.name, layout.modules_root)
 
 
 def delete_modulefile_name_folder(name: str, modulefiles_root: Path) -> None:

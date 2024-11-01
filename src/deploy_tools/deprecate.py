@@ -10,8 +10,8 @@ class DeprecateError(Exception):
 def check_deprecate(modules: list[Module], layout: Layout) -> None:
     """Verify that deprecate() can be run on the current deployment area."""
     for module in modules:
-        name = module.metadata.name
-        version = module.metadata.version
+        name = module.name
+        version = module.version
 
         if not in_deployment_area(name, version, layout):
             raise DeprecateError(
@@ -33,8 +33,8 @@ def deprecate(modules: list[Module], layout: Layout) -> None:
     """
     for module in modules:
         move_modulefile(
-            module.metadata.name,
-            module.metadata.version,
+            module.name,
+            module.version,
             layout.modulefiles_root,
             layout.deprecated_modulefiles_root,
         )

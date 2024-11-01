@@ -1,6 +1,6 @@
-# yaml-language-server: $schema=/workspaces/deploy-tools/src/deploy_tools/models/schemas/module.json
+# yaml-language-server: $schema=/workspaces/deploy-tools/src/deploy_tools/models/schemas/release.json
 
-metadata:
+module:
   name: example-module-deps
   version: "0.2"
   description: Demonstration of deploy-tools dependencies
@@ -11,4 +11,4 @@ metadata:
     - name: example-module-apps
       version: "0.1"
 
-applications: []
+  applications: []

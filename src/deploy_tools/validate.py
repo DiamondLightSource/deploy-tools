@@ -10,10 +10,10 @@ from .layout import Layout
 from .models.deployment import (
     DefaultVersionsByName,
     Deployment,
-    ModulesByNameAndVersion,
+    ReleasesByNameAndVersion,
 )
 from .models.load import load_deployment
-from .models.module import Module
+from .models.module import Module, Release
 from .module import (
     DEVELOPMENT_VERSION,
     ModuleVersionsByName,
@@ -86,7 +86,7 @@ def print_module_updates(update_group: UpdateGroup) -> None:
         print(f"Modules to be {action}:")
 
         for module in modules:
-            print(f"{module.metadata.name}/{module.metadata.version}")
+            print(f"{module.name}/{module.version}")
 
         print()
 
@@ -108,103 +108,126 @@ def print_version_updates(
 
 def validate_update_group(deployment: Deployment, snapshot: Deployment) -> UpdateGroup:
     """Validate configuration to get set of actions that need to be carried out."""
-    old_modules = snapshot.modules
-    new_modules = deployment.modules
+    old_modules = snapshot.releases
+    new_modules = deployment.releases
 
     validate_module_dependencies(deployment)
     return get_update_group(old_modules, new_modules)
 
 
 def get_update_group(
-    old_modules: ModulesByNameAndVersion, new_modules: ModulesByNameAndVersion
+    old_releases: ReleasesByNameAndVersion, new_releases: ReleasesByNameAndVersion
 ) -> UpdateGroup:
-    group: UpdateGroup = UpdateGroup()
-    for name in new_modules:
-        if name not in old_modules:
-            group.added.extend(new_modules[name].values())
+    added: list[Release] = []
+    updated: list[Release] = []
+    deprecated: list[Release] = []
+    restored: list[Release] = []
+    removed: list[Release] = []
+    for name in new_releases:
+        if name not in old_releases:
+            added.extend(new_releases[name].values())
             continue
 
-        for version, new_module in new_modules[name].items():
-            if version not in old_modules[name]:
-                group.added.append(new_module)
+        for version, new_release in new_releases[name].items():
+            if version not in old_releases[name]:
+                added.append(new_release)
                 continue
 
-            old_module = old_modules[name][version]
+            old_release = old_releases[name][version]
 
-            if is_modified(old_module, new_module):
-                if is_module_dev_mode(new_module):
-                    group.updated.append(new_module)
+            if is_modified(old_release.module, new_release.module):
+                if is_module_dev_mode(new_release.module):
+                    updated.append(new_release)
                     continue
 
                 raise ValidationError(
                     f"Module {name}/{version} modified without updating version."
                 )
 
-            if not old_module.metadata.deprecated and new_module.metadata.deprecated:
-                group.deprecated.append(new_module)
-            elif old_module.metadata.deprecated and not new_module.metadata.deprecated:
-                group.restored.append(new_module)
+            if not old_release.deprecated and new_release.deprecated:
+                deprecated.append(new_release)
+            elif old_release.deprecated and not new_release.deprecated:
+                restored.append(new_release)
 
-    for name in old_modules:
-        if name not in new_modules:
-            group.removed.extend(old_modules[name].values())
+    for name in old_releases:
+        if name not in new_releases:
+            removed.extend(old_releases[name].values())
             continue
 
-        for version, old_module in old_modules[name].items():
-            if version not in new_modules[name]:
-                group.removed.append(old_module)
+        for version, old_release in old_releases[name].items():
+            if version not in new_releases[name]:
+                removed.append(old_release)
 
-    validate_added_modules(group.added)
-    validate_updated_modules(group.updated)
-    validate_deprecated_modules(group.deprecated)
-    validate_removed_modules(group.removed)
+    update_group = UpdateGroup()
+    update_group.added = validate_added_modules(added)
+    update_group.updated = validate_updated_modules(updated)
+    update_group.deprecated = validate_deprecated_modules(deprecated)
+    update_group.restored = validate_restored_modules(restored)
+    update_group.removed = validate_removed_modules(removed)
 
-    return group
+    return update_group
 
 
-def validate_added_modules(modules: list[Module]) -> None:
-    for module in modules:
-        metadata = module.metadata
-        if metadata.deprecated:
+def validate_added_modules(releases: list[Release]) -> list[Module]:
+    for release in releases:
+        module = release.module
+        if release.deprecated:
             if is_module_dev_mode(module):
                 raise ValidationError(
-                    f"Module {metadata.name}/{metadata.version} cannot be specified as"
+                    f"Module {module.name}/{module.version} cannot be specified as"
                     f"deprecated as it is in development mode."
                 )
 
             raise ValidationError(
-                f"Module {metadata.name}/{metadata.version} cannot have deprecated "
+                f"Module {module.name}/{module.version} cannot have deprecated "
                 f"status on initial creation."
             )
 
+    return get_modules_list_from_releases(releases)
 
-def validate_updated_modules(modules: list[Module]) -> None:
-    for module in modules:
-        metadata = module.metadata
-        if metadata.deprecated:
+
+def validate_updated_modules(releases: list[Release]) -> list[Module]:
+    for release in releases:
+        module = release.module
+        if release.deprecated:
             raise ValidationError(
-                f"Module {metadata.name}/{metadata.version} cannot be specified as "
+                f"Module {module.name}/{module.version} cannot be specified as "
                 f"deprecated as it is in development mode."
             )
 
+    return get_modules_list_from_releases(releases)
 
-def validate_deprecated_modules(modules: list[Module]) -> None:
-    for module in modules:
+
+def validate_deprecated_modules(releases: list[Release]) -> list[Module]:
+    for release in releases:
+        module = release.module
         if is_module_dev_mode(module):
-            metadata = module.metadata
             raise ValidationError(
-                f"Module {metadata.name}/{metadata.version} cannot be specified as "
+                f"Module {module.name}/{module.version} cannot be specified as "
                 f"deprecated as it is in development mode."
             )
 
+    return get_modules_list_from_releases(releases)
 
-def validate_removed_modules(modules: list[Module]) -> None:
-    for module in modules:
-        if not is_module_dev_mode(module) and not module.metadata.deprecated:
+
+def validate_restored_modules(releases: list[Release]) -> list[Module]:
+    return get_modules_list_from_releases(releases)
+
+
+def validate_removed_modules(releases: list[Release]) -> list[Module]:
+    for release in releases:
+        module = release.module
+        if not is_module_dev_mode(module) and not release.deprecated:
             raise ValidationError(
-                f"Module {module.metadata.name}/{module.metadata.version} removed "
-                "without prior deprecation."
+                f"Module {module.name}/{module.version} removed without prior"
+                f"deprecation."
             )
+
+    return get_modules_list_from_releases(releases)
+
+
+def get_modules_list_from_releases(releases: list[Release]):
+    return [release.module for release in releases]
 
 
 def validate_default_versions(deployment: Deployment) -> DefaultVersionsByName:
@@ -227,13 +250,16 @@ def validate_default_versions(deployment: Deployment) -> DefaultVersionsByName:
 def get_final_deployed_module_versions(
     deployment: Deployment,
 ) -> ModuleVersionsByName:
-    """Return module versions that will exist after sync action has been carried out."""
+    """Return module versions that will be deployed after sync action has completed.
+
+    This explicitly excludes any deprecated modules.
+    """
     final_versions: ModuleVersionsByName = defaultdict(list)
-    for name, module_versions in deployment.modules.items():
+    for name, release_versions in deployment.releases.items():
         versions = [
             version
-            for version, module in module_versions.items()
-            if not module.metadata.deprecated
+            for version, release in release_versions.items()
+            if not release.deprecated
         ]
 
         if versions:
@@ -244,7 +270,7 @@ def get_final_deployed_module_versions(
 
 def get_all_default_versions(
     initial_defaults: DefaultVersionsByName,
-    final_deployed_modules: ModuleVersionsByName,
+    final_deployed_module_versions: ModuleVersionsByName,
 ) -> DefaultVersionsByName:
     """Return the default versions that will be used for all modules in configuration.
 
@@ -255,11 +281,11 @@ def get_all_default_versions(
     final_defaults: DefaultVersionsByName = {}
     final_defaults.update(initial_defaults)
 
-    for name in final_deployed_modules:
+    for name in final_deployed_module_versions:
         if name in final_defaults:
             continue
 
-        version_list = deepcopy(final_deployed_modules[name])
+        version_list = deepcopy(final_deployed_module_versions[name])
         if DEVELOPMENT_VERSION in version_list:
             version_list.remove(DEVELOPMENT_VERSION)
 
@@ -273,14 +299,15 @@ def validate_module_dependencies(deployment: Deployment) -> None:
     """Ensure that all module dependencies are set appropriately.
 
     This checks any module dependency names that come from current configuration to
-    ensure they exist. Not specifying a particular version is only valid for
-    dependencies that are managed outside of the current deployment configuration.
+    ensure they exist and are not deprecated. Not specifying a particular version is
+    only valid for dependencies that are managed outside of the current deployment
+    configuration.
     """
     final_deployed_modules = get_final_deployed_module_versions(deployment)
 
-    for name, module_versions in deployment.modules.items():
-        for version, module in module_versions.items():
-            for dependency in module.metadata.dependencies:
+    for name, release_versions in deployment.releases.items():
+        for version, release in release_versions.items():
+            for dependency in release.module.dependencies:
                 dep_name = dependency.name
                 dep_version = dependency.version
                 if dep_name in final_deployed_modules:

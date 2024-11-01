@@ -5,7 +5,7 @@ from .models.apptainer import Apptainer
 from .models.command import Command
 from .models.module import Module
 from .models.shell import Shell
-from .module import ModuleCreator, in_deployment_area
+from .module import ModulefileCreator, in_deployment_area
 from .shell import ShellCreator
 from .templater import Templater
 
@@ -20,8 +20,8 @@ def check_deploy(modules: list[Module], layout: Layout) -> None:
         raise DeployError(f"Deployment root does not exist:\n{layout.deployment_root}")
 
     for module in modules:
-        name = module.metadata.name
-        version = module.metadata.version
+        name = module.name
+        version = module.version
 
         if in_deployment_area(name, version, layout):
             raise DeployError(
@@ -35,7 +35,7 @@ def deploy(modules: list[Module], layout: Layout) -> None:
         return
 
     templater = Templater()
-    module_creator = ModuleCreator(templater, layout)
+    module_creator = ModulefileCreator(templater, layout)
     apptainer_creator = ApptainerCreator(templater, layout)
     command_creator = CommandCreator(templater, layout)
     shell_creator = ShellCreator(templater, layout)
