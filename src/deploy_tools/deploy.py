@@ -35,13 +35,13 @@ def deploy(modules: list[Module], layout: Layout) -> None:
         return
 
     templater = Templater()
-    module_creator = ModulefileCreator(templater, layout)
+    modulefile_creator = ModulefileCreator(templater, layout)
     apptainer_creator = ApptainerCreator(templater, layout)
     command_creator = CommandCreator(templater, layout)
     shell_creator = ShellCreator(templater, layout)
 
     for module in modules:
-        module_creator.create_module_file(module)
+        modulefile_creator.create_modulefile(module)
 
         for app in module.applications:
             match app:

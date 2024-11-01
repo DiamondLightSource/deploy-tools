@@ -23,7 +23,7 @@ class ModulefileCreator:
         self._layout = layout
         self._modulefiles_root = layout.modulefiles_root
 
-    def create_module_file(self, module: Module) -> None:
+    def create_modulefile(self, module: Module) -> None:
         entrypoints_folder = self._layout.get_entrypoints_folder(
             module.name, module.version
         )
@@ -40,10 +40,10 @@ class ModulefileCreator:
             "entrypoint_folder": entrypoints_folder,
         }
 
-        module_file = self._modulefiles_root / module.name / module.version
-        module_file.parent.mkdir(exist_ok=True, parents=True)
+        modulefile = self._modulefiles_root / module.name / module.version
+        modulefile.parent.mkdir(exist_ok=True, parents=True)
 
-        self._templater.create(module_file, TemplateType.MODULEFILE, params)
+        self._templater.create(modulefile, TemplateType.MODULEFILE, params)
 
     def update_default_versions(
         self, default_versions: DefaultVersionsByName, layout: Layout
@@ -92,13 +92,13 @@ def get_deployed_module_versions(
 
 
 def in_deployment_area(name: str, version: str, layout: Layout) -> bool:
-    module_file = layout.modulefiles_root / name / version
-    return module_file.exists()
+    modulefile = layout.modulefiles_root / name / version
+    return modulefile.exists()
 
 
 def in_deprecated_area(name: str, version: str, layout: Layout) -> bool:
-    module_file = layout.deprecated_modulefiles_root / name / version
-    return module_file.exists()
+    modulefile = layout.deprecated_modulefiles_root / name / version
+    return modulefile.exists()
 
 
 def is_module_dev_mode(module: Module) -> bool:
