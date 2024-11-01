@@ -24,6 +24,16 @@ class Layout:
     def get_sif_files_folder(self, name: str, version: str):
         return self.get_module_folder(name, version) / self.SIF_FILES_FOLDER
 
+    def get_modulefiles_root(self, from_deprecated: bool = False):
+        return (
+            self.deprecated_modulefiles_root
+            if from_deprecated
+            else self.modulefiles_root
+        )
+
+    def get_modulefile(self, name: str, version: str, from_deprecated: bool = False):
+        return self.get_modulefiles_root(from_deprecated) / name / version
+
     @property
     def deployment_root(self) -> Path:
         return self._root

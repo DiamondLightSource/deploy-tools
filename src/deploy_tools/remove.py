@@ -40,14 +40,14 @@ def remove(modules: list[Module], layout: Layout) -> None:
 
 
 def remove_deployed_module(name: str, version: str, layout: Layout) -> None:
-    modulefile = layout.modulefiles_root / name / version
+    modulefile = layout.get_modulefile(name, version)
     modulefile.unlink()
 
     remove_module(name, version, layout)
 
 
 def remove_deprecated_module(name: str, version: str, layout: Layout) -> None:
-    modulefile = layout.deprecated_modulefiles_root / name / version
+    modulefile = layout.get_modulefile(name, version, True)
     modulefile.unlink()
 
     remove_module(name, version, layout)
