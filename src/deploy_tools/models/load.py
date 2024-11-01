@@ -4,7 +4,6 @@ from typing import TypeVar
 
 import yaml
 
-from .application import Application
 from .deployment import (
     Deployment,
     DeploymentSettings,
@@ -12,7 +11,7 @@ from .deployment import (
 )
 from .module import Module, Release
 
-T = TypeVar("T", Deployment, Release, Module, Application, DeploymentSettings)
+T = TypeVar("T", Deployment, Release, Module, DeploymentSettings)
 
 YAML_FILE_SUFFIX = ".yaml"
 MODULE_CONFIG = "config" + YAML_FILE_SUFFIX

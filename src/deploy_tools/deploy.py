@@ -43,12 +43,11 @@ def deploy(modules: list[Module], layout: Layout) -> None:
     for module in modules:
         module_creator.create_module_file(module)
 
-        for application in module.applications:
-            config = application.app_config
-            match config:
+        for app in module.applications:
+            match app:
                 case Apptainer():
-                    apptainer_creator.create_application_files(config, module)
+                    apptainer_creator.create_application_files(app, module)
                 case Command():
-                    command_creator.create_application_files(config, module)
+                    command_creator.create_application_files(app, module)
                 case Shell():
-                    shell_creator.create_application_files(config, module)
+                    shell_creator.create_application_files(app, module)

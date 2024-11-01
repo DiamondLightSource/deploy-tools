@@ -16,16 +16,16 @@ class ShellCreator:
 
     def create_application_files(
         self,
-        config: Shell,
+        app: Shell,
         module: Module,
     ) -> None:
         entrypoints_folder = self._layout.get_entrypoints_folder(
             module.name, module.version
         )
         entrypoints_folder.mkdir(parents=True, exist_ok=True)
-        entrypoint_file = entrypoints_folder / config.name
+        entrypoint_file = entrypoints_folder / app.name
 
-        parameters = {"script": config.script}
+        parameters = {"script": app.script}
 
         self._templater.create(
             entrypoint_file, TemplateType.SHELL_ENTRYPOINT, parameters, executable=True

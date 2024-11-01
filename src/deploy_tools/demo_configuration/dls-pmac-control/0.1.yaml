@@ -10,22 +10,20 @@ module:
       value: Test message EXAMPLE_VALUE from example-module-file version 0.1
 
   applications:
-    - app_config:
-        app_type: apptainer
+    - app_type: apptainer
 
-        container:
-          path: docker://ghcr.io/diamondlightsource/dls-pmac-control
-          version: "3.2.0b1"
+      container:
+        path: docker://ghcr.io/diamondlightsource/dls-pmac-control
+        version: "3.2.0b1"
 
-        entrypoints:
-          - executable_name: dls-pmac-control
-            command: dls-pmac-control
-            options:
-              apptainer_args: -e
+      entrypoints:
+        - executable_name: dls-pmac-control
+          command: dls-pmac-control
+          options:
+            apptainer_args: -e
 
-    - app_config:
-        app_type: command
+    - app_type: command
 
-        name: test-echo-module-file
-        command_path: echo
-        command_args: $EXAMPLE_VALUE
+      name: test-echo-module-file
+      command_path: echo
+      command_args: $EXAMPLE_VALUE

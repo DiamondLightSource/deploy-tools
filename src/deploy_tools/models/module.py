@@ -1,7 +1,16 @@
 from collections.abc import Sequence
+from typing import Annotated
 
-from .application import Application
+from pydantic import Field
+
+from .apptainer import Apptainer
+from .command import Command
 from .parent import ParentModel
+from .shell import Shell
+
+Application = Annotated[
+    Apptainer | Command | Shell, Field(..., discriminator="app_type")
+]
 
 
 class ModuleDependency(ParentModel):

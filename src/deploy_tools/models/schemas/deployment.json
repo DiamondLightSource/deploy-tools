@@ -1,38 +1,5 @@
 {
   "$defs": {
-    "Application": {
-      "additionalProperties": false,
-      "description": "Represents one of several application types in module configuration.",
-      "properties": {
-        "app_config": {
-          "discriminator": {
-            "mapping": {
-              "apptainer": "#/$defs/Apptainer",
-              "command": "#/$defs/Command",
-              "shell": "#/$defs/Shell"
-            },
-            "propertyName": "app_type"
-          },
-          "oneOf": [
-            {
-              "$ref": "#/$defs/Apptainer"
-            },
-            {
-              "$ref": "#/$defs/Command"
-            },
-            {
-              "$ref": "#/$defs/Shell"
-            }
-          ],
-          "title": "App Config"
-        }
-      },
-      "required": [
-        "app_config"
-      ],
-      "title": "Application",
-      "type": "object"
-    },
     "Apptainer": {
       "additionalProperties": false,
       "description": "Represents an Apptainer application or set of applications.\n\nThis uses apptainer to deploy a portable image of the desired container. Several\nentrypoints can then be specified to allow for multiple commands to be easily used\nin the same container image.",
@@ -250,7 +217,25 @@
         },
         "applications": {
           "items": {
-            "$ref": "#/$defs/Application"
+            "discriminator": {
+              "mapping": {
+                "apptainer": "#/$defs/Apptainer",
+                "command": "#/$defs/Command",
+                "shell": "#/$defs/Shell"
+              },
+              "propertyName": "app_type"
+            },
+            "oneOf": [
+              {
+                "$ref": "#/$defs/Apptainer"
+              },
+              {
+                "$ref": "#/$defs/Command"
+              },
+              {
+                "$ref": "#/$defs/Shell"
+              }
+            ]
           },
           "title": "Applications",
           "type": "array"
