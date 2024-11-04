@@ -1,6 +1,7 @@
 from .layout import Layout
 from .models.deployment import DefaultVersionsByName
-from .module import VERSION_FILENAME, ModulefileCreator
+from .module import VERSION_FILENAME
+from .module_creator import ModulefileCreator
 from .templater import Templater
 
 

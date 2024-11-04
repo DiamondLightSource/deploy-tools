@@ -1,12 +1,13 @@
-from .apptainer import ApptainerCreator
-from .command import CommandCreator
+from .apptainer_creator import ApptainerCreator
+from .command_creator import CommandCreator
 from .layout import Layout
 from .models.apptainer import Apptainer
 from .models.command import Command
 from .models.module import Module
 from .models.shell import Shell
-from .module import ModulefileCreator, in_deployment_area
-from .shell import ShellCreator
+from .module import in_deployment_area
+from .module_creator import ModulefileCreator
+from .shell_creator import ShellCreator
 from .templater import Templater
 
 
