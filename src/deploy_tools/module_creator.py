@@ -11,7 +11,6 @@ class ModulefileCreator:
     def __init__(self, templater: Templater, layout: Layout) -> None:
         self._templater = templater
         self._layout = layout
-        self._modulefiles_root = layout.modulefiles_root
 
     def create_modulefile(self, module: Module) -> None:
         entrypoints_folder = self._layout.get_entrypoints_folder(
@@ -30,7 +29,7 @@ class ModulefileCreator:
             "entrypoint_folder": entrypoints_folder,
         }
 
-        modulefile = self._modulefiles_root / module.name / module.version
+        modulefile = self._layout.modulefiles_root / module.name / module.version
         modulefile.parent.mkdir(exist_ok=True, parents=True)
 
         self._templater.create(modulefile, TemplateType.MODULEFILE, params)
@@ -41,7 +40,7 @@ class ModulefileCreator:
         deployed_module_versions = get_deployed_module_versions(layout)
 
         for name in deployed_module_versions:
-            version_file = self._modulefiles_root / name / VERSION_FILENAME
+            version_file = self._layout.modulefiles_root / name / VERSION_FILENAME
 
             if name in default_versions:
                 params = {"version": default_versions[name]}
