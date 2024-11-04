@@ -1,13 +1,7 @@
-from .apptainer_creator import ApptainerCreator
-from .command_creator import CommandCreator
 from .layout import Layout
-from .models.apptainer import Apptainer
-from .models.command import Command
 from .models.module import Module
-from .models.shell import Shell
 from .module import in_deployment_area
-from .module_creator import ModulefileCreator
-from .shell_creator import ShellCreator
+from .module_creator import ModuleCreator
 from .templater import Templater
 
 
@@ -36,19 +30,7 @@ def deploy(modules: list[Module], layout: Layout) -> None:
         return
 
     templater = Templater()
-    modulefile_creator = ModulefileCreator(templater, layout)
-    apptainer_creator = ApptainerCreator(templater, layout)
-    command_creator = CommandCreator(templater, layout)
-    shell_creator = ShellCreator(templater, layout)
+    module_creator = ModuleCreator(templater, layout)
 
     for module in modules:
-        modulefile_creator.create_modulefile(module)
-
-        for app in module.applications:
-            match app:
-                case Apptainer():
-                    apptainer_creator.create_application_files(app, module)
-                case Command():
-                    command_creator.create_application_files(app, module)
-                case Shell():
-                    shell_creator.create_application_files(app, module)
+        module_creator.create_module(module)

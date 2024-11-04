@@ -1,16 +1,26 @@
+from .apptainer_creator import ApptainerCreator
+from .command_creator import CommandCreator
 from .layout import Layout
+from .models.apptainer import Apptainer
+from .models.command import Command
 from .models.deployment import DefaultVersionsByName
 from .models.module import Module
+from .models.shell import Shell
 from .module import VERSION_FILENAME, get_deployed_module_versions
+from .shell_creator import ShellCreator
 from .templater import Templater, TemplateType
 
 
-class ModulefileCreator:
-    """Class for creating modulefiles, including optional dependencies and env vars."""
+class ModuleCreator:
+    """Class for creating modules, including modulefiles and all application files."""
 
     def __init__(self, templater: Templater, layout: Layout) -> None:
         self._templater = templater
         self._layout = layout
+
+        self.apptainer_creator = ApptainerCreator(templater, layout)
+        self.command_creator = CommandCreator(templater, layout)
+        self.shell_creator = ShellCreator(templater, layout)
 
     def create_modulefile(self, module: Module) -> None:
         entrypoints_folder = self._layout.get_entrypoints_folder(
@@ -53,3 +63,15 @@ class ModulefileCreator:
                 )
             else:
                 version_file.unlink(missing_ok=True)
+
+    def create_module(self, module: Module):
+        self.create_modulefile(module)
+
+        for app in module.applications:
+            match app:
+                case Apptainer():
+                    self.apptainer_creator.create_application_files(app, module)
+                case Command():
+                    self.command_creator.create_application_files(app, module)
+                case Shell():
+                    self.shell_creator.create_application_files(app, module)
