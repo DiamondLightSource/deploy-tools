@@ -66,7 +66,25 @@ class ModulefileCreator:
                 version_file.unlink(missing_ok=True)
 
 
-def move_modulefile(
+def deprecate_modulefile(name: str, version: str, layout: Layout):
+    _move_modulefile(
+        name,
+        version,
+        layout.modulefiles_root,
+        layout.deprecated_modulefiles_root,
+    )
+
+
+def restore_modulefile(name: str, version: str, layout: Layout):
+    _move_modulefile(
+        name,
+        version,
+        layout.deprecated_modulefiles_root,
+        layout.modulefiles_root,
+    )
+
+
+def _move_modulefile(
     name: str, version: str, src_folder: Path, dest_folder: Path
 ) -> None:
     src_path = src_folder / name / version
@@ -76,11 +94,9 @@ def move_modulefile(
     shutil.move(src_path, dest_path)
 
 
-def get_deployed_module_versions(
-    layout: Layout, from_deprecated: bool = False
-) -> ModuleVersionsByName:
+def get_deployed_module_versions(layout: Layout) -> ModuleVersionsByName:
     """Return list of modules that have already been deployed."""
-    modulefiles_root = layout.get_modulefiles_root(from_deprecated)
+    modulefiles_root = layout.get_modulefiles_root(from_deprecated=False)
     found_modules: ModuleVersionsByName = defaultdict(list)
 
     for version_path in modulefiles_root.glob(VERSION_GLOB):

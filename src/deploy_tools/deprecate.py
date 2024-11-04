@@ -1,6 +1,6 @@
 from .layout import Layout
 from .models.module import Module
-from .module import in_deployment_area, in_deprecated_area, move_modulefile
+from .module import deprecate_modulefile, in_deployment_area, in_deprecated_area
 
 
 class DeprecateError(Exception):
@@ -32,9 +32,4 @@ def deprecate(modules: list[Module], layout: Layout) -> None:
     work.
     """
     for module in modules:
-        move_modulefile(
-            module.name,
-            module.version,
-            layout.modulefiles_root,
-            layout.deprecated_modulefiles_root,
-        )
+        deprecate_modulefile(module.name, module.version, layout)
