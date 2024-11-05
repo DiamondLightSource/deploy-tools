@@ -1,3 +1,5 @@
+import yaml
+
 from .apptainer_creator import ApptainerCreator
 from .command_creator import CommandCreator
 from .layout import Layout
@@ -64,6 +66,15 @@ class ModuleCreator:
             else:
                 version_file.unlink(missing_ok=True)
 
+    def create_module_snapshot(self, module: Module):
+        snapshot_path = self._layout.get_module_snapshot_path(
+            module.name, module.version
+        )
+        snapshot_path.parent.mkdir(exist_ok=True, parents=True)
+
+        with open(snapshot_path, "w") as f:
+            yaml.safe_dump(module.model_dump(), f)
+
     def create_module(self, module: Module):
         self.create_modulefile(module)
 
@@ -75,3 +86,5 @@ class ModuleCreator:
                     self.command_creator.create_application_files(app, module)
                 case Shell():
                     self.shell_creator.create_application_files(app, module)
+
+        self.create_module_snapshot(module)

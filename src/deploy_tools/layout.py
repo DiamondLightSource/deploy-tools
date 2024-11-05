@@ -11,6 +11,7 @@ class Layout:
     SIF_FILES_FOLDER = "sif_files"
 
     DEPLOYMENT_SNAPSHOT_FILENAME = "deployment.yaml"
+    MODULE_SNAPSHOT_FILENAME = "module.yaml"
 
     def __init__(self, deployment_root: Path) -> None:
         self._root = deployment_root
@@ -34,6 +35,9 @@ class Layout:
     def get_modulefile(self, name: str, version: str, from_deprecated: bool = False):
         return self.get_modulefiles_root(from_deprecated) / name / version
 
+    def get_module_snapshot_path(self, name: str, version: str):
+        return self.get_module_folder(name, version) / self.MODULE_SNAPSHOT_FILENAME
+
     @property
     def deployment_root(self) -> Path:
         return self._root
@@ -55,5 +59,5 @@ class Layout:
         return self.deprecated_root / self.MODULEFILES_ROOT_NAME
 
     @property
-    def snapshot_file(self) -> Path:
+    def deployment_snapshot_path(self) -> Path:
         return self._root / self.DEPLOYMENT_SNAPSHOT_FILENAME
