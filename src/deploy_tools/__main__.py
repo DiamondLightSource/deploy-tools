@@ -4,6 +4,7 @@ from typing import Annotated
 import typer
 
 from . import __version__
+from .compare import compare_to_snapshot
 from .models.schema import generate_schema
 from .sync import synchronise
 from .validate import validate_configuration
@@ -62,6 +63,22 @@ def validate(
 
     This is the same validation that the deploy-tools sync command uses."""
     validate_configuration(deployment_root, config_folder)
+
+
+@app.command(no_args_is_help=True)
+def compare(
+    deployment_root: Annotated[
+        Path,
+        typer.Argument(
+            exists=True,
+            file_okay=False,
+            dir_okay=True,
+            writable=True,
+        ),
+    ],
+) -> None:
+    """Compare deployment snapshot to output modules and modulefiles."""
+    compare_to_snapshot(deployment_root)
 
 
 @app.command(no_args_is_help=True)

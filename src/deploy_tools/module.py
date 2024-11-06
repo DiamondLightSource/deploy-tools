@@ -1,3 +1,4 @@
+import re
 import shutil
 from collections import defaultdict
 from pathlib import Path
@@ -8,9 +9,11 @@ from .models.module import Module
 
 ModuleVersionsByName: TypeAlias = dict[str, list[str]]
 
-VERSION_FILENAME = ".version"
+DEFAULT_VERSION_FILENAME = ".version"
 VERSION_GLOB = "*/[!.version]*"
 DEVELOPMENT_VERSION = "dev"
+
+DEFAULT_VERSION_REGEX = "^set ModulesVersion (.*)$"
 
 
 def deprecate_modulefile(name: str, version: str, layout: Layout):
@@ -69,3 +72,14 @@ def is_module_dev_mode(module: Module) -> bool:
 def is_modified(module_a: Module, module_b: Module) -> bool:
     """Return whether the two module configuration objects have modified settings."""
     return not module_b == module_a
+
+
+def get_default_version(name: str, layout: Layout) -> str | None:
+    version_regex = re.compile(DEFAULT_VERSION_REGEX)
+    default_version_file = layout.modulefiles_root / name / DEFAULT_VERSION_FILENAME
+
+    with open(default_version_file) as f:
+        for line in f.readlines():
+            r = version_regex.search(line)
+            if r is not None:
+                return r.group(1)

@@ -1,6 +1,6 @@
 from .layout import Layout
 from .models.deployment import DefaultVersionsByName
-from .module import VERSION_FILENAME
+from .module import DEFAULT_VERSION_FILENAME
 from .module_creator import ModuleCreator
 from .templater import Templater
 
@@ -15,7 +15,7 @@ def check_default_versions(
 ) -> None:
     """Verify that appy_default_versions() can be run on the current deployment area."""
     for name in default_versions:
-        version_file = layout.modulefiles_root / name / VERSION_FILENAME
+        version_file = layout.modulefiles_root / name / DEFAULT_VERSION_FILENAME
         if version_file.is_dir():
             raise DefaultVersionsError(
                 f"Version file {version_file} is directory; cannot update or remove."

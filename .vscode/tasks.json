@@ -36,6 +36,12 @@
             "command": "deploy-tools validate ${input:deploy-folder} ${input:config-folder}",
             "problemMatcher": []
         },
+        {
+            "label": "Compare deployment to snapshot",
+            "type": "shell",
+            "command": "deploy-tools compare ${input:deploy-folder}",
+            "problemMatcher": []
+        },
     ],
     "inputs": [
         {

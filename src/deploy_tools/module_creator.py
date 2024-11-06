@@ -8,7 +8,7 @@ from .models.command import Command
 from .models.deployment import DefaultVersionsByName
 from .models.module import Module
 from .models.shell import Shell
-from .module import VERSION_FILENAME, get_deployed_module_versions
+from .module import DEFAULT_VERSION_FILENAME, get_deployed_module_versions
 from .shell_creator import ShellCreator
 from .templater import Templater, TemplateType
 
@@ -52,7 +52,9 @@ class ModuleCreator:
         deployed_module_versions = get_deployed_module_versions(layout)
 
         for name in deployed_module_versions:
-            version_file = self._layout.modulefiles_root / name / VERSION_FILENAME
+            version_file = (
+                self._layout.modulefiles_root / name / DEFAULT_VERSION_FILENAME
+            )
 
             if name in default_versions:
                 params = {"version": default_versions[name]}
