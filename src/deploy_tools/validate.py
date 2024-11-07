@@ -3,7 +3,6 @@ from copy import deepcopy
 from dataclasses import dataclass, field
 from pathlib import Path
 
-from .default_versions import check_default_versions
 from .deploy import check_deploy
 from .deprecate import check_deprecate
 from .layout import Layout
@@ -69,8 +68,6 @@ def check_actions(
     check_deprecate(update_group.deprecated, layout)
     check_restore(update_group.restored, layout)
     check_remove(update_group.removed, layout)
-
-    check_default_versions(default_versions, layout)
 
 
 def print_module_updates(update_group: UpdateGroup) -> None:

@@ -1,25 +1,7 @@
 from .layout import Layout
 from .models.deployment import DefaultVersionsByName
-from .module import DEFAULT_VERSION_FILENAME
 from .module_creator import ModuleCreator
 from .templater import Templater
-
-
-class DefaultVersionsError(Exception):
-    pass
-
-
-def check_default_versions(
-    default_versions: DefaultVersionsByName,
-    layout: Layout,
-) -> None:
-    """Verify that appy_default_versions() can be run on the current deployment area."""
-    for name in default_versions:
-        version_file = layout.modulefiles_root / name / DEFAULT_VERSION_FILENAME
-        if version_file.is_dir():
-            raise DefaultVersionsError(
-                f"Version file {version_file} is directory; cannot update or remove."
-            )
 
 
 def apply_default_versions(

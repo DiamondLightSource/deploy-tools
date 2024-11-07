@@ -11,9 +11,6 @@ class DeployError(Exception):
 
 def check_deploy(modules: list[Module], layout: Layout) -> None:
     """Verify that deploy() can be run on the current deployment area."""
-    if not layout.deployment_root.exists():
-        raise DeployError(f"Deployment root does not exist:\n{layout.deployment_root}")
-
     for module in modules:
         name = module.name
         version = module.version
