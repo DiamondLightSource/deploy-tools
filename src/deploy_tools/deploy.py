@@ -1,6 +1,6 @@
 from .layout import Layout
 from .models.module import Module
-from .module import in_deployment_area
+from .module import is_modulefile_deployed
 from .module_creator import ModuleCreator
 from .templater import Templater
 
@@ -15,7 +15,7 @@ def check_deploy(modules: list[Module], layout: Layout) -> None:
         name = module.name
         version = module.version
 
-        if in_deployment_area(name, version, layout):
+        if is_modulefile_deployed(name, version, layout):
             raise DeployError(
                 f"Cannot deploy {name}/{version}. Already found in deployment area."
             )

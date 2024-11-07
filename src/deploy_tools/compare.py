@@ -10,7 +10,7 @@ from .models.deployment import (
 )
 from .models.load import load_from_yaml
 from .models.module import Module, Release
-from .module import get_default_version, in_deployment_area, in_deprecated_area
+from .module import get_default_version, is_modulefile_deployed
 from .snapshot import load_snapshot
 from .validate import validate_default_versions
 
@@ -79,9 +79,9 @@ def _collect_modules(layout: Layout) -> list[Module]:
 
 
 def _get_deprecated_status(name: str, version: str, layout: Layout) -> bool:
-    if in_deployment_area(name, version, layout):
+    if is_modulefile_deployed(name, version, layout):
         return False
-    elif in_deprecated_area(name, version, layout):
+    elif is_modulefile_deployed(name, version, layout, in_deprecated=True):
         return True
 
     raise ComparisonError(

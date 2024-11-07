@@ -1,7 +1,7 @@
 from .deploy import deploy
 from .layout import Layout
 from .models.module import Module
-from .module import in_deployment_area
+from .module import is_modulefile_deployed
 from .remove import remove_deployed_module
 
 
@@ -15,7 +15,7 @@ def check_update(modules: list[Module], layout: Layout) -> None:
         name = module.name
         version = module.version
 
-        if not in_deployment_area(name, version, layout):
+        if not is_modulefile_deployed(name, version, layout):
             raise UpdateError(
                 f"Cannot update {name}/{version}. Not found in deployment area."
             )

@@ -44,9 +44,11 @@ def _move_modulefile(
     shutil.move(src_path, dest_path)
 
 
-def get_deployed_module_versions(layout: Layout) -> ModuleVersionsByName:
-    """Return list of modules that have already been deployed."""
-    modulefiles_root = layout.get_modulefiles_root(from_deprecated=False)
+def get_deployed_modulefile_versions(
+    layout: Layout, from_deprecated: bool = False
+) -> ModuleVersionsByName:
+    """Return list of modulefiles that have been deployed."""
+    modulefiles_root = layout.get_modulefiles_root(from_deprecated)
     found_modules: ModuleVersionsByName = defaultdict(list)
 
     for version_path in modulefiles_root.glob(VERSION_GLOB):
@@ -55,13 +57,10 @@ def get_deployed_module_versions(layout: Layout) -> ModuleVersionsByName:
     return found_modules
 
 
-def in_deployment_area(name: str, version: str, layout: Layout) -> bool:
-    modulefile = layout.get_modulefile(name, version)
-    return modulefile.exists()
-
-
-def in_deprecated_area(name: str, version: str, layout: Layout) -> bool:
-    modulefile = layout.get_modulefile(name, version, True)
+def is_modulefile_deployed(
+    name: str, version: str, layout: Layout, in_deprecated: bool = False
+) -> bool:
+    modulefile = layout.get_modulefile(name, version, from_deprecated=in_deprecated)
     return modulefile.exists()
 
 

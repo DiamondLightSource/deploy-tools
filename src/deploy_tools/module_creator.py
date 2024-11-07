@@ -8,7 +8,7 @@ from .models.command import Command
 from .models.deployment import DefaultVersionsByName
 from .models.module import Module
 from .models.shell import Shell
-from .module import DEFAULT_VERSION_FILENAME, get_deployed_module_versions
+from .module import DEFAULT_VERSION_FILENAME, get_deployed_modulefile_versions
 from .shell_creator import ShellCreator
 from .templater import Templater, TemplateType
 
@@ -49,7 +49,7 @@ class ModuleCreator:
     def update_default_versions(
         self, default_versions: DefaultVersionsByName, layout: Layout
     ) -> None:
-        deployed_module_versions = get_deployed_module_versions(layout)
+        deployed_module_versions = get_deployed_modulefile_versions(layout)
 
         for name in deployed_module_versions:
             version_file = (

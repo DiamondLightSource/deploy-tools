@@ -2,7 +2,7 @@ import shutil
 
 from .layout import Layout
 from .models.module import Module
-from .module import in_deployment_area, in_deprecated_area, is_module_dev_mode
+from .module import is_module_dev_mode, is_modulefile_deployed
 
 
 class RemovalError(Exception):
@@ -16,13 +16,13 @@ def check_remove(modules: list[Module], layout: Layout) -> None:
         version = module.version
 
         if is_module_dev_mode(module):
-            if not in_deployment_area(name, version, layout):
+            if not is_modulefile_deployed(name, version, layout):
                 raise RemovalError(
                     f"Cannot remove {name}/{version}. Not found in deployment area."
                 )
             continue
 
-        if not in_deprecated_area(name, version, layout):
+        if not is_modulefile_deployed(name, version, layout, in_deprecated=True):
             raise RemovalError(
                 f"Cannot remove {name}/{version}. Not found in deprecated area."
             )
@@ -36,18 +36,13 @@ def remove(modules: list[Module], layout: Layout) -> None:
         if is_module_dev_mode(module):
             remove_deployed_module(name, version, layout)
         else:
-            remove_deprecated_module(name, version, layout)
+            remove_deployed_module(name, version, layout, from_deprecated=True)
 
 
-def remove_deployed_module(name: str, version: str, layout: Layout) -> None:
-    modulefile = layout.get_modulefile(name, version)
-    modulefile.unlink()
-
-    remove_module(name, version, layout)
-
-
-def remove_deprecated_module(name: str, version: str, layout: Layout) -> None:
-    modulefile = layout.get_modulefile(name, version, True)
+def remove_deployed_module(
+    name: str, version: str, layout: Layout, from_deprecated: bool = False
+) -> None:
+    modulefile = layout.get_modulefile(name, version, from_deprecated)
     modulefile.unlink()
 
     remove_module(name, version, layout)
