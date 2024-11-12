@@ -1,7 +1,16 @@
 from collections.abc import Sequence
+from typing import Annotated
 
-from .application import Application
+from pydantic import Field
+
+from .apptainer import Apptainer
+from .command import Command
 from .parent import ParentModel
+from .shell import Shell
+
+Application = Annotated[
+    Apptainer | Command | Shell, Field(..., discriminator="app_type")
+]
 
 
 class ModuleDependency(ParentModel):
@@ -14,15 +23,6 @@ class EnvVar(ParentModel):
     value: str
 
 
-class ModuleMetadata(ParentModel):
-    name: str
-    version: str
-    description: str | None = None
-    dependencies: Sequence[ModuleDependency] = []
-    env_vars: Sequence[EnvVar] = []
-    deprecated: bool = False
-
-
 class Module(ParentModel):
     """Represents a Module to be deployed.
 
@@ -30,5 +30,16 @@ class Module(ParentModel):
     and a list of module dependencies.
     """
 
-    metadata: ModuleMetadata
+    name: str
+    version: str
+    description: str | None = None
+    dependencies: Sequence[ModuleDependency] = []
+    env_vars: Sequence[EnvVar] = []
     applications: list[Application]
+
+
+class Release(ParentModel):
+    """Represents a Module to be deployed along with its lifecycle status."""
+
+    module: Module
+    deprecated: bool = False

@@ -46,6 +46,19 @@
             },
         },
         {
+            "name": "Debug Compare",
+            "type": "debugpy",
+            "request": "launch",
+            "justMyCode": false,
+            "program": "/venv/bin/deploy-tools",
+            "args": "compare ${input:deploy-folder}",
+            "console": "integratedTerminal",
+            "env": {
+                // Enable break on exception when debugging tests (see: tests/conftest.py)
+                "PYTEST_RAISE": "1",
+            },
+        },
+        {
             "name": "Debug Sync",
             "type": "debugpy",
             "request": "launch",

@@ -2,7 +2,7 @@ import shutil
 
 from .layout import Layout
 from .models.module import Module
-from .module import in_deployment_area, in_deprecated_area, is_module_dev_mode
+from .module import is_module_dev_mode, is_modulefile_deployed
 
 
 class RemovalError(Exception):
@@ -12,17 +12,17 @@ class RemovalError(Exception):
 def check_remove(modules: list[Module], layout: Layout) -> None:
     """Verify that remove() can be run on the current deployment area."""
     for module in modules:
-        name = module.metadata.name
-        version = module.metadata.version
+        name = module.name
+        version = module.version
 
         if is_module_dev_mode(module):
-            if not in_deployment_area(name, version, layout):
+            if not is_modulefile_deployed(name, version, layout):
                 raise RemovalError(
                     f"Cannot remove {name}/{version}. Not found in deployment area."
                 )
             continue
 
-        if not in_deprecated_area(name, version, layout):
+        if not is_modulefile_deployed(name, version, layout, in_deprecated=True):
             raise RemovalError(
                 f"Cannot remove {name}/{version}. Not found in deprecated area."
             )
@@ -31,24 +31,19 @@ def check_remove(modules: list[Module], layout: Layout) -> None:
 def remove(modules: list[Module], layout: Layout) -> None:
     """Remove the given modules from the deployment area."""
     for module in modules:
-        name = module.metadata.name
-        version = module.metadata.version
+        name = module.name
+        version = module.version
         if is_module_dev_mode(module):
             remove_deployed_module(name, version, layout)
         else:
-            remove_deprecated_module(name, version, layout)
+            remove_deployed_module(name, version, layout, from_deprecated=True)
 
 
-def remove_deployed_module(name: str, version: str, layout: Layout) -> None:
-    module_file = layout.modulefiles_root / name / version
-    module_file.unlink()
-
-    remove_module(name, version, layout)
-
-
-def remove_deprecated_module(name: str, version: str, layout: Layout) -> None:
-    module_file = layout.deprecated_modulefiles_root / name / version
-    module_file.unlink()
+def remove_deployed_module(
+    name: str, version: str, layout: Layout, from_deprecated: bool = False
+) -> None:
+    modulefile = layout.get_modulefile(name, version, from_deprecated)
+    modulefile.unlink()
 
     remove_module(name, version, layout)
 

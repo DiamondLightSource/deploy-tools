@@ -4,10 +4,11 @@ from pathlib import Path
 from pydantic import BaseModel
 
 from .deployment import Deployment, DeploymentSettings
-from .module import Module
+from .module import Release
 
 SCHEMA_NAMES: dict[str, type[BaseModel]] = {
-    "module.json": Module,
+    "module.json": Release,
+    "release.json": Release,
     "deployment.json": Deployment,
     "deployment-settings.json": DeploymentSettings,
 }

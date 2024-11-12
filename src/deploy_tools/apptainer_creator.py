@@ -5,7 +5,7 @@ from pathlib import Path
 
 from .layout import Layout
 from .models.apptainer import Apptainer
-from .models.module import Module, ModuleMetadata
+from .models.module import Module
 from .templater import Templater, TemplateType
 
 
@@ -20,18 +20,16 @@ class ApptainerCreator:
         self._templater = templater
         self._layout = layout
 
-    def create_entrypoint_files(self, config: Apptainer, module: Module) -> None:
-        self._generate_sif_file(config, module)
-        metadata = module.metadata
-
+    def create_application_files(self, app: Apptainer, module: Module) -> None:
+        self._generate_sif_file(app, module)
         entrypoints_folder = self._layout.get_entrypoints_folder(
-            metadata.name, metadata.version
+            module.name, module.version
         )
         entrypoints_folder.mkdir(parents=True, exist_ok=True)
-        sif_file = self._get_sif_file_path(config, module.metadata)
+        sif_file = self._get_sif_file_path(app, module)
 
-        global_options = config.global_options
-        for entrypoint in config.entrypoints:
+        global_options = app.global_options
+        for entrypoint in app.entrypoints:
             options = entrypoint.options
             entrypoint_file = entrypoints_folder / entrypoint.executable_name
 
@@ -58,8 +56,8 @@ class ApptainerCreator:
                 executable=True,
             )
 
-    def _generate_sif_file(self, config: Apptainer, module: Module) -> None:
-        sif_file = self._get_sif_file_path(config, module.metadata)
+    def _generate_sif_file(self, app: Apptainer, module: Module) -> None:
+        sif_file = self._get_sif_file_path(app, module)
         sif_file.parent.mkdir(parents=True, exist_ok=True)
 
         if not sif_file.is_absolute():
@@ -68,10 +66,10 @@ class ApptainerCreator:
         if sif_file.exists():
             raise ApptainerError(f"Sif file output already exists:\n{sif_file}")
 
-        commands = ["apptainer", "pull", sif_file, config.container.url]
+        commands = ["apptainer", "pull", sif_file, app.container.url]
         subprocess.run(commands, check=True)
 
-    def _get_sif_file_path(self, config: Apptainer, metadata: ModuleMetadata) -> Path:
-        sif_folder = self._layout.get_sif_files_folder(metadata.name, metadata.version)
-        file_name = uuid.uuid3(uuid.NAMESPACE_URL, config.container.url).hex
+    def _get_sif_file_path(self, app: Apptainer, module: Module) -> Path:
+        sif_folder = self._layout.get_sif_files_folder(module.name, module.version)
+        file_name = uuid.uuid3(uuid.NAMESPACE_URL, app.container.url).hex
         return sif_folder / f"{file_name}.sif"

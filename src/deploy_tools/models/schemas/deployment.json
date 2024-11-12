@@ -1,38 +1,5 @@
 {
   "$defs": {
-    "Application": {
-      "additionalProperties": false,
-      "description": "Represents one of several application types in module configuration.",
-      "properties": {
-        "app_config": {
-          "discriminator": {
-            "mapping": {
-              "apptainer": "#/$defs/Apptainer",
-              "command": "#/$defs/Command",
-              "shell": "#/$defs/Shell"
-            },
-            "propertyName": "app_type"
-          },
-          "oneOf": [
-            {
-              "$ref": "#/$defs/Apptainer"
-            },
-            {
-              "$ref": "#/$defs/Command"
-            },
-            {
-              "$ref": "#/$defs/Shell"
-            }
-          ],
-          "title": "App Config"
-        }
-      },
-      "required": [
-        "app_config"
-      ],
-      "title": "Application",
-      "type": "object"
-    },
     "Apptainer": {
       "additionalProperties": false,
       "description": "Represents an Apptainer application or set of applications.\n\nThis uses apptainer to deploy a portable image of the desired container. Several\nentrypoints can then be specified to allow for multiple commands to be easily used\nin the same container image.",
@@ -212,53 +179,6 @@
       "additionalProperties": false,
       "description": "Represents a Module to be deployed.\n\nModules can optionally include a set of applications, environment variables to load,\nand a list of module dependencies.",
       "properties": {
-        "metadata": {
-          "$ref": "#/$defs/ModuleMetadata"
-        },
-        "applications": {
-          "items": {
-            "$ref": "#/$defs/Application"
-          },
-          "title": "Applications",
-          "type": "array"
-        }
-      },
-      "required": [
-        "metadata",
-        "applications"
-      ],
-      "title": "Module",
-      "type": "object"
-    },
-    "ModuleDependency": {
-      "additionalProperties": false,
-      "properties": {
-        "name": {
-          "title": "Name",
-          "type": "string"
-        },
-        "version": {
-          "anyOf": [
-            {
-              "type": "string"
-            },
-            {
-              "type": "null"
-            }
-          ],
-          "default": null,
-          "title": "Version"
-        }
-      },
-      "required": [
-        "name"
-      ],
-      "title": "ModuleDependency",
-      "type": "object"
-    },
-    "ModuleMetadata": {
-      "additionalProperties": false,
-      "properties": {
         "name": {
           "title": "Name",
           "type": "string"
@@ -295,6 +215,73 @@
           "title": "Env Vars",
           "type": "array"
         },
+        "applications": {
+          "items": {
+            "discriminator": {
+              "mapping": {
+                "apptainer": "#/$defs/Apptainer",
+                "command": "#/$defs/Command",
+                "shell": "#/$defs/Shell"
+              },
+              "propertyName": "app_type"
+            },
+            "oneOf": [
+              {
+                "$ref": "#/$defs/Apptainer"
+              },
+              {
+                "$ref": "#/$defs/Command"
+              },
+              {
+                "$ref": "#/$defs/Shell"
+              }
+            ]
+          },
+          "title": "Applications",
+          "type": "array"
+        }
+      },
+      "required": [
+        "name",
+        "version",
+        "applications"
+      ],
+      "title": "Module",
+      "type": "object"
+    },
+    "ModuleDependency": {
+      "additionalProperties": false,
+      "properties": {
+        "name": {
+          "title": "Name",
+          "type": "string"
+        },
+        "version": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Version"
+        }
+      },
+      "required": [
+        "name"
+      ],
+      "title": "ModuleDependency",
+      "type": "object"
+    },
+    "Release": {
+      "additionalProperties": false,
+      "description": "Represents a Module to be deployed along with its lifecycle status.",
+      "properties": {
+        "module": {
+          "$ref": "#/$defs/Module"
+        },
         "deprecated": {
           "default": false,
           "title": "Deprecated",
@@ -302,10 +289,9 @@
         }
       },
       "required": [
-        "name",
-        "version"
+        "module"
       ],
-      "title": "ModuleMetadata",
+      "title": "Release",
       "type": "object"
     },
     "Shell": {
@@ -347,20 +333,20 @@
     "settings": {
       "$ref": "#/$defs/DeploymentSettings"
     },
-    "modules": {
+    "releases": {
       "additionalProperties": {
         "additionalProperties": {
-          "$ref": "#/$defs/Module"
+          "$ref": "#/$defs/Release"
         },
         "type": "object"
       },
-      "title": "Modules",
+      "title": "Releases",
       "type": "object"
     }
   },
   "required": [
     "settings",
-    "modules"
+    "releases"
   ],
   "title": "Deployment",
   "type": "object"

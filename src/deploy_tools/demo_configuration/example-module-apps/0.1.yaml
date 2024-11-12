@@ -1,6 +1,6 @@
-# yaml-language-server: $schema=/workspaces/deploy-tools/src/deploy_tools/models/schemas/module.json
+# yaml-language-server: $schema=/workspaces/deploy-tools/src/deploy_tools/models/schemas/release.json
 
-metadata:
+module:
   name: example-module-apps
   version: "0.1"
   description: Demonstration of a module configuration folder
@@ -9,9 +9,8 @@ metadata:
     - name: OTHER_VALUE
       value: Test message OTHER_VALUE from example-module-folder
 
-applications:
-  - app_config:
-      app_type: apptainer
+  applications:
+    - app_type: apptainer
 
       container:
         path: docker://ghcr.io/apptainer/lolcow
@@ -32,15 +31,13 @@ applications:
         mounts:
           - /dls_sw:/dls_sw_test:ro
 
-  - app_config:
-      app_type: command
+    - app_type: command
 
       name: test-echo-module-folder
       command_path: echo
       command_args: $OTHER_VALUE
 
-  - app_config:
-      app_type: shell
+    - app_type: shell
 
       name: test-shell-script
       script:

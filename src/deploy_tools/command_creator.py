@@ -1,6 +1,6 @@
 from .layout import Layout
 from .models.command import Command
-from .module import Module
+from .models.module import Module
 from .templater import Templater, TemplateType
 
 
@@ -11,20 +11,20 @@ class CommandCreator:
         self._templater = templater
         self._layout = layout
 
-    def create_entrypoint_file(
+    def create_application_files(
         self,
-        config: Command,
+        app: Command,
         module: Module,
     ) -> None:
         entrypoints_folder = self._layout.get_entrypoints_folder(
-            module.metadata.name, module.metadata.version
+            module.name, module.version
         )
         entrypoints_folder.mkdir(parents=True, exist_ok=True)
-        entrypoint_file = entrypoints_folder / config.name
+        entrypoint_file = entrypoints_folder / app.name
 
         params = {
-            "command_path": config.command_path,
-            "command_args": config.command_args,
+            "command_path": app.command_path,
+            "command_args": app.command_args,
         }
 
         self._templater.create(
