@@ -2,7 +2,7 @@ import shutil
 from pathlib import Path
 
 from .layout import Layout
-from .models.module import Module
+from .models.module import Release
 from .module import VERSION_GLOB
 
 
@@ -11,21 +11,21 @@ class RemoveNameFoldersError(Exception):
 
 
 def remove_name_folders(
-    deprecated: list[Module],
-    restored: list[Module],
-    removed: list[Module],
+    deprecated: list[Release],
+    restored: list[Release],
+    removed: list[Release],
     layout: Layout,
 ) -> None:
     """Remove module name folders where all versions have been removed."""
-    for module in deprecated:
-        delete_modulefile_name_folder(layout, module.name)
+    for release in deprecated:
+        delete_modulefile_name_folder(layout, release.module.name)
 
-    for module in restored:
-        delete_modulefile_name_folder(layout, module.name, True)
+    for release in restored:
+        delete_modulefile_name_folder(layout, release.module.name, True)
 
-    for module in removed:
-        delete_modulefile_name_folder(layout, module.name, True)
-        delete_name_folder(module.name, layout.modules_root)
+    for release in removed:
+        delete_modulefile_name_folder(layout, release.module.name, True)
+        delete_name_folder(release.module.name, layout.modules_root)
 
 
 def delete_modulefile_name_folder(

@@ -1,7 +1,7 @@
 import shutil
 
 from .layout import Layout
-from .models.module import Module
+from .models.module import Release
 from .module import is_module_dev_mode, is_modulefile_deployed
 
 
@@ -9,13 +9,13 @@ class RemovalError(Exception):
     pass
 
 
-def check_remove(modules: list[Module], layout: Layout) -> None:
+def check_remove(releases: list[Release], layout: Layout) -> None:
     """Verify that remove() can be run on the current deployment area."""
-    for module in modules:
-        name = module.name
-        version = module.version
+    for release in releases:
+        name = release.module.name
+        version = release.module.version
 
-        if is_module_dev_mode(module):
+        if is_module_dev_mode(release.module):
             if not is_modulefile_deployed(name, version, layout):
                 raise RemovalError(
                     f"Cannot remove {name}/{version}. Not found in deployment area."
@@ -28,12 +28,12 @@ def check_remove(modules: list[Module], layout: Layout) -> None:
             )
 
 
-def remove(modules: list[Module], layout: Layout) -> None:
+def remove(releases: list[Release], layout: Layout) -> None:
     """Remove the given modules from the deployment area."""
-    for module in modules:
-        name = module.name
-        version = module.version
-        if is_module_dev_mode(module):
+    for release in releases:
+        name = release.module.name
+        version = release.module.version
+        if is_module_dev_mode(release.module):
             remove_deployed_module(name, version, layout)
         else:
             remove_deployed_module(name, version, layout, from_deprecated=True)

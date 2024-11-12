@@ -1,18 +1,18 @@
 from collections import defaultdict
 from copy import deepcopy
-from dataclasses import dataclass, field
 from pathlib import Path
 
 from .deploy import check_deploy
 from .deprecate import check_deprecate
 from .layout import Layout
+from .models.changes import DeploymentChanges, ReleaseChanges
 from .models.deployment import (
     DefaultVersionsByName,
     Deployment,
     ReleasesByNameAndVersion,
 )
 from .models.load import load_deployment
-from .models.module import Module, Release
+from .models.module import Release
 from .module import (
     DEVELOPMENT_VERSION,
     ModuleVersionsByName,
@@ -29,15 +29,6 @@ class ValidationError(Exception):
     pass
 
 
-@dataclass
-class UpdateGroup:
-    added: list[Module] = field(default_factory=list)
-    updated: list[Module] = field(default_factory=list)
-    deprecated: list[Module] = field(default_factory=list)
-    restored: list[Module] = field(default_factory=list)
-    removed: list[Module] = field(default_factory=list)
-
-
 def validate_configuration(deployment_root: Path, config_folder: Path) -> None:
     """Validate deployment configuration and print a list of modules for deployment.
 
@@ -48,42 +39,43 @@ def validate_configuration(deployment_root: Path, config_folder: Path) -> None:
     layout = Layout(deployment_root)
     snapshot = load_snapshot(layout)
 
-    update_group = validate_update_group(deployment, snapshot)
-    default_versions = validate_default_versions(deployment)
+    deployment_changes = validate_deployment_changes(deployment, snapshot)
 
-    check_actions(update_group, default_versions, layout)
+    check_actions(deployment_changes.release_changes, layout)
 
-    print_module_updates(update_group)
-    print_version_updates(
-        snapshot.settings.default_versions, deployment.settings.default_versions
-    )
+    print_updates(snapshot.settings.default_versions, deployment_changes)
 
 
-def check_actions(
-    update_group: UpdateGroup, default_versions: DefaultVersionsByName, layout: Layout
-) -> None:
+def check_actions(release_changes: ReleaseChanges, layout: Layout) -> None:
     """Check the deployment area to ensure that all actions can be carried out."""
-    check_deploy(update_group.added, layout)
-    check_update(update_group.updated, layout)
-    check_deprecate(update_group.deprecated, layout)
-    check_restore(update_group.restored, layout)
-    check_remove(update_group.removed, layout)
+    check_deploy(release_changes.to_add, layout)
+    check_update(release_changes.to_update, layout)
+    check_deprecate(release_changes.to_deprecate, layout)
+    check_restore(release_changes.to_restore, layout)
+    check_remove(release_changes.to_remove, layout)
 
 
-def print_module_updates(update_group: UpdateGroup) -> None:
+def print_updates(
+    old_default_versions: DefaultVersionsByName, deployment_changes: DeploymentChanges
+) -> None:
+    print_module_updates(deployment_changes.release_changes)
+    print_version_updates(old_default_versions, deployment_changes.default_versions)
+
+
+def print_module_updates(release_changes: ReleaseChanges) -> None:
     display_config = {
-        "deployed": update_group.added,
-        "updated": update_group.updated,
-        "deprecated": update_group.deprecated,
-        "restored": update_group.restored,
-        "removed": update_group.removed,
+        "deployed": release_changes.to_add,
+        "updated": release_changes.to_update,
+        "deprecated": release_changes.to_deprecate,
+        "restored": release_changes.to_restore,
+        "removed": release_changes.to_remove,
     }
 
-    for action, modules in display_config.items():
+    for action, releases in display_config.items():
         print(f"Modules to be {action}:")
 
-        for module in modules:
-            print(f"{module.name}/{module.version}")
+        for release in releases:
+            print(f"{release.module.name}/{release.module.version}")
 
         print()
 
@@ -103,38 +95,44 @@ def print_version_updates(
     print()
 
 
-def validate_update_group(deployment: Deployment, snapshot: Deployment) -> UpdateGroup:
+def validate_deployment_changes(deployment: Deployment, snapshot: Deployment):
+    release_changes = validate_release_changes(deployment, snapshot)
+    default_versions = validate_default_versions(deployment)
+    return DeploymentChanges(
+        release_changes=release_changes, default_versions=default_versions
+    )
+
+
+def validate_release_changes(
+    deployment: Deployment, snapshot: Deployment
+) -> ReleaseChanges:
     """Validate configuration to get set of actions that need to be carried out."""
-    old_modules = snapshot.releases
-    new_modules = deployment.releases
+    old_releases = snapshot.releases
+    new_releases = deployment.releases
 
     validate_module_dependencies(deployment)
-    return get_update_group(old_modules, new_modules)
+    return get_release_changes(old_releases, new_releases)
 
 
-def get_update_group(
+def get_release_changes(
     old_releases: ReleasesByNameAndVersion, new_releases: ReleasesByNameAndVersion
-) -> UpdateGroup:
-    added: list[Release] = []
-    updated: list[Release] = []
-    deprecated: list[Release] = []
-    restored: list[Release] = []
-    removed: list[Release] = []
+) -> ReleaseChanges:
+    release_changes = ReleaseChanges()
     for name in new_releases:
         if name not in old_releases:
-            added.extend(new_releases[name].values())
+            release_changes.to_add.extend(new_releases[name].values())
             continue
 
         for version, new_release in new_releases[name].items():
             if version not in old_releases[name]:
-                added.append(new_release)
+                release_changes.to_add.append(new_release)
                 continue
 
             old_release = old_releases[name][version]
 
             if is_modified(old_release.module, new_release.module):
                 if is_module_dev_mode(new_release.module):
-                    updated.append(new_release)
+                    release_changes.to_update.append(new_release)
                     continue
 
                 raise ValidationError(
@@ -142,30 +140,28 @@ def get_update_group(
                 )
 
             if not old_release.deprecated and new_release.deprecated:
-                deprecated.append(new_release)
+                release_changes.to_deprecate.append(new_release)
             elif old_release.deprecated and not new_release.deprecated:
-                restored.append(new_release)
+                release_changes.to_restore.append(new_release)
 
     for name in old_releases:
         if name not in new_releases:
-            removed.extend(old_releases[name].values())
+            release_changes.to_remove.extend(old_releases[name].values())
             continue
 
         for version, old_release in old_releases[name].items():
             if version not in new_releases[name]:
-                removed.append(old_release)
+                release_changes.to_remove.append(old_release)
 
-    update_group = UpdateGroup()
-    update_group.added = validate_added_modules(added)
-    update_group.updated = validate_updated_modules(updated)
-    update_group.deprecated = validate_deprecated_modules(deprecated)
-    update_group.restored = validate_restored_modules(restored)
-    update_group.removed = validate_removed_modules(removed)
+    validate_added_modules(release_changes.to_add)
+    validate_updated_modules(release_changes.to_update)
+    validate_deprecated_modules(release_changes.to_deprecate)
+    validate_removed_modules(release_changes.to_remove)
 
-    return update_group
+    return release_changes
 
 
-def validate_added_modules(releases: list[Release]) -> list[Module]:
+def validate_added_modules(releases: list[Release]) -> None:
     for release in releases:
         module = release.module
         if release.deprecated:
@@ -180,10 +176,8 @@ def validate_added_modules(releases: list[Release]) -> list[Module]:
                 f"status on initial creation."
             )
 
-    return get_modules_list_from_releases(releases)
 
-
-def validate_updated_modules(releases: list[Release]) -> list[Module]:
+def validate_updated_modules(releases: list[Release]) -> None:
     for release in releases:
         module = release.module
         if release.deprecated:
@@ -192,10 +186,8 @@ def validate_updated_modules(releases: list[Release]) -> list[Module]:
                 f"deprecated as it is in development mode."
             )
 
-    return get_modules_list_from_releases(releases)
 
-
-def validate_deprecated_modules(releases: list[Release]) -> list[Module]:
+def validate_deprecated_modules(releases: list[Release]) -> None:
     for release in releases:
         module = release.module
         if is_module_dev_mode(module):
@@ -204,14 +196,8 @@ def validate_deprecated_modules(releases: list[Release]) -> list[Module]:
                 f"deprecated as it is in development mode."
             )
 
-    return get_modules_list_from_releases(releases)
 
-
-def validate_restored_modules(releases: list[Release]) -> list[Module]:
-    return get_modules_list_from_releases(releases)
-
-
-def validate_removed_modules(releases: list[Release]) -> list[Module]:
+def validate_removed_modules(releases: list[Release]) -> None:
     for release in releases:
         module = release.module
         if not is_module_dev_mode(module) and not release.deprecated:
@@ -219,12 +205,6 @@ def validate_removed_modules(releases: list[Release]) -> list[Module]:
                 f"Module {module.name}/{module.version} removed without prior"
                 f"deprecation."
             )
-
-    return get_modules_list_from_releases(releases)
-
-
-def get_modules_list_from_releases(releases: list[Release]):
-    return [release.module for release in releases]
 
 
 def validate_default_versions(deployment: Deployment) -> DefaultVersionsByName:

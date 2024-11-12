@@ -1,5 +1,5 @@
 from .layout import Layout
-from .models.module import Module
+from .models.module import Release
 from .module import is_modulefile_deployed, restore_modulefile
 
 
@@ -7,11 +7,11 @@ class RestoreError(Exception):
     pass
 
 
-def check_restore(modules: list[Module], layout: Layout) -> None:
+def check_restore(releases: list[Release], layout: Layout) -> None:
     """Verify that restore() can be run on the current deployment area."""
-    for module in modules:
-        name = module.name
-        version = module.version
+    for release in releases:
+        name = release.module.name
+        version = release.module.version
 
         if not is_modulefile_deployed(name, version, layout, in_deprecated=True):
             raise RestoreError(
@@ -24,7 +24,7 @@ def check_restore(modules: list[Module], layout: Layout) -> None:
             )
 
 
-def restore(modules: list[Module], layout: Layout) -> None:
+def restore(releases: list[Release], layout: Layout) -> None:
     """Restore a previously deprecated module."""
-    for module in modules:
-        restore_modulefile(module.name, module.version, layout)
+    for release in releases:
+        restore_modulefile(release.module.name, release.module.version, layout)
