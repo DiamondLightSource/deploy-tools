@@ -2,8 +2,7 @@ from collections import defaultdict
 from copy import deepcopy
 from pathlib import Path
 
-from .deploy import check_deploy
-from .deprecate import check_deprecate
+from .check_deploy import check_deploy_actions
 from .layout import Layout
 from .models.changes import DeploymentChanges, ReleaseChanges
 from .models.deployment import (
@@ -19,10 +18,7 @@ from .module import (
     is_modified,
     is_module_dev_mode,
 )
-from .remove import check_remove
-from .restore import check_restore
 from .snapshot import load_snapshot
-from .update import check_update
 
 
 class ValidationError(Exception):
@@ -41,18 +37,9 @@ def validate_configuration(deployment_root: Path, config_folder: Path) -> None:
 
     deployment_changes = validate_deployment_changes(deployment, snapshot)
 
-    check_actions(deployment_changes.release_changes, layout)
+    check_deploy_actions(deployment_changes, layout)
 
     print_updates(snapshot.settings.default_versions, deployment_changes)
-
-
-def check_actions(release_changes: ReleaseChanges, layout: Layout) -> None:
-    """Check the deployment area to ensure that all actions can be carried out."""
-    check_deploy(release_changes.to_add, layout)
-    check_update(release_changes.to_update, layout)
-    check_deprecate(release_changes.to_deprecate, layout)
-    check_restore(release_changes.to_restore, layout)
-    check_remove(release_changes.to_remove, layout)
 
 
 def print_updates(
@@ -95,7 +82,9 @@ def print_version_updates(
     print()
 
 
-def validate_deployment_changes(deployment: Deployment, snapshot: Deployment):
+def validate_deployment_changes(
+    deployment: Deployment, snapshot: Deployment
+) -> DeploymentChanges:
     release_changes = validate_release_changes(deployment, snapshot)
     default_versions = validate_default_versions(deployment)
     return DeploymentChanges(
