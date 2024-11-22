@@ -15,14 +15,19 @@ from deploy_tools.module_creator import ModuleCreator
 from deploy_tools.templater import Templater
 
 
-def deploy(changes: DeploymentChanges, layout: Layout) -> None:
+class DeployException(Exception):
+    pass
+
+
+def deploy_changes(changes: DeploymentChanges, layout: Layout) -> None:
     release_changes = changes.release_changes
 
+    remove_releases(release_changes.to_remove, layout)
     deploy_new_releases(release_changes.to_add, layout)
-    update_releases(release_changes.to_update, layout)
+    deploy_updated_releases(release_changes.to_update, layout)
+
     deprecate_releases(release_changes.to_deprecate, layout)
     restore_releases(release_changes.to_restore, layout)
-    remove_releases(release_changes.to_remove, layout)
 
     apply_default_versions(changes.default_versions, layout)
     remove_name_folders(
@@ -31,6 +36,16 @@ def deploy(changes: DeploymentChanges, layout: Layout) -> None:
         release_changes.to_remove,
         layout,
     )
+
+
+def remove_releases(to_remove: list[Release], layout: Layout) -> None:
+    """Remove the given modules from the deployment area."""
+    for release in to_remove:
+        name = release.module.name
+        version = release.module.version
+
+        from_deprecated = not is_module_dev_mode(release.module)
+        remove_deployed_module(name, version, layout, from_deprecated)
 
 
 def deploy_new_releases(to_add: list[Release], layout: Layout) -> None:
@@ -42,7 +57,43 @@ def deploy_new_releases(to_add: list[Release], layout: Layout) -> None:
     module_creator = ModuleCreator(templater, layout)
 
     for release in to_add:
-        module_creator.create_module(release.module)
+        module_creator.create_modulefile(release.module)
+
+    deploy_releases(to_add, layout)
+
+
+def deploy_updated_releases(to_update: list[Release], layout: Layout):
+    if not to_update:
+        return
+
+    templater = Templater()
+    module_creator = ModuleCreator(templater, layout)
+
+    for release in to_update:
+        # TODO: Remove this mess of code
+        layout.get_modulefile(release.module.name, release.module.version).unlink(
+            missing_ok=True
+        )
+        module_creator.create_modulefile(release.module)
+
+    deploy_releases(to_update, layout, exist_ok=True)
+
+
+def deploy_releases(to_deploy: list[Release], layout: Layout, exist_ok: bool = False):
+    build_layout = layout.build_layout
+
+    for release in to_deploy:
+        module = release.module
+        built_module_folder = build_layout.get_module_folder(
+            module.name, module.version
+        )
+        final_module_folder = layout.get_module_folder(module.name, module.version)
+        final_module_folder.parent.mkdir(parents=True, exist_ok=True)
+
+        if exist_ok and final_module_folder.exists():
+            shutil.rmtree(final_module_folder)
+
+        built_module_folder.rename(final_module_folder)
 
 
 def deprecate_releases(to_deprecate: list[Release], layout: Layout) -> None:
@@ -54,17 +105,6 @@ def deprecate_releases(to_deprecate: list[Release], layout: Layout) -> None:
     """
     for release in to_deprecate:
         deprecate_modulefile(release.module.name, release.module.version, layout)
-
-
-def remove_releases(to_remove: list[Release], layout: Layout) -> None:
-    """Remove the given modules from the deployment area."""
-    for release in to_remove:
-        name = release.module.name
-        version = release.module.version
-        if is_module_dev_mode(release.module):
-            remove_deployed_module(name, version, layout)
-        else:
-            remove_deployed_module(name, version, layout, from_deprecated=True)
 
 
 def remove_deployed_module(

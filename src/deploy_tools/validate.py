@@ -1,7 +1,9 @@
 from collections import defaultdict
 from copy import deepcopy
 from pathlib import Path
+from tempfile import TemporaryDirectory
 
+from .build import build
 from .check_deploy import check_deploy_actions
 from .layout import Layout
 from .models.changes import DeploymentChanges, ReleaseChanges
@@ -31,15 +33,18 @@ def validate_configuration(deployment_root: Path, config_folder: Path) -> None:
     The validate_* functions consider only the current and previous deployment
     to identify what changes need to be made, while check_actions will look at the
     current deployment area to ensure that the specified actions can be completed."""
-    deployment = load_deployment(config_folder)
-    layout = Layout(deployment_root)
-    snapshot = load_snapshot(layout)
+    with TemporaryDirectory() as build_dir:
+        deployment = load_deployment(config_folder)
+        layout = Layout(deployment_root, Path(build_dir))
+        snapshot = load_snapshot(layout)
 
-    deployment_changes = validate_deployment_changes(deployment, snapshot)
+        deployment_changes = validate_deployment_changes(deployment, snapshot)
 
-    check_deploy_actions(deployment_changes, layout)
+        check_deploy_actions(deployment_changes, layout)
 
-    print_updates(snapshot.settings.default_versions, deployment_changes)
+        build(deployment_changes, layout)
+
+        print_updates(snapshot.settings.default_versions, deployment_changes)
 
 
 def print_updates(

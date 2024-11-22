@@ -1,7 +1,8 @@
 from pathlib import Path
 
+from .build import build, clean_build_area
 from .check_deploy import check_deploy_actions
-from .deploy import deploy
+from .deploy import deploy_changes
 from .layout import Layout
 from .models.load import load_deployment
 from .snapshot import create_snapshot, load_snapshot
@@ -20,5 +21,8 @@ def synchronise(deployment_root: Path, config_folder: Path) -> None:
 
     check_deploy_actions(deployment_changes, layout)
 
+    clean_build_area(layout)
+    build(deployment_changes, layout)
+
     create_snapshot(deployment, layout)
-    deploy(deployment_changes, layout)
+    deploy_changes(deployment_changes, layout)
