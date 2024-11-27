@@ -7,7 +7,7 @@ from deploy_tools.models.changes import DeploymentChanges
 from deploy_tools.models.deployment import DefaultVersionsByName
 from deploy_tools.models.module import Release
 from deploy_tools.module import (
-    VERSION_GLOB,
+    DEFAULT_VERSION_FILENAME,
     deprecate_modulefile,
     is_module_dev_mode,
     restore_modulefile,
@@ -155,7 +155,9 @@ def delete_modulefile_name_folder(
     layout: Layout, name: str, from_deprecated: bool = False
 ) -> None:
     modulefiles_name_path = layout.get_modulefiles_root(from_deprecated) / name
-    if modulefiles_name_path.glob(VERSION_GLOB):
+    module_versions_glob = f"[!{DEFAULT_VERSION_FILENAME}]*"
+
+    if next(modulefiles_name_path.glob(module_versions_glob), None) is None:
         shutil.rmtree(modulefiles_name_path)
 
 

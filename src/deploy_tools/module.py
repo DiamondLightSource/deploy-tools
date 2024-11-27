@@ -8,7 +8,7 @@ from .models.module import Module
 type ModuleVersionsByName = dict[str, list[str]]
 
 DEFAULT_VERSION_FILENAME = ".version"
-VERSION_GLOB = "*/[!.version]*"
+VERSION_GLOB = f"*/[!{DEFAULT_VERSION_FILENAME}]*"
 DEVELOPMENT_VERSION = "dev"
 
 DEFAULT_VERSION_REGEX = "^set ModulesVersion (.*)$"
