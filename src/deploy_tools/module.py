@@ -1,12 +1,11 @@
 import re
 from collections import defaultdict
 from pathlib import Path
-from typing import TypeAlias
 
 from .layout import Layout
 from .models.module import Module
 
-ModuleVersionsByName: TypeAlias = dict[str, list[str]]
+type ModuleVersionsByName = dict[str, list[str]]
 
 DEFAULT_VERSION_FILENAME = ".version"
 VERSION_GLOB = "*/[!.version]*"

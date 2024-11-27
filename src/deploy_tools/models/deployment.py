@@ -1,11 +1,9 @@
-from typing import TypeAlias
-
 from .module import Release
 from .parent import ParentModel
 
-ReleasesByVersion: TypeAlias = dict[str, Release]
-ReleasesByNameAndVersion: TypeAlias = dict[str, ReleasesByVersion]
-DefaultVersionsByName: TypeAlias = dict[str, str]
+type ReleasesByVersion = dict[str, Release]
+type ReleasesByNameAndVersion = dict[str, ReleasesByVersion]
+type DefaultVersionsByName = dict[str, str]
 
 
 class DeploymentSettings(ParentModel):
