@@ -1,3 +1,4 @@
+import os
 import shutil
 from pathlib import Path
 
@@ -24,7 +25,7 @@ def deploy_changes(changes: DeploymentChanges, layout: Layout) -> None:
 
     remove_releases(release_changes.to_remove, layout)
     deploy_new_releases(release_changes.to_add, layout)
-    deploy_updated_releases(release_changes.to_update, layout)
+    deploy_releases(release_changes.to_update, layout, exist_ok=True)
 
     deprecate_releases(release_changes.to_deprecate, layout)
     restore_releases(release_changes.to_restore, layout)
@@ -50,33 +51,17 @@ def remove_releases(to_remove: list[Release], layout: Layout) -> None:
 
 def deploy_new_releases(to_add: list[Release], layout: Layout) -> None:
     """Deploy modules from the provided list."""
-    if not to_add:
-        return
-
-    templater = Templater()
-    module_creator = ModuleCreator(templater, layout)
-
-    for release in to_add:
-        module_creator.create_modulefile(release.module)
-
     deploy_releases(to_add, layout)
 
+    for release in to_add:
+        name = release.module.name
+        version = release.module.version
 
-def deploy_updated_releases(to_update: list[Release], layout: Layout):
-    if not to_update:
-        return
+        built_modulefile = layout.get_built_modulefile(name, version)
+        modulefile_link = layout.get_modulefile(name, version)
 
-    templater = Templater()
-    module_creator = ModuleCreator(templater, layout)
-
-    for release in to_update:
-        # TODO: Remove this mess of code
-        layout.get_modulefile(release.module.name, release.module.version).unlink(
-            missing_ok=True
-        )
-        module_creator.create_modulefile(release.module)
-
-    deploy_releases(to_update, layout, exist_ok=True)
+        modulefile_link.parent.mkdir(parents=True, exist_ok=True)
+        os.symlink(built_modulefile, modulefile_link)
 
 
 def deploy_releases(to_deploy: list[Release], layout: Layout, exist_ok: bool = False):

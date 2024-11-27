@@ -13,6 +13,7 @@ class Layout:
 
     DEPLOYMENT_SNAPSHOT_FILENAME = "deployment.yaml"
     MODULE_SNAPSHOT_FILENAME = "module.yaml"
+    BUILT_MODULEFILE_FILENAME = "modulefile"
 
     def __init__(self, deployment_root: Path, build_root: Path | None = None) -> None:
         self._root = deployment_root
@@ -37,6 +38,9 @@ class Layout:
             if from_deprecated
             else self.modulefiles_root
         )
+
+    def get_built_modulefile(self, name: str, version: str):
+        return self.get_module_folder(name, version) / self.BUILT_MODULEFILE_FILENAME
 
     def get_modulefile(self, name: str, version: str, from_deprecated: bool = False):
         return self.get_modulefiles_root(from_deprecated) / name / version

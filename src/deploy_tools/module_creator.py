@@ -19,10 +19,11 @@ class ModuleCreator:
     def __init__(self, templater: Templater, layout: Layout) -> None:
         self._templater = templater
         self._layout = layout
+        self._build_layout = layout.build_layout
 
-        self.apptainer_creator = ApptainerCreator(templater, layout)
-        self.command_creator = CommandCreator(templater, layout)
-        self.shell_creator = ShellCreator(templater, layout)
+        self.apptainer_creator = ApptainerCreator(templater, self._build_layout)
+        self.command_creator = CommandCreator(templater, self._build_layout)
+        self.shell_creator = ShellCreator(templater, self._build_layout)
 
     def create_modulefile(self, module: Module) -> None:
         entrypoints_folder = self._layout.get_entrypoints_folder(
@@ -41,10 +42,12 @@ class ModuleCreator:
             "entrypoint_folder": entrypoints_folder,
         }
 
-        modulefile = self._layout.modulefiles_root / module.name / module.version
-        modulefile.parent.mkdir(exist_ok=True, parents=True)
+        built_modulefile = self._build_layout.get_built_modulefile(
+            module.name, module.version
+        )
+        built_modulefile.parent.mkdir(exist_ok=True, parents=True)
 
-        self._templater.create(modulefile, TemplateType.MODULEFILE, params)
+        self._templater.create(built_modulefile, TemplateType.MODULEFILE, params)
 
     def update_default_versions(
         self, default_versions: DefaultVersionsByName, layout: Layout
@@ -69,7 +72,7 @@ class ModuleCreator:
                 version_file.unlink(missing_ok=True)
 
     def create_module_snapshot(self, module: Module):
-        snapshot_path = self._layout.get_module_snapshot_path(
+        snapshot_path = self._build_layout.get_module_snapshot_path(
             module.name, module.version
         )
         snapshot_path.parent.mkdir(exist_ok=True, parents=True)

@@ -16,19 +16,18 @@ def clean_build_area(layout: Layout) -> None:
 
 def build(changes: DeploymentChanges, layout: Layout) -> None:
     release_changes = changes.release_changes
-    build_layout = layout.build_layout
 
-    _build_releases(release_changes.to_add, build_layout)
-    _build_releases(release_changes.to_update, build_layout)
+    _build_releases(release_changes.to_add, layout)
+    _build_releases(release_changes.to_update, layout)
 
 
-def _build_releases(releases: list[Release], build_layout: Layout) -> None:
+def _build_releases(releases: list[Release], layout: Layout) -> None:
     """Deploy modules from the provided list."""
     if not releases:
         return
 
     templater = Templater()
-    module_creator = ModuleCreator(templater, build_layout)
+    module_creator = ModuleCreator(templater, layout)
 
     for release in releases:
         module_creator.create_module(release.module)

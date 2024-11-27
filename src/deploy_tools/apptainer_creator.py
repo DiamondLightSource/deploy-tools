@@ -16,9 +16,9 @@ class ApptainerError(Exception):
 class ApptainerCreator:
     """Class for creating apptainer entrypoints using a specified image and commands."""
 
-    def __init__(self, templater: Templater, layout: Layout) -> None:
+    def __init__(self, templater: Templater, build_layout: Layout) -> None:
         self._templater = templater
-        self._layout = layout
+        self._layout = build_layout
 
     def create_application_files(self, app: Apptainer, module: Module) -> None:
         self._generate_sif_file(app, module)
@@ -26,7 +26,9 @@ class ApptainerCreator:
             module.name, module.version
         )
         entrypoints_folder.mkdir(parents=True, exist_ok=True)
-        sif_file = self._get_sif_file_path(app, module)
+        sif_file = self._get_sif_file_path(app, module).relative_to(
+            entrypoints_folder, walk_up=True
+        )
 
         global_options = app.global_options
         for entrypoint in app.entrypoints:
