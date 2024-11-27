@@ -26,7 +26,7 @@ class ApptainerCreator:
             module.name, module.version
         )
         entrypoints_folder.mkdir(parents=True, exist_ok=True)
-        sif_file = self._get_sif_file_path(app, module).relative_to(
+        relative_sif_file = self._get_sif_file_path(app, module).relative_to(
             entrypoints_folder, walk_up=True
         )
 
@@ -46,7 +46,7 @@ class ApptainerCreator:
             params = {
                 "mounts": mounts,
                 "apptainer_args": apptainer_args,
-                "sif_file": sif_file,
+                "relative_sif_file": relative_sif_file,
                 "command": entrypoint.command,
                 "command_args": command_args,
             }

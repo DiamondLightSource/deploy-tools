@@ -11,7 +11,7 @@ mounts="{{ mounts }}"
 # Additional arguments for apptainer
 apptainer_args="{{ apptainer_args }}"
 # Sif file path
-sif_file="{{ sif_file }}"
+sif_file="$(dirname $0)/{{ relative_sif_file }}"
 # Command to run in container
 command="{{ command }}"
 # Options and arguments to pass to command
