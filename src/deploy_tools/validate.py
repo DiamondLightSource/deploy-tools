@@ -44,7 +44,8 @@ def validate_configuration(deployment_root: Path, config_folder: Path) -> None:
 
         build(deployment_changes, layout)
 
-        print_updates(snapshot.settings.default_versions, deployment_changes)
+        snapshot_default_versions = validate_default_versions(snapshot)
+        print_updates(snapshot_default_versions, deployment_changes)
 
 
 def print_updates(
