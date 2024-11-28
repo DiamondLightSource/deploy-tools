@@ -7,14 +7,21 @@ class Layout:
     MODULES_ROOT_NAME = "modules"
     MODULEFILES_ROOT_NAME = "modulefiles"
     DEPRECATED_ROOT_NAME = "deprecated"
+    BUILD_ROOT_NAME = "build"
     ENTRYPOINTS_FOLDER = "entrypoints"
     SIF_FILES_FOLDER = "sif_files"
 
     DEPLOYMENT_SNAPSHOT_FILENAME = "deployment.yaml"
     MODULE_SNAPSHOT_FILENAME = "module.yaml"
+    BUILT_MODULEFILE_FILENAME = "modulefile"
 
-    def __init__(self, deployment_root: Path) -> None:
+    def __init__(self, deployment_root: Path, build_root: Path | None = None) -> None:
         self._root = deployment_root
+
+        if build_root is not None:
+            self._build_root = build_root
+        else:
+            self._build_root = self._root / self.BUILD_ROOT_NAME
 
     def get_module_folder(self, name: str, version: str) -> Path:
         return self.modules_root / name / version
@@ -32,10 +39,13 @@ class Layout:
             else self.modulefiles_root
         )
 
+    def get_built_modulefile(self, name: str, version: str):
+        return self.get_module_folder(name, version) / self.BUILT_MODULEFILE_FILENAME
+
     def get_modulefile(self, name: str, version: str, from_deprecated: bool = False):
         return self.get_modulefiles_root(from_deprecated) / name / version
 
-    def get_module_snapshot_path(self, name: str, version: str):
+    def get_module_snapshot_path(self, name: str, version: str) -> Path:
         return self.get_module_folder(name, version) / self.MODULE_SNAPSHOT_FILENAME
 
     @property
@@ -61,3 +71,7 @@ class Layout:
     @property
     def deployment_snapshot_path(self) -> Path:
         return self._root / self.DEPLOYMENT_SNAPSHOT_FILENAME
+
+    @property
+    def build_layout(self):
+        return Layout(self._build_root)

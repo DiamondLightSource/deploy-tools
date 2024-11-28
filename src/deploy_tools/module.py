@@ -1,23 +1,21 @@
 import re
-import shutil
 from collections import defaultdict
 from pathlib import Path
-from typing import TypeAlias
 
 from .layout import Layout
 from .models.module import Module
 
-ModuleVersionsByName: TypeAlias = dict[str, list[str]]
+type ModuleVersionsByName = dict[str, list[str]]
 
 DEFAULT_VERSION_FILENAME = ".version"
-VERSION_GLOB = "*/[!.version]*"
+VERSION_GLOB = f"*/[!{DEFAULT_VERSION_FILENAME}]*"
 DEVELOPMENT_VERSION = "dev"
 
 DEFAULT_VERSION_REGEX = "^set ModulesVersion (.*)$"
 
 
 def deprecate_modulefile(name: str, version: str, layout: Layout):
-    _move_modulefile(
+    _move_modulefile_link(
         name,
         version,
         layout.modulefiles_root,
@@ -26,7 +24,7 @@ def deprecate_modulefile(name: str, version: str, layout: Layout):
 
 
 def restore_modulefile(name: str, version: str, layout: Layout):
-    _move_modulefile(
+    _move_modulefile_link(
         name,
         version,
         layout.deprecated_modulefiles_root,
@@ -34,14 +32,14 @@ def restore_modulefile(name: str, version: str, layout: Layout):
     )
 
 
-def _move_modulefile(
+def _move_modulefile_link(
     name: str, version: str, src_folder: Path, dest_folder: Path
 ) -> None:
     src_path = src_folder / name / version
-
     dest_path = dest_folder / name / version
+
     dest_path.parent.mkdir(parents=True, exist_ok=True)
-    shutil.move(src_path, dest_path)
+    src_path.rename(dest_path)
 
 
 def get_deployed_modulefile_versions(

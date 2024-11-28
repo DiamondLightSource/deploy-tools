@@ -1,8 +1,6 @@
 from collections.abc import Sequence
 from typing import Literal
 
-from pydantic import Field
-
 from .parent import ParentModel
 
 
@@ -15,7 +13,7 @@ class EntrypointOptions(ParentModel):
 class Entrypoint(ParentModel):
     executable_name: str
     command: str | None = None
-    options: EntrypointOptions = Field(default_factory=EntrypointOptions)
+    options: EntrypointOptions = EntrypointOptions()
 
 
 class ContainerImage(ParentModel):
@@ -38,4 +36,4 @@ class Apptainer(ParentModel):
     app_type: Literal["apptainer"]
     container: ContainerImage
     entrypoints: Sequence[Entrypoint]
-    global_options: EntrypointOptions = Field(default_factory=EntrypointOptions)
+    global_options: EntrypointOptions = EntrypointOptions()

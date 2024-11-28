@@ -1,6 +1,5 @@
 from collections import defaultdict
 from pathlib import Path
-from typing import TypeVar
 
 import yaml
 
@@ -11,8 +10,6 @@ from .deployment import (
 )
 from .module import Module, Release
 
-T = TypeVar("T", Deployment, Release, Module, DeploymentSettings)
-
 YAML_FILE_SUFFIX = ".yaml"
 MODULE_CONFIG = "config" + YAML_FILE_SUFFIX
 DEPLOYMENT_SETTINGS = "settings" + YAML_FILE_SUFFIX
@@ -22,7 +19,9 @@ class LoadError(Exception):
     pass
 
 
-def load_from_yaml(model: type[T], file_path: Path) -> T:
+def load_from_yaml[T: (Deployment, Release, Module, DeploymentSettings)](
+    model: type[T], file_path: Path
+) -> T:
     """Load a single Pydantic model from a yaml file."""
     with open(file_path) as f:
         return model(**yaml.safe_load(f))

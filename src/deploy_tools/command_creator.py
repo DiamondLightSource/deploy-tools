@@ -7,9 +7,9 @@ from .templater import Templater, TemplateType
 class CommandCreator:
     """Class for creating 'command' entrypoints, which run an executable on a path."""
 
-    def __init__(self, templater: Templater, layout: Layout) -> None:
+    def __init__(self, templater: Templater, build_layout: Layout) -> None:
         self._templater = templater
-        self._layout = layout
+        self._layout = build_layout
 
     def create_application_files(
         self,
