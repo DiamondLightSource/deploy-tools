@@ -16,10 +16,6 @@ from deploy_tools.module_creator import ModuleCreator
 from deploy_tools.templater import Templater
 
 
-class DeployException(Exception):
-    pass
-
-
 def deploy_changes(changes: DeploymentChanges, layout: Layout) -> None:
     release_changes = changes.release_changes
 
