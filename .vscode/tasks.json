@@ -21,7 +21,7 @@
         {
             "label": "Sync modules",
             "type": "shell",
-            "command": "deploy-tools sync ${input:deploy-folder} ${input:config-folder}",
+            "command": "deploy-tools sync ${input:from-scratch} ${input:deploy-folder} ${input:config-folder}",
             "problemMatcher": []
         },
         {
@@ -33,7 +33,7 @@
         {
             "label": "Validate deployment",
             "type": "shell",
-            "command": "deploy-tools validate ${input:deploy-folder} ${input:config-folder}",
+            "command": "deploy-tools validate ${input:from-scratch} ${input:deploy-folder} ${input:config-folder}",
             "problemMatcher": []
         },
         {
@@ -61,6 +61,16 @@
             "description": "Configuration folder",
             "default": "${workspaceFolder}/src/deploy_tools/demo_configuration/",
             "type": "promptString"
+        },
+        {
+            "id": "from-scratch",
+            "description": "Allow a complete redeployment to an empty directory",
+            "options": [
+                "--from-scratch",
+                "--no-from-scratch"
+            ],
+            "default": "--no-from-scratch",
+            "type": "pickString"
         },
     ]
 }

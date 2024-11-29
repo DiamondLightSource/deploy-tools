@@ -38,7 +38,7 @@
             "request": "launch",
             "justMyCode": false,
             "program": "/venv/bin/deploy-tools",
-            "args": "validate ${input:deploy-folder} ${input:config-folder}",
+            "args": "validate ${input:from-scratch} ${input:deploy-folder} ${input:config-folder}",
             "console": "integratedTerminal",
             "env": {
                 // Enable break on exception when debugging tests (see: tests/conftest.py)
@@ -64,7 +64,7 @@
             "request": "launch",
             "justMyCode": false,
             "program": "/venv/bin/deploy-tools",
-            "args": "sync ${input:deploy-folder} ${input:config-folder}",
+            "args": "sync ${input:from-scratch} ${input:deploy-folder} ${input:config-folder}",
             "console": "integratedTerminal",
             "env": {
                 // Enable break on exception when debugging tests (see: tests/conftest.py)
@@ -90,6 +90,16 @@
             "description": "Configuration folder",
             "default": "${workspaceFolder}/src/deploy_tools/demo_configuration/",
             "type": "promptString"
+        },
+        {
+            "id": "from-scratch",
+            "description": "Allow a complete redeployment to an empty directory",
+            "options": [
+                "--from-scratch",
+                "--no-from-scratch"
+            ],
+            "default": "--no-from-scratch",
+            "type": "pickString"
         },
     ]
 }
