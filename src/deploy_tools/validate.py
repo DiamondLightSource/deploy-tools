@@ -27,7 +27,9 @@ class ValidationError(Exception):
     pass
 
 
-def validate_configuration(deployment_root: Path, config_folder: Path) -> None:
+def validate_configuration(
+    deployment_root: Path, config_folder: Path, from_scratch: bool = False
+) -> None:
     """Validate deployment configuration and print a list of modules for deployment.
 
     The validate_* functions consider only the current and previous deployment
@@ -35,10 +37,12 @@ def validate_configuration(deployment_root: Path, config_folder: Path) -> None:
     current deployment area to ensure that the specified actions can be completed."""
     with TemporaryDirectory() as build_dir:
         deployment = load_deployment(config_folder)
-        layout = Layout(deployment_root, Path(build_dir))
-        snapshot = load_snapshot(layout)
+        layout = Layout(deployment_root, build_root=Path(build_dir))
+        snapshot = load_snapshot(layout, from_scratch)
 
-        deployment_changes = validate_deployment_changes(deployment, snapshot)
+        deployment_changes = validate_deployment_changes(
+            deployment, snapshot, from_scratch
+        )
 
         check_deploy_actions(deployment_changes, layout)
 
@@ -89,9 +93,9 @@ def print_version_updates(
 
 
 def validate_deployment_changes(
-    deployment: Deployment, snapshot: Deployment
+    deployment: Deployment, snapshot: Deployment, from_scratch: bool
 ) -> DeploymentChanges:
-    release_changes = validate_release_changes(deployment, snapshot)
+    release_changes = validate_release_changes(deployment, snapshot, from_scratch)
     default_versions = validate_default_versions(deployment)
     return DeploymentChanges(
         release_changes=release_changes, default_versions=default_versions
@@ -99,18 +103,20 @@ def validate_deployment_changes(
 
 
 def validate_release_changes(
-    deployment: Deployment, snapshot: Deployment
+    deployment: Deployment, snapshot: Deployment, from_scratch: bool
 ) -> ReleaseChanges:
     """Validate configuration to get set of actions that need to be carried out."""
     old_releases = snapshot.releases
     new_releases = deployment.releases
 
     validate_module_dependencies(deployment)
-    return get_release_changes(old_releases, new_releases)
+    return get_release_changes(old_releases, new_releases, from_scratch)
 
 
 def get_release_changes(
-    old_releases: ReleasesByNameAndVersion, new_releases: ReleasesByNameAndVersion
+    old_releases: ReleasesByNameAndVersion,
+    new_releases: ReleasesByNameAndVersion,
+    from_scratch: bool,
 ) -> ReleaseChanges:
     release_changes = ReleaseChanges()
     for name in new_releases:
@@ -148,7 +154,7 @@ def get_release_changes(
             if version not in new_releases[name]:
                 release_changes.to_remove.append(old_release)
 
-    validate_added_modules(release_changes.to_add)
+    validate_added_modules(release_changes.to_add, from_scratch)
     validate_updated_modules(release_changes.to_update)
     validate_deprecated_modules(release_changes.to_deprecate)
     validate_removed_modules(release_changes.to_remove)
@@ -156,7 +162,7 @@ def get_release_changes(
     return release_changes
 
 
-def validate_added_modules(releases: list[Release]) -> None:
+def validate_added_modules(releases: list[Release], from_scratch: bool) -> None:
     for release in releases:
         module = release.module
         if release.deprecated:
@@ -166,10 +172,11 @@ def validate_added_modules(releases: list[Release]) -> None:
                     f"deprecated as it is in development mode."
                 )
 
-            raise ValidationError(
-                f"Module {module.name}/{module.version} cannot have deprecated "
-                f"status on initial creation."
-            )
+            if not from_scratch:
+                raise ValidationError(
+                    f"Module {module.name}/{module.version} cannot have deprecated "
+                    f"status on initial creation."
+                )
 
 
 def validate_updated_modules(releases: list[Release]) -> None:

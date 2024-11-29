@@ -34,9 +34,10 @@ def sync(
             dir_okay=True,
         ),
     ],
+    from_scratch: Annotated[bool, typer.Option()] = False,
 ) -> None:
     """Sync deployment folder with current configuration"""
-    synchronise(deployment_root, config_folder)
+    synchronise(deployment_root, config_folder, from_scratch)
 
 
 @app.command(no_args_is_help=True)
@@ -58,11 +59,12 @@ def validate(
             dir_okay=True,
         ),
     ],
+    from_scratch: Annotated[bool, typer.Option()] = False,
 ) -> None:
     """Validate deployment configuration and print a list of modules for deployment.
 
     This is the same validation that the deploy-tools sync command uses."""
-    validate_configuration(deployment_root, config_folder)
+    validate_configuration(deployment_root, config_folder, from_scratch)
 
 
 @app.command(no_args_is_help=True)

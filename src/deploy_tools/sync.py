@@ -11,13 +11,15 @@ from .validate import (
 )
 
 
-def synchronise(deployment_root: Path, config_folder: Path) -> None:
+def synchronise(
+    deployment_root: Path, config_folder: Path, from_scratch: bool = False
+) -> None:
     """Synchronise the deployment folder with the current configuration"""
     deployment = load_deployment(config_folder)
     layout = Layout(deployment_root)
-    snapshot = load_snapshot(layout)
+    snapshot = load_snapshot(layout, from_scratch)
 
-    deployment_changes = validate_deployment_changes(deployment, snapshot)
+    deployment_changes = validate_deployment_changes(deployment, snapshot, from_scratch)
 
     check_deploy_actions(deployment_changes, layout)
 
