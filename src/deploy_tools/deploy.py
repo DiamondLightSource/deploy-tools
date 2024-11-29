@@ -56,9 +56,12 @@ def deploy_new_releases(to_add: list[Release], layout: Layout) -> None:
     for release in to_add:
         name = release.module.name
         version = release.module.version
+        deprecated = release.deprecated
 
         built_modulefile = layout.get_built_modulefile(name, version)
-        modulefile_link = layout.get_modulefile(name, version)
+        modulefile_link = layout.get_modulefile(
+            name, version, from_deprecated=deprecated
+        )
 
         modulefile_link.parent.mkdir(parents=True, exist_ok=True)
         os.symlink(built_modulefile, modulefile_link)
