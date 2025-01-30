@@ -112,17 +112,6 @@ def restore_releases(to_restore: list[Release], layout: Layout) -> None:
         restore_modulefile(release.module.name, release.module.version, layout)
 
 
-def update_releases(to_update: list[Release], layout: Layout) -> None:
-    """Update development modules from the provided list."""
-    for release in to_update:
-        name = release.module.name
-        version = release.module.version
-
-        remove_deployed_module(name, version, layout)
-
-    deploy_new_releases(to_update, layout)
-
-
 def apply_default_versions(
     default_versions: DefaultVersionsByName, layout: Layout
 ) -> None:
