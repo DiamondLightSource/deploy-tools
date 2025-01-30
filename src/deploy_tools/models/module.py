@@ -12,6 +12,8 @@ Application = Annotated[
     Apptainer | Command | Shell, Field(..., discriminator="app_type")
 ]
 
+DEVELOPMENT_VERSION = "dev"
+
 
 class ModuleDependency(ParentModel):
     name: str
@@ -36,6 +38,9 @@ class Module(ParentModel):
     dependencies: Sequence[ModuleDependency] = []
     env_vars: Sequence[EnvVar] = []
     applications: list[Application]
+
+    def is_dev_mode(self) -> bool:
+        return self.version == DEVELOPMENT_VERSION
 
 
 class Release(ParentModel):

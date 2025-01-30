@@ -13,12 +13,10 @@ from .models.deployment import (
     ReleasesByNameAndVersion,
 )
 from .models.load import load_deployment
-from .models.module import Release
+from .models.module import DEVELOPMENT_VERSION, Release
 from .module import (
-    DEVELOPMENT_VERSION,
     ModuleVersionsByName,
     is_modified,
-    is_module_dev_mode,
 )
 from .snapshot import load_snapshot
 
@@ -132,7 +130,7 @@ def get_release_changes(
             old_release = old_releases[name][version]
 
             if is_modified(old_release.module, new_release.module):
-                if is_module_dev_mode(new_release.module):
+                if new_release.module.is_dev_mode():
                     release_changes.to_update.append(new_release)
                     continue
 
@@ -166,7 +164,7 @@ def validate_added_modules(releases: list[Release], from_scratch: bool) -> None:
     for release in releases:
         module = release.module
         if release.deprecated:
-            if is_module_dev_mode(module):
+            if module.is_dev_mode():
                 raise ValidationError(
                     f"Module {module.name}/{module.version} cannot be specified as"
                     f"deprecated as it is in development mode."
@@ -192,7 +190,7 @@ def validate_updated_modules(releases: list[Release]) -> None:
 def validate_deprecated_modules(releases: list[Release]) -> None:
     for release in releases:
         module = release.module
-        if is_module_dev_mode(module):
+        if module.is_dev_mode():
             raise ValidationError(
                 f"Module {module.name}/{module.version} cannot be specified as "
                 f"deprecated as it is in development mode."
@@ -202,7 +200,7 @@ def validate_deprecated_modules(releases: list[Release]) -> None:
 def validate_removed_modules(releases: list[Release]) -> None:
     for release in releases:
         module = release.module
-        if not is_module_dev_mode(module) and not release.deprecated:
+        if not module.is_dev_mode() and not release.deprecated:
             raise ValidationError(
                 f"Module {module.name}/{module.version} removed without prior"
                 f"deprecation."

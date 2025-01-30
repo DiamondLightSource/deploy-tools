@@ -1,7 +1,7 @@
 from .layout import Layout
 from .models.changes import DeploymentChanges
 from .models.module import Release
-from .module import is_module_dev_mode, is_modulefile_deployed
+from .module import is_modulefile_deployed
 
 
 class CheckDeployError(Exception):
@@ -53,7 +53,7 @@ def _check_remove_releases(releases: list[Release], layout: Layout) -> None:
         name = release.module.name
         version = release.module.version
 
-        if is_module_dev_mode(release.module):
+        if release.module.is_dev_mode():
             if not is_modulefile_deployed(name, version, layout):
                 raise CheckDeployError(
                     f"Cannot remove {name}/{version}. Not found in deployment area."

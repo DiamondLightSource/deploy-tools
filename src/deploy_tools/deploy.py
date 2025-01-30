@@ -9,7 +9,6 @@ from deploy_tools.models.module import Release
 from deploy_tools.module import (
     DEFAULT_VERSION_FILENAME,
     deprecate_modulefile,
-    is_module_dev_mode,
     restore_modulefile,
 )
 from deploy_tools.module_creator import ModuleCreator
@@ -41,7 +40,7 @@ def _remove_releases(to_remove: list[Release], layout: Layout) -> None:
         name = release.module.name
         version = release.module.version
 
-        from_deprecated = not is_module_dev_mode(release.module)
+        from_deprecated = not release.module.is_dev_mode()
         _remove_deployed_module(name, version, layout, from_deprecated)
 
 

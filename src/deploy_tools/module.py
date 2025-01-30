@@ -9,7 +9,6 @@ type ModuleVersionsByName = dict[str, list[str]]
 
 DEFAULT_VERSION_FILENAME = ".version"
 VERSION_GLOB = f"*/[!{DEFAULT_VERSION_FILENAME}]*"
-DEVELOPMENT_VERSION = "dev"
 
 DEFAULT_VERSION_REGEX = "^set ModulesVersion (.*)$"
 
@@ -60,10 +59,6 @@ def is_modulefile_deployed(
 ) -> bool:
     modulefile = layout.get_modulefile(name, version, from_deprecated=in_deprecated)
     return modulefile.exists()
-
-
-def is_module_dev_mode(module: Module) -> bool:
-    return module.version == DEVELOPMENT_VERSION
 
 
 def is_modified(module_a: Module, module_b: Module) -> bool:
