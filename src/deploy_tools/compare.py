@@ -10,7 +10,7 @@ from .models.deployment import (
 )
 from .models.load import load_from_yaml
 from .models.module import Module, Release
-from .module import get_default_version, is_modulefile_deployed
+from .module import get_default_modulefile_version, is_modulefile_deployed
 from .snapshot import load_snapshot
 from .validate import validate_default_versions
 
@@ -39,7 +39,7 @@ def _create_deployment_config_from_modules(layout: Layout) -> Deployment:
     Note that the default versions will be different to those in initial configuration.
     """
     releases = _collect_releases(layout)
-    default_versions = _collect_default_versions(layout, list(releases))
+    default_versions = _collect_default_modulefile_versions(layout, list(releases))
     settings = DeploymentSettings(default_versions=default_versions)
 
     return Deployment(settings=settings, releases=releases)
@@ -89,13 +89,13 @@ def _get_deprecated_status(name: str, version: str, layout: Layout) -> bool:
     )
 
 
-def _collect_default_versions(
+def _collect_default_modulefile_versions(
     layout: Layout, names: list[str]
 ) -> DefaultVersionsByName:
     default_versions: dict[str, str] = {}
 
     for name in names:
-        default_version = get_default_version(name, layout)
+        default_version = get_default_modulefile_version(name, layout)
         if default_version is not None:
             default_versions[name] = default_version
 

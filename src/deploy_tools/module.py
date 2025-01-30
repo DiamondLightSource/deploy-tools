@@ -71,7 +71,7 @@ def is_modified(module_a: Module, module_b: Module) -> bool:
     return not module_b == module_a
 
 
-def get_default_version(name: str, layout: Layout) -> str | None:
+def get_default_modulefile_version(name: str, layout: Layout) -> str | None:
     version_regex = re.compile(DEFAULT_VERSION_REGEX)
     default_version_file = layout.modulefiles_root / name / DEFAULT_VERSION_FILENAME
 
