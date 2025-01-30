@@ -11,14 +11,14 @@ class CheckDeployError(Exception):
 def check_deploy_actions(changes: DeploymentChanges, layout: Layout):
     release_changes = changes.release_changes
 
-    check_deploy_new_releases(release_changes.to_add, layout)
-    check_update_releases(release_changes.to_update, layout)
-    check_deprecate_releases(release_changes.to_deprecate, layout)
-    check_restore_releases(release_changes.to_restore, layout)
-    check_remove_releases(release_changes.to_remove, layout)
+    _check_deploy_new_releases(release_changes.to_add, layout)
+    _check_update_releases(release_changes.to_update, layout)
+    _check_deprecate_releases(release_changes.to_deprecate, layout)
+    _check_restore_releases(release_changes.to_restore, layout)
+    _check_remove_releases(release_changes.to_remove, layout)
 
 
-def check_deploy_new_releases(releases: list[Release], layout: Layout) -> None:
+def _check_deploy_new_releases(releases: list[Release], layout: Layout) -> None:
     """Verify that deploy_new_releases() can be run on the current deployment area."""
     for release in releases:
         name = release.module.name
@@ -30,7 +30,7 @@ def check_deploy_new_releases(releases: list[Release], layout: Layout) -> None:
             )
 
 
-def check_deprecate_releases(releases: list[Release], layout: Layout) -> None:
+def _check_deprecate_releases(releases: list[Release], layout: Layout) -> None:
     """Verify that deprecate_releases() can be run on the current deployment area."""
     for release in releases:
         name = release.module.name
@@ -47,7 +47,7 @@ def check_deprecate_releases(releases: list[Release], layout: Layout) -> None:
             )
 
 
-def check_remove_releases(releases: list[Release], layout: Layout) -> None:
+def _check_remove_releases(releases: list[Release], layout: Layout) -> None:
     """Verify that remove_releases() can be run on the current deployment area."""
     for release in releases:
         name = release.module.name
@@ -66,7 +66,7 @@ def check_remove_releases(releases: list[Release], layout: Layout) -> None:
             )
 
 
-def check_restore_releases(releases: list[Release], layout: Layout) -> None:
+def _check_restore_releases(releases: list[Release], layout: Layout) -> None:
     """Verify that restore_releases() can be run on the current deployment area."""
     for release in releases:
         name = release.module.name
@@ -83,7 +83,7 @@ def check_restore_releases(releases: list[Release], layout: Layout) -> None:
             )
 
 
-def check_update_releases(releases: list[Release], layout: Layout) -> None:
+def _check_update_releases(releases: list[Release], layout: Layout) -> None:
     """Verify that update_releases() can be run on the current deployment area."""
     for release in releases:
         name = release.module.name
