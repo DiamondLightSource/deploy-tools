@@ -5,10 +5,8 @@ from .command_creator import CommandCreator
 from .layout import Layout
 from .models.apptainer import Apptainer
 from .models.command import Command
-from .models.deployment import DefaultVersionsByName
 from .models.module import Module
 from .models.shell import Shell
-from .modulefile import DEFAULT_VERSION_FILENAME, get_deployed_modulefile_versions
 from .shell_creator import ShellCreator
 from .templater import Templater, TemplateType
 
@@ -48,28 +46,6 @@ class ModuleCreator:
         built_modulefile.parent.mkdir(exist_ok=True, parents=True)
 
         self._templater.create(built_modulefile, TemplateType.MODULEFILE, params)
-
-    def update_default_versions(
-        self, default_versions: DefaultVersionsByName, layout: Layout
-    ) -> None:
-        deployed_module_versions = get_deployed_modulefile_versions(layout)
-
-        for name in deployed_module_versions:
-            version_file = (
-                self._layout.modulefiles_root / name / DEFAULT_VERSION_FILENAME
-            )
-
-            if name in default_versions:
-                params = {"version": default_versions[name]}
-
-                self._templater.create(
-                    version_file,
-                    TemplateType.MODULEFILE_VERSION,
-                    params,
-                    overwrite=True,
-                )
-            else:
-                version_file.unlink(missing_ok=True)
 
     def create_module_snapshot(self, module: Module):
         snapshot_path = self._build_layout.get_module_snapshot_path(

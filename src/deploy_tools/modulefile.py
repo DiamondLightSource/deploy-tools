@@ -3,6 +3,8 @@ from collections import defaultdict
 from pathlib import Path
 
 from .layout import Layout
+from .models.deployment import DefaultVersionsByName
+from .templater import Templater, TemplateType
 
 type ModuleVersionsByName = dict[str, list[str]]
 
@@ -69,3 +71,26 @@ def get_default_modulefile_version(name: str, layout: Layout) -> str | None:
             r = version_regex.search(line)
             if r is not None:
                 return r.group(1)
+
+
+def apply_default_versions(
+    default_versions: DefaultVersionsByName, layout: Layout
+) -> None:
+    """Update .version files for current default version settings."""
+    templater = Templater()
+    deployed_module_versions = get_deployed_modulefile_versions(layout)
+
+    for name in deployed_module_versions:
+        version_file = layout.modulefiles_root / name / DEFAULT_VERSION_FILENAME
+
+        if name in default_versions:
+            params = {"version": default_versions[name]}
+
+            templater.create(
+                version_file,
+                TemplateType.MODULEFILE_VERSION,
+                params,
+                overwrite=True,
+            )
+        else:
+            version_file.unlink(missing_ok=True)

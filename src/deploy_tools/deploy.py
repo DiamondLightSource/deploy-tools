@@ -4,15 +4,13 @@ from pathlib import Path
 
 from .layout import Layout
 from .models.changes import DeploymentChanges
-from .models.deployment import DefaultVersionsByName
 from .models.module import Release
-from .module_creator import ModuleCreator
 from .modulefile import (
     DEFAULT_VERSION_FILENAME,
+    apply_default_versions,
     deprecate_modulefile,
     restore_modulefile,
 )
-from .templater import Templater
 
 
 def deploy_changes(changes: DeploymentChanges, layout: Layout) -> None:
@@ -25,7 +23,7 @@ def deploy_changes(changes: DeploymentChanges, layout: Layout) -> None:
     _deprecate_releases(release_changes.to_deprecate, layout)
     _restore_releases(release_changes.to_restore, layout)
 
-    _apply_default_versions(changes.default_versions, layout)
+    apply_default_versions(changes.default_versions, layout)
     _remove_name_folders(
         release_changes.to_deprecate,
         release_changes.to_restore,
@@ -109,15 +107,6 @@ def _restore_releases(to_restore: list[Release], layout: Layout) -> None:
     """Restore a previously deprecated module."""
     for release in to_restore:
         restore_modulefile(release.module.name, release.module.version, layout)
-
-
-def _apply_default_versions(
-    default_versions: DefaultVersionsByName, layout: Layout
-) -> None:
-    """Update .version files for current default version settings."""
-    templater = Templater()
-    module_creator = ModuleCreator(templater, layout)
-    module_creator.update_default_versions(default_versions, layout)
 
 
 def _remove_name_folders(
