@@ -1,13 +1,8 @@
 import yaml
 
-from .apptainer_creator import ApptainerCreator
-from .command_creator import CommandCreator
+from .app_creator import AppCreator
 from .layout import Layout
-from .models.apptainer import Apptainer
-from .models.command import Command
 from .models.module import Module
-from .models.shell import Shell
-from .shell_creator import ShellCreator
 from .templater import Templater, TemplateType
 
 
@@ -19,9 +14,7 @@ class ModuleCreator:
         self._layout = layout
         self._build_layout = layout.build_layout
 
-        self.apptainer_creator = ApptainerCreator(templater, self._build_layout)
-        self.command_creator = CommandCreator(templater, self._build_layout)
-        self.shell_creator = ShellCreator(templater, self._build_layout)
+        self.app_creator = AppCreator(templater, self._build_layout)
 
     def create_modulefile(self, module: Module) -> None:
         entrypoints_folder = self._layout.get_entrypoints_folder(
@@ -60,12 +53,6 @@ class ModuleCreator:
         self.create_modulefile(module)
 
         for app in module.applications:
-            match app:
-                case Apptainer():
-                    self.apptainer_creator.create_application_files(app, module)
-                case Command():
-                    self.command_creator.create_application_files(app, module)
-                case Shell():
-                    self.shell_creator.create_application_files(app, module)
+            self.app_creator.create_application_files(app, module)
 
         self.create_module_snapshot(module)
