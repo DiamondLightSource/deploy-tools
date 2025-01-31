@@ -16,7 +16,6 @@ from .models.load import load_deployment
 from .models.module import DEVELOPMENT_VERSION, Release
 from .module import (
     ModuleVersionsByName,
-    is_modified,
 )
 from .snapshot import load_snapshot
 
@@ -129,7 +128,7 @@ def get_release_changes(
 
             old_release = old_releases[name][version]
 
-            if is_modified(old_release.module, new_release.module):
+            if old_release.module != new_release.module:
                 if new_release.module.is_dev_mode():
                     release_changes.to_update.append(new_release)
                     continue

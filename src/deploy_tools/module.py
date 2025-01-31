@@ -3,7 +3,6 @@ from collections import defaultdict
 from pathlib import Path
 
 from .layout import Layout
-from .models.module import Module
 
 type ModuleVersionsByName = dict[str, list[str]]
 
@@ -59,11 +58,6 @@ def is_modulefile_deployed(
 ) -> bool:
     modulefile = layout.get_modulefile(name, version, from_deprecated=in_deprecated)
     return modulefile.exists()
-
-
-def is_modified(module_a: Module, module_b: Module) -> bool:
-    """Return whether the two module configuration objects have modified settings."""
-    return not module_b == module_a
 
 
 def get_default_modulefile_version(name: str, layout: Layout) -> str | None:
