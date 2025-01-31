@@ -14,7 +14,7 @@ VERSION_GLOB = f"*/[!{DEFAULT_VERSION_FILENAME}]*"
 DEFAULT_VERSION_REGEX = "^set ModulesVersion (.*)$"
 
 
-def deprecate_modulefile(name: str, version: str, layout: Layout):
+def deprecate_modulefile(name: str, version: str, layout: Layout) -> None:
     _move_modulefile_link(
         name,
         version,
@@ -23,7 +23,7 @@ def deprecate_modulefile(name: str, version: str, layout: Layout):
     )
 
 
-def restore_modulefile(name: str, version: str, layout: Layout):
+def restore_modulefile(name: str, version: str, layout: Layout) -> None:
     _move_modulefile_link(
         name,
         version,

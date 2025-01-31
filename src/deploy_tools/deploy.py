@@ -60,7 +60,9 @@ def _deploy_new_releases(to_add: list[Release], layout: Layout) -> None:
         os.symlink(built_modulefile, modulefile_link)
 
 
-def _deploy_releases(to_deploy: list[Release], layout: Layout, exist_ok: bool = False):
+def _deploy_releases(
+    to_deploy: list[Release], layout: Layout, exist_ok: bool = False
+) -> None:
     build_layout = layout.build_layout
 
     for release in to_deploy:

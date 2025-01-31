@@ -8,7 +8,7 @@ class CheckDeployError(Exception):
     pass
 
 
-def check_deploy_actions(changes: DeploymentChanges, layout: Layout):
+def check_deploy_actions(changes: DeploymentChanges, layout: Layout) -> None:
     release_changes = changes.release_changes
 
     _check_deploy_new_releases(release_changes.to_add, layout)

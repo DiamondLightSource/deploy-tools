@@ -99,7 +99,7 @@ def schema(
     generate_schema(output_path)
 
 
-def version_callback(value: bool):
+def version_callback(value: bool) -> None:
     if value:
         typer.echo(__version__)
         raise typer.Exit()
@@ -114,11 +114,11 @@ def common(
         help="Show program's version number and exit",
         callback=version_callback,
     ),
-):
+) -> None:
     pass
 
 
-def main():
+def main() -> None:
     app()
 
 

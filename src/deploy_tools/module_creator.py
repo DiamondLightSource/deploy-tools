@@ -47,7 +47,7 @@ class ModuleCreator:
 
         self._templater.create(built_modulefile, TemplateType.MODULEFILE, params)
 
-    def create_module_snapshot(self, module: Module):
+    def create_module_snapshot(self, module: Module) -> None:
         snapshot_path = self._build_layout.get_module_snapshot_path(
             module.name, module.version
         )
@@ -56,7 +56,7 @@ class ModuleCreator:
         with open(snapshot_path, "w") as f:
             yaml.safe_dump(module.model_dump(), f)
 
-    def create_module(self, module: Module):
+    def create_module(self, module: Module) -> None:
         self.create_modulefile(module)
 
         for app in module.applications:
