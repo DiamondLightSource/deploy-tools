@@ -85,7 +85,7 @@ def _get_deprecated_status(name: str, version: str, layout: Layout) -> bool:
         return True
 
     raise ComparisonError(
-        f"Modulefile for {name}/{version} not found. Verification failed."
+        f"Modulefile for {name}/{version} not found. Comparison with snapshot failed."
     )
 
 
