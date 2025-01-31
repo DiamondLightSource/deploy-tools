@@ -6,12 +6,12 @@ from deploy_tools.layout import Layout
 from deploy_tools.models.changes import DeploymentChanges
 from deploy_tools.models.deployment import DefaultVersionsByName
 from deploy_tools.models.module import Release
-from deploy_tools.module import (
+from deploy_tools.module_creator import ModuleCreator
+from deploy_tools.modulefile import (
     DEFAULT_VERSION_FILENAME,
     deprecate_modulefile,
     restore_modulefile,
 )
-from deploy_tools.module_creator import ModuleCreator
 from deploy_tools.templater import Templater
 
 

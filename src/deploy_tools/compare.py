@@ -10,7 +10,7 @@ from .models.deployment import (
 )
 from .models.load import load_from_yaml
 from .models.module import Module, Release
-from .module import get_default_modulefile_version, is_modulefile_deployed
+from .modulefile import get_default_modulefile_version, is_modulefile_deployed
 from .snapshot import load_snapshot
 from .validate import validate_default_versions
 

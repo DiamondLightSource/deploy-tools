@@ -1,7 +1,7 @@
 from .layout import Layout
 from .models.changes import DeploymentChanges
 from .models.module import Release
-from .module import is_modulefile_deployed
+from .modulefile import is_modulefile_deployed
 
 
 class CheckDeployError(Exception):

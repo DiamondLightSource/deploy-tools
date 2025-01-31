@@ -14,7 +14,7 @@ from .models.deployment import (
 )
 from .models.load import load_deployment
 from .models.module import DEVELOPMENT_VERSION, Release
-from .module import (
+from .modulefile import (
     ModuleVersionsByName,
 )
 from .snapshot import load_snapshot

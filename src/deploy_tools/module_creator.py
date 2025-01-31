@@ -8,7 +8,7 @@ from .models.command import Command
 from .models.deployment import DefaultVersionsByName
 from .models.module import Module
 from .models.shell import Shell
-from .module import DEFAULT_VERSION_FILENAME, get_deployed_modulefile_versions
+from .modulefile import DEFAULT_VERSION_FILENAME, get_deployed_modulefile_versions
 from .shell_creator import ShellCreator
 from .templater import Templater, TemplateType
 
