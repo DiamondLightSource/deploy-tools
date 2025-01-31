@@ -1,6 +1,6 @@
 from .layout import Layout
+from .models.module import Module
 from .models.shell import Shell
-from .module import Module
 from .templater import Templater, TemplateType
 
 
