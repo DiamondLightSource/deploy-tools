@@ -2,17 +2,17 @@ import os
 import shutil
 from pathlib import Path
 
-from deploy_tools.layout import Layout
-from deploy_tools.models.changes import DeploymentChanges
-from deploy_tools.models.deployment import DefaultVersionsByName
-from deploy_tools.models.module import Release
-from deploy_tools.module_creator import ModuleCreator
-from deploy_tools.modulefile import (
+from .layout import Layout
+from .models.changes import DeploymentChanges
+from .models.deployment import DefaultVersionsByName
+from .models.module import Release
+from .module_creator import ModuleCreator
+from .modulefile import (
     DEFAULT_VERSION_FILENAME,
     deprecate_modulefile,
     restore_modulefile,
 )
-from deploy_tools.templater import Templater
+from .templater import Templater
 
 
 def deploy_changes(changes: DeploymentChanges, layout: Layout) -> None:
