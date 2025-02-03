@@ -44,7 +44,6 @@ class Layout:
     MODULEFILES_ROOT_NAME = "modulefiles"
     DEPRECATED_ROOT_NAME = "deprecated"
     BUILD_ROOT_NAME = "build"
-    ENTRYPOINTS_FOLDER = "entrypoints"
 
     DEPLOYMENT_SNAPSHOT_FILENAME = "deployment.yaml"
 
@@ -60,7 +59,9 @@ class Layout:
         return self.modules_root / name / version
 
     def get_entrypoints_folder(self, name: str, version: str) -> Path:
-        return self.get_module_folder(name, version) / self.ENTRYPOINTS_FOLDER
+        return (
+            self.get_module_folder(name, version) / ModuleBuildLayout.ENTRYPOINTS_FOLDER
+        )
 
     def get_modulefiles_root(self, from_deprecated: bool = False) -> Path:
         return (
