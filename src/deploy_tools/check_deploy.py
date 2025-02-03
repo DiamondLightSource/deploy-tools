@@ -19,7 +19,7 @@ def check_deploy_actions(changes: DeploymentChanges, layout: Layout) -> None:
 
 
 def _check_deploy_new_releases(releases: list[Release], layout: Layout) -> None:
-    """Verify that deploy_new_releases() can be run on the current deployment area."""
+    """Check that deploy_new_releases() can be run on the current deployment area."""
     for release in releases:
         name = release.module.name
         version = release.module.version
@@ -31,7 +31,7 @@ def _check_deploy_new_releases(releases: list[Release], layout: Layout) -> None:
 
 
 def _check_deprecate_releases(releases: list[Release], layout: Layout) -> None:
-    """Verify that deprecate_releases() can be run on the current deployment area."""
+    """Check that deprecate_releases() can be run on the current deployment area."""
     for release in releases:
         name = release.module.name
         version = release.module.version
@@ -48,7 +48,7 @@ def _check_deprecate_releases(releases: list[Release], layout: Layout) -> None:
 
 
 def _check_remove_releases(releases: list[Release], layout: Layout) -> None:
-    """Verify that remove_releases() can be run on the current deployment area."""
+    """Check that remove_releases() can be run on the current deployment area."""
     for release in releases:
         name = release.module.name
         version = release.module.version
@@ -67,7 +67,7 @@ def _check_remove_releases(releases: list[Release], layout: Layout) -> None:
 
 
 def _check_restore_releases(releases: list[Release], layout: Layout) -> None:
-    """Verify that restore_releases() can be run on the current deployment area."""
+    """Check that restore_releases() can be run on the current deployment area."""
     for release in releases:
         name = release.module.name
         version = release.module.version
@@ -84,7 +84,7 @@ def _check_restore_releases(releases: list[Release], layout: Layout) -> None:
 
 
 def _check_update_releases(releases: list[Release], layout: Layout) -> None:
-    """Verify that update_releases() can be run on the current deployment area."""
+    """Check that update_releases() can be run on the current deployment area."""
     for release in releases:
         name = release.module.name
         version = release.module.version
