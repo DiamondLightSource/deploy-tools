@@ -3,7 +3,7 @@ import shutil
 from .layout import Layout
 from .models.changes import DeploymentChanges
 from .models.module import Release
-from .module_creator import ModuleCreator
+from .module_builder import ModuleBuilder
 from .templater import Templater
 
 
@@ -27,7 +27,7 @@ def _build_releases(releases: list[Release], layout: Layout) -> None:
         return
 
     templater = Templater()
-    module_creator = ModuleCreator(templater, layout)
+    module_builder = ModuleBuilder(templater, layout)
 
     for release in releases:
-        module_creator.create_module(release.module)
+        module_builder.create_module(release.module)

@@ -11,11 +11,11 @@ from .models.shell import Shell
 from .templater import Templater, TemplateType
 
 
-class AppCreatorError(Exception):
+class AppBuilderError(Exception):
     pass
 
 
-class AppCreator:
+class AppBuilder:
     """Class for creating application entrypoints and associated files."""
 
     def __init__(self, templater: Templater, build_layout: ModuleBuildLayout) -> None:
@@ -75,13 +75,13 @@ class AppCreator:
         sif_file.parent.mkdir(parents=True, exist_ok=True)
 
         if not sif_file.is_absolute():
-            raise AppCreatorError(
+            raise AppBuilderError(
                 f"Building Apptainer files: "
                 f"Sif file output path must be absolute:\n{sif_file}"
             )
 
         if sif_file.exists():
-            raise AppCreatorError(
+            raise AppBuilderError(
                 f"Building Apptainer files: "
                 f"Sif file output already exists:\n{sif_file}"
             )

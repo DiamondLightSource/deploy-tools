@@ -28,12 +28,12 @@ def compare_to_snapshot(deployment_root: Path) -> None:
     layout = Layout(deployment_root)
 
     deployment_snapshot = load_snapshot(layout)
-    actual_deployment = _create_deployment_config_from_modules(layout)
+    actual_deployment = _reconstruct_deployment_config_from_modules(layout)
 
     _compare_snapshot_to_actual(snapshot=deployment_snapshot, actual=actual_deployment)
 
 
-def _create_deployment_config_from_modules(layout: Layout) -> Deployment:
+def _reconstruct_deployment_config_from_modules(layout: Layout) -> Deployment:
     """Use the deployment area to reconstruct a Deployment configuration object.
 
     Note that the default versions will be different to those in initial configuration.

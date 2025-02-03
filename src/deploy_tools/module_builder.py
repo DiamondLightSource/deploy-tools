@@ -1,12 +1,12 @@
 import yaml
 
-from .app_creator import AppCreator
+from .app_builder import AppBuilder
 from .layout import Layout
 from .models.module import Module
 from .templater import Templater, TemplateType
 
 
-class ModuleCreator:
+class ModuleBuilder:
     """Class for creating modules, including modulefiles and all application files."""
 
     def __init__(self, templater: Templater, layout: Layout) -> None:
@@ -14,7 +14,7 @@ class ModuleCreator:
         self._layout = layout
         self._build_layout = layout.build_layout
 
-        self.app_creator = AppCreator(templater, self._build_layout)
+        self.app_creator = AppBuilder(templater, self._build_layout)
 
     def create_modulefile(self, module: Module) -> None:
         entrypoints_folder = self._layout.get_entrypoints_folder(
