@@ -3,7 +3,7 @@ import uuid
 from itertools import chain
 from pathlib import Path
 
-from .layout import Layout
+from .layout import ModuleBuildLayout
 from .models.apptainer import Apptainer
 from .models.command import Command
 from .models.module import Application, Module
@@ -18,7 +18,7 @@ class AppCreatorError(Exception):
 class AppCreator:
     """Class for creating application entrypoints and associated files."""
 
-    def __init__(self, templater: Templater, build_layout: Layout) -> None:
+    def __init__(self, templater: Templater, build_layout: ModuleBuildLayout) -> None:
         self._templater = templater
         self._build_layout = build_layout
 

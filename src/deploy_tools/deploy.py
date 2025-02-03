@@ -45,13 +45,14 @@ def _remove_releases(to_remove: list[Release], layout: Layout) -> None:
 def _deploy_new_releases(to_add: list[Release], layout: Layout) -> None:
     """Deploy modules from the provided list."""
     _deploy_releases(to_add, layout)
+    build_layout = layout.build_layout
 
     for release in to_add:
         name = release.module.name
         version = release.module.version
         deprecated = release.deprecated
 
-        built_modulefile = layout.get_built_modulefile(name, version)
+        built_modulefile = build_layout.get_built_modulefile(name, version)
         modulefile_link = layout.get_modulefile(
             name, version, from_deprecated=deprecated
         )
@@ -67,7 +68,7 @@ def _deploy_releases(
 
     for release in to_deploy:
         module = release.module
-        built_module_folder = build_layout.get_module_folder(
+        built_module_folder = build_layout.get_module_build_folder(
             module.name, module.version
         )
         final_module_folder = layout.get_module_folder(module.name, module.version)

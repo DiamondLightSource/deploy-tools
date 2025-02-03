@@ -8,7 +8,7 @@ from .templater import Templater
 
 
 def clean_build_area(layout: Layout) -> None:
-    build_path = layout.build_layout.deployment_root
+    build_path = layout.build_layout.build_root
 
     if build_path.exists():
         shutil.rmtree(build_path)
