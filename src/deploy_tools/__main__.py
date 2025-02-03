@@ -7,7 +7,7 @@ from . import __version__
 from .compare import compare_to_snapshot
 from .models.schema import generate_schema
 from .sync import synchronise
-from .validate import validate_configuration
+from .validate import validate_and_check_configuration
 
 __all__ = ["main"]
 
@@ -64,7 +64,7 @@ def validate(
     """Validate deployment configuration and print a list of modules for deployment.
 
     This is the same validation that the deploy-tools sync command uses."""
-    validate_configuration(deployment_root, config_folder, from_scratch)
+    validate_and_check_configuration(deployment_root, config_folder, from_scratch)
 
 
 @app.command(no_args_is_help=True)
