@@ -1,7 +1,7 @@
 from pathlib import Path
 
 from .build import build, clean_build_area
-from .check_deploy import check_deploy_actions
+from .check_deploy import check_deploy_can_run
 from .deploy import deploy_changes
 from .layout import Layout
 from .models.load import load_deployment
@@ -21,7 +21,7 @@ def synchronise(
 
     deployment_changes = validate_deployment_changes(deployment, snapshot, from_scratch)
 
-    check_deploy_actions(deployment_changes, layout)
+    check_deploy_can_run(deployment_changes, layout)
 
     clean_build_area(layout)
     build(deployment_changes, layout)

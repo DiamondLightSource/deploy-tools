@@ -4,7 +4,7 @@ from pathlib import Path
 from tempfile import TemporaryDirectory
 
 from .build import build
-from .check_deploy import check_deploy_actions
+from .check_deploy import check_deploy_can_run
 from .display import print_updates
 from .layout import Layout
 from .models.changes import DeploymentChanges, ReleaseChanges
@@ -28,11 +28,7 @@ class ValidationError(Exception):
 def validate_and_check_configuration(
     deployment_root: Path, config_folder: Path, from_scratch: bool = False
 ) -> None:
-    """Validate deployment configuration and print a list of modules for deployment.
-
-    The validate_* functions consider only the current and previous deployment
-    to identify what changes need to be made, while check_* functions will look at the
-    current deployment area to ensure that the specified actions can be completed."""
+    """Validate deployment config and check that deploy can run in deployment area."""
     with TemporaryDirectory() as build_dir:
         deployment = load_deployment(config_folder)
         layout = Layout(deployment_root, build_root=Path(build_dir))
@@ -42,7 +38,7 @@ def validate_and_check_configuration(
             deployment, snapshot, from_scratch
         )
 
-        check_deploy_actions(deployment_changes, layout)
+        check_deploy_can_run(deployment_changes, layout)
 
         build(deployment_changes, layout)
 
