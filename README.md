@@ -20,12 +20,6 @@ The demo_configuration folder can be passed as the config_folder to the deploy-t
 commands. The deployment_root just needs to be a writeable location for all files to get
 deployed under.
 
-VSCode configuration has been added to perform the primary functions using defaults that
-reference locations in the VSCode dev container.
-
-An additional 'Clean deployment' task has been provided to set up the deployment_root
-correctly. For the moment, this will output everything to a 'demo-output' folder.
-
 ```
 deployment_root = /path/to/deployment/root
 config_folder = /path/to/config/folder
@@ -43,6 +37,20 @@ python -m deploy_tools validate $deployment_root $config_folder
 python -m deploy_tools sync $deployment_root $config_folder
 
 ```
+
+## VSCode Tasks and Debug Configuration
+
+The following tasks are configured for VSCode, to allow for local testing of deploy-tools. These tasks (plus their default input) should create a separate `demo-output` folder at the top-level of the project folder. In addition, separate Debug configurations are also provided, corresponding to these same commands.
+
+The equivalent CLI commands are included for reference, but it is recommended that you use `--help` to explore the commands, arguments and options in greater detail.
+
+| **Name**                       | **CLI command**            | **Description**                                                                                                                                           |
+|--------------------------------|----------------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------|
+| Generate Schema                | `deploy-tools schema`      | Generate the yaml schema (in .json format) for the top-level configuration files                                                                          |
+| Clean deployment               | `rm -rf <Deployment Root>` | Wipe the deployment area local to your own checkout of deploy-tools, enabling you to test a deployment from scratch                                       |
+| Sync Modules                   | `deploy-tools sync`        | Synchronise the Deployment configuration with the Deployment Area                                                                                         |
+| Validate deployment            | `deploy-tools validate`    | Compare the new configuration with that previously used when deploying modules, and check that all expected Deploy operations are unlikely to fail        |
+| Compare deployment to snapshot | `deploy-tools compare`     | Compare the configuration stored from the last Sync run, with the state of any deployed Modules. This may be useful in the event of a failed Sync process |
 
 ## Glossary
 
