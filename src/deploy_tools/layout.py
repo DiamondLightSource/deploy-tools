@@ -1,6 +1,42 @@
 from pathlib import Path
 
 
+class ModuleBuildLayout:
+    """Represents the layout of a built module."""
+
+    ENTRYPOINTS_FOLDER = "entrypoints"
+    SIF_FILES_FOLDER = "sif_files"
+
+    MODULE_SNAPSHOT_FILENAME = "module.yaml"
+    BUILT_MODULEFILE_FILENAME = "modulefile"
+
+    def __init__(self, build_root: Path) -> None:
+        self._build_root = build_root
+
+    def get_module_build_folder(self, name: str, version: str) -> Path:
+        return self._build_root / name / version
+
+    def get_entrypoints_folder(self, name: str, version: str) -> Path:
+        return self.get_module_build_folder(name, version) / self.ENTRYPOINTS_FOLDER
+
+    def get_sif_files_folder(self, name: str, version: str) -> Path:
+        return self.get_module_build_folder(name, version) / self.SIF_FILES_FOLDER
+
+    def get_built_modulefile(self, name: str, version: str) -> Path:
+        return (
+            self.get_module_build_folder(name, version) / self.BUILT_MODULEFILE_FILENAME
+        )
+
+    def get_module_snapshot_path(self, name: str, version: str) -> Path:
+        return (
+            self.get_module_build_folder(name, version) / self.MODULE_SNAPSHOT_FILENAME
+        )
+
+    @property
+    def build_root(self):
+        return self._build_root
+
+
 class Layout:
     """Represents the layout of the deployment area."""
 
@@ -8,12 +44,8 @@ class Layout:
     MODULEFILES_ROOT_NAME = "modulefiles"
     DEPRECATED_ROOT_NAME = "deprecated"
     BUILD_ROOT_NAME = "build"
-    ENTRYPOINTS_FOLDER = "entrypoints"
-    SIF_FILES_FOLDER = "sif_files"
 
     DEPLOYMENT_SNAPSHOT_FILENAME = "deployment.yaml"
-    MODULE_SNAPSHOT_FILENAME = "module.yaml"
-    BUILT_MODULEFILE_FILENAME = "modulefile"
 
     def __init__(self, deployment_root: Path, build_root: Path | None = None) -> None:
         self._root = deployment_root
@@ -26,27 +58,22 @@ class Layout:
     def get_module_folder(self, name: str, version: str) -> Path:
         return self.modules_root / name / version
 
-    def get_entrypoints_folder(self, name: str, version: str):
-        return self.get_module_folder(name, version) / self.ENTRYPOINTS_FOLDER
+    def get_entrypoints_folder(self, name: str, version: str) -> Path:
+        return (
+            self.get_module_folder(name, version) / ModuleBuildLayout.ENTRYPOINTS_FOLDER
+        )
 
-    def get_sif_files_folder(self, name: str, version: str):
-        return self.get_module_folder(name, version) / self.SIF_FILES_FOLDER
-
-    def get_modulefiles_root(self, from_deprecated: bool = False):
+    def get_modulefiles_root(self, from_deprecated: bool = False) -> Path:
         return (
             self.deprecated_modulefiles_root
             if from_deprecated
             else self.modulefiles_root
         )
 
-    def get_built_modulefile(self, name: str, version: str):
-        return self.get_module_folder(name, version) / self.BUILT_MODULEFILE_FILENAME
-
-    def get_modulefile(self, name: str, version: str, from_deprecated: bool = False):
+    def get_modulefile(
+        self, name: str, version: str, from_deprecated: bool = False
+    ) -> Path:
         return self.get_modulefiles_root(from_deprecated) / name / version
-
-    def get_module_snapshot_path(self, name: str, version: str) -> Path:
-        return self.get_module_folder(name, version) / self.MODULE_SNAPSHOT_FILENAME
 
     @property
     def deployment_root(self) -> Path:
@@ -73,5 +100,5 @@ class Layout:
         return self._root / self.DEPLOYMENT_SNAPSHOT_FILENAME
 
     @property
-    def build_layout(self):
-        return Layout(self._build_root)
+    def build_layout(self) -> ModuleBuildLayout:
+        return ModuleBuildLayout(self._build_root)

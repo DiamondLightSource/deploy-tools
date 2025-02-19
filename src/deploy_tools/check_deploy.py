@@ -1,25 +1,25 @@
 from .layout import Layout
 from .models.changes import DeploymentChanges
 from .models.module import Release
-from .module import is_module_dev_mode, is_modulefile_deployed
+from .modulefile import is_modulefile_deployed
 
 
 class CheckDeployError(Exception):
     pass
 
 
-def check_deploy_actions(changes: DeploymentChanges, layout: Layout):
+def check_deploy_actions(changes: DeploymentChanges, layout: Layout) -> None:
     release_changes = changes.release_changes
 
-    check_deploy_new_releases(release_changes.to_add, layout)
-    check_update_releases(release_changes.to_update, layout)
-    check_deprecate_releases(release_changes.to_deprecate, layout)
-    check_restore_releases(release_changes.to_restore, layout)
-    check_remove_releases(release_changes.to_remove, layout)
+    _check_deploy_new_releases(release_changes.to_add, layout)
+    _check_update_releases(release_changes.to_update, layout)
+    _check_deprecate_releases(release_changes.to_deprecate, layout)
+    _check_restore_releases(release_changes.to_restore, layout)
+    _check_remove_releases(release_changes.to_remove, layout)
 
 
-def check_deploy_new_releases(releases: list[Release], layout: Layout) -> None:
-    """Verify that deploy_new_releases() can be run on the current deployment area."""
+def _check_deploy_new_releases(releases: list[Release], layout: Layout) -> None:
+    """Check that deploy_new_releases() can be run on the current deployment area."""
     for release in releases:
         name = release.module.name
         version = release.module.version
@@ -30,8 +30,8 @@ def check_deploy_new_releases(releases: list[Release], layout: Layout) -> None:
             )
 
 
-def check_deprecate_releases(releases: list[Release], layout: Layout) -> None:
-    """Verify that deprecate_releases() can be run on the current deployment area."""
+def _check_deprecate_releases(releases: list[Release], layout: Layout) -> None:
+    """Check that deprecate_releases() can be run on the current deployment area."""
     for release in releases:
         name = release.module.name
         version = release.module.version
@@ -47,13 +47,13 @@ def check_deprecate_releases(releases: list[Release], layout: Layout) -> None:
             )
 
 
-def check_remove_releases(releases: list[Release], layout: Layout) -> None:
-    """Verify that remove_releases() can be run on the current deployment area."""
+def _check_remove_releases(releases: list[Release], layout: Layout) -> None:
+    """Check that remove_releases() can be run on the current deployment area."""
     for release in releases:
         name = release.module.name
         version = release.module.version
 
-        if is_module_dev_mode(release.module):
+        if release.module.is_dev_mode():
             if not is_modulefile_deployed(name, version, layout):
                 raise CheckDeployError(
                     f"Cannot remove {name}/{version}. Not found in deployment area."
@@ -66,8 +66,8 @@ def check_remove_releases(releases: list[Release], layout: Layout) -> None:
             )
 
 
-def check_restore_releases(releases: list[Release], layout: Layout) -> None:
-    """Verify that restore_releases() can be run on the current deployment area."""
+def _check_restore_releases(releases: list[Release], layout: Layout) -> None:
+    """Check that restore_releases() can be run on the current deployment area."""
     for release in releases:
         name = release.module.name
         version = release.module.version
@@ -83,8 +83,8 @@ def check_restore_releases(releases: list[Release], layout: Layout) -> None:
             )
 
 
-def check_update_releases(releases: list[Release], layout: Layout) -> None:
-    """Verify that update_releases() can be run on the current deployment area."""
+def _check_update_releases(releases: list[Release], layout: Layout) -> None:
+    """Check that update_releases() can be run on the current deployment area."""
     for release in releases:
         name = release.module.name
         version = release.module.version

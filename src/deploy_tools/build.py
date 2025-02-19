@@ -3,12 +3,12 @@ import shutil
 from .layout import Layout
 from .models.changes import DeploymentChanges
 from .models.module import Release
-from .module_creator import ModuleCreator
+from .module_builder import ModuleBuilder
 from .templater import Templater
 
 
 def clean_build_area(layout: Layout) -> None:
-    build_path = layout.build_layout.deployment_root
+    build_path = layout.build_layout.build_root
 
     if build_path.exists():
         shutil.rmtree(build_path)
@@ -27,7 +27,7 @@ def _build_releases(releases: list[Release], layout: Layout) -> None:
         return
 
     templater = Templater()
-    module_creator = ModuleCreator(templater, layout)
+    module_builder = ModuleBuilder(templater, layout)
 
     for release in releases:
-        module_creator.create_module(release.module)
+        module_builder.create_module(release.module)

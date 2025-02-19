@@ -3,18 +3,18 @@ from collections import defaultdict
 from pathlib import Path
 
 from .layout import Layout
-from .models.module import Module
+from .models.deployment import DefaultVersionsByName
+from .templater import Templater, TemplateType
 
 type ModuleVersionsByName = dict[str, list[str]]
 
 DEFAULT_VERSION_FILENAME = ".version"
 VERSION_GLOB = f"*/[!{DEFAULT_VERSION_FILENAME}]*"
-DEVELOPMENT_VERSION = "dev"
 
 DEFAULT_VERSION_REGEX = "^set ModulesVersion (.*)$"
 
 
-def deprecate_modulefile(name: str, version: str, layout: Layout):
+def deprecate_modulefile(name: str, version: str, layout: Layout) -> None:
     _move_modulefile_link(
         name,
         version,
@@ -23,7 +23,7 @@ def deprecate_modulefile(name: str, version: str, layout: Layout):
     )
 
 
-def restore_modulefile(name: str, version: str, layout: Layout):
+def restore_modulefile(name: str, version: str, layout: Layout) -> None:
     _move_modulefile_link(
         name,
         version,
@@ -62,16 +62,7 @@ def is_modulefile_deployed(
     return modulefile.exists()
 
 
-def is_module_dev_mode(module: Module) -> bool:
-    return module.version == DEVELOPMENT_VERSION
-
-
-def is_modified(module_a: Module, module_b: Module) -> bool:
-    """Return whether the two module configuration objects have modified settings."""
-    return not module_b == module_a
-
-
-def get_default_version(name: str, layout: Layout) -> str | None:
+def get_default_modulefile_version(name: str, layout: Layout) -> str | None:
     version_regex = re.compile(DEFAULT_VERSION_REGEX)
     default_version_file = layout.modulefiles_root / name / DEFAULT_VERSION_FILENAME
 
@@ -80,3 +71,26 @@ def get_default_version(name: str, layout: Layout) -> str | None:
             r = version_regex.search(line)
             if r is not None:
                 return r.group(1)
+
+
+def apply_default_versions(
+    default_versions: DefaultVersionsByName, layout: Layout
+) -> None:
+    """Update .version files for current default version settings."""
+    templater = Templater()
+    deployed_module_versions = get_deployed_modulefile_versions(layout)
+
+    for name in deployed_module_versions:
+        version_file = layout.modulefiles_root / name / DEFAULT_VERSION_FILENAME
+
+        if name in default_versions:
+            params = {"version": default_versions[name]}
+
+            templater.create(
+                version_file,
+                TemplateType.MODULEFILE_VERSION,
+                params,
+                overwrite=True,
+            )
+        else:
+            version_file.unlink(missing_ok=True)

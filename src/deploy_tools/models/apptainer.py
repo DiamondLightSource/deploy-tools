@@ -21,7 +21,7 @@ class ContainerImage(ParentModel):
     version: str
 
     @property
-    def url(self):
+    def url(self) -> str:
         return f"{self.path}:{self.version}"
 
 

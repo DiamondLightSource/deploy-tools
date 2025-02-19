@@ -5,6 +5,7 @@ from tempfile import TemporaryDirectory
 
 from .build import build
 from .check_deploy import check_deploy_actions
+from .display import print_updates
 from .layout import Layout
 from .models.changes import DeploymentChanges, ReleaseChanges
 from .models.deployment import (
@@ -13,12 +14,9 @@ from .models.deployment import (
     ReleasesByNameAndVersion,
 )
 from .models.load import load_deployment
-from .models.module import Release
-from .module import (
-    DEVELOPMENT_VERSION,
+from .models.module import DEVELOPMENT_VERSION, Release
+from .modulefile import (
     ModuleVersionsByName,
-    is_modified,
-    is_module_dev_mode,
 )
 from .snapshot import load_snapshot
 
@@ -27,13 +25,13 @@ class ValidationError(Exception):
     pass
 
 
-def validate_configuration(
+def validate_and_check_configuration(
     deployment_root: Path, config_folder: Path, from_scratch: bool = False
 ) -> None:
     """Validate deployment configuration and print a list of modules for deployment.
 
     The validate_* functions consider only the current and previous deployment
-    to identify what changes need to be made, while check_actions will look at the
+    to identify what changes need to be made, while check_* functions will look at the
     current deployment area to ensure that the specified actions can be completed."""
     with TemporaryDirectory() as build_dir:
         deployment = load_deployment(config_folder)
@@ -50,46 +48,6 @@ def validate_configuration(
 
         snapshot_default_versions = validate_default_versions(snapshot)
         print_updates(snapshot_default_versions, deployment_changes)
-
-
-def print_updates(
-    old_default_versions: DefaultVersionsByName, deployment_changes: DeploymentChanges
-) -> None:
-    print_module_updates(deployment_changes.release_changes)
-    print_version_updates(old_default_versions, deployment_changes.default_versions)
-
-
-def print_module_updates(release_changes: ReleaseChanges) -> None:
-    display_config = {
-        "deployed": release_changes.to_add,
-        "updated": release_changes.to_update,
-        "deprecated": release_changes.to_deprecate,
-        "restored": release_changes.to_restore,
-        "removed": release_changes.to_remove,
-    }
-
-    for action, releases in display_config.items():
-        print(f"Modules to be {action}:")
-
-        for release in releases:
-            print(f"{release.module.name}/{release.module.version}")
-
-        print()
-
-
-def print_version_updates(
-    old_defaults: DefaultVersionsByName, new_defaults: DefaultVersionsByName
-) -> None:
-    print("Updated module defaults:")
-    module_names = old_defaults.keys() | new_defaults.keys()
-
-    for name in module_names:
-        old = old_defaults.get(name, "None")
-        new = new_defaults.get(name, "None")
-        if not old == new:
-            print(f"{name} {old} -> {new}")
-
-    print()
 
 
 def validate_deployment_changes(
@@ -109,11 +67,11 @@ def validate_release_changes(
     old_releases = snapshot.releases
     new_releases = deployment.releases
 
-    validate_module_dependencies(deployment)
-    return get_release_changes(old_releases, new_releases, from_scratch)
+    _validate_module_dependencies(deployment)
+    return _get_release_changes(old_releases, new_releases, from_scratch)
 
 
-def get_release_changes(
+def _get_release_changes(
     old_releases: ReleasesByNameAndVersion,
     new_releases: ReleasesByNameAndVersion,
     from_scratch: bool,
@@ -131,8 +89,8 @@ def get_release_changes(
 
             old_release = old_releases[name][version]
 
-            if is_modified(old_release.module, new_release.module):
-                if is_module_dev_mode(new_release.module):
+            if old_release.module != new_release.module:
+                if new_release.module.is_dev_mode():
                     release_changes.to_update.append(new_release)
                     continue
 
@@ -154,19 +112,19 @@ def get_release_changes(
             if version not in new_releases[name]:
                 release_changes.to_remove.append(old_release)
 
-    validate_added_modules(release_changes.to_add, from_scratch)
-    validate_updated_modules(release_changes.to_update)
-    validate_deprecated_modules(release_changes.to_deprecate)
-    validate_removed_modules(release_changes.to_remove)
+    _validate_added_modules(release_changes.to_add, from_scratch)
+    _validate_updated_modules(release_changes.to_update)
+    _validate_deprecated_modules(release_changes.to_deprecate)
+    _validate_removed_modules(release_changes.to_remove)
 
     return release_changes
 
 
-def validate_added_modules(releases: list[Release], from_scratch: bool) -> None:
+def _validate_added_modules(releases: list[Release], from_scratch: bool) -> None:
     for release in releases:
         module = release.module
         if release.deprecated:
-            if is_module_dev_mode(module):
+            if module.is_dev_mode():
                 raise ValidationError(
                     f"Module {module.name}/{module.version} cannot be specified as"
                     f"deprecated as it is in development mode."
@@ -179,7 +137,7 @@ def validate_added_modules(releases: list[Release], from_scratch: bool) -> None:
                 )
 
 
-def validate_updated_modules(releases: list[Release]) -> None:
+def _validate_updated_modules(releases: list[Release]) -> None:
     for release in releases:
         module = release.module
         if release.deprecated:
@@ -189,20 +147,20 @@ def validate_updated_modules(releases: list[Release]) -> None:
             )
 
 
-def validate_deprecated_modules(releases: list[Release]) -> None:
+def _validate_deprecated_modules(releases: list[Release]) -> None:
     for release in releases:
         module = release.module
-        if is_module_dev_mode(module):
+        if module.is_dev_mode():
             raise ValidationError(
                 f"Module {module.name}/{module.version} cannot be specified as "
                 f"deprecated as it is in development mode."
             )
 
 
-def validate_removed_modules(releases: list[Release]) -> None:
+def _validate_removed_modules(releases: list[Release]) -> None:
     for release in releases:
         module = release.module
-        if not is_module_dev_mode(module) and not release.deprecated:
+        if not module.is_dev_mode() and not release.deprecated:
             raise ValidationError(
                 f"Module {module.name}/{module.version} removed without prior"
                 f"deprecation."
@@ -210,7 +168,7 @@ def validate_removed_modules(releases: list[Release]) -> None:
 
 
 def validate_default_versions(deployment: Deployment) -> DefaultVersionsByName:
-    final_deployed_modules = get_final_deployed_module_versions(deployment)
+    final_deployed_modules = _get_final_deployed_module_versions(deployment)
 
     for name, version in deployment.settings.default_versions.items():
         if version not in final_deployed_modules[name]:
@@ -219,14 +177,14 @@ def validate_default_versions(deployment: Deployment) -> DefaultVersionsByName:
                 f"exist."
             )
 
-    default_versions = get_all_default_versions(
+    default_versions = _get_all_default_versions(
         deployment.settings.default_versions, final_deployed_modules
     )
 
     return default_versions
 
 
-def get_final_deployed_module_versions(
+def _get_final_deployed_module_versions(
     deployment: Deployment,
 ) -> ModuleVersionsByName:
     """Return module versions that will be deployed after sync action has completed.
@@ -247,7 +205,7 @@ def get_final_deployed_module_versions(
     return final_versions
 
 
-def get_all_default_versions(
+def _get_all_default_versions(
     initial_defaults: DefaultVersionsByName,
     final_deployed_module_versions: ModuleVersionsByName,
 ) -> DefaultVersionsByName:
@@ -274,7 +232,7 @@ def get_all_default_versions(
     return final_defaults
 
 
-def validate_module_dependencies(deployment: Deployment) -> None:
+def _validate_module_dependencies(deployment: Deployment) -> None:
     """Ensure that all module dependencies are set appropriately.
 
     This checks any module dependency names that come from current configuration to
@@ -282,7 +240,7 @@ def validate_module_dependencies(deployment: Deployment) -> None:
     only valid for dependencies that are managed outside of the current deployment
     configuration.
     """
-    final_deployed_modules = get_final_deployed_module_versions(deployment)
+    final_deployed_modules = _get_final_deployed_module_versions(deployment)
 
     for name, release_versions in deployment.releases.items():
         for version, release in release_versions.items():
