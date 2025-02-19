@@ -45,12 +45,15 @@ class AppBuilder:
         global_options = app.global_options
         for entrypoint in app.entrypoints:
             options = entrypoint.options
-            entrypoint_file = entrypoints_folder / entrypoint.executable_name
+            entrypoint_file = entrypoints_folder / entrypoint.name
 
             mounts = ",".join(chain(global_options.mounts, options.mounts)).strip()
 
             apptainer_args = f"{global_options.apptainer_args} {options.apptainer_args}"
             apptainer_args = apptainer_args.strip()
+
+            # Use executable_name as command if one is otherwise not provided
+            command = entrypoint.command if entrypoint.command else entrypoint.name
 
             command_args = f"{global_options.command_args} {options.command_args}"
             command_args = command_args.strip()
@@ -59,7 +62,7 @@ class AppBuilder:
                 "mounts": mounts,
                 "apptainer_args": apptainer_args,
                 "relative_sif_file": relative_sif_file,
-                "command": entrypoint.command,
+                "command": command,
                 "command_args": command_args,
             }
 
