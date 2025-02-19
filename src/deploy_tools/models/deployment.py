@@ -7,11 +7,16 @@ type DefaultVersionsByName = dict[str, str]
 
 
 class DeploymentSettings(ParentModel):
+    """All global configuration settings for the Deployment."""
+
     default_versions: DefaultVersionsByName = {}
 
 
 class Deployment(ParentModel):
-    """Configuration for all modules and applications that should be deployed."""
+    """Configuration for all Modules and Applications that should be deployed.
+
+    This will include any deprecated Modules.
+    """
 
     settings: DeploymentSettings
     releases: ReleasesByNameAndVersion

@@ -43,6 +43,7 @@ def load_deployment(config_folder: Path) -> Deployment:
     for version_path in config_folder.glob("*/*"):
         release = load_release(version_path)
         module = release.module
+
         # This also guarantees unique module names and versions in configuration
         check_filepath_matches(version_path, module)
 
@@ -55,7 +56,10 @@ def load_deployment(config_folder: Path) -> Deployment:
 
 
 def check_filepath_matches(version_path: Path, module: Module) -> None:
-    """Ensure the modules file path (in config folder) matches the metadata."""
+    """Ensure the Module's file path (in config folder) matches the metadata.
+
+    It should be the Module's name and version as /<config_folder>/<name>/<version>.yaml
+    """
     if version_path.is_dir() and version_path.suffix == YAML_FILE_SUFFIX:
         raise LoadError(f"Module directory has incorrect suffix:\n{version_path}")
 
