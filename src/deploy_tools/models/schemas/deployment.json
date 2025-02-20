@@ -2,13 +2,10 @@
   "$defs": {
     "Apptainer": {
       "additionalProperties": false,
-      "description": "Represents an Apptainer application or set of applications.\n\nThis uses apptainer to deploy a portable image of the desired container. Several\nentrypoints can then be specified to allow for multiple commands to be easily used\nin the same container image.",
+      "description": "Represents an Apptainer application or set of applications for a single image.\n\nThis uses Apptainer to deploy a portable image of the desired container. Several\nentrypoints can then be specified to allow for multiple commands run on the same\ncontainer image.",
       "properties": {
         "app_type": {
           "const": "apptainer",
-          "enum": [
-            "apptainer"
-          ],
           "title": "App Type",
           "type": "string"
         },
@@ -23,7 +20,12 @@
           "type": "array"
         },
         "global_options": {
-          "$ref": "#/$defs/EntrypointOptions"
+          "$ref": "#/$defs/EntrypointOptions",
+          "default": {
+            "apptainer_args": "",
+            "command_args": "",
+            "mounts": []
+          }
         }
       },
       "required": [
@@ -32,40 +34,6 @@
         "entrypoints"
       ],
       "title": "Apptainer",
-      "type": "object"
-    },
-    "Command": {
-      "additionalProperties": false,
-      "description": "Represents a Command application.\n\nThis runs the specified command with the specified arguments, as a bash script. All\nadditional arguments and options on the command line are passed through to this\ncommand.",
-      "properties": {
-        "app_type": {
-          "const": "command",
-          "enum": [
-            "command"
-          ],
-          "title": "App Type",
-          "type": "string"
-        },
-        "name": {
-          "title": "Name",
-          "type": "string"
-        },
-        "command_path": {
-          "title": "Command Path",
-          "type": "string"
-        },
-        "command_args": {
-          "default": "",
-          "title": "Command Args",
-          "type": "string"
-        }
-      },
-      "required": [
-        "app_type",
-        "name",
-        "command_path"
-      ],
-      "title": "Command",
       "type": "object"
     },
     "ContainerImage": {
@@ -87,16 +55,19 @@
       "title": "ContainerImage",
       "type": "object"
     },
+    "DefaultVersionsByName": {
+      "additionalProperties": {
+        "type": "string"
+      },
+      "type": "object"
+    },
     "DeploymentSettings": {
       "additionalProperties": false,
+      "description": "All global configuration settings for the Deployment.",
       "properties": {
         "default_versions": {
-          "additionalProperties": {
-            "type": "string"
-          },
-          "default": {},
-          "title": "Default Versions",
-          "type": "object"
+          "$ref": "#/$defs/DefaultVersionsByName",
+          "default": {}
         }
       },
       "title": "DeploymentSettings",
@@ -104,9 +75,10 @@
     },
     "Entrypoint": {
       "additionalProperties": false,
+      "description": "Represents an entrypoint to a command on the Apptainer image.\n\nIf no command is provided, the entrypoint (`name`) is used by default. This\ncorresponds to the name of the executable provided by the Module.",
       "properties": {
-        "executable_name": {
-          "title": "Executable Name",
+        "name": {
+          "title": "Name",
           "type": "string"
         },
         "command": {
@@ -122,11 +94,16 @@
           "title": "Command"
         },
         "options": {
-          "$ref": "#/$defs/EntrypointOptions"
+          "$ref": "#/$defs/EntrypointOptions",
+          "default": {
+            "apptainer_args": "",
+            "command_args": "",
+            "mounts": []
+          }
         }
       },
       "required": [
-        "executable_name"
+        "name"
       ],
       "title": "Entrypoint",
       "type": "object"
@@ -158,6 +135,7 @@
     },
     "EnvVar": {
       "additionalProperties": false,
+      "description": "Represents an environment variable to set when loading the Module.",
       "properties": {
         "name": {
           "title": "Name",
@@ -220,7 +198,6 @@
             "discriminator": {
               "mapping": {
                 "apptainer": "#/$defs/Apptainer",
-                "command": "#/$defs/Command",
                 "shell": "#/$defs/Shell"
               },
               "propertyName": "app_type"
@@ -228,9 +205,6 @@
             "oneOf": [
               {
                 "$ref": "#/$defs/Apptainer"
-              },
-              {
-                "$ref": "#/$defs/Command"
               },
               {
                 "$ref": "#/$defs/Shell"
@@ -251,6 +225,7 @@
     },
     "ModuleDependency": {
       "additionalProperties": false,
+      "description": "Specify an Environment Module to include as a dependency.\n\nIf the dependent Environment Module is managed by this same Deployment (i.e. is a\nModule), you must specify a specific version in order to pass validation.",
       "properties": {
         "name": {
           "title": "Name",
@@ -277,7 +252,7 @@
     },
     "Release": {
       "additionalProperties": false,
-      "description": "Represents a Module to be deployed along with its lifecycle status.",
+      "description": "Represents a Module along with its lifecycle (deprecation) status.",
       "properties": {
         "module": {
           "$ref": "#/$defs/Module"
@@ -294,15 +269,24 @@
       "title": "Release",
       "type": "object"
     },
+    "ReleasesByNameAndVersion": {
+      "additionalProperties": {
+        "$ref": "#/$defs/ReleasesByVersion"
+      },
+      "type": "object"
+    },
+    "ReleasesByVersion": {
+      "additionalProperties": {
+        "$ref": "#/$defs/Release"
+      },
+      "type": "object"
+    },
     "Shell": {
       "additionalProperties": false,
-      "description": "Represents a Shell application.\n\nThis will run the code specified as a shell script. This currently uses Bash for\nimproved functionality while retaining high compatibility with various Linux\noperating systems.",
+      "description": "Represents a Shell application.\n\nThis will run the code specified as a shell script. This currently uses Bash for\nimproved functionality while retaining high compatibility with various Linux\ndistributions.",
       "properties": {
         "app_type": {
           "const": "shell",
-          "enum": [
-            "shell"
-          ],
           "title": "App Type",
           "type": "string"
         },
@@ -328,20 +312,13 @@
     }
   },
   "additionalProperties": false,
-  "description": "Configuration for all modules and applications that should be deployed.",
+  "description": "Configuration for all Modules and Applications that should be deployed.\n\nThis will include any deprecated Modules.",
   "properties": {
     "settings": {
       "$ref": "#/$defs/DeploymentSettings"
     },
     "releases": {
-      "additionalProperties": {
-        "additionalProperties": {
-          "$ref": "#/$defs/Release"
-        },
-        "type": "object"
-      },
-      "title": "Releases",
-      "type": "object"
+      "$ref": "#/$defs/ReleasesByNameAndVersion"
     }
   },
   "required": [

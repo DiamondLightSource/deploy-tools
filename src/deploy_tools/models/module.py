@@ -4,23 +4,28 @@ from typing import Annotated
 from pydantic import Field
 
 from .apptainer import Apptainer
-from .command import Command
 from .parent import ParentModel
 from .shell import Shell
 
-Application = Annotated[
-    Apptainer | Command | Shell, Field(..., discriminator="app_type")
-]
+Application = Annotated[Apptainer | Shell, Field(..., discriminator="app_type")]
 
 DEVELOPMENT_VERSION = "dev"
 
 
 class ModuleDependency(ParentModel):
+    """Specify an Environment Module to include as a dependency.
+
+    If the dependent Environment Module is managed by this same Deployment (i.e. is a
+    Module), you must specify a specific version in order to pass validation.
+    """
+
     name: str
     version: str | None = None
 
 
 class EnvVar(ParentModel):
+    """Represents an environment variable to set when loading the Module."""
+
     name: str
     value: str
 
@@ -44,7 +49,7 @@ class Module(ParentModel):
 
 
 class Release(ParentModel):
-    """Represents a Module to be deployed along with its lifecycle status."""
+    """Represents a Module along with its lifecycle (deprecation) status."""
 
     module: Module
     deprecated: bool = False

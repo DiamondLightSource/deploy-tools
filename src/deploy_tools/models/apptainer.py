@@ -11,7 +11,12 @@ class EntrypointOptions(ParentModel):
 
 
 class Entrypoint(ParentModel):
-    executable_name: str
+    """Represents an entrypoint to a command on the Apptainer image.
+
+    If no command is provided, the entrypoint (`name`) is used by default. This
+    corresponds to the name of the executable provided by the Module."""
+
+    name: str
     command: str | None = None
     options: EntrypointOptions = EntrypointOptions()
 
@@ -26,11 +31,11 @@ class ContainerImage(ParentModel):
 
 
 class Apptainer(ParentModel):
-    """Represents an Apptainer application or set of applications.
+    """Represents an Apptainer application or set of applications for a single image.
 
-    This uses apptainer to deploy a portable image of the desired container. Several
-    entrypoints can then be specified to allow for multiple commands to be easily used
-    in the same container image.
+    This uses Apptainer to deploy a portable image of the desired container. Several
+    entrypoints can then be specified to allow for multiple commands run on the same
+    container image.
     """
 
     app_type: Literal["apptainer"]

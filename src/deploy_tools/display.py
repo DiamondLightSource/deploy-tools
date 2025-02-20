@@ -7,6 +7,7 @@ from .models.deployment import (
 def print_updates(
     old_default_versions: DefaultVersionsByName, deployment_changes: DeploymentChanges
 ) -> None:
+    """Print a summary of all changes."""
     _print_module_updates(deployment_changes.release_changes)
     _print_version_updates(old_default_versions, deployment_changes.default_versions)
 

@@ -4,7 +4,7 @@ from pathlib import Path
 from tempfile import TemporaryDirectory
 
 from .build import build
-from .check_deploy import check_deploy_actions
+from .check_deploy import check_deploy_can_run
 from .display import print_updates
 from .layout import Layout
 from .models.changes import DeploymentChanges, ReleaseChanges
@@ -28,11 +28,7 @@ class ValidationError(Exception):
 def validate_and_check_configuration(
     deployment_root: Path, config_folder: Path, from_scratch: bool = False
 ) -> None:
-    """Validate deployment configuration and print a list of modules for deployment.
-
-    The validate_* functions consider only the current and previous deployment
-    to identify what changes need to be made, while check_* functions will look at the
-    current deployment area to ensure that the specified actions can be completed."""
+    """Validate deployment config and check that deploy can run in deployment area."""
     with TemporaryDirectory() as build_dir:
         deployment = load_deployment(config_folder)
         layout = Layout(deployment_root, build_root=Path(build_dir))
@@ -42,7 +38,7 @@ def validate_and_check_configuration(
             deployment, snapshot, from_scratch
         )
 
-        check_deploy_actions(deployment_changes, layout)
+        check_deploy_can_run(deployment_changes, layout)
 
         build(deployment_changes, layout)
 
@@ -53,6 +49,7 @@ def validate_and_check_configuration(
 def validate_deployment_changes(
     deployment: Deployment, snapshot: Deployment, from_scratch: bool
 ) -> DeploymentChanges:
+    """Validate configuration to get set of actions that need to be carried out."""
     release_changes = validate_release_changes(deployment, snapshot, from_scratch)
     default_versions = validate_default_versions(deployment)
     return DeploymentChanges(
@@ -63,7 +60,7 @@ def validate_deployment_changes(
 def validate_release_changes(
     deployment: Deployment, snapshot: Deployment, from_scratch: bool
 ) -> ReleaseChanges:
-    """Validate configuration to get set of actions that need to be carried out."""
+    """Validate configuration to get set of Release changes."""
     old_releases = snapshot.releases
     new_releases = deployment.releases
 
@@ -168,6 +165,7 @@ def _validate_removed_modules(releases: list[Release]) -> None:
 
 
 def validate_default_versions(deployment: Deployment) -> DefaultVersionsByName:
+    """Validate configuration to get set of default version changes."""
     final_deployed_modules = _get_final_deployed_module_versions(deployment)
 
     for name, version in deployment.settings.default_versions.items():

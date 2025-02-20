@@ -13,7 +13,6 @@ class TemplateType(StrEnum):
     MODULEFILE = "modulefile"
     MODULEFILE_VERSION = "modulefile_version"
     APPTAINER_ENTRYPOINT = "apptainer_entrypoint"
-    COMMAND_ENTRYPOINT = "command_entrypoint"
     SHELL_ENTRYPOINT = "shell_entrypoint"
 
 
@@ -22,10 +21,10 @@ EXECUTABLE_PERMISSIONS = 0o755
 
 
 class Templater:
-    """Used to abstract away the specifics of jinja2 templating.
+    """Abstracts the specifics of jinja2 templating and our particular template files.
 
     File permissions are also managed here to ensure consistency of output between
-    different file types.
+    different Application types.
     """
 
     def __init__(self) -> None:

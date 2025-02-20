@@ -36,7 +36,11 @@ def sync(
     ],
     from_scratch: Annotated[bool, typer.Option()] = False,
 ) -> None:
-    """Sync deployment folder with current configuration"""
+    """Synchronise deployment root with current configuration.
+
+    This will also run the validate command beforehand, but without printing the
+    expected changes.
+    """
     synchronise(deployment_root, config_folder, from_scratch)
 
 
@@ -61,9 +65,10 @@ def validate(
     ],
     from_scratch: Annotated[bool, typer.Option()] = False,
 ) -> None:
-    """Validate deployment configuration and print a list of modules for deployment.
+    """Validate deployment configuration and print a list of expected module changes.
 
-    This is the same validation that the deploy-tools sync command uses."""
+    This is the same validation that the deploy-tools sync command uses.
+    """
     validate_and_check_configuration(deployment_root, config_folder, from_scratch)
 
 
@@ -79,7 +84,12 @@ def compare(
         ),
     ],
 ) -> None:
-    """Compare deployment snapshot to output modules and modulefiles."""
+    """Compare the deployment snapshot to deployed modules in the deployment root.
+
+    This allows us to identify any discrepancies. If there was an error during the
+    deploy step, we can use this function to determine any required steps for fixing
+    files in the deployment root.
+    """
     compare_to_snapshot(deployment_root)
 
 

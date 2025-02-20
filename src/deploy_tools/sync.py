@@ -1,7 +1,7 @@
 from pathlib import Path
 
 from .build import build, clean_build_area
-from .check_deploy import check_deploy_actions
+from .check_deploy import check_deploy_can_run
 from .deploy import deploy_changes
 from .layout import Layout
 from .models.load import load_deployment
@@ -14,14 +14,14 @@ from .validate import (
 def synchronise(
     deployment_root: Path, config_folder: Path, from_scratch: bool = False
 ) -> None:
-    """Synchronise the deployment folder with the current configuration"""
+    """Synchronise the deployment folder with the current configuration."""
     deployment = load_deployment(config_folder)
     layout = Layout(deployment_root)
     snapshot = load_snapshot(layout, from_scratch)
 
     deployment_changes = validate_deployment_changes(deployment, snapshot, from_scratch)
 
-    check_deploy_actions(deployment_changes, layout)
+    check_deploy_can_run(deployment_changes, layout)
 
     clean_build_area(layout)
     build(deployment_changes, layout)

@@ -8,7 +8,7 @@ class Shell(ParentModel):
 
     This will run the code specified as a shell script. This currently uses Bash for
     improved functionality while retaining high compatibility with various Linux
-    operating systems.
+    distributions.
     """
 
     app_type: Literal["shell"]

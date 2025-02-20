@@ -2,7 +2,12 @@ from pathlib import Path
 
 
 class ModuleBuildLayout:
-    """Represents the layout of a built module."""
+    """Represents the layout of a built module.
+
+    When intended to be used before the Deploy step, this should be done on the same
+    filesystem as their final location, in order to ensure that all filesystem moves are
+    atomic.
+    """
 
     ENTRYPOINTS_FOLDER = "entrypoints"
     SIF_FILES_FOLDER = "sif_files"
@@ -43,7 +48,7 @@ class Layout:
     MODULES_ROOT_NAME = "modules"
     MODULEFILES_ROOT_NAME = "modulefiles"
     DEPRECATED_ROOT_NAME = "deprecated"
-    BUILD_ROOT_NAME = "build"
+    DEFAULT_BUILD_ROOT_NAME = "build"
 
     DEPLOYMENT_SNAPSHOT_FILENAME = "deployment.yaml"
 
@@ -53,7 +58,7 @@ class Layout:
         if build_root is not None:
             self._build_root = build_root
         else:
-            self._build_root = self._root / self.BUILD_ROOT_NAME
+            self._build_root = self._root / self.DEFAULT_BUILD_ROOT_NAME
 
     def get_module_folder(self, name: str, version: str) -> Path:
         return self.modules_root / name / version
