@@ -9,6 +9,15 @@ class CheckDeployError(Exception):
 
 
 def check_deploy_can_run(changes: DeploymentChanges, layout: Layout) -> None:
+    """Check that the Deployment Root is in the expected state for the given changes.
+
+    Note that some of these checks are effectively stubs, and may require more
+    fleshed-out checks in future.
+
+    Also, the primary purpose of this section is to give clear feedback as to why
+    certain changes can't be performed on the filesystem as-is. There is a level of
+    redundancy in this code w.r.t. compare_to_snapshot(), which is not ideal.
+    """
     release_changes = changes.release_changes
 
     _check_deploy_new_releases(release_changes.to_add, layout)

@@ -49,6 +49,7 @@ def validate_and_check_configuration(
 def validate_deployment_changes(
     deployment: Deployment, snapshot: Deployment, from_scratch: bool
 ) -> DeploymentChanges:
+    """Validate configuration to get set of actions that need to be carried out."""
     release_changes = validate_release_changes(deployment, snapshot, from_scratch)
     default_versions = validate_default_versions(deployment)
     return DeploymentChanges(
@@ -59,7 +60,7 @@ def validate_deployment_changes(
 def validate_release_changes(
     deployment: Deployment, snapshot: Deployment, from_scratch: bool
 ) -> ReleaseChanges:
-    """Validate configuration to get set of actions that need to be carried out."""
+    """Validate configuration to get set of Release changes."""
     old_releases = snapshot.releases
     new_releases = deployment.releases
 
@@ -164,6 +165,7 @@ def _validate_removed_modules(releases: list[Release]) -> None:
 
 
 def validate_default_versions(deployment: Deployment) -> DefaultVersionsByName:
+    """Validate configuration to get set of default version changes."""
     final_deployed_modules = _get_final_deployed_module_versions(deployment)
 
     for name, version in deployment.settings.default_versions.items():

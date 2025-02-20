@@ -49,7 +49,6 @@ class AppBuilder:
             apptainer_args = f"{global_options.apptainer_args} {options.apptainer_args}"
             apptainer_args = apptainer_args.strip()
 
-            # Use executable_name as command if one is otherwise not provided
             command = entrypoint.command if entrypoint.command else entrypoint.name
 
             command_args = f"{global_options.command_args} {options.command_args}"
@@ -97,7 +96,7 @@ class AppBuilder:
         return sif_folder / f"{file_name}.sif"
 
     def create_shell_file(self, app: Shell, module: Module) -> None:
-        """Create shell script using 'bash' for improved functionality."""
+        """Create shell script using Bash for improved functionality."""
         entrypoints_folder = self._build_layout.get_entrypoints_folder(
             module.name, module.version
         )

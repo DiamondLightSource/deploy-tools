@@ -21,10 +21,10 @@ EXECUTABLE_PERMISSIONS = 0o755
 
 
 class Templater:
-    """Used to abstract away the specifics of jinja2 templating.
+    """Abstracts the specifics of jinja2 templating and our particular template files.
 
     File permissions are also managed here to ensure consistency of output between
-    different file types.
+    different Application types.
     """
 
     def __init__(self) -> None:

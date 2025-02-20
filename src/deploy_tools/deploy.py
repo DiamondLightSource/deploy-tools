@@ -14,6 +14,7 @@ from .modulefile import (
 
 
 def deploy_changes(changes: DeploymentChanges, layout: Layout) -> None:
+    """Perform the Deploy step for the specified changes."""
     release_changes = changes.release_changes
 
     _remove_releases(release_changes.to_remove, layout)

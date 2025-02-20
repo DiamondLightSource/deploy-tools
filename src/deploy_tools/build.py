@@ -15,6 +15,7 @@ def clean_build_area(layout: Layout) -> None:
 
 
 def build(changes: DeploymentChanges, layout: Layout) -> None:
+    """Build all modules that are to be added or updated."""
     release_changes = changes.release_changes
 
     _build_releases(release_changes.to_add, layout)
@@ -22,7 +23,6 @@ def build(changes: DeploymentChanges, layout: Layout) -> None:
 
 
 def _build_releases(releases: list[Release], layout: Layout) -> None:
-    """Deploy modules from the provided list."""
     if not releases:
         return
 
