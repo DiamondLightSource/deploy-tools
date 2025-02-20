@@ -11,7 +11,7 @@ from .models.deployment import (
 from .models.load import load_from_yaml
 from .models.module import Module, Release
 from .modulefile import get_default_modulefile_version, is_modulefile_deployed
-from .snapshot import load_snapshot
+from .snapshot import load_previous_snapshot, load_snapshot
 from .validate import validate_default_versions
 
 
@@ -19,17 +19,29 @@ class ComparisonError(Exception):
     pass
 
 
-def compare_to_snapshot(deployment_root: Path) -> None:
+def compare_to_snapshot(deployment_root: Path, use_previous: bool = False) -> None:
     """Compare deployment area to deployment configuration snapshot.
 
-    This enables us to identify broken environment modules. Note that this does not
+    This helps us to identify broken environment modules. Note that this does not
     exclude the possibility of all types of issues.
+
+    The `use_previous` argument can be used to provide a comparison with the previous
+    Deployment configuration. This is taken as a backup at the very start of the Deploy
+    step.
+
+    Args:
+        deployment_root: The root folder of the Deployment Area.
+        use_previous: If True, compare to the previous snapshot taken as backup at start
+            of the Deploy step.
     """
     layout = Layout(deployment_root)
 
-    deployment_snapshot = load_snapshot(layout)
-    actual_deployment = _reconstruct_deployment_config_from_modules(layout)
+    if use_previous:
+        deployment_snapshot = load_previous_snapshot(layout)
+    else:
+        deployment_snapshot = load_snapshot(layout)
 
+    actual_deployment = _reconstruct_deployment_config_from_modules(layout)
     _compare_snapshot_to_actual(snapshot=deployment_snapshot, actual=actual_deployment)
 
 

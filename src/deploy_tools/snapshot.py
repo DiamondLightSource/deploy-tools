@@ -31,6 +31,13 @@ def _backup_snapshot(layout: Layout) -> None:
 
 
 def load_snapshot(layout: Layout, from_scratch: bool = False) -> Deployment:
+    """Load snapshot of the Deployment configuration taken at start of Deploy step.
+
+    Args:
+        layout: The ``Layout`` representing the Deployment Area.
+        from_scratch: If True, this will return the default ``Deployment`` configuration
+            in order to work with an empty Deployment Area.
+    """
     if from_scratch:
         if not layout.deployment_root.exists():
             raise SnapshotError(
@@ -46,3 +53,7 @@ def load_snapshot(layout: Layout, from_scratch: bool = False) -> Deployment:
         return Deployment(settings=DeploymentSettings(), releases={})
 
     return load_from_yaml(Deployment, layout.deployment_snapshot_path)
+
+
+def load_previous_snapshot(layout: Layout) -> Deployment:
+    return load_from_yaml(Deployment, layout.previous_deployment_snapshot_path)

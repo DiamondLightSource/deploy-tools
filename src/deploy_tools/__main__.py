@@ -83,6 +83,7 @@ def compare(
             writable=True,
         ),
     ],
+    use_previous: Annotated[bool, typer.Option()] = False,
 ) -> None:
     """Compare the deployment snapshot to deployed modules in the deployment root.
 
@@ -90,7 +91,7 @@ def compare(
     deploy step, we can use this function to determine any required steps for fixing
     files in the deployment root.
     """
-    compare_to_snapshot(deployment_root)
+    compare_to_snapshot(deployment_root, use_previous)
 
 
 @app.command(no_args_is_help=True)
