@@ -23,7 +23,7 @@ def load_snapshot(layout: Layout, from_scratch: bool = False) -> Deployment:
     if from_scratch:
         if not layout.deployment_root.exists():
             raise SnapshotError(
-                f"Deployment root does not exist:\n" f"{layout.deployment_root}"
+                f"Deployment root does not exist:\n{layout.deployment_root}"
             )
 
         if layout.deployment_snapshot_path.exists():

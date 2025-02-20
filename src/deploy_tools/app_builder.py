@@ -81,8 +81,7 @@ class AppBuilder:
 
         if sif_file.exists():
             raise AppBuilderError(
-                f"Building Apptainer files: "
-                f"Sif file output already exists:\n{sif_file}"
+                f"Building Apptainer files: Sif file output already exists:\n{sif_file}"
             )
 
         commands = ["apptainer", "pull", sif_file, app.container.url]
