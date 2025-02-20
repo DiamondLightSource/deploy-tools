@@ -14,7 +14,7 @@ VERSION_GLOB = f"*/[!{DEFAULT_VERSION_FILENAME}]*"
 DEFAULT_VERSION_REGEX = "^set ModulesVersion (.*)$"
 
 
-def deprecate_modulefile(name: str, version: str, layout: Layout) -> None:
+def deprecate_modulefile_link(name: str, version: str, layout: Layout) -> None:
     _move_modulefile_link(
         name,
         version,
@@ -23,7 +23,7 @@ def deprecate_modulefile(name: str, version: str, layout: Layout) -> None:
     )
 
 
-def restore_modulefile(name: str, version: str, layout: Layout) -> None:
+def restore_modulefile_link(name: str, version: str, layout: Layout) -> None:
     _move_modulefile_link(
         name,
         version,
@@ -58,10 +58,10 @@ def get_deployed_modulefile_versions(
 def is_modulefile_deployed(
     name: str, version: str, layout: Layout, in_deprecated: bool = False
 ) -> bool:
-    modulefile = layout.get_modulefile_link(
+    modulefile_link = layout.get_modulefile_link(
         name, version, from_deprecated=in_deprecated
     )
-    return modulefile.exists()
+    return modulefile_link.exists()
 
 
 def get_default_modulefile_version(name: str, layout: Layout) -> str | None:

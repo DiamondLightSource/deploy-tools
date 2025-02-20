@@ -8,8 +8,8 @@ from .models.module import Release
 from .modulefile import (
     DEFAULT_VERSION_FILENAME,
     apply_default_versions,
-    deprecate_modulefile,
-    restore_modulefile,
+    deprecate_modulefile_link,
+    restore_modulefile_link,
 )
 
 
@@ -83,12 +83,12 @@ def _deploy_releases(
 def _deprecate_releases(to_deprecate: list[Release], layout: Layout) -> None:
     """Deprecate a list of modules.
 
-    This will move the modulefile to a 'deprecated' directory. If the modulefile path is
-    set up to include the 'deprecated' directory, all modulefiles should continue to
-    work.
+    For each module, this will move the modulefile link to a 'deprecated' directory. If
+    the user's MODULEPATH is set up to include the 'deprecated' directory, all
+    modules should be available as before.
     """
     for release in to_deprecate:
-        deprecate_modulefile(release.module.name, release.module.version, layout)
+        deprecate_modulefile_link(release.module.name, release.module.version, layout)
 
 
 def _remove_deployed_module(
@@ -109,7 +109,7 @@ def _remove_module(name: str, version: str, layout: Layout) -> None:
 def _restore_releases(to_restore: list[Release], layout: Layout) -> None:
     """Restore a previously deprecated module."""
     for release in to_restore:
-        restore_modulefile(release.module.name, release.module.version, layout)
+        restore_modulefile_link(release.module.name, release.module.version, layout)
 
 
 def _remove_name_folders(
