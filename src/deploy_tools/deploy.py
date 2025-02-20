@@ -119,23 +119,33 @@ def _remove_name_folders(
     removed: list[Release],
     layout: Layout,
 ) -> None:
-    """Remove module name folders where all versions have been removed."""
+    """Remove module name folders where all versions have been removed.
+
+    Several types of path are of the form <root>/name/version. When removing version
+    files in operations such as deprecation, if all versions are removed the parent
+    folder (called name folder here) will still exist. This function is designed to
+    remove them.
+
+    Note that the non-deprecated modulefile name folder will not be empty, as the
+    default version file will still exist.
+    """
     for release in deprecated:
-        _delete_modulefile_name_folder(layout, release.module.name)
+        _delete_modulefiles_name_folder(layout, release.module.name)
 
     for release in restored:
-        _delete_modulefile_name_folder(layout, release.module.name, True)
+        _delete_modulefiles_name_folder(layout, release.module.name, True)
 
     for release in removed:
-        _delete_modulefile_name_folder(layout, release.module.name, True)
+        _delete_modulefiles_name_folder(layout, release.module.name, True)
         _delete_name_folder(release.module.name, layout.modules_root)
 
 
-def _delete_modulefile_name_folder(
+def _delete_modulefiles_name_folder(
     layout: Layout, name: str, from_deprecated: bool = False
 ) -> None:
     modulefiles_name_path = layout.get_modulefiles_root(from_deprecated) / name
 
+    # Ignore the default version file when checking for existing modulefile links
     if next(modulefiles_name_path.glob(MODULE_VERSIONS_GLOB), None) is None:
         shutil.rmtree(modulefiles_name_path)
 
