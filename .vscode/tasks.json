@@ -39,7 +39,7 @@
         {
             "label": "Compare deployment to snapshot",
             "type": "shell",
-            "command": "deploy-tools compare ${input:deploy-folder}",
+            "command": "deploy-tools compare ${input:use-previous} ${input:deploy-folder}",
             "problemMatcher": []
         },
     ],
@@ -70,6 +70,16 @@
                 "--no-from-scratch"
             ],
             "default": "--no-from-scratch",
+            "type": "pickString"
+        },
+        {
+            "id": "use-previous",
+            "description": "Compare against previous Deployment snapshot",
+            "options": [
+                "--use-previous",
+                "--no-use-previous"
+            ],
+            "default": "--no-use-previous",
             "type": "pickString"
         },
     ]
