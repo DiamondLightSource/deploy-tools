@@ -1,5 +1,10 @@
+import difflib
 from collections import defaultdict
 from pathlib import Path
+from typing import Any
+
+import yaml
+from pydantic import TypeAdapter
 
 from .layout import Layout
 from .models.deployment import (
@@ -97,7 +102,7 @@ def _get_deprecated_status(name: str, version: str, layout: Layout) -> bool:
         return True
 
     raise ComparisonError(
-        f"Modulefile for {name}/{version} not found. Comparison with snapshot failed."
+        f"Modulefile for {name}/{version} not found in deployment area."
     )
 
 
@@ -122,8 +127,8 @@ def _compare_snapshot_to_actual(snapshot: Deployment, actual: Deployment) -> Non
 def _compare_releases(snapshot: Deployment, actual: Deployment) -> None:
     if snapshot.releases != actual.releases:
         raise ComparisonError(
-            f"Snapshot and actual release configuration do not match, see:\n"
-            f"Snapshot: {snapshot.releases}\nActual: {actual.releases}"
+            "Snapshot and actual release configuration do not match, see:\n"
+            + _get_dict_diff(snapshot.releases, actual.releases)
         )
 
 
@@ -133,6 +138,20 @@ def _compare_default_versions(snapshot: Deployment, actual: Deployment) -> None:
 
     if snapshot_defaults != actual_defaults:
         raise ComparisonError(
-            f"Snapshot and actual module default versions do not match, see:\n"
-            f"Snapshot: {snapshot_defaults}\nActual: {actual_defaults}"
+            "Snapshot and actual module default versions do not match, see:\n"
+            + _get_dict_diff(snapshot_defaults, actual_defaults)
         )
+
+
+def _get_dict_diff(d1: dict[str, Any], d2: dict[str, Any]):
+    return "\n" + "\n".join(
+        difflib.ndiff(
+            _yaml_dumps(d1).splitlines(),
+            _yaml_dumps(d2).splitlines(),
+        )
+    )
+
+
+def _yaml_dumps(obj: dict[str, Any], indent: int | None = None) -> str:
+    ta = TypeAdapter(dict[str, Any])
+    return yaml.safe_dump(ta.dump_python(obj), indent=indent)
