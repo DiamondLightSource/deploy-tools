@@ -33,7 +33,7 @@ class ModuleBuilder:
             "entrypoint_folder": entrypoints_folder,
         }
 
-        built_modulefile = self._build_layout.get_built_modulefile(
+        built_modulefile = self._build_layout.get_modulefile(
             module.name, module.version
         )
         built_modulefile.parent.mkdir(exist_ok=True, parents=True)

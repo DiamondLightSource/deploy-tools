@@ -69,7 +69,7 @@ def _deploy_releases(
 
     for release in to_deploy:
         module = release.module
-        built_module_folder = build_layout.get_module_build_folder(
+        built_module_folder = build_layout.get_module_folder(
             module.name, module.version
         )
         final_module_folder = layout.get_module_folder(module.name, module.version)
@@ -84,9 +84,9 @@ def _deploy_releases(
 def _deprecate_releases(to_deprecate: list[Release], layout: Layout) -> None:
     """Deprecate a list of modules.
 
-    For each module, this will move the modulefile link to a 'deprecated' directory. If
-    the user's MODULEPATH is set up to include the 'deprecated' directory, all
-    modules should be available as before.
+    For each module, this will move the modulefile link to the 'deprecated' directory
+    under the Deployment Area. If the user's MODULEPATH is set to include the
+    'deprecated/modulefiles' directory, all modules should be available as before.
     """
     for release in to_deprecate:
         deprecate_modulefile_link(release.module.name, release.module.version, layout)
