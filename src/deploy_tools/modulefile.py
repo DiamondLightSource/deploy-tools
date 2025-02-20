@@ -8,8 +8,7 @@ from .templater import Templater, TemplateType
 
 type ModuleVersionsByName = dict[str, list[str]]
 
-DEFAULT_VERSION_FILENAME = ".version"
-VERSION_GLOB = f"*/[!{DEFAULT_VERSION_FILENAME}]*"
+VERSION_GLOB = f"*/[!{Layout.DEFAULT_VERSION_FILENAME}]*"
 
 DEFAULT_VERSION_REGEX = "^set ModulesVersion (.*)$"
 
@@ -66,7 +65,7 @@ def is_modulefile_deployed(
 
 def get_default_modulefile_version(name: str, layout: Layout) -> str | None:
     version_regex = re.compile(DEFAULT_VERSION_REGEX)
-    default_version_file = layout.modulefiles_root / name / DEFAULT_VERSION_FILENAME
+    default_version_file = layout.get_default_version_file(name)
 
     with open(default_version_file) as f:
         for line in f.readlines():
@@ -83,16 +82,16 @@ def apply_default_versions(
     deployed_module_versions = get_deployed_modulefile_versions(layout)
 
     for name in deployed_module_versions:
-        version_file = layout.modulefiles_root / name / DEFAULT_VERSION_FILENAME
+        default_version_file = layout.get_default_version_file(name)
 
         if name in default_versions:
             params = {"version": default_versions[name]}
 
             templater.create(
-                version_file,
+                default_version_file,
                 TemplateType.MODULEFILE_VERSION,
                 params,
                 overwrite=True,
             )
         else:
-            version_file.unlink(missing_ok=True)
+            default_version_file.unlink(missing_ok=True)

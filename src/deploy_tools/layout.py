@@ -49,6 +49,7 @@ class Layout:
     MODULEFILES_ROOT_NAME = "modulefiles"
     DEPRECATED_ROOT_NAME = "deprecated"
     DEFAULT_BUILD_ROOT_NAME = "build"
+    DEFAULT_VERSION_FILENAME = ".version"
 
     DEPLOYMENT_SNAPSHOT_FILENAME = "deployment.yaml"
 
@@ -85,6 +86,9 @@ class Layout:
             self.get_module_folder(name, version)
             / ModuleBuildLayout.BUILT_MODULEFILE_FILENAME
         )
+
+    def get_default_version_file(self, name: str) -> Path:
+        return self.modulefiles_root / name / self.DEFAULT_VERSION_FILENAME
 
     @property
     def deployment_root(self) -> Path:

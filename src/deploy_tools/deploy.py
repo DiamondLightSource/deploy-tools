@@ -6,11 +6,12 @@ from .layout import Layout
 from .models.changes import DeploymentChanges
 from .models.module import Release
 from .modulefile import (
-    DEFAULT_VERSION_FILENAME,
     apply_default_versions,
     deprecate_modulefile_link,
     restore_modulefile_link,
 )
+
+MODULE_VERSIONS_GLOB = f"[!{Layout.DEFAULT_VERSION_FILENAME}]*"
 
 
 def deploy_changes(changes: DeploymentChanges, layout: Layout) -> None:
@@ -134,9 +135,8 @@ def _delete_modulefile_name_folder(
     layout: Layout, name: str, from_deprecated: bool = False
 ) -> None:
     modulefiles_name_path = layout.get_modulefiles_root(from_deprecated) / name
-    module_versions_glob = f"[!{DEFAULT_VERSION_FILENAME}]*"
 
-    if next(modulefiles_name_path.glob(module_versions_glob), None) is None:
+    if next(modulefiles_name_path.glob(MODULE_VERSIONS_GLOB), None) is None:
         shutil.rmtree(modulefiles_name_path)
 
 
