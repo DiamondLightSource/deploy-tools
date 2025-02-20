@@ -5,7 +5,6 @@ from pathlib import Path
 
 from .layout import ModuleBuildLayout
 from .models.apptainer import Apptainer
-from .models.command import Command
 from .models.module import Application, Module
 from .models.shell import Shell
 from .templater import Templater, TemplateType
@@ -26,8 +25,6 @@ class AppBuilder:
         match app:
             case Apptainer():
                 self.create_apptainer_files(app, module)
-            case Command():
-                self.create_command_file(app, module)
             case Shell():
                 self.create_shell_file(app, module)
 
@@ -98,23 +95,6 @@ class AppBuilder:
         )
         file_name = uuid.uuid3(uuid.NAMESPACE_URL, app.container.url).hex
         return sif_folder / f"{file_name}.sif"
-
-    def create_command_file(self, app: Command, module: Module) -> None:
-        """Create 'command' entrypoints, which run an executable on a path."""
-        entrypoints_folder = self._build_layout.get_entrypoints_folder(
-            module.name, module.version
-        )
-        entrypoints_folder.mkdir(parents=True, exist_ok=True)
-        entrypoint_file = entrypoints_folder / app.name
-
-        params = {
-            "command_path": app.command_path,
-            "command_args": app.command_args,
-        }
-
-        self._templater.create(
-            entrypoint_file, TemplateType.COMMAND_ENTRYPOINT, params, executable=True
-        )
 
     def create_shell_file(self, app: Shell, module: Module) -> None:
         """Create shell script using 'bash' for improved functionality."""

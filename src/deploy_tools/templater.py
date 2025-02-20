@@ -13,7 +13,6 @@ class TemplateType(StrEnum):
     MODULEFILE = "modulefile"
     MODULEFILE_VERSION = "modulefile_version"
     APPTAINER_ENTRYPOINT = "apptainer_entrypoint"
-    COMMAND_ENTRYPOINT = "command_entrypoint"
     SHELL_ENTRYPOINT = "shell_entrypoint"
 
 

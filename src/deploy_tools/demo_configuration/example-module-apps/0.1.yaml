@@ -31,11 +31,11 @@ module:
         mounts:
           - /dls_sw:/dls_sw_test:ro
 
-    - app_type: command
+    - app_type: shell
 
       name: test-echo-module-folder
-      command_path: echo
-      command_args: $OTHER_VALUE
+      script:
+        - echo $OTHER_VALUE
 
     - app_type: shell
 

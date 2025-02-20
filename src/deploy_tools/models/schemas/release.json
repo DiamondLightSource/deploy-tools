@@ -36,37 +36,6 @@
       "title": "Apptainer",
       "type": "object"
     },
-    "Command": {
-      "additionalProperties": false,
-      "description": "Represents a Command application.\n\nThis runs the specified command with the specified arguments, as a bash script. All\nadditional arguments and options on the command line are passed through to this\ncommand.",
-      "properties": {
-        "app_type": {
-          "const": "command",
-          "title": "App Type",
-          "type": "string"
-        },
-        "name": {
-          "title": "Name",
-          "type": "string"
-        },
-        "command_path": {
-          "title": "Command Path",
-          "type": "string"
-        },
-        "command_args": {
-          "default": "",
-          "title": "Command Args",
-          "type": "string"
-        }
-      },
-      "required": [
-        "app_type",
-        "name",
-        "command_path"
-      ],
-      "title": "Command",
-      "type": "object"
-    },
     "ContainerImage": {
       "additionalProperties": false,
       "properties": {
@@ -211,7 +180,6 @@
             "discriminator": {
               "mapping": {
                 "apptainer": "#/$defs/Apptainer",
-                "command": "#/$defs/Command",
                 "shell": "#/$defs/Shell"
               },
               "propertyName": "app_type"
@@ -219,9 +187,6 @@
             "oneOf": [
               {
                 "$ref": "#/$defs/Apptainer"
-              },
-              {
-                "$ref": "#/$defs/Command"
               },
               {
                 "$ref": "#/$defs/Shell"
