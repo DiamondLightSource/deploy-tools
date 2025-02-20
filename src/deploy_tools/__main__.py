@@ -64,12 +64,16 @@ def validate(
         ),
     ],
     from_scratch: Annotated[bool, typer.Option()] = False,
+    test_build: Annotated[bool, typer.Option()] = True,
 ) -> None:
     """Validate deployment configuration and print a list of expected module changes.
 
-    This is the same validation that the deploy-tools sync command uses.
+    If specified, this includes a test build of the provided configuration. The
+    configuration validation is the same as used by the deploy-tools sync command.
     """
-    validate_and_check_configuration(deployment_root, config_folder, from_scratch)
+    validate_and_check_configuration(
+        deployment_root, config_folder, from_scratch, test_build
+    )
 
 
 @app.command(no_args_is_help=True)

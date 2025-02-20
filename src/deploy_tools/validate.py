@@ -26,7 +26,10 @@ class ValidationError(Exception):
 
 
 def validate_and_check_configuration(
-    deployment_root: Path, config_folder: Path, from_scratch: bool = False
+    deployment_root: Path,
+    config_folder: Path,
+    from_scratch: bool = False,
+    test_build: bool = True,
 ) -> None:
     """Validate deployment config and check that deploy can run in deployment area."""
     with TemporaryDirectory() as build_dir:
@@ -37,12 +40,12 @@ def validate_and_check_configuration(
         deployment_changes = validate_deployment_changes(
             deployment, snapshot, from_scratch
         )
+        snapshot_default_versions = validate_default_versions(snapshot)
 
         check_deploy_can_run(deployment_changes, layout)
+        if test_build:
+            build(deployment_changes, layout)
 
-        build(deployment_changes, layout)
-
-        snapshot_default_versions = validate_default_versions(snapshot)
         print_updates(snapshot_default_versions, deployment_changes)
 
 
