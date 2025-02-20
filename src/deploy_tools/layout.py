@@ -88,6 +88,12 @@ class Layout:
             / ModuleBuildLayout.BUILT_MODULEFILE_FILENAME
         )
 
+    def get_module_snapshot_path(self, name: str, version: str) -> Path:
+        return (
+            self.get_module_folder(name, version)
+            / ModuleBuildLayout.MODULE_SNAPSHOT_FILENAME
+        )
+
     def get_default_version_file(self, name: str) -> Path:
         return self.modulefiles_root / name / self.DEFAULT_VERSION_FILENAME
 

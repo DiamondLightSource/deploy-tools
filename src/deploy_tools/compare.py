@@ -78,16 +78,13 @@ def _collect_modules(layout: Layout) -> list[Module]:
     """
 
     modules: list[Module] = []
-    build_layout = layout.build_layout
 
     for name_path in layout.modules_root.glob("*"):
         for version_path in name_path.glob("*"):
             name = name_path.name
             version = version_path.name
             modules.append(
-                load_from_yaml(
-                    Module, build_layout.get_module_snapshot_path(name, version)
-                )
+                load_from_yaml(Module, layout.get_module_snapshot_path(name, version))
             )
 
     return modules
