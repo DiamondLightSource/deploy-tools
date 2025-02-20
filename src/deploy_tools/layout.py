@@ -1,45 +1,49 @@
 from pathlib import Path
 
 
-class ModuleBuildLayout:
-    """Represents the layout of a built module.
+class ModuleAreaLayout:
+    """Represents the layout of Modules with the given root path.
 
-    When intended to be used before the Deploy step, this should be done on the same
-    filesystem as their final location, in order to ensure that all filesystem moves are
-    atomic.
+    This is generic to both built and deployed modules.
     """
 
     ENTRYPOINTS_FOLDER = "entrypoints"
-    SIF_FILES_FOLDER = "sif_files"
 
     MODULE_SNAPSHOT_FILENAME = "module.yaml"
-    BUILT_MODULEFILE_FILENAME = "modulefile"
+    MODULEFILE_FILENAME = "modulefile"
 
-    def __init__(self, build_root: Path) -> None:
-        self._build_root = build_root
+    def __init__(self, root: Path) -> None:
+        self._root = root
 
-    def get_module_build_folder(self, name: str, version: str) -> Path:
-        return self._build_root / name / version
+    def get_module_folder(self, name: str, version: str) -> Path:
+        return self._root / name / version
 
     def get_entrypoints_folder(self, name: str, version: str) -> Path:
-        return self.get_module_build_folder(name, version) / self.ENTRYPOINTS_FOLDER
+        return self.get_module_folder(name, version) / self.ENTRYPOINTS_FOLDER
 
-    def get_sif_files_folder(self, name: str, version: str) -> Path:
-        return self.get_module_build_folder(name, version) / self.SIF_FILES_FOLDER
-
-    def get_built_modulefile(self, name: str, version: str) -> Path:
-        return (
-            self.get_module_build_folder(name, version) / self.BUILT_MODULEFILE_FILENAME
-        )
+    def get_modulefile(self, name: str, version: str) -> Path:
+        return self.get_module_folder(name, version) / self.MODULEFILE_FILENAME
 
     def get_module_snapshot_path(self, name: str, version: str) -> Path:
-        return (
-            self.get_module_build_folder(name, version) / self.MODULE_SNAPSHOT_FILENAME
-        )
+        return self.get_module_folder(name, version) / self.MODULE_SNAPSHOT_FILENAME
+
+
+class ModuleBuildLayout(ModuleAreaLayout):
+    """Represents the layout used for Modules during the build process.
+
+    When intended to be used before the Deploy step, this should be done on the same
+    filesystem as the Deployment Area, in order to ensure that all filesystem moves are
+    atomic.
+    """
+
+    SIF_FILES_FOLDER = "sif_files"
+
+    def get_sif_files_folder(self, name: str, version: str) -> Path:
+        return self.get_module_folder(name, version) / self.SIF_FILES_FOLDER
 
     @property
     def build_root(self):
-        return self._build_root
+        return self._root
 
 
 class Layout:
@@ -56,6 +60,7 @@ class Layout:
 
     def __init__(self, deployment_root: Path, build_root: Path | None = None) -> None:
         self._root = deployment_root
+        self._modules_layout = ModuleAreaLayout(self.modules_root)
 
         if build_root is not None:
             self._build_root = build_root
@@ -63,12 +68,10 @@ class Layout:
             self._build_root = self._root / self.DEFAULT_BUILD_ROOT_NAME
 
     def get_module_folder(self, name: str, version: str) -> Path:
-        return self.modules_root / name / version
+        return self._modules_layout.get_module_folder(name, version)
 
     def get_entrypoints_folder(self, name: str, version: str) -> Path:
-        return (
-            self.get_module_folder(name, version) / ModuleBuildLayout.ENTRYPOINTS_FOLDER
-        )
+        return self._modules_layout.get_entrypoints_folder(name, version)
 
     def get_modulefiles_root(self, from_deprecated: bool = False) -> Path:
         return (
@@ -83,16 +86,10 @@ class Layout:
         return self.get_modulefiles_root(from_deprecated) / name / version
 
     def get_modulefile(self, name: str, version: str) -> Path:
-        return (
-            self.get_module_folder(name, version)
-            / ModuleBuildLayout.BUILT_MODULEFILE_FILENAME
-        )
+        return self._modules_layout.get_modulefile(name, version)
 
     def get_module_snapshot_path(self, name: str, version: str) -> Path:
-        return (
-            self.get_module_folder(name, version)
-            / ModuleBuildLayout.MODULE_SNAPSHOT_FILENAME
-        )
+        return self._modules_layout.get_module_snapshot_path(name, version)
 
     def get_default_version_file(self, name: str) -> Path:
         return self.modulefiles_root / name / self.DEFAULT_VERSION_FILENAME
