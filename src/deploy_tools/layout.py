@@ -52,6 +52,7 @@ class Layout:
     DEFAULT_VERSION_FILENAME = ".version"
 
     DEPLOYMENT_SNAPSHOT_FILENAME = "deployment.yaml"
+    PREVIOUS_DEPLOYMENT_SNAPSHOT_FILENAME = "previous-deployment.yaml"
 
     def __init__(self, deployment_root: Path, build_root: Path | None = None) -> None:
         self._root = deployment_root
@@ -113,6 +114,10 @@ class Layout:
     @property
     def deployment_snapshot_path(self) -> Path:
         return self._root / self.DEPLOYMENT_SNAPSHOT_FILENAME
+
+    @property
+    def previous_deployment_snapshot_path(self) -> Path:
+        return self._root / self.PREVIOUS_DEPLOYMENT_SNAPSHOT_FILENAME
 
     @property
     def build_layout(self) -> ModuleBuildLayout:
