@@ -58,7 +58,9 @@ def get_deployed_modulefile_versions(
 def is_modulefile_deployed(
     name: str, version: str, layout: Layout, in_deprecated: bool = False
 ) -> bool:
-    modulefile = layout.get_modulefile(name, version, from_deprecated=in_deprecated)
+    modulefile = layout.get_modulefile_link(
+        name, version, from_deprecated=in_deprecated
+    )
     return modulefile.exists()
 
 

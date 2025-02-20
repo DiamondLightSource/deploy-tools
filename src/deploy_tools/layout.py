@@ -75,10 +75,16 @@ class Layout:
             else self.modulefiles_root
         )
 
-    def get_modulefile(
+    def get_modulefile_link(
         self, name: str, version: str, from_deprecated: bool = False
     ) -> Path:
         return self.get_modulefiles_root(from_deprecated) / name / version
+
+    def get_modulefile(self, name: str, version: str) -> Path:
+        return (
+            self.get_module_folder(name, version)
+            / ModuleBuildLayout.BUILT_MODULEFILE_FILENAME
+        )
 
     @property
     def deployment_root(self) -> Path:
