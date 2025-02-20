@@ -49,6 +49,7 @@ class Layout:
     MODULEFILES_ROOT_NAME = "modulefiles"
     DEPRECATED_ROOT_NAME = "deprecated"
     DEFAULT_BUILD_ROOT_NAME = "build"
+    DEFAULT_VERSION_FILENAME = ".version"
 
     DEPLOYMENT_SNAPSHOT_FILENAME = "deployment.yaml"
 
@@ -75,10 +76,19 @@ class Layout:
             else self.modulefiles_root
         )
 
-    def get_modulefile(
+    def get_modulefile_link(
         self, name: str, version: str, from_deprecated: bool = False
     ) -> Path:
         return self.get_modulefiles_root(from_deprecated) / name / version
+
+    def get_modulefile(self, name: str, version: str) -> Path:
+        return (
+            self.get_module_folder(name, version)
+            / ModuleBuildLayout.BUILT_MODULEFILE_FILENAME
+        )
+
+    def get_default_version_file(self, name: str) -> Path:
+        return self.modulefiles_root / name / self.DEFAULT_VERSION_FILENAME
 
     @property
     def deployment_root(self) -> Path:

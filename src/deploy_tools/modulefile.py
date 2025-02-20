@@ -8,13 +8,12 @@ from .templater import Templater, TemplateType
 
 type ModuleVersionsByName = dict[str, list[str]]
 
-DEFAULT_VERSION_FILENAME = ".version"
-VERSION_GLOB = f"*/[!{DEFAULT_VERSION_FILENAME}]*"
+VERSION_GLOB = f"*/[!{Layout.DEFAULT_VERSION_FILENAME}]*"
 
 DEFAULT_VERSION_REGEX = "^set ModulesVersion (.*)$"
 
 
-def deprecate_modulefile(name: str, version: str, layout: Layout) -> None:
+def deprecate_modulefile_link(name: str, version: str, layout: Layout) -> None:
     _move_modulefile_link(
         name,
         version,
@@ -23,7 +22,7 @@ def deprecate_modulefile(name: str, version: str, layout: Layout) -> None:
     )
 
 
-def restore_modulefile(name: str, version: str, layout: Layout) -> None:
+def restore_modulefile_link(name: str, version: str, layout: Layout) -> None:
     _move_modulefile_link(
         name,
         version,
@@ -58,13 +57,15 @@ def get_deployed_modulefile_versions(
 def is_modulefile_deployed(
     name: str, version: str, layout: Layout, in_deprecated: bool = False
 ) -> bool:
-    modulefile = layout.get_modulefile(name, version, from_deprecated=in_deprecated)
-    return modulefile.exists()
+    modulefile_link = layout.get_modulefile_link(
+        name, version, from_deprecated=in_deprecated
+    )
+    return modulefile_link.exists()
 
 
 def get_default_modulefile_version(name: str, layout: Layout) -> str | None:
     version_regex = re.compile(DEFAULT_VERSION_REGEX)
-    default_version_file = layout.modulefiles_root / name / DEFAULT_VERSION_FILENAME
+    default_version_file = layout.get_default_version_file(name)
 
     with open(default_version_file) as f:
         for line in f.readlines():
@@ -81,16 +82,16 @@ def apply_default_versions(
     deployed_module_versions = get_deployed_modulefile_versions(layout)
 
     for name in deployed_module_versions:
-        version_file = layout.modulefiles_root / name / DEFAULT_VERSION_FILENAME
+        default_version_file = layout.get_default_version_file(name)
 
         if name in default_versions:
             params = {"version": default_versions[name]}
 
             templater.create(
-                version_file,
+                default_version_file,
                 TemplateType.MODULEFILE_VERSION,
                 params,
                 overwrite=True,
             )
         else:
-            version_file.unlink(missing_ok=True)
+            default_version_file.unlink(missing_ok=True)

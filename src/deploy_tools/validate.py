@@ -5,7 +5,6 @@ from tempfile import TemporaryDirectory
 
 from .build import build
 from .check_deploy import check_deploy_can_run
-from .display import print_updates
 from .layout import Layout
 from .models.changes import DeploymentChanges, ReleaseChanges
 from .models.deployment import (
@@ -18,6 +17,7 @@ from .models.module import DEVELOPMENT_VERSION, Release
 from .modulefile import (
     ModuleVersionsByName,
 )
+from .print_updates import print_updates
 from .snapshot import load_snapshot
 
 

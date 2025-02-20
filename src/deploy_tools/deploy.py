@@ -6,11 +6,12 @@ from .layout import Layout
 from .models.changes import DeploymentChanges
 from .models.module import Release
 from .modulefile import (
-    DEFAULT_VERSION_FILENAME,
     apply_default_versions,
-    deprecate_modulefile,
-    restore_modulefile,
+    deprecate_modulefile_link,
+    restore_modulefile_link,
 )
+
+MODULE_VERSIONS_GLOB = f"[!{Layout.DEFAULT_VERSION_FILENAME}]*"
 
 
 def deploy_changes(changes: DeploymentChanges, layout: Layout) -> None:
@@ -46,20 +47,19 @@ def _remove_releases(to_remove: list[Release], layout: Layout) -> None:
 def _deploy_new_releases(to_add: list[Release], layout: Layout) -> None:
     """Deploy modules from the provided list."""
     _deploy_releases(to_add, layout)
-    build_layout = layout.build_layout
 
     for release in to_add:
         name = release.module.name
         version = release.module.version
         deprecated = release.deprecated
 
-        built_modulefile = build_layout.get_built_modulefile(name, version)
-        modulefile_link = layout.get_modulefile(
+        modulefile = layout.get_modulefile(name, version)
+        modulefile_link = layout.get_modulefile_link(
             name, version, from_deprecated=deprecated
         )
 
         modulefile_link.parent.mkdir(parents=True, exist_ok=True)
-        os.symlink(built_modulefile, modulefile_link)
+        os.symlink(modulefile, modulefile_link)
 
 
 def _deploy_releases(
@@ -84,18 +84,18 @@ def _deploy_releases(
 def _deprecate_releases(to_deprecate: list[Release], layout: Layout) -> None:
     """Deprecate a list of modules.
 
-    This will move the modulefile to a 'deprecated' directory. If the modulefile path is
-    set up to include the 'deprecated' directory, all modulefiles should continue to
-    work.
+    For each module, this will move the modulefile link to a 'deprecated' directory. If
+    the user's MODULEPATH is set up to include the 'deprecated' directory, all
+    modules should be available as before.
     """
     for release in to_deprecate:
-        deprecate_modulefile(release.module.name, release.module.version, layout)
+        deprecate_modulefile_link(release.module.name, release.module.version, layout)
 
 
 def _remove_deployed_module(
     name: str, version: str, layout: Layout, from_deprecated: bool = False
 ) -> None:
-    modulefile = layout.get_modulefile(name, version, from_deprecated)
+    modulefile = layout.get_modulefile_link(name, version, from_deprecated)
     modulefile.unlink()
 
     _remove_module(name, version, layout)
@@ -110,7 +110,7 @@ def _remove_module(name: str, version: str, layout: Layout) -> None:
 def _restore_releases(to_restore: list[Release], layout: Layout) -> None:
     """Restore a previously deprecated module."""
     for release in to_restore:
-        restore_modulefile(release.module.name, release.module.version, layout)
+        restore_modulefile_link(release.module.name, release.module.version, layout)
 
 
 def _remove_name_folders(
@@ -119,25 +119,34 @@ def _remove_name_folders(
     removed: list[Release],
     layout: Layout,
 ) -> None:
-    """Remove module name folders where all versions have been removed."""
+    """Remove module name folders where all versions have been removed.
+
+    Several types of path are of the form <root>/name/version. When removing version
+    files in operations such as deprecation, if all versions are removed the parent
+    folder (called name folder here) will still exist. This function is designed to
+    remove them.
+
+    Note that the non-deprecated modulefile name folder will not be empty, as the
+    default version file will still exist.
+    """
     for release in deprecated:
-        _delete_modulefile_name_folder(layout, release.module.name)
+        _delete_modulefiles_name_folder(layout, release.module.name)
 
     for release in restored:
-        _delete_modulefile_name_folder(layout, release.module.name, True)
+        _delete_modulefiles_name_folder(layout, release.module.name, True)
 
     for release in removed:
-        _delete_modulefile_name_folder(layout, release.module.name, True)
+        _delete_modulefiles_name_folder(layout, release.module.name, True)
         _delete_name_folder(release.module.name, layout.modules_root)
 
 
-def _delete_modulefile_name_folder(
+def _delete_modulefiles_name_folder(
     layout: Layout, name: str, from_deprecated: bool = False
 ) -> None:
     modulefiles_name_path = layout.get_modulefiles_root(from_deprecated) / name
-    module_versions_glob = f"[!{DEFAULT_VERSION_FILENAME}]*"
 
-    if next(modulefiles_name_path.glob(module_versions_glob), None) is None:
+    # Ignore the default version file when checking for existing modulefile links
+    if next(modulefiles_name_path.glob(MODULE_VERSIONS_GLOB), None) is None:
         shutil.rmtree(modulefiles_name_path)
 
 
