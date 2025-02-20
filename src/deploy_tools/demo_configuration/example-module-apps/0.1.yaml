@@ -17,12 +17,12 @@ module:
         version: latest
 
       entrypoints:
-        - executable_name: cowsay-hello
+        - name: cowsay-hello
           command: cowsay
           options:
             command_args: Hello
 
-        - executable_name: show-directory
+        - name: show-directory
           command: ls
           options:
             command_args: -al /dls_sw_test

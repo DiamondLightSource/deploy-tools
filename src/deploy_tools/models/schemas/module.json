@@ -2,13 +2,10 @@
   "$defs": {
     "Apptainer": {
       "additionalProperties": false,
-      "description": "Represents an Apptainer application or set of applications.\n\nThis uses apptainer to deploy a portable image of the desired container. Several\nentrypoints can then be specified to allow for multiple commands to be easily used\nin the same container image.",
+      "description": "Represents an Apptainer application or set of applications for a single image.\n\nThis uses Apptainer to deploy a portable image of the desired container. Several\nentrypoints can then be specified to allow for multiple commands run on the same\ncontainer image.",
       "properties": {
         "app_type": {
           "const": "apptainer",
-          "enum": [
-            "apptainer"
-          ],
           "title": "App Type",
           "type": "string"
         },
@@ -23,7 +20,12 @@
           "type": "array"
         },
         "global_options": {
-          "$ref": "#/$defs/EntrypointOptions"
+          "$ref": "#/$defs/EntrypointOptions",
+          "default": {
+            "apptainer_args": "",
+            "command_args": "",
+            "mounts": []
+          }
         }
       },
       "required": [
@@ -40,9 +42,6 @@
       "properties": {
         "app_type": {
           "const": "command",
-          "enum": [
-            "command"
-          ],
           "title": "App Type",
           "type": "string"
         },
@@ -89,9 +88,10 @@
     },
     "Entrypoint": {
       "additionalProperties": false,
+      "description": "Represents an entrypoint to a command on the Apptainer image.\n\nIf no command is provided, the entrypoint (`name`) is used by default. This\ncorresponds to the name of the executable provided by the Module.",
       "properties": {
-        "executable_name": {
-          "title": "Executable Name",
+        "name": {
+          "title": "Name",
           "type": "string"
         },
         "command": {
@@ -107,11 +107,16 @@
           "title": "Command"
         },
         "options": {
-          "$ref": "#/$defs/EntrypointOptions"
+          "$ref": "#/$defs/EntrypointOptions",
+          "default": {
+            "apptainer_args": "",
+            "command_args": "",
+            "mounts": []
+          }
         }
       },
       "required": [
-        "executable_name"
+        "name"
       ],
       "title": "Entrypoint",
       "type": "object"
@@ -143,6 +148,7 @@
     },
     "EnvVar": {
       "additionalProperties": false,
+      "description": "Represents an environment variable to set when loading the Module.",
       "properties": {
         "name": {
           "title": "Name",
@@ -236,6 +242,7 @@
     },
     "ModuleDependency": {
       "additionalProperties": false,
+      "description": "Specify an Environment Module to include as a dependency.\n\nIf the dependent Environment Module is managed by this same Deployment (i.e. is a\nModule), you must specify a specific version in order to pass validation.",
       "properties": {
         "name": {
           "title": "Name",
@@ -262,13 +269,10 @@
     },
     "Shell": {
       "additionalProperties": false,
-      "description": "Represents a Shell application.\n\nThis will run the code specified as a shell script. This currently uses Bash for\nimproved functionality while retaining high compatibility with various Linux\noperating systems.",
+      "description": "Represents a Shell application.\n\nThis will run the code specified as a shell script. This currently uses Bash for\nimproved functionality while retaining high compatibility with various Linux\ndistributions.",
       "properties": {
         "app_type": {
           "const": "shell",
-          "enum": [
-            "shell"
-          ],
           "title": "App Type",
           "type": "string"
         },
@@ -294,7 +298,7 @@
     }
   },
   "additionalProperties": false,
-  "description": "Represents a Module to be deployed along with its lifecycle status.",
+  "description": "Represents a Module along with its lifecycle (deprecation) status.",
   "properties": {
     "module": {
       "$ref": "#/$defs/Module"

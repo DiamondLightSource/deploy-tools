@@ -13,7 +13,7 @@ module:
         version: "4.7.3ec2"
 
       entrypoints:
-        - executable_name: phoebus
+        - name: phoebus
           command: java -jar /phoebus/phoebus.jar -server 7010
           options:
             apptainer_args: --env DISPLAY=${DISPLAY} -e

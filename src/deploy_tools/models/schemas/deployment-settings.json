@@ -1,13 +1,18 @@
 {
-  "additionalProperties": false,
-  "properties": {
-    "default_versions": {
+  "$defs": {
+    "DefaultVersionsByName": {
       "additionalProperties": {
         "type": "string"
       },
-      "default": {},
-      "title": "Default Versions",
       "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "description": "All global configuration settings for the Deployment.",
+  "properties": {
+    "default_versions": {
+      "$ref": "#/$defs/DefaultVersionsByName",
+      "default": {}
     }
   },
   "title": "DeploymentSettings",

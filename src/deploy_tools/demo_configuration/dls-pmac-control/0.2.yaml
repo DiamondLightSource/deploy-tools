@@ -17,7 +17,7 @@ module:
         version: "3.2.0b1"
 
       entrypoints:
-        - executable_name: dls-pmac-control
+        - name: dls-pmac-control
           command: dls-pmac-control
           options:
             apptainer_args: -e
