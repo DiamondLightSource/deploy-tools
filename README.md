@@ -52,6 +52,17 @@ bit different to the CLI commands; see `deploy-tools --help` for more informatio
 |Build   |Generate entrypoint scripts, configuration files and environment variables for a given Module. These are output to the Build Area                                                                                                                |
 |Deploy  |Move all built Modules from the Build Area into the Modules Area. A link to the built modulefile is moved to either the Modulefiles Folder or Deprecated Folder, depending on its deprecation status. Update default versions for the modulefiles|
 
+## JSON Schema
+
+A set of JSON schema files are provided under `src/deploy_tools/models/schemas`. These are generated from the Pydantic models in the schemas parent directory.
+
+We strongly recommend that you provide a schema for configuration file validation. The relevant lines at the top of each release file are:
+
+```# yaml-language-server: $schema=/workspaces/deploy-tools/src/deploy_tools/models/schemas/release.json```
+
+As the demo_configuration is used during development, we set it to use the locally generated schemas. Note that the 'Generate Schema' VSCode task will update the schemas according to any update of the code, but you need to trigger this manually and check the contents in.
+
+For any production configuration, you should set it to use schema files from GitHub.
 
 ## CLI Commands, VSCode Tasks and Debug Configuration
 
