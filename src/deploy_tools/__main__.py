@@ -118,6 +118,7 @@ def common(
     version: bool = typer.Option(
         None,
         "--version",
+        "-V",
         help="Show program's version number and exit.",
         callback=version_callback,
     ),
