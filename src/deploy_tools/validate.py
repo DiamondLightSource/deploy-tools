@@ -248,13 +248,7 @@ def _validate_module_dependencies(deployment: Deployment) -> None:
             for dependency in release.module.dependencies:
                 dep_name = dependency.name
                 dep_version = dependency.version
-                if dep_name in final_deployed_modules:
-                    if dep_version is None:
-                        raise ValidationError(
-                            f"Module {name}/{version} must use specific version for "
-                            f"module dependency {dep_name} as it is in configuration."
-                        )
-
+                if dep_version is not None and dep_name in final_deployed_modules:
                     if dep_version not in final_deployed_modules[dep_name]:
                         raise ValidationError(
                             f"Module {name}/{version} has unknown module dependency "
