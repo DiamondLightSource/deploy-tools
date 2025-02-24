@@ -12,29 +12,54 @@ from .validate import validate_and_check_configuration
 __all__ = ["main"]
 
 
+DEPLOYMENT_ROOT_ARGUMENT = Annotated[
+    Path,
+    typer.Argument(
+        exists=True,
+        file_okay=False,
+        dir_okay=True,
+        writable=True,
+        help="Root of the deployment area to use.",
+    ),
+]
+CONFIG_FOLDER_ARGUMENT = Annotated[
+    Path,
+    typer.Argument(
+        exists=True,
+        file_okay=False,
+        dir_okay=True,
+        help="Folder containing configuration for deployment.",
+    ),
+]
+SCHEMA_OUTPUT_PATH_ARGUMENT = Annotated[
+    Path,
+    typer.Argument(
+        exists=True,
+        file_okay=False,
+        dir_okay=True,
+        writable=True,
+        help="Output path to write all .json schema files to.",
+    ),
+]
+FROM_SCRATCH_OPTION = Annotated[
+    bool, typer.Option(help="Deploy into an empty deployment area.")
+]
+TEST_BUILD_OPTION = Annotated[
+    bool, typer.Option(help="Test the build process in a temporary directory.")
+]
+USE_PREVIOUS_OPTION = Annotated[
+    bool, typer.Option(help="Use previous deployment snapshot for comparison.")
+]
+
+
 app = typer.Typer(no_args_is_help=True)
 
 
 @app.command(no_args_is_help=True)
 def sync(
-    deployment_root: Annotated[
-        Path,
-        typer.Argument(
-            exists=True,
-            file_okay=False,
-            dir_okay=True,
-            writable=True,
-        ),
-    ],
-    config_folder: Annotated[
-        Path,
-        typer.Argument(
-            exists=True,
-            file_okay=False,
-            dir_okay=True,
-        ),
-    ],
-    from_scratch: Annotated[bool, typer.Option()] = False,
+    deployment_root: DEPLOYMENT_ROOT_ARGUMENT,
+    config_folder: CONFIG_FOLDER_ARGUMENT,
+    from_scratch: FROM_SCRATCH_OPTION = False,
 ) -> None:
     """Synchronise deployment root with current configuration.
 
@@ -46,44 +71,25 @@ def sync(
 
 @app.command(no_args_is_help=True)
 def validate(
-    deployment_root: Annotated[
-        Path,
-        typer.Argument(
-            exists=True,
-            file_okay=False,
-            dir_okay=True,
-            writable=True,
-        ),
-    ],
-    config_folder: Annotated[
-        Path,
-        typer.Argument(
-            exists=True,
-            file_okay=False,
-            dir_okay=True,
-        ),
-    ],
-    from_scratch: Annotated[bool, typer.Option()] = False,
+    deployment_root: DEPLOYMENT_ROOT_ARGUMENT,
+    config_folder: CONFIG_FOLDER_ARGUMENT,
+    from_scratch: FROM_SCRATCH_OPTION = False,
+    test_build: TEST_BUILD_OPTION = True,
 ) -> None:
     """Validate deployment configuration and print a list of expected module changes.
 
-    This is the same validation that the deploy-tools sync command uses.
+    If specified, this includes a test build of the provided configuration. The
+    configuration validation is the same as used by the deploy-tools sync command.
     """
-    validate_and_check_configuration(deployment_root, config_folder, from_scratch)
+    validate_and_check_configuration(
+        deployment_root, config_folder, from_scratch, test_build
+    )
 
 
 @app.command(no_args_is_help=True)
 def compare(
-    deployment_root: Annotated[
-        Path,
-        typer.Argument(
-            exists=True,
-            file_okay=False,
-            dir_okay=True,
-            writable=True,
-        ),
-    ],
-    use_previous: Annotated[bool, typer.Option()] = False,
+    deployment_root: DEPLOYMENT_ROOT_ARGUMENT,
+    use_previous: USE_PREVIOUS_OPTION = False,
 ) -> None:
     """Compare the deployment snapshot to deployed modules in the deployment root.
 
@@ -95,17 +101,7 @@ def compare(
 
 
 @app.command(no_args_is_help=True)
-def schema(
-    output_path: Annotated[
-        Path,
-        typer.Argument(
-            exists=True,
-            file_okay=False,
-            dir_okay=True,
-            writable=True,
-        ),
-    ],
-) -> None:
+def schema(output_path: SCHEMA_OUTPUT_PATH_ARGUMENT) -> None:
     """Generate JSON schemas for yaml configuration files."""
     generate_schema(output_path)
 
@@ -122,7 +118,7 @@ def common(
     version: bool = typer.Option(
         None,
         "--version",
-        help="Show program's version number and exit",
+        help="Show program's version number and exit.",
         callback=version_callback,
     ),
 ) -> None:
