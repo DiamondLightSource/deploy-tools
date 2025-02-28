@@ -114,7 +114,6 @@ def version_callback(value: bool) -> None:
 
 @app.callback()
 def common(
-    ctx: typer.Context,
     version: Annotated[
         bool | None,
         typer.Option(
