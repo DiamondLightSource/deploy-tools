@@ -42,13 +42,23 @@ SCHEMA_OUTPUT_PATH_ARGUMENT = Annotated[
     ),
 ]
 FROM_SCRATCH_OPTION = Annotated[
-    bool, typer.Option(help="Deploy into an empty deployment area.")
+    bool,
+    typer.Option(
+        "--from-scratch/--not-from-scratch",
+        help="Deploy into an empty deployment area.",
+    ),
 ]
 TEST_BUILD_OPTION = Annotated[
-    bool, typer.Option(help="Test the build process in a temporary directory.")
+    bool,
+    typer.Option(
+        "--test-build/--no-test-build", help="Test the build in a temporary directory."
+    ),
 ]
 USE_PREVIOUS_OPTION = Annotated[
-    bool, typer.Option(help="Use previous deployment snapshot for comparison.")
+    bool,
+    typer.Option(
+        "--use-previous/--use-current", help="Use previous snapshot for comparison."
+    ),
 ]
 
 

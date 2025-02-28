@@ -88,7 +88,7 @@
         {
             "id": "config-folder",
             "description": "Configuration folder",
-            "default": "${workspaceFolder}/src/deploy_tools/demo_configuration/",
+            "default": "${workspaceFolder}/src/deploy_tools/demo/configuration/",
             "type": "promptString"
         },
         {
@@ -96,7 +96,7 @@
             "description": "Allow a complete redeployment to an empty directory",
             "options": [
                 "--from-scratch",
-                "--no-from-scratch"
+                "--not-from-scratch"
             ],
             "default": "--no-from-scratch",
             "type": "pickString"
@@ -106,7 +106,7 @@
             "description": "Compare against previous Deployment snapshot",
             "options": [
                 "--use-previous",
-                "--no-use-previous"
+                "--use-current"
             ],
             "default": "--no-use-previous",
             "type": "pickString"
