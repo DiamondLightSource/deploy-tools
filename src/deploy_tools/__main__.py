@@ -19,6 +19,7 @@ DEPLOYMENT_ROOT_ARGUMENT = Annotated[
         file_okay=False,
         dir_okay=True,
         writable=True,
+        show_default=False,
         help="Root of the deployment area to use.",
     ),
 ]
@@ -28,6 +29,7 @@ CONFIG_FOLDER_ARGUMENT = Annotated[
         exists=True,
         file_okay=False,
         dir_okay=True,
+        show_default=False,
         help="Folder containing configuration for deployment.",
     ),
 ]
@@ -38,6 +40,7 @@ SCHEMA_OUTPUT_PATH_ARGUMENT = Annotated[
         file_okay=False,
         dir_okay=True,
         writable=True,
+        show_default=False,
         help="Output path to write all .json schema files to.",
     ),
 ]
