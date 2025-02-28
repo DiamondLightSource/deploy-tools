@@ -115,13 +115,15 @@ def version_callback(value: bool) -> None:
 @app.callback()
 def common(
     ctx: typer.Context,
-    version: bool = typer.Option(
-        None,
-        "--version",
-        "-V",
-        help="Show program's version number and exit.",
-        callback=version_callback,
-    ),
+    version: Annotated[
+        bool | None,
+        typer.Option(
+            "--version",
+            "-V",
+            help="Show program's version number and exit.",
+            callback=version_callback,
+        ),
+    ] = None,
 ) -> None:
     pass
 
