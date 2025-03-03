@@ -1,3 +1,4 @@
+import logging
 from pathlib import Path
 from typing import Annotated
 
@@ -10,6 +11,18 @@ from .sync import synchronise
 from .validate import validate_and_check_configuration
 
 __all__ = ["main"]
+
+
+def verbose_callback(value: int) -> None:
+    match value:
+        case 2:
+            level = logging.DEBUG
+        case 1:
+            level = logging.INFO
+        case 0 | _:
+            level = logging.WARNING
+
+    logging.basicConfig(level=level)
 
 
 DEPLOYMENT_ROOT_ARGUMENT = Annotated[
@@ -63,6 +76,19 @@ USE_PREVIOUS_OPTION = Annotated[
         "--use-previous/--use-current", help="Use previous snapshot for comparison."
     ),
 ]
+VERBOSE_OPTION = Annotated[
+    int,
+    typer.Option(
+        "--verbose",
+        "-v",
+        help="Set verbosity level by passing option multiple times.",
+        count=True,
+        max=2,
+        clamp=True,
+        show_default="WARNING",
+        callback=verbose_callback,
+    ),
+]
 
 
 app = typer.Typer(no_args_is_help=True)
@@ -73,6 +99,7 @@ def sync(
     deployment_root: DEPLOYMENT_ROOT_ARGUMENT,
     config_folder: CONFIG_FOLDER_ARGUMENT,
     from_scratch: FROM_SCRATCH_OPTION = False,
+    verbose: VERBOSE_OPTION = 0,
 ) -> None:
     """Synchronise deployment root with current configuration.
 
@@ -88,6 +115,7 @@ def validate(
     config_folder: CONFIG_FOLDER_ARGUMENT,
     from_scratch: FROM_SCRATCH_OPTION = False,
     test_build: TEST_BUILD_OPTION = True,
+    verbose: VERBOSE_OPTION = 0,
 ) -> None:
     """Validate deployment configuration and print a list of expected module changes.
 
@@ -103,6 +131,7 @@ def validate(
 def compare(
     deployment_root: DEPLOYMENT_ROOT_ARGUMENT,
     use_previous: USE_PREVIOUS_OPTION = False,
+    verbose: VERBOSE_OPTION = 0,
 ) -> None:
     """Compare the deployment snapshot to deployed modules in the deployment root.
 
@@ -114,7 +143,10 @@ def compare(
 
 
 @app.command(no_args_is_help=True)
-def schema(output_path: SCHEMA_OUTPUT_PATH_ARGUMENT) -> None:
+def schema(
+    output_path: SCHEMA_OUTPUT_PATH_ARGUMENT,
+    verbose: VERBOSE_OPTION = 0,
+) -> None:
     """Generate JSON schemas for yaml configuration files."""
     generate_schema(output_path)
 
