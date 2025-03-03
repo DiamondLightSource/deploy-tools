@@ -24,11 +24,11 @@ class AppBuilder:
     def create_application_files(self, app: Application, module: Module):
         match app:
             case Apptainer():
-                self.create_apptainer_files(app, module)
+                self._create_apptainer_files(app, module)
             case Shell():
-                self.create_shell_file(app, module)
+                self._create_shell_file(app, module)
 
-    def create_apptainer_files(self, app: Apptainer, module: Module) -> None:
+    def _create_apptainer_files(self, app: Apptainer, module: Module) -> None:
         """Create apptainer entrypoints using a specified image and commands."""
         self._generate_sif_file(app, module)
         entrypoints_folder = self._build_layout.get_entrypoints_folder(
@@ -94,7 +94,7 @@ class AppBuilder:
         file_name = uuid.uuid3(uuid.NAMESPACE_URL, app.container.url).hex
         return sif_folder / f"{file_name}.sif"
 
-    def create_shell_file(self, app: Shell, module: Module) -> None:
+    def _create_shell_file(self, app: Shell, module: Module) -> None:
         """Create shell script using Bash for improved functionality."""
         entrypoints_folder = self._build_layout.get_entrypoints_folder(
             module.name, module.version

@@ -41,19 +41,6 @@ def _move_modulefile_link(
     src_path.rename(dest_path)
 
 
-def get_deployed_modulefile_versions(
-    layout: Layout, from_deprecated: bool = False
-) -> ModuleVersionsByName:
-    """Return list of modulefiles that have been deployed."""
-    modulefiles_root = layout.get_modulefiles_root(from_deprecated)
-    found_modules: ModuleVersionsByName = defaultdict(list)
-
-    for version_path in modulefiles_root.glob(VERSION_GLOB):
-        found_modules[version_path.parent.name].append(version_path.name)
-
-    return found_modules
-
-
 def is_modulefile_deployed(
     name: str, version: str, layout: Layout, in_deprecated: bool = False
 ) -> bool:
@@ -79,7 +66,7 @@ def apply_default_versions(
 ) -> None:
     """Update .version files for current default version settings."""
     templater = Templater()
-    deployed_module_versions = get_deployed_modulefile_versions(layout)
+    deployed_module_versions = _get_deployed_modulefile_versions(layout)
 
     for name in deployed_module_versions:
         default_version_file = layout.get_default_version_file(name)
@@ -95,3 +82,16 @@ def apply_default_versions(
             )
         else:
             default_version_file.unlink(missing_ok=True)
+
+
+def _get_deployed_modulefile_versions(
+    layout: Layout, from_deprecated: bool = False
+) -> ModuleVersionsByName:
+    """Return list of modulefiles that have been deployed."""
+    modulefiles_root = layout.get_modulefiles_root(from_deprecated)
+    found_modules: ModuleVersionsByName = defaultdict(list)
+
+    for version_path in modulefiles_root.glob(VERSION_GLOB):
+        found_modules[version_path.parent.name].append(version_path.name)
+
+    return found_modules
