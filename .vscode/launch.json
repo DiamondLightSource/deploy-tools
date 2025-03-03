@@ -95,8 +95,8 @@
             "id": "from-scratch",
             "description": "Allow a complete redeployment to an empty directory",
             "options": [
-                "--from-scratch",
-                "--no-from-scratch"
+                "--not-from-scratch",
+                "--from-scratch"
             ],
             "default": "--no-from-scratch",
             "type": "pickString"
@@ -105,8 +105,8 @@
             "id": "use-previous",
             "description": "Compare against previous Deployment snapshot",
             "options": [
-                "--use-previous",
-                "--no-use-previous"
+                "--use-current",
+                "--use-previous"
             ],
             "default": "--no-use-previous",
             "type": "pickString"

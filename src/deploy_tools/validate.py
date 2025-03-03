@@ -1,3 +1,4 @@
+import logging
 from collections import defaultdict
 from copy import deepcopy
 from pathlib import Path
@@ -20,6 +21,8 @@ from .modulefile import (
 from .print_updates import print_updates
 from .snapshot import load_snapshot
 
+logger = logging.getLogger(__name__)
+
 
 class ValidationError(Exception):
     pass
@@ -33,19 +36,28 @@ def validate_and_check_configuration(
 ) -> None:
     """Validate deployment config and check that deploy can run in deployment area."""
     with TemporaryDirectory() as build_dir:
+        logger.info("Loading deployment configuration from: %s", config_folder)
         deployment = load_deployment(config_folder)
+
+        logger.info("Loading deployment snapshot")
         layout = Layout(deployment_root, build_root=Path(build_dir))
         snapshot = load_snapshot(layout, from_scratch)
 
+        logger.info("Validating deployment changes")
         deployment_changes = validate_deployment_changes(
             deployment, snapshot, from_scratch
         )
+
+        logger.info("Retrieving previous default versions")
         snapshot_default_versions = validate_default_versions(snapshot)
 
+        logger.info("Checking deploy process can run in %s", layout.deployment_root)
         check_deploy_can_run(deployment_changes, layout)
         if test_build:
+            logger.info("Performing test build")
             build(deployment_changes, layout)
 
+        logger.info("Printing updates")
         print_updates(snapshot_default_versions, deployment_changes)
 
 
@@ -248,13 +260,7 @@ def _validate_module_dependencies(deployment: Deployment) -> None:
             for dependency in release.module.dependencies:
                 dep_name = dependency.name
                 dep_version = dependency.version
-                if dep_name in final_deployed_modules:
-                    if dep_version is None:
-                        raise ValidationError(
-                            f"Module {name}/{version} must use specific version for "
-                            f"module dependency {dep_name} as it is in configuration."
-                        )
-
+                if dep_version is not None and dep_name in final_deployed_modules:
                     if dep_version not in final_deployed_modules[dep_name]:
                         raise ValidationError(
                             f"Module {name}/{version} has unknown module dependency "

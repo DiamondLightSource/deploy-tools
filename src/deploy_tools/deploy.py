@@ -1,3 +1,4 @@
+import logging
 import os
 import shutil
 from pathlib import Path
@@ -11,21 +12,32 @@ from .modulefile import (
     restore_modulefile_link,
 )
 
+logger = logging.getLogger(__name__)
+
 MODULE_VERSIONS_GLOB = f"[!{Layout.DEFAULT_VERSION_FILENAME}]*"
 
 
 def deploy_changes(changes: DeploymentChanges, layout: Layout) -> None:
     """Perform the Deploy step for the specified changes."""
+    logger.debug("Deploying changes to: %s", layout.deployment_root)
     release_changes = changes.release_changes
 
+    logger.debug("Removing deleted modules: %d", len(release_changes.to_remove))
     _remove_releases(release_changes.to_remove, layout)
+
+    logger.debug("Deploying new releases: %d", len(release_changes.to_add))
     _deploy_new_releases(release_changes.to_add, layout)
+    logger.debug("Deploying updated releases: %d", len(release_changes.to_update))
     _deploy_releases(release_changes.to_update, layout, exist_ok=True)
 
+    logger.debug("Deprecating releases: %d", len(release_changes.to_deprecate))
     _deprecate_releases(release_changes.to_deprecate, layout)
+    logger.debug("Restoring releases %d", len(release_changes.to_restore))
     _restore_releases(release_changes.to_restore, layout)
 
+    logger.debug("Applying default versions")
     apply_default_versions(changes.default_versions, layout)
+    logger.debug("Clearing up empty folders")
     _remove_name_folders(
         release_changes.to_deprecate,
         release_changes.to_restore,

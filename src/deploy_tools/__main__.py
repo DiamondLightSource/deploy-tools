@@ -1,3 +1,4 @@
+import logging
 from pathlib import Path
 from typing import Annotated
 
@@ -12,6 +13,20 @@ from .validate import validate_and_check_configuration
 __all__ = ["main"]
 
 
+def verbose_callback(value: int) -> None:
+    match value:
+        case 2:
+            level = logging.DEBUG
+        case 1:
+            level = logging.INFO
+        case 0 | _:
+            level = logging.WARNING
+
+    logging.basicConfig(
+        format="%(asctime)s %(message)s", datefmt="%Y-%m-%dT%H:%M:%S", level=level
+    )
+
+
 DEPLOYMENT_ROOT_ARGUMENT = Annotated[
     Path,
     typer.Argument(
@@ -19,6 +34,7 @@ DEPLOYMENT_ROOT_ARGUMENT = Annotated[
         file_okay=False,
         dir_okay=True,
         writable=True,
+        show_default=False,
         help="Root of the deployment area to use.",
     ),
 ]
@@ -28,6 +44,7 @@ CONFIG_FOLDER_ARGUMENT = Annotated[
         exists=True,
         file_okay=False,
         dir_okay=True,
+        show_default=False,
         help="Folder containing configuration for deployment.",
     ),
 ]
@@ -38,17 +55,41 @@ SCHEMA_OUTPUT_PATH_ARGUMENT = Annotated[
         file_okay=False,
         dir_okay=True,
         writable=True,
+        show_default=False,
         help="Output path to write all .json schema files to.",
     ),
 ]
 FROM_SCRATCH_OPTION = Annotated[
-    bool, typer.Option(help="Deploy into an empty deployment area.")
+    bool,
+    typer.Option(
+        "--from-scratch/--not-from-scratch",
+        help="Deploy into an empty deployment area.",
+    ),
 ]
 TEST_BUILD_OPTION = Annotated[
-    bool, typer.Option(help="Test the build process in a temporary directory.")
+    bool,
+    typer.Option(
+        "--test-build/--no-test-build", help="Test the build in a temporary directory."
+    ),
 ]
 USE_PREVIOUS_OPTION = Annotated[
-    bool, typer.Option(help="Use previous deployment snapshot for comparison.")
+    bool,
+    typer.Option(
+        "--use-previous/--use-current", help="Use previous snapshot for comparison."
+    ),
+]
+VERBOSE_OPTION = Annotated[
+    int,
+    typer.Option(
+        "--verbose",
+        "-v",
+        help="Set verbosity level by passing option multiple times.",
+        count=True,
+        max=2,
+        clamp=True,
+        show_default="WARNING",
+        callback=verbose_callback,
+    ),
 ]
 
 
@@ -60,6 +101,7 @@ def sync(
     deployment_root: DEPLOYMENT_ROOT_ARGUMENT,
     config_folder: CONFIG_FOLDER_ARGUMENT,
     from_scratch: FROM_SCRATCH_OPTION = False,
+    verbose: VERBOSE_OPTION = 0,
 ) -> None:
     """Synchronise deployment root with current configuration.
 
@@ -75,6 +117,7 @@ def validate(
     config_folder: CONFIG_FOLDER_ARGUMENT,
     from_scratch: FROM_SCRATCH_OPTION = False,
     test_build: TEST_BUILD_OPTION = True,
+    verbose: VERBOSE_OPTION = 0,
 ) -> None:
     """Validate deployment configuration and print a list of expected module changes.
 
@@ -90,6 +133,7 @@ def validate(
 def compare(
     deployment_root: DEPLOYMENT_ROOT_ARGUMENT,
     use_previous: USE_PREVIOUS_OPTION = False,
+    verbose: VERBOSE_OPTION = 0,
 ) -> None:
     """Compare the deployment snapshot to deployed modules in the deployment root.
 
@@ -101,7 +145,10 @@ def compare(
 
 
 @app.command(no_args_is_help=True)
-def schema(output_path: SCHEMA_OUTPUT_PATH_ARGUMENT) -> None:
+def schema(
+    output_path: SCHEMA_OUTPUT_PATH_ARGUMENT,
+    verbose: VERBOSE_OPTION = 0,
+) -> None:
     """Generate JSON schemas for yaml configuration files."""
     generate_schema(output_path)
 
@@ -114,13 +161,15 @@ def version_callback(value: bool) -> None:
 
 @app.callback()
 def common(
-    ctx: typer.Context,
-    version: bool = typer.Option(
-        None,
-        "--version",
-        help="Show program's version number and exit.",
-        callback=version_callback,
-    ),
+    version: Annotated[
+        bool | None,
+        typer.Option(
+            "--version",
+            "-V",
+            help="Show program's version number and exit.",
+            callback=version_callback,
+        ),
+    ] = None,
 ) -> None:
     pass
 
