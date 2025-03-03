@@ -1,10 +1,13 @@
 import json
+import logging
 from pathlib import Path
 
 from pydantic import BaseModel
 
 from .deployment import Deployment, DeploymentSettings
 from .module import Release
+
+logger = logging.getLogger(__name__)
 
 SCHEMA_NAMES: dict[str, type[BaseModel]] = {
     "module.json": Release,
@@ -22,6 +25,9 @@ def generate_schema(output_path: Path) -> None:
     """
     for filename, model in SCHEMA_NAMES.items():
         out_path = output_path / filename
+        logger.info("Creating schema file for %s", model.__name__)
+        logger.debug("Output path: %s", out_path)
+
         schema = model.model_json_schema()
         with open(out_path, "w") as f:
             json.dump(schema, f, indent=2)

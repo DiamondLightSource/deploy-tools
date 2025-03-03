@@ -1,4 +1,5 @@
 import difflib
+import logging
 from collections import defaultdict
 from pathlib import Path
 from typing import Any
@@ -18,6 +19,8 @@ from .models.module import Module, Release
 from .modulefile import get_default_modulefile_version, is_modulefile_deployed
 from .snapshot import load_previous_snapshot, load_snapshot
 from .validate import validate_default_versions
+
+logger = logging.getLogger(__name__)
 
 
 class ComparisonError(Exception):
@@ -42,11 +45,16 @@ def compare_to_snapshot(deployment_root: Path, use_previous: bool = False) -> No
     layout = Layout(deployment_root)
 
     if use_previous:
+        logger.info("Loading previous deployment snapshot")
         deployment_snapshot = load_previous_snapshot(layout)
     else:
+        logger.info("Loading deployment snapshot")
         deployment_snapshot = load_snapshot(layout)
 
+    logger.info("Reconstructing deployment configuration from deployment area")
     actual_deployment = _reconstruct_deployment_config_from_modules(layout)
+
+    logger.info("Comparing reconstructed configuration with snapshot")
     _compare_snapshot_to_actual(snapshot=deployment_snapshot, actual=actual_deployment)
 
 
