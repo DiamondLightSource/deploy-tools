@@ -88,7 +88,7 @@
         {
             "id": "config-folder",
             "description": "Configuration folder",
-            "default": "${workspaceFolder}/src/deploy_tools/demo/configuration/",
+            "default": "${workspaceFolder}/src/deploy_tools/demo_configuration/",
             "type": "promptString"
         },
         {
