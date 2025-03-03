@@ -22,7 +22,9 @@ def verbose_callback(value: int) -> None:
         case 0 | _:
             level = logging.WARNING
 
-    logging.basicConfig(level=level)
+    logging.basicConfig(
+        format="%(asctime)s %(message)s", datefmt="%Y-%m-%dT%H:%M:%S", level=level
+    )
 
 
 DEPLOYMENT_ROOT_ARGUMENT = Annotated[
