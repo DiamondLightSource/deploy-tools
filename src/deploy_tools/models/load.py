@@ -11,7 +11,6 @@ from .deployment import (
 from .module import Module, Release
 
 YAML_FILE_SUFFIX = ".yaml"
-MODULE_CONFIG = "config" + YAML_FILE_SUFFIX
 DEPLOYMENT_SETTINGS = "settings" + YAML_FILE_SUFFIX
 
 
