@@ -1,8 +1,8 @@
-import subprocess
 import uuid
 from itertools import chain
 from pathlib import Path
 
+from .apptainer import create_sif_file
 from .layout import ModuleBuildLayout
 from .models.apptainer_app import ApptainerApp
 from .models.module import Application, Module
@@ -70,22 +70,8 @@ class AppBuilder:
             )
 
     def _generate_sif_file(self, app: ApptainerApp, module: Module) -> None:
-        sif_file = self._get_sif_file_path(app, module)
-        sif_file.parent.mkdir(parents=True, exist_ok=True)
-
-        if not sif_file.is_absolute():
-            raise AppBuilderError(
-                f"Building Apptainer files: "
-                f"Sif file output path must be absolute:\n{sif_file}"
-            )
-
-        if sif_file.exists():
-            raise AppBuilderError(
-                f"Building Apptainer files: Sif file output already exists:\n{sif_file}"
-            )
-
-        commands = ["apptainer", "pull", sif_file, app.container.url]
-        subprocess.run(commands, check=True)
+        sif_file_path = self._get_sif_file_path(app, module)
+        create_sif_file(sif_file_path, app.container.url, create_parents=True)
 
     def _get_sif_file_path(self, app: ApptainerApp, module: Module) -> Path:
         sif_folder = self._build_layout.get_sif_files_folder(
