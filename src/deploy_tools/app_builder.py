@@ -34,7 +34,6 @@ class AppBuilder:
         entrypoints_folder = self._build_layout.get_entrypoints_folder(
             module.name, module.version
         )
-        entrypoints_folder.mkdir(parents=True, exist_ok=True)
         relative_sif_file = self._get_sif_file_path(app, module).relative_to(
             entrypoints_folder, walk_up=True
         )
@@ -67,6 +66,7 @@ class AppBuilder:
                 TemplateType.APPTAINER_ENTRYPOINT,
                 params,
                 executable=True,
+                create_parents=True,
             )
 
     def _generate_sif_file(self, app: Apptainer, module: Module) -> None:
@@ -96,14 +96,17 @@ class AppBuilder:
 
     def _create_shell_file(self, app: Shell, module: Module) -> None:
         """Create shell script using Bash for improved functionality."""
-        entrypoints_folder = self._build_layout.get_entrypoints_folder(
-            module.name, module.version
+        entrypoint_file = (
+            self._build_layout.get_entrypoints_folder(module.name, module.version)
+            / app.name
         )
-        entrypoints_folder.mkdir(parents=True, exist_ok=True)
-        entrypoint_file = entrypoints_folder / app.name
 
         parameters = {"script": app.script}
 
         self._templater.create(
-            entrypoint_file, TemplateType.SHELL_ENTRYPOINT, parameters, executable=True
+            entrypoint_file,
+            TemplateType.SHELL_ENTRYPOINT,
+            parameters,
+            executable=True,
+            create_parents=True,
         )

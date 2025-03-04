@@ -44,9 +44,10 @@ class ModuleBuilder:
         built_modulefile = self._build_layout.get_modulefile(
             module.name, module.version
         )
-        built_modulefile.parent.mkdir(exist_ok=True, parents=True)
 
-        self._templater.create(built_modulefile, TemplateType.MODULEFILE, params)
+        self._templater.create(
+            built_modulefile, TemplateType.MODULEFILE, params, create_parents=True
+        )
 
     def _create_module_snapshot(self, module: Module) -> None:
         snapshot_path = self._build_layout.get_module_snapshot_path(
