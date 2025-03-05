@@ -218,7 +218,7 @@ def _validate_removed_modules(releases: list[Release]) -> None:
         module = release.module
         if not module.is_dev_mode() and not release.deprecated:
             raise ValidationError(
-                f"Module {module.name}/{module.version} removed without prior"
+                f"Module {module.name}/{module.version} removed without prior "
                 f"deprecation."
             )
 
