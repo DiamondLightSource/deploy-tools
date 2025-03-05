@@ -83,11 +83,11 @@ def _deploy_releases(
             module.name, module.version
         )
         final_module_folder = layout.get_module_folder(module.name, module.version)
-        final_module_folder.parent.mkdir(parents=True, exist_ok=True)
 
         if exist_ok and final_module_folder.exists():
             shutil.rmtree(final_module_folder)
 
+        final_module_folder.parent.mkdir(parents=True, exist_ok=True)
         built_module_folder.rename(final_module_folder)
 
 
