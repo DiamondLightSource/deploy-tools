@@ -1,6 +1,5 @@
 import re
 from collections import defaultdict
-from pathlib import Path
 
 from .layout import Layout
 from .models.deployment import DefaultVersionsByName
@@ -14,40 +13,26 @@ DEFAULT_VERSION_REGEX = "^set ModulesVersion (.*)$"
 
 
 def deprecate_modulefile_link(name: str, version: str, layout: Layout) -> None:
-    _move_modulefile_link(
-        name,
-        version,
-        layout.modulefiles_root,
-        layout.deprecated_modulefiles_root,
-    )
+    mf_link = layout.get_modulefile_link(name, version)
+    deprecated_mf_link = layout.get_modulefile_link(name, version, from_deprecated=True)
+
+    deprecated_mf_link.parent.mkdir(parents=True, exist_ok=True)
+    mf_link.rename(deprecated_mf_link)
 
 
 def restore_modulefile_link(name: str, version: str, layout: Layout) -> None:
-    _move_modulefile_link(
-        name,
-        version,
-        layout.deprecated_modulefiles_root,
-        layout.modulefiles_root,
-    )
+    mf_link = layout.get_modulefile_link(name, version)
+    deprecated_mf_link = layout.get_modulefile_link(name, version, from_deprecated=True)
 
-
-def _move_modulefile_link(
-    name: str, version: str, src_folder: Path, dest_folder: Path
-) -> None:
-    src_path = src_folder / name / version
-    dest_path = dest_folder / name / version
-
-    dest_path.parent.mkdir(parents=True, exist_ok=True)
-    src_path.rename(dest_path)
+    mf_link.parent.mkdir(parents=True, exist_ok=True)
+    deprecated_mf_link.rename(mf_link)
 
 
 def is_modulefile_deployed(
     name: str, version: str, layout: Layout, in_deprecated: bool = False
 ) -> bool:
-    modulefile_link = layout.get_modulefile_link(
-        name, version, from_deprecated=in_deprecated
-    )
-    return modulefile_link.exists()
+    mf_link = layout.get_modulefile_link(name, version, from_deprecated=in_deprecated)
+    return mf_link.exists()
 
 
 def get_default_modulefile_version(name: str, layout: Layout) -> str | None:

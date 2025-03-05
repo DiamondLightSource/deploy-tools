@@ -66,12 +66,10 @@ def _deploy_new_releases(to_add: list[Release], layout: Layout) -> None:
         deprecated = release.deprecated
 
         modulefile = layout.get_modulefile(name, version)
-        modulefile_link = layout.get_modulefile_link(
-            name, version, from_deprecated=deprecated
-        )
+        mf_link = layout.get_modulefile_link(name, version, from_deprecated=deprecated)
 
-        modulefile_link.parent.mkdir(parents=True, exist_ok=True)
-        os.symlink(modulefile, modulefile_link)
+        mf_link.parent.mkdir(parents=True, exist_ok=True)
+        os.symlink(modulefile, mf_link)
 
 
 def _deploy_releases(
@@ -107,8 +105,8 @@ def _deprecate_releases(to_deprecate: list[Release], layout: Layout) -> None:
 def _remove_deployed_module(
     name: str, version: str, layout: Layout, from_deprecated: bool = False
 ) -> None:
-    modulefile = layout.get_modulefile_link(name, version, from_deprecated)
-    modulefile.unlink()
+    mf_link = layout.get_modulefile_link(name, version, from_deprecated)
+    mf_link.unlink()
 
     _remove_module(name, version, layout)
 
