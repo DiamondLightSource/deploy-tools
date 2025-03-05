@@ -3,11 +3,11 @@ from typing import Annotated
 
 from pydantic import Field
 
-from .apptainer import Apptainer
+from .apptainer_app import ApptainerApp
 from .parent import ParentModel
-from .shell import Shell
+from .shell_app import ShellApp
 
-Application = Annotated[Apptainer | Shell, Field(..., discriminator="app_type")]
+Application = Annotated[ApptainerApp | ShellApp, Field(..., discriminator="app_type")]
 
 DEVELOPMENT_VERSION = "dev"
 

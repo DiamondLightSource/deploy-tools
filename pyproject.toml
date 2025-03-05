@@ -75,9 +75,6 @@ data_file = "/tmp/deploy_tools.coverage"
 # Tests are run from installed location, map back to the src directory
 source = ["src", "**/site-packages/"]
 
-[tool.coverage.report]
-fail_under = 0
-
 # tox must currently be configured via an embedded ini string
 # See: https://github.com/tox-dev/tox/issues/999
 [tool.tox]

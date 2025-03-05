@@ -39,8 +39,12 @@ class Templater:
         parameters: dict[str, Any],
         executable: bool = False,
         overwrite: bool = False,
+        create_parents: bool = False,
     ) -> None:
         """Create an output file, using the given template and template parameters."""
+        if create_parents:
+            output_file.parent.mkdir(exist_ok=True, parents=True)
+
         open_mode = "w" if overwrite else "x"
         with open(output_file, open_mode) as f:
             f.write(self._templates[template].render(**parameters))

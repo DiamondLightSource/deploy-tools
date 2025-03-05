@@ -5,7 +5,7 @@ from .build import build, clean_build_area
 from .check_deploy import check_deploy_can_run
 from .deploy import deploy_changes
 from .layout import Layout
-from .models.load import load_deployment
+from .models.save_and_load import load_deployment
 from .snapshot import create_snapshot, load_snapshot
 from .validate import (
     validate_deployment_changes,

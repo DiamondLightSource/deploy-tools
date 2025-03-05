@@ -14,8 +14,8 @@ from .models.deployment import (
     DeploymentSettings,
     ReleasesByNameAndVersion,
 )
-from .models.load import load_from_yaml
 from .models.module import Module, Release
+from .models.save_and_load import load_from_yaml
 from .modulefile import get_default_modulefile_version, is_modulefile_deployed
 from .snapshot import load_previous_snapshot, load_snapshot
 from .validate import validate_default_versions

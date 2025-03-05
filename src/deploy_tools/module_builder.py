@@ -1,8 +1,7 @@
-import yaml
-
 from .app_builder import AppBuilder
 from .layout import Layout
 from .models.module import Module
+from .models.save_and_load import save_as_yaml
 from .templater import Templater, TemplateType
 
 
@@ -16,7 +15,15 @@ class ModuleBuilder:
 
         self.app_creator = AppBuilder(templater, self._build_layout)
 
-    def create_modulefile(self, module: Module) -> None:
+    def create_module(self, module: Module) -> None:
+        self._create_modulefile(module)
+
+        for app in module.applications:
+            self.app_creator.create_application_files(app, module)
+
+        self._create_module_snapshot(module)
+
+    def _create_modulefile(self, module: Module) -> None:
         entrypoints_folder = self._layout.get_entrypoints_folder(
             module.name, module.version
         )
@@ -36,23 +43,13 @@ class ModuleBuilder:
         built_modulefile = self._build_layout.get_modulefile(
             module.name, module.version
         )
-        built_modulefile.parent.mkdir(exist_ok=True, parents=True)
 
-        self._templater.create(built_modulefile, TemplateType.MODULEFILE, params)
+        self._templater.create(
+            built_modulefile, TemplateType.MODULEFILE, params, create_parents=True
+        )
 
-    def create_module_snapshot(self, module: Module) -> None:
+    def _create_module_snapshot(self, module: Module) -> None:
         snapshot_path = self._build_layout.get_module_snapshot_path(
             module.name, module.version
         )
-        snapshot_path.parent.mkdir(exist_ok=True, parents=True)
-
-        with open(snapshot_path, "w") as f:
-            yaml.safe_dump(module.model_dump(), f)
-
-    def create_module(self, module: Module) -> None:
-        self.create_modulefile(module)
-
-        for app in module.applications:
-            self.app_creator.create_application_files(app, module)
-
-        self.create_module_snapshot(module)
+        save_as_yaml(module, snapshot_path, create_parents=True)

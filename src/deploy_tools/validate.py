@@ -13,8 +13,8 @@ from .models.deployment import (
     Deployment,
     ReleasesByNameAndVersion,
 )
-from .models.load import load_deployment
 from .models.module import DEVELOPMENT_VERSION, Release
+from .models.save_and_load import load_deployment
 from .modulefile import (
     ModuleVersionsByName,
 )
@@ -81,6 +81,50 @@ def validate_release_changes(
 
     _validate_module_dependencies(deployment)
     return _get_release_changes(old_releases, new_releases, from_scratch)
+
+
+def _validate_module_dependencies(deployment: Deployment) -> None:
+    """Ensure that all module dependencies are set appropriately.
+
+    This checks any module dependency names that come from current configuration to
+    ensure they exist and are not deprecated. Not specifying a particular version is
+    only valid for dependencies that are managed outside of the current deployment
+    configuration.
+    """
+    final_deployed_modules = _get_final_deployed_module_versions(deployment)
+
+    for name, release_versions in deployment.releases.items():
+        for version, release in release_versions.items():
+            for dependency in release.module.dependencies:
+                dep_name = dependency.name
+                dep_version = dependency.version
+                if dep_version is not None and dep_name in final_deployed_modules:
+                    if dep_version not in final_deployed_modules[dep_name]:
+                        raise ValidationError(
+                            f"Module {name}/{version} has unknown module dependency "
+                            f"{dep_name}/{dep_version}."
+                        )
+
+
+def _get_final_deployed_module_versions(
+    deployment: Deployment,
+) -> ModuleVersionsByName:
+    """Return module versions that will be deployed after sync action has completed.
+
+    This explicitly excludes any deprecated modules.
+    """
+    final_versions: ModuleVersionsByName = defaultdict(list)
+    for name, release_versions in deployment.releases.items():
+        versions = [
+            version
+            for version, release in release_versions.items()
+            if not release.deprecated
+        ]
+
+        if versions:
+            final_versions[name] = versions
+
+    return final_versions
 
 
 def _get_release_changes(
@@ -197,27 +241,6 @@ def validate_default_versions(deployment: Deployment) -> DefaultVersionsByName:
     return default_versions
 
 
-def _get_final_deployed_module_versions(
-    deployment: Deployment,
-) -> ModuleVersionsByName:
-    """Return module versions that will be deployed after sync action has completed.
-
-    This explicitly excludes any deprecated modules.
-    """
-    final_versions: ModuleVersionsByName = defaultdict(list)
-    for name, release_versions in deployment.releases.items():
-        versions = [
-            version
-            for version, release in release_versions.items()
-            if not release.deprecated
-        ]
-
-        if versions:
-            final_versions[name] = versions
-
-    return final_versions
-
-
 def _get_all_default_versions(
     initial_defaults: DefaultVersionsByName,
     final_deployed_module_versions: ModuleVersionsByName,
@@ -243,26 +266,3 @@ def _get_all_default_versions(
         final_defaults[name] = version_list[-1]
 
     return final_defaults
-
-
-def _validate_module_dependencies(deployment: Deployment) -> None:
-    """Ensure that all module dependencies are set appropriately.
-
-    This checks any module dependency names that come from current configuration to
-    ensure they exist and are not deprecated. Not specifying a particular version is
-    only valid for dependencies that are managed outside of the current deployment
-    configuration.
-    """
-    final_deployed_modules = _get_final_deployed_module_versions(deployment)
-
-    for name, release_versions in deployment.releases.items():
-        for version, release in release_versions.items():
-            for dependency in release.module.dependencies:
-                dep_name = dependency.name
-                dep_version = dependency.version
-                if dep_version is not None and dep_name in final_deployed_modules:
-                    if dep_version not in final_deployed_modules[dep_name]:
-                        raise ValidationError(
-                            f"Module {name}/{version} has unknown module dependency "
-                            f"{dep_name}/{dep_version}."
-                        )

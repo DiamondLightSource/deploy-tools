@@ -30,7 +30,7 @@ class ContainerImage(ParentModel):
         return f"{self.path}:{self.version}"
 
 
-class Apptainer(ParentModel):
+class ApptainerApp(ParentModel):
     """Represents an Apptainer application or set of applications for a single image.
 
     This uses Apptainer to deploy a portable image of the desired container. Several

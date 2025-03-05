@@ -1,12 +1,12 @@
-import subprocess
 import uuid
 from itertools import chain
 from pathlib import Path
 
+from .apptainer import create_sif_file
 from .layout import ModuleBuildLayout
-from .models.apptainer import Apptainer
+from .models.apptainer_app import ApptainerApp
 from .models.module import Application, Module
-from .models.shell import Shell
+from .models.shell_app import ShellApp
 from .templater import Templater, TemplateType
 
 
@@ -23,18 +23,17 @@ class AppBuilder:
 
     def create_application_files(self, app: Application, module: Module):
         match app:
-            case Apptainer():
-                self.create_apptainer_files(app, module)
-            case Shell():
-                self.create_shell_file(app, module)
+            case ApptainerApp():
+                self._create_apptainer_files(app, module)
+            case ShellApp():
+                self._create_shell_file(app, module)
 
-    def create_apptainer_files(self, app: Apptainer, module: Module) -> None:
+    def _create_apptainer_files(self, app: ApptainerApp, module: Module) -> None:
         """Create apptainer entrypoints using a specified image and commands."""
         self._generate_sif_file(app, module)
         entrypoints_folder = self._build_layout.get_entrypoints_folder(
             module.name, module.version
         )
-        entrypoints_folder.mkdir(parents=True, exist_ok=True)
         relative_sif_file = self._get_sif_file_path(app, module).relative_to(
             entrypoints_folder, walk_up=True
         )
@@ -67,43 +66,33 @@ class AppBuilder:
                 TemplateType.APPTAINER_ENTRYPOINT,
                 params,
                 executable=True,
+                create_parents=True,
             )
 
-    def _generate_sif_file(self, app: Apptainer, module: Module) -> None:
-        sif_file = self._get_sif_file_path(app, module)
-        sif_file.parent.mkdir(parents=True, exist_ok=True)
+    def _generate_sif_file(self, app: ApptainerApp, module: Module) -> None:
+        sif_file_path = self._get_sif_file_path(app, module)
+        create_sif_file(sif_file_path, app.container.url, create_parents=True)
 
-        if not sif_file.is_absolute():
-            raise AppBuilderError(
-                f"Building Apptainer files: "
-                f"Sif file output path must be absolute:\n{sif_file}"
-            )
-
-        if sif_file.exists():
-            raise AppBuilderError(
-                f"Building Apptainer files: Sif file output already exists:\n{sif_file}"
-            )
-
-        commands = ["apptainer", "pull", sif_file, app.container.url]
-        subprocess.run(commands, check=True)
-
-    def _get_sif_file_path(self, app: Apptainer, module: Module) -> Path:
+    def _get_sif_file_path(self, app: ApptainerApp, module: Module) -> Path:
         sif_folder = self._build_layout.get_sif_files_folder(
             module.name, module.version
         )
         file_name = uuid.uuid3(uuid.NAMESPACE_URL, app.container.url).hex
         return sif_folder / f"{file_name}.sif"
 
-    def create_shell_file(self, app: Shell, module: Module) -> None:
+    def _create_shell_file(self, app: ShellApp, module: Module) -> None:
         """Create shell script using Bash for improved functionality."""
-        entrypoints_folder = self._build_layout.get_entrypoints_folder(
-            module.name, module.version
+        entrypoint_file = (
+            self._build_layout.get_entrypoints_folder(module.name, module.version)
+            / app.name
         )
-        entrypoints_folder.mkdir(parents=True, exist_ok=True)
-        entrypoint_file = entrypoints_folder / app.name
 
         parameters = {"script": app.script}
 
         self._templater.create(
-            entrypoint_file, TemplateType.SHELL_ENTRYPOINT, parameters, executable=True
+            entrypoint_file,
+            TemplateType.SHELL_ENTRYPOINT,
+            parameters,
+            executable=True,
+            create_parents=True,
         )
