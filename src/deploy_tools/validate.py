@@ -13,8 +13,8 @@ from .models.deployment import (
     Deployment,
     ReleasesByNameAndVersion,
 )
-from .models.load import load_deployment
 from .models.module import DEVELOPMENT_VERSION, Release
+from .models.save_and_load import load_deployment
 from .modulefile import (
     ModuleVersionsByName,
 )

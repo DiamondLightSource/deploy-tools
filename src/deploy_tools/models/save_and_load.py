@@ -2,6 +2,7 @@ from collections import defaultdict
 from pathlib import Path
 
 import yaml
+from pydantic import BaseModel
 
 from .deployment import (
     Deployment,
@@ -18,9 +19,12 @@ class LoadError(Exception):
     pass
 
 
-def load_from_yaml[T: (Deployment, Release, Module, DeploymentSettings)](
-    model: type[T], file_path: Path
-) -> T:
+def save_as_yaml(obj: BaseModel, output_path: Path) -> None:
+    with open(output_path, "w") as f:
+        yaml.safe_dump(obj.model_dump(), f)
+
+
+def load_from_yaml[T: BaseModel](model: type[T], file_path: Path) -> T:
     """Load a single Pydantic model from a yaml file."""
     with open(file_path) as f:
         return model(**yaml.safe_load(f))
