@@ -19,7 +19,12 @@ class LoadError(Exception):
     pass
 
 
-def save_as_yaml(obj: BaseModel, output_path: Path) -> None:
+def save_as_yaml(
+    obj: BaseModel, output_path: Path, create_parents: bool = False
+) -> None:
+    if create_parents:
+        output_path.parent.mkdir(exist_ok=True, parents=True)
+
     with open(output_path, "w") as f:
         yaml.safe_dump(obj.model_dump(), f)
 

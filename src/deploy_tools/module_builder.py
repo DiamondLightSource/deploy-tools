@@ -1,8 +1,7 @@
-import yaml
-
 from .app_builder import AppBuilder
 from .layout import Layout
 from .models.module import Module
+from .models.save_and_load import save_as_yaml
 from .templater import Templater, TemplateType
 
 
@@ -53,7 +52,4 @@ class ModuleBuilder:
         snapshot_path = self._build_layout.get_module_snapshot_path(
             module.name, module.version
         )
-        snapshot_path.parent.mkdir(exist_ok=True, parents=True)
-
-        with open(snapshot_path, "w") as f:
-            yaml.safe_dump(module.model_dump(), f)
+        save_as_yaml(module, snapshot_path, create_parents=True)
