@@ -62,11 +62,19 @@ SCHEMA_OUTPUT_PATH_ARGUMENT = Annotated[
         help="Output path to write all .json schema files to.",
     ),
 ]
+ALLOW_ALL_OPTION = Annotated[
+    bool,
+    typer.Option(
+        "--allow-all",
+        help="Allow all lifecycle transitions. This still requires the deployment area "
+        "to be in a healthy state.",
+    ),
+]
 FROM_SCRATCH_OPTION = Annotated[
     bool,
     typer.Option(
         "--from-scratch/--not-from-scratch",
-        help="Deploy into an empty deployment area.",
+        help="Deploy into an empty deployment area. Implies --allow-all",
     ),
 ]
 TEST_BUILD_OPTION = Annotated[
@@ -103,6 +111,7 @@ app = typer.Typer(no_args_is_help=True)
 def sync(
     deployment_root: DEPLOYMENT_ROOT_ARGUMENT,
     config_folder: CONFIG_FOLDER_ARGUMENT,
+    allow_all: ALLOW_ALL_OPTION = False,
     from_scratch: FROM_SCRATCH_OPTION = False,
     verbose: VERBOSE_OPTION = 0,
 ) -> None:
@@ -111,7 +120,10 @@ def sync(
     This will also run the validate command beforehand, but without printing the
     expected changes.
     """
-    synchronise(deployment_root, config_folder, from_scratch)
+    if from_scratch:
+        allow_all = True
+
+    synchronise(deployment_root, config_folder, allow_all, from_scratch)
 
 
 @app.command(no_args_is_help=True)
@@ -119,6 +131,7 @@ def validate(
     deployment_root: DEPLOYMENT_ROOT_ARGUMENT,
     config_folder: CONFIG_FOLDER_ARGUMENT,
     from_scratch: FROM_SCRATCH_OPTION = False,
+    allow_all: ALLOW_ALL_OPTION = False,
     test_build: TEST_BUILD_OPTION = True,
     verbose: VERBOSE_OPTION = 0,
 ) -> None:
@@ -127,8 +140,11 @@ def validate(
     If specified, this includes a test build of the provided configuration. The
     configuration validation is the same as used by the deploy-tools sync command.
     """
+    if from_scratch:
+        allow_all = True
+
     validate_and_check_configuration(
-        deployment_root, config_folder, from_scratch, test_build
+        deployment_root, config_folder, allow_all, from_scratch, test_build
     )
 
 
