@@ -38,7 +38,7 @@
             "request": "launch",
             "justMyCode": false,
             "program": "/venv/bin/deploy-tools",
-            "args": "validate ${input:from-scratch} ${input:test-build} ${input:deploy-folder} ${input:config-folder}",
+            "args": "validate ${input:allow-all} ${input:from-scratch} ${input:test-build} ${input:deploy-folder} ${input:config-folder}",
             "console": "integratedTerminal",
             "env": {
                 // Enable break on exception when debugging tests (see: tests/conftest.py)
@@ -64,7 +64,7 @@
             "request": "launch",
             "justMyCode": false,
             "program": "/venv/bin/deploy-tools",
-            "args": "sync ${input:from-scratch} ${input:deploy-folder} ${input:config-folder}",
+            "args": "sync ${input:allow-all} ${input:from-scratch} ${input:deploy-folder} ${input:config-folder}",
             "console": "integratedTerminal",
             "env": {
                 // Enable break on exception when debugging tests (see: tests/conftest.py)
@@ -92,13 +92,23 @@
             "type": "promptString"
         },
         {
+            "id": "allow-all",
+            "description": "Allow all lifecycle transitions",
+            "options": [
+                "",
+                "--allow-all"
+            ],
+            "default": "",
+            "type": "pickString"
+        },
+        {
             "id": "from-scratch",
             "description": "Allow a complete redeployment to an empty directory",
             "options": [
-                "--not-from-scratch",
+                "",
                 "--from-scratch"
             ],
-            "default": "--no-from-scratch",
+            "default": "",
             "type": "pickString"
         },
         {
@@ -108,7 +118,7 @@
                 "--use-current",
                 "--use-previous"
             ],
-            "default": "--no-use-previous",
+            "default": "--use-current",
             "type": "pickString"
         },
         {
@@ -116,7 +126,7 @@
             "description": "Include test build of the deployment changes",
             "options": [
                 "--test-build",
-                "--no-test-build"
+                ""
             ],
             "default": "--test-build",
             "type": "pickString"

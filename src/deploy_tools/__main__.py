@@ -66,6 +66,7 @@ ALLOW_ALL_OPTION = Annotated[
     bool,
     typer.Option(
         "--allow-all",
+        show_default="False",  # Shows default as 'False'
         help="Allow all lifecycle transitions. This still requires the deployment area "
         "to be in a healthy state.",
     ),
@@ -73,14 +74,17 @@ ALLOW_ALL_OPTION = Annotated[
 FROM_SCRATCH_OPTION = Annotated[
     bool,
     typer.Option(
-        "--from-scratch/--not-from-scratch",
+        "--from-scratch",
+        show_default="False",  # Shows default as 'False'
         help="Deploy into an empty deployment area. Implies --allow-all",
     ),
 ]
 TEST_BUILD_OPTION = Annotated[
     bool,
     typer.Option(
-        "--test-build/--no-test-build", help="Test the build in a temporary directory."
+        "--test-build",
+        show_default="False",  # Shows default as 'False'
+        help="Test the build in a temporary directory.",
     ),
 ]
 USE_PREVIOUS_OPTION = Annotated[
