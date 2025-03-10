@@ -5,7 +5,6 @@ from pathlib import Path
 from tempfile import TemporaryDirectory
 
 from .build import build
-from .check_deploy import check_deploy_can_run
 from .layout import Layout
 from .models.changes import DeploymentChanges, ReleaseChanges
 from .models.deployment import (
@@ -28,14 +27,14 @@ class ValidationError(Exception):
     pass
 
 
-def validate_and_check_configuration(
+def validate_and_test_configuration(
     deployment_root: Path,
     config_folder: Path,
     allow_all: bool = False,
     from_scratch: bool = False,
     test_build: bool = True,
 ) -> None:
-    """Validate deployment config and check that deploy can run in deployment area."""
+    """Validate deployment configuration and perform a test build."""
     with TemporaryDirectory() as build_dir:
         logger.info("Loading deployment configuration from: %s", config_folder)
         deployment = load_deployment(config_folder)
@@ -52,8 +51,6 @@ def validate_and_check_configuration(
         logger.info("Retrieving previous default versions")
         snapshot_default_versions = validate_default_versions(snapshot)
 
-        logger.info("Checking deploy process can run in %s", layout.deployment_root)
-        check_deploy_can_run(deployment_changes, layout, allow_all)
         if test_build:
             logger.info("Performing test build")
             build(deployment_changes, layout)

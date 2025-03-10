@@ -28,13 +28,6 @@ def restore_modulefile_link(name: str, version: str, layout: Layout) -> None:
     deprecated_mf_link.rename(mf_link)
 
 
-def is_modulefile_deployed(
-    name: str, version: str, layout: Layout, in_deprecated: bool = False
-) -> bool:
-    mf_link = layout.get_modulefile_link(name, version, from_deprecated=in_deprecated)
-    return mf_link.exists()
-
-
 def get_default_modulefile_version(name: str, layout: Layout) -> str | None:
     version_regex = re.compile(DEFAULT_VERSION_REGEX)
     default_version_file = layout.get_default_version_file(name)

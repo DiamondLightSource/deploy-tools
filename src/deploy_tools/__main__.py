@@ -8,7 +8,7 @@ from . import __version__
 from .compare import compare_to_snapshot
 from .models.schema import generate_schema
 from .sync import synchronise
-from .validate import validate_and_check_configuration
+from .validate import validate_and_test_configuration
 
 __all__ = ["main"]
 
@@ -147,7 +147,7 @@ def validate(
     if from_scratch:
         allow_all = True
 
-    validate_and_check_configuration(
+    validate_and_test_configuration(
         deployment_root, config_folder, allow_all, from_scratch, test_build
     )
 

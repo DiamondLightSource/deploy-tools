@@ -2,7 +2,6 @@ import logging
 from pathlib import Path
 
 from .build import build, clean_build_area
-from .check_deploy import check_deploy_can_run
 from .deploy import deploy_changes
 from .layout import Layout
 from .models.save_and_load import load_deployment
@@ -30,9 +29,6 @@ def synchronise(
 
     logger.info("Validating deployment changes")
     deployment_changes = validate_deployment_changes(deployment, snapshot, allow_all)
-
-    logger.info("Checking deploy process can run in %s", layout.deployment_root)
-    check_deploy_can_run(deployment_changes, layout, allow_all)
 
     logger.info("Cleaning build area")
     clean_build_area(layout)
