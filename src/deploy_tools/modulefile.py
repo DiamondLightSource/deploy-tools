@@ -51,7 +51,7 @@ def apply_default_versions(
 ) -> None:
     """Update .version files for current default version settings."""
     templater = Templater()
-    deployed_module_versions = _get_deployed_modulefile_versions(layout)
+    deployed_module_versions = get_deployed_modulefile_versions(layout)
 
     for name in deployed_module_versions:
         default_version_file = layout.get_default_version_file(name)
@@ -69,7 +69,7 @@ def apply_default_versions(
             default_version_file.unlink(missing_ok=True)
 
 
-def _get_deployed_modulefile_versions(
+def get_deployed_modulefile_versions(
     layout: Layout, from_deprecated: bool = False
 ) -> ModuleVersionsByName:
     """Return list of modulefiles that have been deployed."""

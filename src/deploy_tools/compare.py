@@ -16,7 +16,7 @@ from .models.deployment import (
 )
 from .models.module import Module, Release
 from .models.save_and_load import load_from_yaml
-from .modulefile import get_default_modulefile_version, is_modulefile_deployed
+from .modulefile import get_default_modulefile_version, get_deployed_modulefile_versions
 from .snapshot import load_previous_snapshot, load_snapshot
 from .validate import validate_default_versions
 
@@ -72,13 +72,34 @@ def _reconstruct_deployment_config_from_modules(layout: Layout) -> Deployment:
 
 def _collect_releases(layout: Layout) -> ReleasesByNameAndVersion:
     modules = _collect_modules(layout)
+    modulefiles = get_deployed_modulefile_versions(layout)
+    deprecated_modulefiles = get_deployed_modulefile_versions(layout, True)
 
     releases: ReleasesByNameAndVersion = defaultdict(dict)
-
     for module in modules:
-        deprecated = _get_deprecated_status(module.name, module.version, layout)
-        release = Release(deprecated=deprecated, module=module)
-        releases[module.name][module.version] = release
+        name = module.name
+        version = module.version
+        has_modulefile = version in modulefiles.get(name, [])
+        has_deprecated_modulefile = version in deprecated_modulefiles.get(name, [])
+
+        if has_modulefile and has_deprecated_modulefile:
+            raise ComparisonError(
+                f"Duplicate modulefiles for {name}/{version} found in default and "
+                f"deprecated areas."
+            )
+        elif not has_modulefile and not has_deprecated_modulefile:
+            raise ComparisonError(f"No modulefile found for {name}/{version}.")
+
+        release = Release(deprecated=has_deprecated_modulefile, module=module)
+        releases[name][version] = release
+
+    for name, versions in modulefiles.items():
+        for version in versions:
+            if version not in releases[name]:
+                raise ComparisonError(
+                    f"Modulefile exists without corresponding built module for "
+                    f"{name}/{version}"
+                )
 
     return releases
 
@@ -101,17 +122,6 @@ def _collect_modules(layout: Layout) -> list[Module]:
             )
 
     return modules
-
-
-def _get_deprecated_status(name: str, version: str, layout: Layout) -> bool:
-    if is_modulefile_deployed(name, version, layout):
-        return False
-    elif is_modulefile_deployed(name, version, layout, in_deprecated=True):
-        return True
-
-    raise ComparisonError(
-        f"Modulefile for {name}/{version} not found in deployment area."
-    )
 
 
 def _collect_default_modulefile_versions(
