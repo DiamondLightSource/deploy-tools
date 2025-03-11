@@ -57,6 +57,11 @@ def load_snapshot(layout: Layout, from_scratch: bool = False) -> Deployment:
         logger.debug("Loading empty deployment configuration as snapshot")
         return Deployment(settings=DeploymentSettings(), releases={})
 
+    if not layout.deployment_snapshot_path.exists():
+        raise SnapshotError(
+            f"Deployment snapshot not found:\n{layout.deployment_snapshot_path}"
+        )
+
     logger.debug("Loading snapshot: %s", layout.deployment_snapshot_path)
     return load_from_yaml(Deployment, layout.deployment_snapshot_path)
 
