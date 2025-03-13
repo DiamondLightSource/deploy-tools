@@ -32,15 +32,15 @@ def compare_to_snapshot(
 ) -> None:
     """Compare deployment area to deployment configuration snapshot.
 
-    This helps us to identify broken environment modules. Note that this does not
-    exclude the possibility of all types of issues.
+    This helps us to identify broken environment modules, or a failed deployment step.
+    Note that this does not exclude the possibility of all types of issues.
 
     The `use_previous` argument can be used to provide a comparison with the previous
     Deployment configuration. This is taken as a backup at the very start of the Deploy
-    step.
+    step, and can be used to help identify the cause of failures.
 
     The `from_scratch` argument checks that the deployment area is in a suitable state
-    for a clean deployment into an empty directory.
+    for a clean deployment into an empty directory. No snapshot is expected.
 
     Args:
         deployment_root: The root folder of the Deployment Area.
