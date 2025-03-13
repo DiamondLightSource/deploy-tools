@@ -136,7 +136,7 @@ def validate(
     config_folder: CONFIG_FOLDER_ARGUMENT,
     from_scratch: FROM_SCRATCH_OPTION = False,
     allow_all: ALLOW_ALL_OPTION = False,
-    test_build: TEST_BUILD_OPTION = True,
+    test_build: TEST_BUILD_OPTION = False,
     verbose: VERBOSE_OPTION = 0,
 ) -> None:
     """Validate deployment configuration and print a list of expected module changes.

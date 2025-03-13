@@ -32,7 +32,7 @@ def validate_and_test_configuration(
     config_folder: Path,
     allow_all: bool = False,
     from_scratch: bool = False,
-    test_build: bool = True,
+    test_build: bool = False,
 ) -> None:
     """Validate deployment configuration and perform a test build."""
     with TemporaryDirectory() as build_dir:
