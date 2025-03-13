@@ -76,7 +76,7 @@ FROM_SCRATCH_OPTION = Annotated[
     typer.Option(
         "--from-scratch",
         show_default="False",  # Shows default as 'False'
-        help="Deploy into an empty deployment area. Implies --allow-all",
+        help="Deploy into an empty deployment area.",
     ),
 ]
 TEST_BUILD_OPTION = Annotated[
@@ -156,6 +156,7 @@ def validate(
 def compare(
     deployment_root: DEPLOYMENT_ROOT_ARGUMENT,
     use_previous: USE_PREVIOUS_OPTION = False,
+    from_scratch: FROM_SCRATCH_OPTION = False,
     verbose: VERBOSE_OPTION = 0,
 ) -> None:
     """Compare the deployment snapshot to deployed modules in the deployment root.
@@ -164,7 +165,7 @@ def compare(
     deploy step, we can use this function to determine any required steps for fixing
     files in the deployment root.
     """
-    compare_to_snapshot(deployment_root, use_previous)
+    compare_to_snapshot(deployment_root, use_previous, from_scratch)
 
 
 @app.command(no_args_is_help=True)

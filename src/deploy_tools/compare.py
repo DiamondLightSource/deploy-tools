@@ -27,7 +27,9 @@ class ComparisonError(Exception):
     pass
 
 
-def compare_to_snapshot(deployment_root: Path, use_previous: bool = False) -> None:
+def compare_to_snapshot(
+    deployment_root: Path, use_previous: bool = False, from_scratch: bool = False
+) -> None:
     """Compare deployment area to deployment configuration snapshot.
 
     This helps us to identify broken environment modules. Note that this does not
@@ -37,12 +39,31 @@ def compare_to_snapshot(deployment_root: Path, use_previous: bool = False) -> No
     Deployment configuration. This is taken as a backup at the very start of the Deploy
     step.
 
+    The `from_scratch` argument checks that the deployment area is in a suitable state
+    for a clean deployment into an empty directory.
+
     Args:
         deployment_root: The root folder of the Deployment Area.
         use_previous: If True, compare to the previous snapshot taken as backup at start
             of the Deploy step.
+        from_scratch: If True, check that the deployment area is empty and ignore other
+            requirements.
     """
     layout = Layout(deployment_root)
+
+    if from_scratch:
+        logger.info("Checking deployment area is empty for a from-scratch deployment")
+
+        if not layout.deployment_root.exists() or not layout.deployment_root.is_dir():
+            raise ComparisonError(
+                f"Deployment root folder does not exist:\n{layout.deployment_root}"
+            )
+
+        if next(layout.deployment_root.iterdir(), None):
+            raise ComparisonError(
+                f"Deployment root folder is not empty:\n{layout.deployment_root}"
+            )
+        return
 
     if use_previous:
         logger.info("Loading previous deployment snapshot")

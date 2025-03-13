@@ -51,7 +51,7 @@
             "request": "launch",
             "justMyCode": false,
             "program": "/venv/bin/deploy-tools",
-            "args": "compare ${input:use-previous} ${input:deploy-folder}",
+            "args": "compare ${input:compare-mode} ${input:deploy-folder}",
             "console": "integratedTerminal",
             "env": {
                 // Enable break on exception when debugging tests (see: tests/conftest.py)
@@ -112,11 +112,12 @@
             "type": "pickString"
         },
         {
-            "id": "use-previous",
-            "description": "Compare against previous Deployment snapshot",
+            "id": "compare-mode",
+            "description": "Compare against previous Deployment snapshot or from scratch",
             "options": [
                 "--use-current",
-                "--use-previous"
+                "--use-previous",
+                "--from-scratch"
             ],
             "default": "--use-current",
             "type": "pickString"

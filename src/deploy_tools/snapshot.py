@@ -42,9 +42,9 @@ def load_snapshot(layout: Layout, from_scratch: bool = False) -> Deployment:
         from_scratch: If True, this will return the default ``Deployment``
             configuration in order to work with an empty Deployment Area.
     """
-    if not layout.deployment_root.exists():
+    if not layout.deployment_root.exists() or not layout.deployment_root.is_dir():
         raise SnapshotError(
-            f"Deployment root does not exist:\n{layout.deployment_root}"
+            f"Deployment root folder does not exist:\n{layout.deployment_root}"
         )
 
     if from_scratch:
