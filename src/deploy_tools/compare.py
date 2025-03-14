@@ -16,7 +16,7 @@ from .models.deployment import (
 )
 from .models.module import Module, Release
 from .models.save_and_load import load_from_yaml
-from .modulefile import get_default_modulefile_version, is_modulefile_deployed
+from .modulefile import get_default_modulefile_version, get_deployed_modulefile_versions
 from .snapshot import load_previous_snapshot, load_snapshot
 from .validate import validate_default_versions
 
@@ -27,22 +27,43 @@ class ComparisonError(Exception):
     pass
 
 
-def compare_to_snapshot(deployment_root: Path, use_previous: bool = False) -> None:
+def compare_to_snapshot(
+    deployment_root: Path, use_previous: bool = False, from_scratch: bool = False
+) -> None:
     """Compare deployment area to deployment configuration snapshot.
 
-    This helps us to identify broken environment modules. Note that this does not
-    exclude the possibility of all types of issues.
+    This helps us to identify broken environment modules, or a failed deployment step.
+    Note that this does not exclude the possibility of all types of issues.
 
     The `use_previous` argument can be used to provide a comparison with the previous
     Deployment configuration. This is taken as a backup at the very start of the Deploy
-    step.
+    step, and can be used to help identify the cause of failures.
+
+    The `from_scratch` argument checks that the deployment area is in a suitable state
+    for a clean deployment into an empty directory. No snapshot is expected.
 
     Args:
         deployment_root: The root folder of the Deployment Area.
         use_previous: If True, compare to the previous snapshot taken as backup at start
             of the Deploy step.
+        from_scratch: If True, check that the deployment area is empty and ignore other
+            requirements.
     """
     layout = Layout(deployment_root)
+
+    if from_scratch:
+        logger.info("Checking deployment area is empty for a from-scratch deployment")
+
+        if not layout.deployment_root.exists() or not layout.deployment_root.is_dir():
+            raise ComparisonError(
+                f"Deployment root folder does not exist:\n{layout.deployment_root}"
+            )
+
+        if next(layout.deployment_root.iterdir(), None):
+            raise ComparisonError(
+                f"Deployment root folder is not empty:\n{layout.deployment_root}"
+            )
+        return
 
     if use_previous:
         logger.info("Loading previous deployment snapshot")
@@ -72,13 +93,34 @@ def _reconstruct_deployment_config_from_modules(layout: Layout) -> Deployment:
 
 def _collect_releases(layout: Layout) -> ReleasesByNameAndVersion:
     modules = _collect_modules(layout)
+    modulefiles = get_deployed_modulefile_versions(layout)
+    deprecated_modulefiles = get_deployed_modulefile_versions(layout, True)
 
     releases: ReleasesByNameAndVersion = defaultdict(dict)
-
     for module in modules:
-        deprecated = _get_deprecated_status(module.name, module.version, layout)
-        release = Release(deprecated=deprecated, module=module)
-        releases[module.name][module.version] = release
+        name = module.name
+        version = module.version
+        has_modulefile = version in modulefiles.get(name, [])
+        has_deprecated_modulefile = version in deprecated_modulefiles.get(name, [])
+
+        if has_modulefile and has_deprecated_modulefile:
+            raise ComparisonError(
+                f"Duplicate modulefiles for {name}/{version} found in default and "
+                f"deprecated areas."
+            )
+        elif not has_modulefile and not has_deprecated_modulefile:
+            raise ComparisonError(f"No modulefile found for {name}/{version}.")
+
+        release = Release(deprecated=has_deprecated_modulefile, module=module)
+        releases[name][version] = release
+
+    for name, versions in modulefiles.items():
+        for version in versions:
+            if version not in releases[name]:
+                raise ComparisonError(
+                    f"Modulefile exists without corresponding built module for "
+                    f"{name}/{version}"
+                )
 
     return releases
 
@@ -101,17 +143,6 @@ def _collect_modules(layout: Layout) -> list[Module]:
             )
 
     return modules
-
-
-def _get_deprecated_status(name: str, version: str, layout: Layout) -> bool:
-    if is_modulefile_deployed(name, version, layout):
-        return False
-    elif is_modulefile_deployed(name, version, layout, in_deprecated=True):
-        return True
-
-    raise ComparisonError(
-        f"Modulefile for {name}/{version} not found in deployment area."
-    )
 
 
 def _collect_default_modulefile_versions(

@@ -5,7 +5,6 @@ from pathlib import Path
 from tempfile import TemporaryDirectory
 
 from .build import build
-from .check_deploy import check_deploy_can_run
 from .layout import Layout
 from .models.changes import DeploymentChanges, ReleaseChanges
 from .models.deployment import (
@@ -28,13 +27,14 @@ class ValidationError(Exception):
     pass
 
 
-def validate_and_check_configuration(
+def validate_and_test_configuration(
     deployment_root: Path,
     config_folder: Path,
+    allow_all: bool = False,
     from_scratch: bool = False,
-    test_build: bool = True,
+    test_build: bool = False,
 ) -> None:
-    """Validate deployment config and check that deploy can run in deployment area."""
+    """Validate deployment configuration and perform a test build."""
     with TemporaryDirectory() as build_dir:
         logger.info("Loading deployment configuration from: %s", config_folder)
         deployment = load_deployment(config_folder)
@@ -45,14 +45,12 @@ def validate_and_check_configuration(
 
         logger.info("Validating deployment changes")
         deployment_changes = validate_deployment_changes(
-            deployment, snapshot, from_scratch
+            deployment, snapshot, allow_all
         )
 
         logger.info("Retrieving previous default versions")
         snapshot_default_versions = validate_default_versions(snapshot)
 
-        logger.info("Checking deploy process can run in %s", layout.deployment_root)
-        check_deploy_can_run(deployment_changes, layout)
         if test_build:
             logger.info("Performing test build")
             build(deployment_changes, layout)
@@ -62,10 +60,10 @@ def validate_and_check_configuration(
 
 
 def validate_deployment_changes(
-    deployment: Deployment, snapshot: Deployment, from_scratch: bool
+    deployment: Deployment, snapshot: Deployment, allow_all: bool
 ) -> DeploymentChanges:
     """Validate configuration to get set of actions that need to be carried out."""
-    release_changes = validate_release_changes(deployment, snapshot, from_scratch)
+    release_changes = validate_release_changes(deployment, snapshot, allow_all)
     default_versions = validate_default_versions(deployment)
     return DeploymentChanges(
         release_changes=release_changes, default_versions=default_versions
@@ -73,14 +71,14 @@ def validate_deployment_changes(
 
 
 def validate_release_changes(
-    deployment: Deployment, snapshot: Deployment, from_scratch: bool
+    deployment: Deployment, snapshot: Deployment, allow_all: bool
 ) -> ReleaseChanges:
     """Validate configuration to get set of Release changes."""
     old_releases = snapshot.releases
     new_releases = deployment.releases
 
     _validate_module_dependencies(deployment)
-    return _get_release_changes(old_releases, new_releases, from_scratch)
+    return _get_release_changes(old_releases, new_releases, allow_all)
 
 
 def _validate_module_dependencies(deployment: Deployment) -> None:
@@ -130,7 +128,7 @@ def _get_final_deployed_module_versions(
 def _get_release_changes(
     old_releases: ReleasesByNameAndVersion,
     new_releases: ReleasesByNameAndVersion,
-    from_scratch: bool,
+    allow_all: bool,
 ) -> ReleaseChanges:
     release_changes = ReleaseChanges()
     for name in new_releases:
@@ -168,10 +166,10 @@ def _get_release_changes(
             if version not in new_releases[name]:
                 release_changes.to_remove.append(old_release)
 
-    _validate_added_modules(release_changes.to_add, from_scratch)
+    _validate_added_modules(release_changes.to_add, allow_all)
     _validate_updated_modules(release_changes.to_update)
     _validate_deprecated_modules(release_changes.to_deprecate)
-    _validate_removed_modules(release_changes.to_remove)
+    _validate_removed_modules(release_changes.to_remove, allow_all)
 
     return release_changes
 
@@ -213,12 +211,12 @@ def _validate_deprecated_modules(releases: list[Release]) -> None:
             )
 
 
-def _validate_removed_modules(releases: list[Release]) -> None:
+def _validate_removed_modules(releases: list[Release], allow_all: bool) -> None:
     for release in releases:
         module = release.module
-        if not module.is_dev_mode() and not release.deprecated:
+        if not allow_all and not module.is_dev_mode() and not release.deprecated:
             raise ValidationError(
-                f"Module {module.name}/{module.version} removed without prior"
+                f"Module {module.name}/{module.version} removed without prior "
                 f"deprecation."
             )
 

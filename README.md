@@ -47,8 +47,8 @@ bit different to the CLI commands; see `deploy-tools --help` for more informatio
 
 |**Step**|**Description**                                                                                                                                                                                                                                  |
 |--------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+|Compare |Compare the snapshot taken of the previous deployment with the modulefiles and built modules that already exist. This ensures that the Deployment Area is in a healthy state                                                                     |
 |Validate|Process the updated configuration. By comparing the new configuration files with a snapshot from the previous deployment, we determine the set of actions that need to be taken                                                                  |
-|Check   |With the set of expected changes, perform some basic checks of the deployment area to ensure there are no major issues preventing the Deploy step from running                                                                                   |
 |Build   |Generate entrypoint scripts, configuration files and environment variables for a given Module. These are output to the Build Area                                                                                                                |
 |Deploy  |Move all built Modules from the Build Area into the Modules Area. A link to the built modulefile is moved to either the Modulefiles Folder or Deprecated Folder, depending on its deprecation status. Update default versions for the modulefiles|
 
@@ -85,7 +85,7 @@ in greater detail.
 |Generate Schema               |`deploy-tools schema`     |Generate the yaml schema (in .json format) for the top-level configuration files                                                                                                                                    |
 |Clean deployment              |`rm -rf <Deployment Root>`|Wipe the deployment area local to your own checkout of deploy-tools, enabling you to test a deployment from scratch                                                                                                 |
 |Sync Modules                  |`deploy-tools sync`       |Synchronise the Deployment configuration with the Deployment Area                                                                                                                                                   |
-|Validate deployment           |`deploy-tools validate`   |Compare the new configuration with that previously used when deploying modules, and check that all expected Deploy operations are unlikely to fail. This will also test the build process if requested.             |
+|Validate deployment           |`deploy-tools validate`   |Compare the new configuration with that previously used when deploying modules, and test the build process if requested                                                                                             |
 |Compare deployment to snapshot|`deploy-tools compare`    |Compare the configuration stored from the last `deploy-tools sync` run, with the state of any deployed Modules. This should always be run by CI/CD before attempting to Deploy, and any differences will be reported|
 
 ## Glossary

@@ -28,13 +28,6 @@ def restore_modulefile_link(name: str, version: str, layout: Layout) -> None:
     deprecated_mf_link.rename(mf_link)
 
 
-def is_modulefile_deployed(
-    name: str, version: str, layout: Layout, in_deprecated: bool = False
-) -> bool:
-    mf_link = layout.get_modulefile_link(name, version, from_deprecated=in_deprecated)
-    return mf_link.exists()
-
-
 def get_default_modulefile_version(name: str, layout: Layout) -> str | None:
     version_regex = re.compile(DEFAULT_VERSION_REGEX)
     default_version_file = layout.get_default_version_file(name)
@@ -51,7 +44,7 @@ def apply_default_versions(
 ) -> None:
     """Update .version files for current default version settings."""
     templater = Templater()
-    deployed_module_versions = _get_deployed_modulefile_versions(layout)
+    deployed_module_versions = get_deployed_modulefile_versions(layout)
 
     for name in deployed_module_versions:
         default_version_file = layout.get_default_version_file(name)
@@ -69,7 +62,7 @@ def apply_default_versions(
             default_version_file.unlink(missing_ok=True)
 
 
-def _get_deployed_modulefile_versions(
+def get_deployed_modulefile_versions(
     layout: Layout, from_deprecated: bool = False
 ) -> ModuleVersionsByName:
     """Return list of modulefiles that have been deployed."""

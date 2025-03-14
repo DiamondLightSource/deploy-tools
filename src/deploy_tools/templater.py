@@ -28,7 +28,9 @@ class Templater:
     """
 
     def __init__(self) -> None:
-        self._env = jinja2.Environment(loader=jinja2.PackageLoader(TEMPLATES_PACKAGE))
+        self._env = jinja2.Environment(
+            loader=jinja2.PackageLoader(TEMPLATES_PACKAGE), trim_blocks=True
+        )
         self._templates: dict[str, jinja2.Template] = {}
         self._load_templates()
 

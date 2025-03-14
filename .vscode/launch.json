@@ -38,7 +38,7 @@
             "request": "launch",
             "justMyCode": false,
             "program": "/venv/bin/deploy-tools",
-            "args": "validate ${input:from-scratch} ${input:test-build} ${input:deploy-folder} ${input:config-folder}",
+            "args": "validate ${input:allow-all} ${input:from-scratch} ${input:test-build} ${input:deploy-folder} ${input:config-folder}",
             "console": "integratedTerminal",
             "env": {
                 // Enable break on exception when debugging tests (see: tests/conftest.py)
@@ -51,7 +51,7 @@
             "request": "launch",
             "justMyCode": false,
             "program": "/venv/bin/deploy-tools",
-            "args": "compare ${input:use-previous} ${input:deploy-folder}",
+            "args": "compare ${input:compare-mode} ${input:deploy-folder}",
             "console": "integratedTerminal",
             "env": {
                 // Enable break on exception when debugging tests (see: tests/conftest.py)
@@ -64,7 +64,7 @@
             "request": "launch",
             "justMyCode": false,
             "program": "/venv/bin/deploy-tools",
-            "args": "sync ${input:from-scratch} ${input:deploy-folder} ${input:config-folder}",
+            "args": "sync ${input:allow-all} ${input:from-scratch} ${input:deploy-folder} ${input:config-folder}",
             "console": "integratedTerminal",
             "env": {
                 // Enable break on exception when debugging tests (see: tests/conftest.py)
@@ -92,23 +92,34 @@
             "type": "promptString"
         },
         {
-            "id": "from-scratch",
-            "description": "Allow a complete redeployment to an empty directory",
+            "id": "allow-all",
+            "description": "Allow all lifecycle transitions",
             "options": [
-                "--not-from-scratch",
-                "--from-scratch"
+                "",
+                "--allow-all"
             ],
-            "default": "--no-from-scratch",
+            "default": "",
             "type": "pickString"
         },
         {
-            "id": "use-previous",
-            "description": "Compare against previous Deployment snapshot",
+            "id": "from-scratch",
+            "description": "Allow a complete redeployment to an empty directory",
+            "options": [
+                "",
+                "--from-scratch"
+            ],
+            "default": "",
+            "type": "pickString"
+        },
+        {
+            "id": "compare-mode",
+            "description": "Compare against previous Deployment snapshot or from scratch",
             "options": [
                 "--use-current",
-                "--use-previous"
+                "--use-previous",
+                "--from-scratch"
             ],
-            "default": "--no-use-previous",
+            "default": "--use-current",
             "type": "pickString"
         },
         {
@@ -116,7 +127,7 @@
             "description": "Include test build of the deployment changes",
             "options": [
                 "--test-build",
-                "--no-test-build"
+                ""
             ],
             "default": "--test-build",
             "type": "pickString"

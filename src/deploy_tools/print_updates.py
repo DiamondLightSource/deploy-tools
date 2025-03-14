@@ -22,24 +22,32 @@ def _print_module_updates(release_changes: ReleaseChanges) -> None:
     }
 
     for action, releases in display_config.items():
-        print(f"Modules to be {action}:")
+        if releases:
+            print(f"Modules to be {action}:")
 
-        for release in releases:
-            print(f"{release.module.name}/{release.module.version}")
+            for release in releases:
+                print(f"{release.module.name}/{release.module.version}")
+            print()
 
-        print()
+    if not any(display_config.values()):
+        print("No release actions required")
 
 
 def _print_version_updates(
     old_defaults: DefaultVersionsByName, new_defaults: DefaultVersionsByName
 ) -> None:
-    print("Updated module defaults:")
     module_names = old_defaults.keys() | new_defaults.keys()
 
+    update_messages: list[str] = []
     for name in module_names:
         old = old_defaults.get(name, "None")
         new = new_defaults.get(name, "None")
         if not old == new:
-            print(f"{name} {old} -> {new}")
+            update_messages.append(f"{name} {old} -> {new}")
 
-    print()
+    if update_messages:
+        print("Updated module defaults:")
+        for update in update_messages:
+            print(update)
+    else:
+        print("No default version changes")

@@ -42,12 +42,12 @@ def load_snapshot(layout: Layout, from_scratch: bool = False) -> Deployment:
         from_scratch: If True, this will return the default ``Deployment``
             configuration in order to work with an empty Deployment Area.
     """
-    if from_scratch:
-        if not layout.deployment_root.exists():
-            raise SnapshotError(
-                f"Deployment root does not exist:\n{layout.deployment_root}"
-            )
+    if not layout.deployment_root.exists() or not layout.deployment_root.is_dir():
+        raise SnapshotError(
+            f"Deployment root folder does not exist:\n{layout.deployment_root}"
+        )
 
+    if from_scratch:
         if layout.deployment_snapshot_path.exists():
             raise SnapshotError(
                 f"Deployment snapshot must not exist when deploying from scratch:\n"
@@ -56,6 +56,11 @@ def load_snapshot(layout: Layout, from_scratch: bool = False) -> Deployment:
 
         logger.debug("Loading empty deployment configuration as snapshot")
         return Deployment(settings=DeploymentSettings(), releases={})
+
+    if not layout.deployment_snapshot_path.exists():
+        raise SnapshotError(
+            f"Deployment snapshot not found:\n{layout.deployment_snapshot_path}"
+        )
 
     logger.debug("Loading snapshot: %s", layout.deployment_snapshot_path)
     return load_from_yaml(Deployment, layout.deployment_snapshot_path)
