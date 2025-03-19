@@ -1,0 +1,3 @@
+{% for dir in ignore_dirs %}
+{{ dir }}
+{% endfor %}
