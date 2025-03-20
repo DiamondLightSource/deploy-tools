@@ -63,11 +63,13 @@ def load_snapshot(layout: Layout, from_scratch: bool = False) -> Deployment:
         )
 
     logger.debug("Loading snapshot: %s", layout.deployment_snapshot_path)
-    return load_from_yaml(Deployment, layout.deployment_snapshot_path)
+    with open(layout.deployment_snapshot_path) as f:
+        return load_from_yaml(Deployment, f)
 
 
 def load_previous_snapshot(layout: Layout) -> Deployment:
     logger.debug(
         "Loading previous snapshot: %s", layout.previous_deployment_snapshot_path
     )
-    return load_from_yaml(Deployment, layout.previous_deployment_snapshot_path)
+    with open(layout.previous_deployment_snapshot_path) as f:
+        return load_from_yaml(Deployment, f)
