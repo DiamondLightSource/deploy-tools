@@ -1,4 +1,7 @@
+import io
 import logging
+
+from git import Repo
 
 from .layout import Layout
 from .models.deployment import Deployment, DeploymentSettings
@@ -67,9 +70,9 @@ def load_snapshot(layout: Layout, from_scratch: bool = False) -> Deployment:
         return load_from_yaml(Deployment, f)
 
 
-def load_previous_snapshot(layout: Layout) -> Deployment:
-    logger.debug(
-        "Loading previous snapshot: %s", layout.previous_deployment_snapshot_path
-    )
-    with open(layout.previous_deployment_snapshot_path) as f:
-        return load_from_yaml(Deployment, f)
+def load_snapshot_from_ref(layout: Layout, ref: str) -> Deployment:
+    logger.debug("Loading snapshot from ref: %s", ref)
+    repo = Repo(layout.deployment_root)
+    ref_snapshot = repo.commit(ref).tree[layout.DEPLOYMENT_SNAPSHOT_FILENAME]
+    with io.BytesIO(ref_snapshot.data_stream.read()) as snapshot_f:  # type: ignore
+        return load_from_yaml(Deployment, snapshot_f)
