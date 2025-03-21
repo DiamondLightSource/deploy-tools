@@ -119,9 +119,5 @@ class Layout:
         return self._root / self.DEPLOYMENT_SNAPSHOT_FILENAME
 
     @property
-    def previous_deployment_snapshot_path(self) -> Path:
-        return self._root / self.PREVIOUS_DEPLOYMENT_SNAPSHOT_FILENAME
-
-    @property
     def build_layout(self) -> ModuleBuildLayout:
         return ModuleBuildLayout(self._build_root)

@@ -1,4 +1,7 @@
+import io
 import logging
+
+from git import Repo
 
 from .layout import Layout
 from .models.deployment import Deployment, DeploymentSettings
@@ -17,21 +20,8 @@ def create_snapshot(deployment: Deployment, layout: Layout) -> None:
     This snapshot can then be used to compare the previous and current deployment
     configuration when a compare, validate or sync process is run.
     """
-    _backup_snapshot(layout)
-
     logger.debug("Creating snapshot: %s", layout.deployment_snapshot_path)
     save_as_yaml(deployment, layout.deployment_snapshot_path)
-
-
-def _backup_snapshot(layout: Layout) -> None:
-    """Move the existing Deployment snapshot to save as a backup
-
-    This could be useful when attempting to fix any issues caused by a failed Deploy
-    step.
-    """
-    if layout.deployment_snapshot_path.exists():
-        logger.debug("Backup snapshot to: %s", layout.previous_deployment_snapshot_path)
-        layout.deployment_snapshot_path.rename(layout.previous_deployment_snapshot_path)
 
 
 def load_snapshot(layout: Layout, from_scratch: bool = False) -> Deployment:
@@ -63,11 +53,13 @@ def load_snapshot(layout: Layout, from_scratch: bool = False) -> Deployment:
         )
 
     logger.debug("Loading snapshot: %s", layout.deployment_snapshot_path)
-    return load_from_yaml(Deployment, layout.deployment_snapshot_path)
+    with open(layout.deployment_snapshot_path) as f:
+        return load_from_yaml(Deployment, f)
 
 
-def load_previous_snapshot(layout: Layout) -> Deployment:
-    logger.debug(
-        "Loading previous snapshot: %s", layout.previous_deployment_snapshot_path
-    )
-    return load_from_yaml(Deployment, layout.previous_deployment_snapshot_path)
+def load_snapshot_from_ref(layout: Layout, ref: str) -> Deployment:
+    logger.debug("Loading snapshot from ref: %s", ref)
+    repo = Repo(layout.deployment_root)
+    ref_snapshot = repo.commit(ref).tree[layout.DEPLOYMENT_SNAPSHOT_FILENAME]
+    with io.BytesIO(ref_snapshot.data_stream.read()) as snapshot_f:  # type: ignore
+        return load_from_yaml(Deployment, snapshot_f)

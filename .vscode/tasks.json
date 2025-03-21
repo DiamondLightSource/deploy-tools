@@ -86,11 +86,11 @@
             "id": "compare-mode",
             "description": "Compare against previous Deployment snapshot or from scratch",
             "options": [
-                "--use-current",
-                "--use-previous",
+                "",
+                "--use-ref HEAD~1",
                 "--from-scratch"
             ],
-            "default": "--use-current",
+            "default": "",
             "type": "pickString"
         },
         {

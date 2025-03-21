@@ -1,5 +1,6 @@
 from collections import defaultdict
 from pathlib import Path
+from typing import BinaryIO, TextIO
 
 import yaml
 from pydantic import BaseModel
@@ -29,15 +30,15 @@ def save_as_yaml(
         yaml.safe_dump(obj.model_dump(), f)
 
 
-def load_from_yaml[T: BaseModel](model: type[T], file_path: Path) -> T:
+def load_from_yaml[T: BaseModel](model: type[T], input_stream: TextIO | BinaryIO) -> T:
     """Load a single Pydantic model from a yaml file."""
-    with open(file_path) as f:
-        return model(**yaml.safe_load(f))
+    return model(**yaml.safe_load(input_stream))
 
 
 def load_deployment(config_folder: Path) -> Deployment:
     """Load Deployment configuration from a yaml file."""
-    settings = load_from_yaml(DeploymentSettings, config_folder / DEPLOYMENT_SETTINGS)
+    with open(config_folder / DEPLOYMENT_SETTINGS) as f:
+        settings = load_from_yaml(DeploymentSettings, f)
 
     releases: ReleasesByNameAndVersion = defaultdict(dict)
     for version_path in config_folder.glob("*/*"):
@@ -60,7 +61,8 @@ def _load_release(path: Path) -> Release:
     if path.is_dir() or not path.suffix == YAML_FILE_SUFFIX:
         raise LoadError(f"Unexpected file in configuration directory:\n{path}")
 
-    return load_from_yaml(Release, path)
+    with open(path) as f:
+        return load_from_yaml(Release, f)
 
 
 def _check_filepath_matches(version_path: Path, module: Module) -> None:

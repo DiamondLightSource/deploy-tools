@@ -14,6 +14,7 @@ class TemplateType(StrEnum):
     MODULEFILE_VERSION = "modulefile_version"
     APPTAINER_ENTRYPOINT = "apptainer_entrypoint"
     SHELL_ENTRYPOINT = "shell_entrypoint"
+    GITIGNORE = "gitignore"
 
 
 DEFAULT_PERMISSIONS = 0o644
