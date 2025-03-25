@@ -23,7 +23,9 @@ def verbose_callback(value: int) -> None:
             level = logging.WARNING
 
     logging.basicConfig(
-        format="%(asctime)s %(message)s", datefmt="%Y-%m-%dT%H:%M:%S", level=level
+        format="%(asctime)s %(levelname)-8s %(message)s",
+        datefmt="%Y-%m-%dT%H:%M:%S",
+        level=level,
     )
 
 
