@@ -23,7 +23,9 @@ def verbose_callback(value: int) -> None:
             level = logging.WARNING
 
     logging.basicConfig(
-        format="%(asctime)s %(message)s", datefmt="%Y-%m-%dT%H:%M:%S", level=level
+        format="%(asctime)s %(levelname)-8s %(message)s",
+        datefmt="%Y-%m-%dT%H:%M:%S",
+        level=level,
     )
 
 
@@ -87,11 +89,9 @@ TEST_BUILD_OPTION = Annotated[
         help="Test the build in a temporary directory.",
     ),
 ]
-USE_PREVIOUS_OPTION = Annotated[
-    bool,
-    typer.Option(
-        "--use-previous/--use-current", help="Use previous snapshot for comparison."
-    ),
+USE_REF_OPTION = Annotated[
+    str | None,
+    typer.Option("--use-ref", help="Use deployment area git ref for comparison."),
 ]
 VERBOSE_OPTION = Annotated[
     int,
@@ -123,6 +123,10 @@ def sync(
 
     This will also run the validate command beforehand, but without printing the
     expected changes.
+
+    A git repository is created in the deployment area to help track changes, but as we
+    do not want to include large files it should not be used to revert the state of the
+    deployment area.
     """
     if from_scratch:
         allow_all = True
@@ -155,7 +159,7 @@ def validate(
 @app.command(no_args_is_help=True)
 def compare(
     deployment_root: DEPLOYMENT_ROOT_ARGUMENT,
-    use_previous: USE_PREVIOUS_OPTION = False,
+    use_ref: USE_REF_OPTION = None,
     from_scratch: FROM_SCRATCH_OPTION = False,
     verbose: VERBOSE_OPTION = 0,
 ) -> None:
@@ -165,7 +169,7 @@ def compare(
     deploy step, we can use this function to determine any required steps for fixing
     files in the deployment root.
     """
-    compare_to_snapshot(deployment_root, use_previous, from_scratch)
+    compare_to_snapshot(deployment_root, use_ref, from_scratch)
 
 
 @app.command(no_args_is_help=True)

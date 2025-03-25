@@ -1,16 +1,21 @@
 import logging
 from pathlib import Path
 
+from git import Repo
+
 from .build import build, clean_build_area
 from .deploy import deploy_changes
 from .layout import Layout
 from .models.save_and_load import load_deployment
 from .snapshot import create_snapshot, load_snapshot
+from .templater import Templater, TemplateType
 from .validate import (
     validate_deployment_changes,
 )
 
 logger = logging.getLogger(__name__)
+
+IGNORE_DIRS = ["/build", "/modules/*/*/sif_files"]
 
 
 def synchronise(
@@ -35,8 +40,34 @@ def synchronise(
     logger.info("Building modules")
     build(deployment_changes, layout)
 
+    repo: Repo
+    if from_scratch:
+        logger.info("Creating git repository in deployment area")
+        repo = _initialise_git_repo(layout.deployment_root, IGNORE_DIRS)
+    else:
+        repo = Repo(layout.deployment_root)
+
     logger.info("Creating snapshot")
     create_snapshot(deployment, layout)
 
     logger.info("Deploying changes")
     deploy_changes(deployment_changes, layout)
+
+    logger.info("Committing changes to git (for reference)")
+    repo.git.add("--all")
+    commit = repo.index.commit("Performed sync process")
+    logger.info("Commit SHA: %s", commit.hexsha)
+
+    logger.info("Sync process finished")
+
+
+def _initialise_git_repo(path: Path, ignore_dirs: list[str]) -> Repo:
+    repo = Repo.init(path, mkdir=False, initial_branch="main")
+    t = Templater()
+    params = {"ignore_dirs": ignore_dirs}
+    t.create(path / ".gitignore", TemplateType.GITIGNORE, params)
+
+    repo.git.add("--all")
+    repo.index.commit("Initial commit")
+
+    return repo

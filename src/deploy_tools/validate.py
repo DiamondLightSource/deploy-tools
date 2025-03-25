@@ -58,6 +58,8 @@ def validate_and_test_configuration(
         logger.info("Printing updates")
         print_updates(snapshot_default_versions, deployment_changes)
 
+        logger.info("Validation finished")
+
 
 def validate_deployment_changes(
     deployment: Deployment, snapshot: Deployment, allow_all: bool

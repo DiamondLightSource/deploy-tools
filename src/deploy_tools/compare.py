@@ -17,7 +17,7 @@ from .models.deployment import (
 from .models.module import Module, Release
 from .models.save_and_load import load_from_yaml
 from .modulefile import get_default_modulefile_version, get_deployed_modulefile_versions
-from .snapshot import load_previous_snapshot, load_snapshot
+from .snapshot import load_snapshot, load_snapshot_from_ref
 from .validate import validate_default_versions
 
 logger = logging.getLogger(__name__)
@@ -28,24 +28,23 @@ class ComparisonError(Exception):
 
 
 def compare_to_snapshot(
-    deployment_root: Path, use_previous: bool = False, from_scratch: bool = False
+    deployment_root: Path, use_ref: str | None = None, from_scratch: bool = False
 ) -> None:
     """Compare deployment area to deployment configuration snapshot.
 
     This helps us to identify broken environment modules, or a failed deployment step.
     Note that this does not exclude the possibility of all types of issues.
 
-    The `use_previous` argument can be used to provide a comparison with the previous
-    Deployment configuration. This is taken as a backup at the very start of the Deploy
-    step, and can be used to help identify the cause of failures.
+    The `use_ref` argument can be used to compare against a previous Deployment
+    configuration. It is recommended to use a reference relative to HEAD, e.g. 'HEAD~1'.
 
     The `from_scratch` argument checks that the deployment area is in a suitable state
     for a clean deployment into an empty directory. No snapshot is expected.
 
     Args:
         deployment_root: The root folder of the Deployment Area.
-        use_previous: If True, compare to the previous snapshot taken as backup at start
-            of the Deploy step.
+        use_ref: If specified, compare to the snapshot from the given deployment area
+            git ref
         from_scratch: If True, check that the deployment area is empty and ignore other
             requirements.
     """
@@ -65,9 +64,9 @@ def compare_to_snapshot(
             )
         return
 
-    if use_previous:
-        logger.info("Loading previous deployment snapshot")
-        deployment_snapshot = load_previous_snapshot(layout)
+    if use_ref:
+        logger.info("Loading deployment snapshot from %s", use_ref)
+        deployment_snapshot = load_snapshot_from_ref(layout, use_ref)
     else:
         logger.info("Loading deployment snapshot")
         deployment_snapshot = load_snapshot(layout)
@@ -77,6 +76,8 @@ def compare_to_snapshot(
 
     logger.info("Comparing reconstructed configuration with snapshot")
     _compare_snapshot_to_actual(snapshot=deployment_snapshot, actual=actual_deployment)
+
+    logger.info("Comparison finished")
 
 
 def _reconstruct_deployment_config_from_modules(layout: Layout) -> Deployment:
@@ -138,9 +139,8 @@ def _collect_modules(layout: Layout) -> list[Module]:
         for version_path in name_path.glob("*"):
             name = name_path.name
             version = version_path.name
-            modules.append(
-                load_from_yaml(Module, layout.get_module_snapshot_path(name, version))
-            )
+            with open(layout.get_module_snapshot_path(name, version)) as f:
+                modules.append(load_from_yaml(Module, f))
 
     return modules
 
