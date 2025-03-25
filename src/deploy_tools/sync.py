@@ -56,8 +56,9 @@ def synchronise(
     logger.info("Committing changes to git (for reference)")
     repo.git.add("--all")
     commit = repo.index.commit("Performed sync process")
-
     logger.info("Commit SHA: %s", commit.hexsha)
+
+    logger.info("Sync process finished")
 
 
 def _initialise_git_repo(path: Path, ignore_dirs: list[str]) -> Repo:

@@ -77,6 +77,8 @@ def compare_to_snapshot(
     logger.info("Comparing reconstructed configuration with snapshot")
     _compare_snapshot_to_actual(snapshot=deployment_snapshot, actual=actual_deployment)
 
+    logger.info("Comparison finished")
+
 
 def _reconstruct_deployment_config_from_modules(layout: Layout) -> Deployment:
     """Use the deployment area to reconstruct a Deployment configuration object.
