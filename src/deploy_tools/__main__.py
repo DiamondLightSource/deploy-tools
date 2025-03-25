@@ -89,7 +89,7 @@ TEST_BUILD_OPTION = Annotated[
 ]
 USE_REF_OPTION = Annotated[
     str | None,
-    typer.Option("--use-ref", help="Use deployment area git ref for configuration."),
+    typer.Option("--use-ref", help="Use deployment area git ref for comparison."),
 ]
 VERBOSE_OPTION = Annotated[
     int,
