@@ -1,0 +1,44 @@
+# yaml-language-server: $schema=/workspaces/deploy-tools/src/deploy_tools/models/schemas/release.json
+
+module:
+  name: edge-containers-cli
+  version: "0.1"
+  description: ec command line tool for kubernetes IOCs
+
+  env_vars:
+    - name: EC_CLI_BACKEND
+      value: ARGOCD
+    - name: EC_LOG_URL
+      value: "https://graylog.diamond.ac.uk/search?rangetype=relative&fields=message%2Csource&width=1489&highlightMessage=&relative=172800&q=pod_name%3A{service_name}*"
+    # default configuration is for p47 for testing
+    - name: EC_TARGET
+      value: p47-beamline/p47
+    - name: EC_SERVICES_REPO
+      value: https://github.com/epics-containers/p47-services
+
+  applications:
+    - app_type: apptainer
+
+      container:
+        path: docker://ghcr.io/epics-containers/edge-containers-cli
+        version: "4.4.1b1"
+
+      entrypoints:
+        - name: ec
+          command: ec
+
+      global_options:
+        mounts:
+          # places to get argocd config from
+          - /dls/science/users/:/dls/science/users/
+          - /scratch:/scratch
+
+    - app_type: binary
+      name: argocd
+      url: https://github.com/argoproj/argo-cd/releases/download/v2.14.10/argocd-linux-amd64
+      sha256: d1750274a336f0a090abf196a832cee14cb9f1c2fc3d20d80b0dbfeff83550fa
+
+    - app_type: shell
+      name: ec-login
+      script:
+        - argocd login argocd.diamond.ac.uk --grpc-web --sso
