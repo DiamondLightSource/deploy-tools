@@ -17,3 +17,4 @@ module load {{ module.name }}/{{ module.version }}
 {% endfor %}
 
 prepend-path PATH "{{ entrypoint_folder }}"
+prepend-path PATH "{{ binaries_folder }}"

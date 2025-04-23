@@ -8,6 +8,7 @@ class ModuleAreaLayout:
     """
 
     ENTRYPOINTS_FOLDER = "entrypoints"
+    BINARIES_FOLDER = "binaries"
 
     MODULE_SNAPSHOT_FILENAME = "module.yaml"
     MODULEFILE_FILENAME = "modulefile"
@@ -20,6 +21,9 @@ class ModuleAreaLayout:
 
     def get_entrypoints_folder(self, name: str, version: str) -> Path:
         return self.get_module_folder(name, version) / self.ENTRYPOINTS_FOLDER
+
+    def get_binaries_folder(self, name: str, version: str) -> Path:
+        return self.get_module_folder(name, version) / self.BINARIES_FOLDER
 
     def get_modulefile(self, name: str, version: str) -> Path:
         return self.get_module_folder(name, version) / self.MODULEFILE_FILENAME
@@ -37,9 +41,13 @@ class ModuleBuildLayout(ModuleAreaLayout):
     """
 
     SIF_FILES_FOLDER = "sif_files"
+    BINARY_FILES_FOLDER = "binaries"
 
     def get_sif_files_folder(self, name: str, version: str) -> Path:
         return self.get_module_folder(name, version) / self.SIF_FILES_FOLDER
+
+    def get_binary_files_folder(self, name: str, version: str) -> Path:
+        return self.get_module_folder(name, version) / self.BINARY_FILES_FOLDER
 
     @property
     def build_root(self):
@@ -72,6 +80,9 @@ class Layout:
 
     def get_entrypoints_folder(self, name: str, version: str) -> Path:
         return self._modules_layout.get_entrypoints_folder(name, version)
+
+    def get_binaries_folder(self, name: str, version: str) -> Path:
+        return self._modules_layout.get_binaries_folder(name, version)
 
     def get_modulefiles_root(self, from_deprecated: bool = False) -> Path:
         return (

@@ -27,6 +27,7 @@ class ModuleBuilder:
         entrypoints_folder = self._layout.get_entrypoints_folder(
             module.name, module.version
         )
+        binaries_folder = self._layout.get_binaries_folder(module.name, module.version)
 
         description = module.description
         if description is None:
@@ -38,6 +39,7 @@ class ModuleBuilder:
             "env_vars": module.env_vars,
             "dependencies": module.dependencies,
             "entrypoint_folder": entrypoints_folder,
+            "binaries_folder": binaries_folder,
         }
 
         built_modulefile = self._build_layout.get_modulefile(

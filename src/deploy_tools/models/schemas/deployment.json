@@ -1,6 +1,6 @@
 {
   "$defs": {
-    "Apptainer": {
+    "ApptainerApp": {
       "additionalProperties": false,
       "description": "Represents an Apptainer application or set of applications for a single image.\n\nThis uses Apptainer to deploy a portable image of the desired container. Several\nentrypoints can then be specified to allow for multiple commands run on the same\ncontainer image.",
       "properties": {
@@ -33,7 +33,38 @@
         "container",
         "entrypoints"
       ],
-      "title": "Apptainer",
+      "title": "ApptainerApp",
+      "type": "object"
+    },
+    "BinaryApp": {
+      "additionalProperties": false,
+      "description": "Represents a standalone Binary application.\n\nThis will fetch a standalone binary, validate its sha256 and add its\nlocation to that path.",
+      "properties": {
+        "app_type": {
+          "const": "binary",
+          "title": "App Type",
+          "type": "string"
+        },
+        "name": {
+          "title": "Name",
+          "type": "string"
+        },
+        "url": {
+          "title": "Url",
+          "type": "string"
+        },
+        "sha256": {
+          "title": "Sha256",
+          "type": "string"
+        }
+      },
+      "required": [
+        "app_type",
+        "name",
+        "url",
+        "sha256"
+      ],
+      "title": "BinaryApp",
       "type": "object"
     },
     "ContainerImage": {
@@ -197,17 +228,21 @@
           "items": {
             "discriminator": {
               "mapping": {
-                "apptainer": "#/$defs/Apptainer",
-                "shell": "#/$defs/Shell"
+                "apptainer": "#/$defs/ApptainerApp",
+                "binary": "#/$defs/BinaryApp",
+                "shell": "#/$defs/ShellApp"
               },
               "propertyName": "app_type"
             },
             "oneOf": [
               {
-                "$ref": "#/$defs/Apptainer"
+                "$ref": "#/$defs/ApptainerApp"
               },
               {
-                "$ref": "#/$defs/Shell"
+                "$ref": "#/$defs/ShellApp"
+              },
+              {
+                "$ref": "#/$defs/BinaryApp"
               }
             ]
           },
@@ -281,7 +316,7 @@
       },
       "type": "object"
     },
-    "Shell": {
+    "ShellApp": {
       "additionalProperties": false,
       "description": "Represents a Shell application.\n\nThis will run the code specified as a shell script. This currently uses Bash for\nimproved functionality while retaining high compatibility with various Linux\ndistributions.",
       "properties": {
@@ -307,7 +342,7 @@
         "name",
         "script"
       ],
-      "title": "Shell",
+      "title": "ShellApp",
       "type": "object"
     }
   },

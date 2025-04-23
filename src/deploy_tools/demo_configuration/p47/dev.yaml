@@ -6,7 +6,7 @@ module:
   #   EC_TARGET
   #   EC_SERVICES_REPO
   name: p47
-  version: "0.1"
+  version: dev
   description: ec command line tool for kubernetes IOCs
 
   env_vars:
