@@ -17,6 +17,12 @@ command="{{ command }}"
 # Options and arguments to pass to command
 command_args="{{ command_args }}"
 
+# add mounts of host binaries into /usr/bin
+for i in {{ host_binaries }}; do
+    binary=$(which $i)
+    mounts="${mounts},${binary}:/usr/bin/${i}"
+done
+
 # Raise an error if sif file does not exist
 if [[ ! -f ${sif_file} ]]; then
     echo "ERROR: sif file ${sif_file} does not exist" 1>&2

@@ -21,17 +21,32 @@ module:
 
       container:
         path: docker://ghcr.io/epics-containers/edge-containers-cli
-        version: "4.4.1b1"
+        version: "4.4.1"
 
       entrypoints:
         - name: ec
           command: ec
+        # for debugging enter the container with bash shell
+        - name: ec-bash
+          command: bash
 
       global_options:
         mounts:
-          # places to get argocd config from
+          # places to get argocd and kubectl config from
           - /dls/science/users/:/dls/science/users/
           - /scratch:/scratch
+          - /dls_sw/apps:/dls_sw/apps
+        host_binaries:
+          - argocd
+          # for future expansion and to demonstrate it can be done
+          # load in the remaining kubernetes tools
+          - kubectl
+          - helm
+          - kubelogin
+          - klogout
+          - kustomize
+          - kubeseal
+          - kubectl-oidc_login
 
     - app_type: binary
       name: argocd

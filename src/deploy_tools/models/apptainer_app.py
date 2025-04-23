@@ -8,6 +8,7 @@ class EntrypointOptions(ParentModel):
     apptainer_args: str = ""
     command_args: str = ""
     mounts: Sequence[str] = []
+    host_binaries: Sequence[str] = []
 
 
 class Entrypoint(ParentModel):

@@ -24,7 +24,8 @@
           "default": {
             "apptainer_args": "",
             "command_args": "",
-            "mounts": []
+            "mounts": [],
+            "host_binaries": []
           }
         }
       },
@@ -129,7 +130,8 @@
           "default": {
             "apptainer_args": "",
             "command_args": "",
-            "mounts": []
+            "mounts": [],
+            "host_binaries": []
           }
         }
       },
@@ -158,6 +160,14 @@
             "type": "string"
           },
           "title": "Mounts",
+          "type": "array"
+        },
+        "host_binaries": {
+          "default": [],
+          "items": {
+            "type": "string"
+          },
+          "title": "Host Binaries",
           "type": "array"
         }
       },
