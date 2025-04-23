@@ -31,5 +31,4 @@ fi
 opts=${opts}" --env DISPLAY=${DISPLAY}"
 opts=${opts}" ${apptainer_args}"
 
-set -x
 apptainer exec ${opts} ${sif_file} ${command} ${command_args} "${@}"

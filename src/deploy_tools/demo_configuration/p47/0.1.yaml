@@ -1,0 +1,37 @@
+# yaml-language-server: $schema=/workspaces/deploy-tools/src/deploy_tools/models/schemas/release.json
+
+module:
+  # TODO we would need one of these per beamline so we should factor out
+  # the common features - the only unique things are the environment variables:
+  #   EC_TARGET
+  #   EC_SERVICES_REPO
+  name: p47
+  version: "0.1"
+  description: ec command line tool for kubernetes IOCs
+
+  env_vars:
+    - name: EC_CLI_BACKEND
+      value: ARGOCD
+    - name: EC_TARGET
+      value: p47-beamline/p47
+    - name: EC_SERVICES_REPO
+      value: https://github.com/epics-containers/p47-services
+    - name: EC_LOG_URL
+      value: "https://graylog.diamond.ac.uk/search?rangetype=relative&fields=message%2Csource&width=1489&highlightMessage=&relative=172800&q=pod_name%3A{service_name}*"
+
+  applications:
+    - app_type: apptainer
+
+      container:
+        path: docker://ghcr.io/epics-containers/edge-containers-cli
+        version: "4.4.1b1"
+
+      entrypoints:
+        - name: ec
+          command: ec
+
+      global_options:
+        mounts:
+          # places to get argocd config from
+          - /dls/science/users/:/dls/science/users/
+          - /scratch:/scratch
