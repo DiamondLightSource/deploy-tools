@@ -24,7 +24,8 @@
           "default": {
             "apptainer_args": "",
             "command_args": "",
-            "mounts": []
+            "mounts": [],
+            "host_binaries": []
           }
         }
       },
@@ -80,7 +81,8 @@
           "default": {
             "apptainer_args": "",
             "command_args": "",
-            "mounts": []
+            "mounts": [],
+            "host_binaries": []
           }
         }
       },
@@ -95,20 +97,32 @@
       "properties": {
         "apptainer_args": {
           "default": "",
+          "description": "Apptainer arguments to pass when launching the container",
           "title": "Apptainer Args",
           "type": "string"
         },
         "command_args": {
           "default": "",
+          "description": "Arguments to pass to command entrypoint",
           "title": "Command Args",
           "type": "string"
         },
         "mounts": {
           "default": [],
+          "description": "A list of mount points to add to the container in the form of 'host_path:container_path'",
           "items": {
             "type": "string"
           },
           "title": "Mounts",
+          "type": "array"
+        },
+        "host_binaries": {
+          "default": [],
+          "description": "A list of host binaries to mount into the container. These are discovered on the host using the current PATH and are mounted into the container at /usr/bin/<binary_name>.",
+          "items": {
+            "type": "string"
+          },
+          "title": "Host Binaries",
           "type": "array"
         }
       },

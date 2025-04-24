@@ -23,6 +23,12 @@ if [[ ! -f ${sif_file} ]]; then
     exit 1
 fi
 
+# add mounts of host binaries into /usr/bin
+for i in {{ host_binaries }}; do
+    binary=$(which $i)
+    mounts="${mounts},${binary}:/usr/bin/${i}"
+done
+
 # Set up mounts if any have been configured
 if [[ ! -z ${mounts} ]]; then
     opts="-B ${mounts}"
@@ -31,5 +37,8 @@ fi
 opts=${opts}" --env DISPLAY=${DISPLAY}"
 opts=${opts}" ${apptainer_args}"
 
-set -x
+
+if [[ -n "${DEPLOY_TOOLS_VERBOSE}" ]]; then
+    set -x
+fi
 apptainer exec ${opts} ${sif_file} ${command} ${command_args} "${@}"
