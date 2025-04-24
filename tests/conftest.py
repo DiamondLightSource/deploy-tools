@@ -1,4 +1,5 @@
 import os
+from pathlib import Path
 from typing import Any
 
 import pytest
@@ -32,3 +33,8 @@ if os.getenv("PYTEST_RAISE", "0") == "1":
     @pytest.hookimpl(tryfirst=True)
     def pytest_internalerror(excinfo: pytest.ExceptionInfo[Any]):
         raise excinfo.value
+
+
+@pytest.fixture
+def schemas():
+    return Path(__file__).parent.parent / "src" / "deploy_tools" / "models" / "schemas"
