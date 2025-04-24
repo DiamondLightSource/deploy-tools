@@ -2,6 +2,19 @@ import os
 from typing import Any
 
 import pytest
+from typer.testing import CliRunner
+
+from deploy_tools.__main__ import app
+
+runner = CliRunner()
+
+
+def run_cli(*args):
+    result = runner.invoke(app, [str(x) for x in args])
+    if result.exception:
+        raise result.exception
+    assert result.exit_code == 0, result
+
 
 # Prevent pytest from catching exceptions when debugging in vscode so that break on
 # exception works correctly (see: https://github.com/pytest-dev/pytest/issues/7409)
