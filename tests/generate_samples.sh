@@ -19,4 +19,3 @@ rm -rf ${TMP_DIR}/.git*
 rm -rf ${SAMPLES_DIR}
 mkdir -p ${SAMPLES_DIR}
 cp -r ${TMP_DIR} ${SAMPLES_DIR}
-
