@@ -1,0 +1,23 @@
+applications:
+- app_type: apptainer
+  container:
+    path: docker://ghcr.io/epics-containers/ec-phoebus
+    version: 4.7.3ec2
+  entrypoints:
+  - command: java -jar /phoebus/phoebus.jar -server 7010
+    name: phoebus
+    options:
+      apptainer_args: --env DISPLAY=${DISPLAY} -e
+      command_args: -server 7010
+      host_binaries: []
+      mounts: []
+  global_options:
+    apptainer_args: ''
+    command_args: ''
+    host_binaries: []
+    mounts: []
+dependencies: []
+description: Containerised release of CSS Phoebus
+env_vars: []
+name: phoebus
+version: '0.1'

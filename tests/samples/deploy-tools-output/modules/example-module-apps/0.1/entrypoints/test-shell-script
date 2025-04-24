@@ -1,0 +1,5 @@
+#! /bin/bash
+
+echo This is the first line of a shell script
+echo and this is the second line.
+echo Your input is ${1}

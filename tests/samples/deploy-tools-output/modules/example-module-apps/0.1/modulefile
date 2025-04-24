@@ -1,0 +1,10 @@
+#%Module1.0
+##
+## example-module-apps - Demonstration of a module configuration folder
+##
+module-whatis "Demonstration of a module configuration folder"
+
+setenv OTHER_VALUE "Test message OTHER_VALUE from example-module-folder"
+
+
+prepend-path PATH "/tmp/deploy-tools-output/modules/example-module-apps/0.1/entrypoints"
