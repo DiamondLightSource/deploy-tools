@@ -20,10 +20,8 @@ def test_cli_version():
 def test_schema():
     with tempfile.TemporaryDirectory() as tmp:
         tmp_path = Path(tmp)
-
         # Generate up to date schema files
         run_cli("schema", tmp_path)
-
         # Compare with the expected schema files
         for schema in tmp_path.glob("*.json"):
             expected = PATH_TO_SCHEMAS / schema.name
