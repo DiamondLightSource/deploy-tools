@@ -22,6 +22,7 @@ applications:
     apptainer_args: ''
     command_args: ''
     host_binaries:
+    - argocd
     - kubectl
     - helm
     - kubelogin
@@ -33,6 +34,11 @@ applications:
     - /dls/science/users/:/dls/science/users/
     - /scratch:/scratch
     - /dls_sw/apps:/dls_sw/apps
+- app_type: binary
+  hash: d1750274a336f0a090abf196a832cee14cb9f1c2fc3d20d80b0dbfeff83550fa
+  hash_type: sha256
+  name: argocd
+  url: https://github.com/argoproj/argo-cd/releases/download/v2.14.10/argocd-linux-amd64
 - app_type: shell
   name: ec-login
   script:
@@ -41,11 +47,11 @@ dependencies: []
 description: ec command line tool for kubernetes IOCs
 env_vars:
 - name: EC_CLI_BACKEND
-  value: K8S
+  value: ARGOCD
 - name: EC_LOG_URL
   value: https://graylog.diamond.ac.uk/search?rangetype=relative&fields=message%2Csource&width=1489&highlightMessage=&relative=172800&q=pod_name%3A{service_name}*
 - name: EC_TARGET
-  value: p47-beamline
+  value: p47-beamline/p47
 - name: EC_SERVICES_REPO
   value: https://github.com/epics-containers/p47-services
 name: edge-containers-cli

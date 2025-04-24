@@ -6,16 +6,14 @@ module:
   description: ec command line tool for kubernetes IOCs
 
   env_vars:
-    # For host-binaries PR we will use the K8S backend - this will be changed to
-    # ARGOCD when we add in the BinaryApp feature (upcoming PR)
     - name: EC_CLI_BACKEND
-      value: K8S
+      value: ARGOCD
     - name: EC_LOG_URL
       value: "https://graylog.diamond.ac.uk/search?rangetype=relative&fields=message%2Csource&width=1489&highlightMessage=&relative=172800&q=pod_name%3A{service_name}*"
+
     # The default configuration is for p47 for testing
     - name: EC_TARGET
-      value: p47-beamline # K8S target
-      # value: p47-beamline/p47 # Argocd target
+      value: p47-beamline/p47
     - name: EC_SERVICES_REPO
       value: https://github.com/epics-containers/p47-services
 
@@ -40,6 +38,7 @@ module:
           - /scratch:/scratch
           - /dls_sw/apps:/dls_sw/apps
         host_binaries:
+          - argocd
           - kubectl
           - helm
           - kubelogin
@@ -47,6 +46,12 @@ module:
           - kustomize
           - kubeseal
           - kubectl-oidc_login
+
+    - app_type: binary
+      name: argocd
+      url: https://github.com/argoproj/argo-cd/releases/download/v2.14.10/argocd-linux-amd64
+      hash_type: sha256
+      hash: d1750274a336f0a090abf196a832cee14cb9f1c2fc3d20d80b0dbfeff83550fa
 
     - app_type: shell
       name: ec-login
