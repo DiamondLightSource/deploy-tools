@@ -52,5 +52,8 @@ def test_demo_configuration(samples: Path, demo_config: Path):
         assert expected.read_text() == out_file.read_text(), (
             f"File {out_file} is different."
         )
+<<<<<<< HEAD
 
     rmtree(temp_out, ignore_errors=True)
+=======
+>>>>>>> ce3367b (add test for demo_configuration)
