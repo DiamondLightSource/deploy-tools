@@ -1,0 +1,10 @@
+#%Module1.0
+##
+## dls-pmac-control - Demonstration of the deploy-tools process
+##
+module-whatis "Demonstration of the deploy-tools process"
+
+setenv EXAMPLE_VALUE "Test message EXAMPLE_VALUE from example-module-file version 0.2"
+
+
+prepend-path PATH "/tmp/deploy-tools-output/modules/dls-pmac-control/0.2/entrypoints"

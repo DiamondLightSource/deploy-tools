@@ -1,0 +1,9 @@
+#%Module1.0
+##
+## phoebus - Containerised release of CSS Phoebus
+##
+module-whatis "Containerised release of CSS Phoebus"
+
+
+
+prepend-path PATH "/tmp/deploy-tools-output/modules/phoebus/0.1/entrypoints"

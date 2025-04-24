@@ -1,0 +1,44 @@
+#! /bin/bash
+
+# Arguments:
+# ${@} = Remaining args to pass to the command
+
+# Halt on error
+set -e
+
+# Mounts for container
+mounts="/dls_sw:/dls_sw_test:ro"
+# Additional arguments for apptainer
+apptainer_args=""
+# Sif file path
+sif_file="$(dirname $0)/../sif_files/a553018b87553334a94c33cb04eb025c.sif"
+# Command to run in container
+command="cowsay"
+# Options and arguments to pass to command
+command_args="Hello"
+
+# Raise an error if sif file does not exist
+if [[ ! -f ${sif_file} ]]; then
+    echo "ERROR: sif file ${sif_file} does not exist" 1>&2
+    exit 1
+fi
+
+# add mounts of host binaries into /usr/bin
+for i in ; do
+    binary=$(which $i)
+    mounts="${mounts},${binary}:/usr/bin/${i}"
+done
+
+# Set up mounts if any have been configured
+if [[ ! -z ${mounts} ]]; then
+    opts="-B ${mounts}"
+fi
+
+opts=${opts}" --env DISPLAY=${DISPLAY}"
+opts=${opts}" ${apptainer_args}"
+
+
+if [[ -n "${DEPLOY_TOOLS_VERBOSE}" ]]; then
+    set -x
+fi
+apptainer exec ${opts} ${sif_file} ${command} ${command_args} "${@}"

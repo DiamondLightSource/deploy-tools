@@ -1,0 +1,11 @@
+#%Module1.0
+##
+## example-module-deps - Demonstration of deploy-tools dependencies
+##
+module-whatis "Demonstration of deploy-tools dependencies"
+
+
+module load dls-pmac-control/0.1
+module load example-module-apps/0.1
+
+prepend-path PATH "/tmp/deploy-tools-output/modules/example-module-deps/0.2/entrypoints"
