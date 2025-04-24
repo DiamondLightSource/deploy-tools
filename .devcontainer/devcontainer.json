@@ -42,7 +42,11 @@
         "--device=/dev/fuse"
     ],
     "mounts": [
-        "source=/dls_sw/,target=/dls_sw,type=bind,consistency=cached"
+        "source=/dls_sw/,target=/dls_sw,type=bind,consistency=cached",
+        // these two mounts allow us to pick up cache and config folders that have
+        // been symlinked out of the home directory
+        "source=/dls/science/users/,target=/dls/science/users,type=bind,consistency=cached",
+        "source=/scratch/,target=/scratch,type=bind,consistency=cached"
     ],
     // Mount the parent as /workspaces so we can pip install peers as editable
     "workspaceMount": "source=${localWorkspaceFolder}/..,target=/workspaces,type=bind",

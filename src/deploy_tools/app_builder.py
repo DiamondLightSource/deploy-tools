@@ -44,6 +44,9 @@ class AppBuilder:
             entrypoint_file = entrypoints_folder / entrypoint.name
 
             mounts = ",".join(chain(global_options.mounts, options.mounts)).strip()
+            host_binaries = " ".join(
+                chain(global_options.host_binaries, options.host_binaries)
+            ).strip()
 
             apptainer_args = f"{global_options.apptainer_args} {options.apptainer_args}"
             apptainer_args = apptainer_args.strip()
@@ -55,6 +58,7 @@ class AppBuilder:
 
             params = {
                 "mounts": mounts,
+                "host_binaries": host_binaries,
                 "apptainer_args": apptainer_args,
                 "relative_sif_file": relative_sif_file,
                 "command": command,
