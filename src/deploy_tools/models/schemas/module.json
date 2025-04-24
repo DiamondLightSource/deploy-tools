@@ -35,6 +35,7 @@
         "entrypoints"
       ],
       "title": "ApptainerApp",
+<<<<<<< HEAD
       "type": "object"
     },
     "BinaryApp": {
@@ -74,6 +75,8 @@
         "hash_type"
       ],
       "title": "BinaryApp",
+=======
+>>>>>>> d3334c9 (add schema checking test)
       "type": "object"
     },
     "ContainerImage": {
@@ -244,7 +247,10 @@
             "discriminator": {
               "mapping": {
                 "apptainer": "#/$defs/ApptainerApp",
+<<<<<<< HEAD
                 "binary": "#/$defs/BinaryApp",
+=======
+>>>>>>> d3334c9 (add schema checking test)
                 "shell": "#/$defs/ShellApp"
               },
               "propertyName": "app_type"
@@ -255,9 +261,12 @@
               },
               {
                 "$ref": "#/$defs/ShellApp"
+<<<<<<< HEAD
               },
               {
                 "$ref": "#/$defs/BinaryApp"
+=======
+>>>>>>> d3334c9 (add schema checking test)
               }
             ]
           },
