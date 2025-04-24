@@ -39,7 +39,7 @@
     },
     "BinaryApp": {
       "additionalProperties": false,
-      "description": "Represents a standalone Binary application.\nThis will fetch a standalone binary, validate its hash and add its\nlocation to that path.",
+      "description": "Represents a standalone Binary application.\n\nThis will fetch a standalone binary, validate its hash and add its\nlocation to that path.",
       "properties": {
         "app_type": {
           "const": "binary",
