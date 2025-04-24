@@ -139,6 +139,6 @@ class AppBuilder:
                         break
                     h.update(data)
             if h.hexdigest() != app.hash:
-                raise AppBuilderError(f"Downloaded Binary {app.url} digest failure")
+                raise AppBuilderError(f"Downloaded Binary {app.url} hash check failed")
 
         binary_path.chmod(self.ALL_READ_EXECUTE_PERMISSIONS)
