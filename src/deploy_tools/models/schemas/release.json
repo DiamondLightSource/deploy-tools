@@ -1,6 +1,6 @@
 {
   "$defs": {
-    "Apptainer": {
+    "ApptainerApp": {
       "additionalProperties": false,
       "description": "Represents an Apptainer application or set of applications for a single image.\n\nThis uses Apptainer to deploy a portable image of the desired container. Several\nentrypoints can then be specified to allow for multiple commands run on the same\ncontainer image.",
       "properties": {
@@ -33,7 +33,46 @@
         "container",
         "entrypoints"
       ],
-      "title": "Apptainer",
+      "title": "ApptainerApp",
+      "type": "object"
+    },
+    "BinaryApp": {
+      "additionalProperties": false,
+      "description": "Represents a standalone Binary application.\nThis will fetch a standalone binary, validate its hash and add its\nlocation to that path.",
+      "properties": {
+        "app_type": {
+          "const": "binary",
+          "title": "App Type",
+          "type": "string"
+        },
+        "name": {
+          "description": "Binary filename to use locally",
+          "title": "Name",
+          "type": "string"
+        },
+        "url": {
+          "description": "URL to download the binary from.",
+          "title": "Url",
+          "type": "string"
+        },
+        "hash_type": {
+          "$ref": "#/$defs/HashType",
+          "description": "Type of hash used to check the binary."
+        },
+        "hash": {
+          "default": "",
+          "description": "Hash to verify binary integrity",
+          "title": "Hash",
+          "type": "string"
+        }
+      },
+      "required": [
+        "app_type",
+        "name",
+        "url",
+        "hash_type"
+      ],
+      "title": "BinaryApp",
       "type": "object"
     },
     "ContainerImage": {
@@ -135,6 +174,17 @@
       "title": "EnvVar",
       "type": "object"
     },
+    "HashType": {
+      "description": "Type of hash to use for the binary.",
+      "enum": [
+        "sha256",
+        "sha512",
+        "md5",
+        "none"
+      ],
+      "title": "HashType",
+      "type": "string"
+    },
     "Module": {
       "additionalProperties": false,
       "description": "Represents a Module to be deployed.\n\nModules can optionally include a set of applications, environment variables to load,\nand a list of module dependencies.",
@@ -179,17 +229,21 @@
           "items": {
             "discriminator": {
               "mapping": {
-                "apptainer": "#/$defs/Apptainer",
-                "shell": "#/$defs/Shell"
+                "apptainer": "#/$defs/ApptainerApp",
+                "binary": "#/$defs/BinaryApp",
+                "shell": "#/$defs/ShellApp"
               },
               "propertyName": "app_type"
             },
             "oneOf": [
               {
-                "$ref": "#/$defs/Apptainer"
+                "$ref": "#/$defs/ApptainerApp"
               },
               {
-                "$ref": "#/$defs/Shell"
+                "$ref": "#/$defs/ShellApp"
+              },
+              {
+                "$ref": "#/$defs/BinaryApp"
               }
             ]
           },
@@ -232,7 +286,7 @@
       "title": "ModuleDependency",
       "type": "object"
     },
-    "Shell": {
+    "ShellApp": {
       "additionalProperties": false,
       "description": "Represents a Shell application.\n\nThis will run the code specified as a shell script. This currently uses Bash for\nimproved functionality while retaining high compatibility with various Linux\ndistributions.",
       "properties": {
@@ -258,7 +312,7 @@
         "name",
         "script"
       ],
-      "title": "Shell",
+      "title": "ShellApp",
       "type": "object"
     }
   },

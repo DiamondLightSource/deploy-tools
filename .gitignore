@@ -72,3 +72,6 @@ lockfiles/
 
 # Demo output path for vscode tasks
 demo-output
+
+# vscode workspaces are local only
+*.code-workspace
