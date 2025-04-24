@@ -107,6 +107,8 @@ class AppBuilder:
             create_parents=True,
         )
 
+    ALL_READ_EXECUTE_PERMISSIONS = 0o555
+
     def _create_binary_file(self, app: BinaryApp, module: Module) -> None:
         """
         Download a URL, validate it against its sha256, make it executable
@@ -139,5 +141,4 @@ class AppBuilder:
             if h.hexdigest() != app.hash:
                 raise AppBuilderError(f"Downloaded Binary {app.url} digest failure")
 
-        # TODO Martin suggests moving this
-        binary_path.chmod(0o555)
+        binary_path.chmod(self.ALL_READ_EXECUTE_PERMISSIONS)
