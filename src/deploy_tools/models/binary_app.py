@@ -20,6 +20,7 @@ class HashType(StrEnum):
 class BinaryApp(ParentModel):
     """
     Represents a standalone Binary application.
+
     This will fetch a standalone binary, validate its hash and add its
     location to that path.
     """
