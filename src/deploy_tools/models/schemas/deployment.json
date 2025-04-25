@@ -55,15 +55,15 @@
           "title": "Url",
           "type": "string"
         },
-        "hash_type": {
-          "$ref": "#/$defs/HashType",
-          "description": "Type of hash used to check the binary."
-        },
         "hash": {
           "default": "",
           "description": "Hash to verify binary integrity",
           "title": "Hash",
           "type": "string"
+        },
+        "hash_type": {
+          "$ref": "#/$defs/HashType",
+          "description": "Type of hash used to check the binary."
         }
       },
       "required": [
