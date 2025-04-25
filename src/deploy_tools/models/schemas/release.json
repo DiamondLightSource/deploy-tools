@@ -1,6 +1,6 @@
 {
   "$defs": {
-    "Apptainer": {
+    "ApptainerApp": {
       "additionalProperties": false,
       "description": "Represents an Apptainer application or set of applications for a single image.\n\nThis uses Apptainer to deploy a portable image of the desired container. Several\nentrypoints can then be specified to allow for multiple commands run on the same\ncontainer image.",
       "properties": {
@@ -33,7 +33,7 @@
         "container",
         "entrypoints"
       ],
-      "title": "Apptainer",
+      "title": "ApptainerApp",
       "type": "object"
     },
     "ContainerImage": {
@@ -179,17 +179,17 @@
           "items": {
             "discriminator": {
               "mapping": {
-                "apptainer": "#/$defs/Apptainer",
-                "shell": "#/$defs/Shell"
+                "apptainer": "#/$defs/ApptainerApp",
+                "shell": "#/$defs/ShellApp"
               },
               "propertyName": "app_type"
             },
             "oneOf": [
               {
-                "$ref": "#/$defs/Apptainer"
+                "$ref": "#/$defs/ApptainerApp"
               },
               {
-                "$ref": "#/$defs/Shell"
+                "$ref": "#/$defs/ShellApp"
               }
             ]
           },
@@ -232,7 +232,7 @@
       "title": "ModuleDependency",
       "type": "object"
     },
-    "Shell": {
+    "ShellApp": {
       "additionalProperties": false,
       "description": "Represents a Shell application.\n\nThis will run the code specified as a shell script. This currently uses Bash for\nimproved functionality while retaining high compatibility with various Linux\ndistributions.",
       "properties": {
@@ -258,7 +258,7 @@
         "name",
         "script"
       ],
-      "title": "Shell",
+      "title": "ShellApp",
       "type": "object"
     }
   },
