@@ -1,15 +1,9 @@
 # yaml-language-server: $schema=/workspaces/deploy-tools/src/deploy_tools/models/schemas/release.json
 
 module:
-  name: p47
-  version: "0.1"
+  name: ec-p47
+  version: dev
   description: Command line setup for p47 beamline
-
-  env_vars:
-    - name: EC_TARGET
-      value: p47-beamline/p47
-    - name: EC_SERVICES_REPO
-      value: https://github.com/epics-containers/p47-services
 
   dependencies:
     - name: edge-containers-cli
@@ -17,4 +11,8 @@ module:
     - name: pollux
       version: local
 
-  applications: []
+  applications:
+    - app_type: shell
+      name: ec
+      script:
+        - ec-apptainer --target p47-beamline/p47 --repo https://github.com/epics-containers/p47-services ${@}

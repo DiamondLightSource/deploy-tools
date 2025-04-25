@@ -15,12 +15,6 @@ module:
     - name: EC_LOG_URL
       value: "https://graylog.diamond.ac.uk/search?rangetype=relative&fields=message%2Csource&width=1489&highlightMessage=&relative=172800&q=pod_name%3A{service_name}*"
 
-    # The default configuration is for p47 for testing
-    - name: EC_TARGET
-      value: p47-beamline/p47
-    - name: EC_SERVICES_REPO
-      value: https://github.com/epics-containers/p47-services
-
   applications:
     - app_type: apptainer
 
@@ -29,7 +23,7 @@ module:
         version: "4.4.1"
 
       entrypoints:
-        - name: ec
+        - name: ec-apptainer
           command: ec
         # for debugging enter the container with bash shell
         - name: ec-bash
