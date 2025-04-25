@@ -7,9 +7,7 @@ from .parent import ParentModel
 
 
 class HashType(StrEnum):
-    """
-    Type of hash to use for the binary.
-    """
+    """Type of hash to use for the binary."""
 
     SHA256 = "sha256"
     SHA512 = "sha512"
