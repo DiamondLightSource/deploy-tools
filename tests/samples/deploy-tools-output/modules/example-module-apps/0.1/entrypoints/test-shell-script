@@ -1,5 +1,9 @@
 #! /bin/bash
 
+if [[ -n "${DEPLOY_TOOLS_VERBOSE}" ]]; then
+    set -x
+fi
+
 echo This is the first line of a shell script
 echo and this is the second line.
 echo Your input is ${1}
