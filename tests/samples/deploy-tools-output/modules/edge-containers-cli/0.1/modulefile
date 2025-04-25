@@ -9,5 +9,6 @@ setenv EC_LOG_URL "https://graylog.diamond.ac.uk/search?rangetype=relative&field
 setenv EC_TARGET "p47-beamline/p47"
 setenv EC_SERVICES_REPO "https://github.com/epics-containers/p47-services"
 
+module load argocd/0.1
 
 prepend-path PATH "/tmp/deploy-tools-output/modules/edge-containers-cli/0.1/entrypoints"

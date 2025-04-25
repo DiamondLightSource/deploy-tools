@@ -5,6 +5,10 @@ module:
   version: "0.1"
   description: ec command line tool for kubernetes IOCs
 
+  dependencies:
+    - name: argocd
+      version: "0.1"
+
   env_vars:
     - name: EC_CLI_BACKEND
       value: ARGOCD
@@ -46,12 +50,6 @@ module:
           - kustomize
           - kubeseal
           - kubectl-oidc_login
-
-    - app_type: binary
-      name: argocd
-      url: https://github.com/argoproj/argo-cd/releases/download/v2.14.10/argocd-linux-amd64
-      hash_type: sha256
-      hash: d1750274a336f0a090abf196a832cee14cb9f1c2fc3d20d80b0dbfeff83550fa
 
     - app_type: shell
       name: ec-login

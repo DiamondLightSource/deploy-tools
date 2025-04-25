@@ -1,0 +1,14 @@
+applications: []
+dependencies:
+- name: edge-containers-cli
+  version: '0.1'
+- name: pollux
+  version: local
+description: Command line setup for p47 beamline
+env_vars:
+- name: EC_TARGET
+  value: p47-beamline/p47
+- name: EC_SERVICES_REPO
+  value: https://github.com/epics-containers/p47-services
+name: p47
+version: '0.1'

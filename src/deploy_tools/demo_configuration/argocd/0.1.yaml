@@ -3,7 +3,7 @@
 module:
   name: argocd
   version: "0.1"
-  description: Demonstration of binary download
+  description: Adds argocd command line tool
 
   applications:
     - app_type: binary

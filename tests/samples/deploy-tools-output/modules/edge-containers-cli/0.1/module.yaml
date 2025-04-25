@@ -34,16 +34,13 @@ applications:
     - /dls/science/users/:/dls/science/users/
     - /scratch:/scratch
     - /dls_sw/apps:/dls_sw/apps
-- app_type: binary
-  hash: d1750274a336f0a090abf196a832cee14cb9f1c2fc3d20d80b0dbfeff83550fa
-  hash_type: sha256
-  name: argocd
-  url: https://github.com/argoproj/argo-cd/releases/download/v2.14.10/argocd-linux-amd64
 - app_type: shell
   name: ec-login
   script:
   - argocd login argocd.diamond.ac.uk --grpc-web --sso
-dependencies: []
+dependencies:
+- name: argocd
+  version: '0.1'
 description: ec command line tool for kubernetes IOCs
 env_vars:
 - name: EC_CLI_BACKEND

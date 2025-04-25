@@ -1,0 +1,9 @@
+#%Module1.0
+##
+## argocd - Adds argocd command line tool
+##
+module-whatis "Adds argocd command line tool"
+
+
+
+prepend-path PATH "/tmp/deploy-tools-output/modules/argocd/0.1/entrypoints"

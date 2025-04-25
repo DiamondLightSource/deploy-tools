@@ -1,0 +1,13 @@
+#%Module1.0
+##
+## p47 - Command line setup for p47 beamline
+##
+module-whatis "Command line setup for p47 beamline"
+
+setenv EC_TARGET "p47-beamline/p47"
+setenv EC_SERVICES_REPO "https://github.com/epics-containers/p47-services"
+
+module load edge-containers-cli/0.1
+module load pollux/local
+
+prepend-path PATH "/tmp/deploy-tools-output/modules/p47/0.1/entrypoints"
