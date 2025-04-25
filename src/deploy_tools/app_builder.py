@@ -107,7 +107,7 @@ class AppBuilder:
 
     def _create_binary_file(self, app: BinaryApp, module: Module) -> None:
         """
-        Download a URL, validate it against its sha256, make it executable
+        Download a URL, validate it against its hash, make it executable
         and add it to PATH
         """
         binary_folder = self._build_layout.get_entrypoints_folder(
