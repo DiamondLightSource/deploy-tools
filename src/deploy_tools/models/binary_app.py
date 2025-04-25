@@ -32,11 +32,11 @@ class BinaryApp(ParentModel):
         ...,
         description="URL to download the binary from.",
     )
-    hash_type: HashType = Field(
-        ...,
-        description="Type of hash used to check the binary.",
-    )
     hash: str = Field(
         "",
         description="Hash to verify binary integrity",
+    )
+    hash_type: HashType = Field(
+        ...,
+        description="Type of hash used to check the binary.",
     )
