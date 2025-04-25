@@ -35,53 +35,11 @@
         "entrypoints"
       ],
       "title": "ApptainerApp",
-<<<<<<< HEAD
       "type": "object"
     },
     "BinaryApp": {
       "additionalProperties": false,
       "description": "Represents a standalone Binary application.\n\nThis will fetch a standalone binary, validate its hash and add its\nlocation to that path.",
-      "properties": {
-        "app_type": {
-          "const": "binary",
-          "title": "App Type",
-          "type": "string"
-        },
-        "name": {
-          "description": "Binary filename to use locally",
-          "title": "Name",
-          "type": "string"
-        },
-        "url": {
-          "description": "URL to download the binary from.",
-          "title": "Url",
-          "type": "string"
-        },
-        "hash_type": {
-          "$ref": "#/$defs/HashType",
-          "description": "Type of hash used to check the binary."
-        },
-        "hash": {
-          "default": "",
-          "description": "Hash to verify binary integrity",
-          "title": "Hash",
-          "type": "string"
-        }
-      },
-      "required": [
-        "app_type",
-        "name",
-        "url",
-        "hash_type"
-      ],
-      "title": "BinaryApp",
-=======
->>>>>>> d3334c9 (add schema checking test)
-      "type": "object"
-    },
-    "BinaryApp": {
-      "additionalProperties": false,
-      "description": "Represents a standalone Binary application.\nThis will fetch a standalone binary, validate its hash and add its\nlocation to that path.",
       "properties": {
         "app_type": {
           "const": "binary",
@@ -304,14 +262,7 @@
             "discriminator": {
               "mapping": {
                 "apptainer": "#/$defs/ApptainerApp",
-<<<<<<< HEAD
-<<<<<<< HEAD
                 "binary": "#/$defs/BinaryApp",
-=======
->>>>>>> d3334c9 (add schema checking test)
-=======
-                "binary": "#/$defs/BinaryApp",
->>>>>>> 0211eba (add BinaryApp app type)
                 "shell": "#/$defs/ShellApp"
               },
               "propertyName": "app_type"
@@ -322,18 +273,9 @@
               },
               {
                 "$ref": "#/$defs/ShellApp"
-<<<<<<< HEAD
-<<<<<<< HEAD
               },
               {
                 "$ref": "#/$defs/BinaryApp"
-=======
->>>>>>> d3334c9 (add schema checking test)
-=======
-              },
-              {
-                "$ref": "#/$defs/BinaryApp"
->>>>>>> 0211eba (add BinaryApp app type)
               }
             ]
           },
