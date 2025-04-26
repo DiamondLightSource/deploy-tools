@@ -46,10 +46,5 @@ def samples():
 
 
 @pytest.fixture
-def schemas():
-    return Path(__file__).parent.parent / "src" / "deploy_tools" / "models" / "schemas"
-
-
-@pytest.fixture
 def demo_config():
     return Path(__file__).parent.parent / "src" / "deploy_tools" / "demo_configuration"
