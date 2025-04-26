@@ -13,6 +13,8 @@ from .models.module import Application, Module
 from .models.shell_app import ShellApp
 from .templater import Templater, TemplateType
 
+ALL_READ_EXECUTE_PERMISSIONS = 0o555
+
 
 class AppBuilderError(Exception):
     pass
@@ -107,8 +109,6 @@ class AppBuilder:
             create_parents=True,
         )
 
-    ALL_READ_EXECUTE_PERMISSIONS = 0o555
-
     def _create_binary_file(self, app: BinaryApp, module: Module) -> None:
         """
         Download a URL, validate it against its hash, make it executable
@@ -141,4 +141,4 @@ class AppBuilder:
             if h.hexdigest() != app.hash:
                 raise AppBuilderError(f"Downloaded Binary {app.url} hash check failed")
 
-        binary_path.chmod(self.ALL_READ_EXECUTE_PERMISSIONS)
+        binary_path.chmod(ALL_READ_EXECUTE_PERMISSIONS)
