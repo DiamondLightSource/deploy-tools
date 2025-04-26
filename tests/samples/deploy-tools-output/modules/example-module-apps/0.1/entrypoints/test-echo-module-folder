@@ -4,6 +4,4 @@ if [[ -n "${DEPLOY_TOOLS_VERBOSE}" ]]; then
     set -x
 fi
 
-{% for line in script -%}
-{{ line }}
-{% endfor %}
+echo $OTHER_VALUE

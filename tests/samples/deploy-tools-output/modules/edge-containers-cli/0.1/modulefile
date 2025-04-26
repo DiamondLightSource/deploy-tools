@@ -1,0 +1,13 @@
+#%Module1.0
+##
+## edge-containers-cli - ec command line tool for kubernetes IOCs
+##
+module-whatis "ec command line tool for kubernetes IOCs"
+
+setenv EC_CLI_BACKEND "K8S"
+setenv EC_LOG_URL "https://graylog.diamond.ac.uk/search?rangetype=relative&fields=message%2Csource&width=1489&highlightMessage=&relative=172800&q=pod_name%3A{service_name}*"
+setenv EC_TARGET "p47-beamline"
+setenv EC_SERVICES_REPO "https://github.com/epics-containers/p47-services"
+
+
+prepend-path PATH "/tmp/deploy-tools-output/modules/edge-containers-cli/0.1/entrypoints"

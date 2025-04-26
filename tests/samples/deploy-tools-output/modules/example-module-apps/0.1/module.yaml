@@ -1,0 +1,43 @@
+applications:
+- app_type: apptainer
+  container:
+    path: docker://ghcr.io/apptainer/lolcow
+    version: latest
+  entrypoints:
+  - command: cowsay
+    name: cowsay-hello
+    options:
+      apptainer_args: ''
+      command_args: Hello
+      host_binaries: []
+      mounts: []
+  - command: ls
+    name: show-directory
+    options:
+      apptainer_args: ''
+      command_args: -al /dls_sw_test
+      host_binaries: []
+      mounts: []
+  global_options:
+    apptainer_args: ''
+    command_args: ''
+    host_binaries: []
+    mounts:
+    - /dls_sw:/dls_sw_test:ro
+- app_type: shell
+  name: test-echo-module-folder
+  script:
+  - echo $OTHER_VALUE
+- app_type: shell
+  name: test-shell-script
+  script:
+  - echo This is the first line of a shell script
+  - echo and this is the second line.
+  - echo Your input is ${1}
+dependencies: []
+description: Demonstration of a module configuration folder
+env_vars:
+- name: OTHER_VALUE
+  value: Test message OTHER_VALUE from example-module-folder
+name: example-module-apps
+version: '0.1'
