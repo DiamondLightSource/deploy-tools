@@ -37,6 +37,45 @@
       "title": "ApptainerApp",
       "type": "object"
     },
+    "BinaryApp": {
+      "additionalProperties": false,
+      "description": "Represents a standalone Binary application.\n\nThis will fetch a standalone binary, validate its hash and add its\nlocation to that path.",
+      "properties": {
+        "app_type": {
+          "const": "binary",
+          "title": "App Type",
+          "type": "string"
+        },
+        "name": {
+          "description": "Binary filename to use locally",
+          "title": "Name",
+          "type": "string"
+        },
+        "url": {
+          "description": "URL to download the binary from.",
+          "title": "Url",
+          "type": "string"
+        },
+        "hash": {
+          "default": "",
+          "description": "Hash to verify binary integrity",
+          "title": "Hash",
+          "type": "string"
+        },
+        "hash_type": {
+          "$ref": "#/$defs/HashType",
+          "description": "Type of hash used to check the binary."
+        }
+      },
+      "required": [
+        "app_type",
+        "name",
+        "url",
+        "hash_type"
+      ],
+      "title": "BinaryApp",
+      "type": "object"
+    },
     "ContainerImage": {
       "additionalProperties": false,
       "properties": {
@@ -149,6 +188,17 @@
       "title": "EnvVar",
       "type": "object"
     },
+    "HashType": {
+      "description": "Type of hash to use for the binary.",
+      "enum": [
+        "sha256",
+        "sha512",
+        "md5",
+        "none"
+      ],
+      "title": "HashType",
+      "type": "string"
+    },
     "Module": {
       "additionalProperties": false,
       "description": "Represents a Module to be deployed.\n\nModules can optionally include a set of applications, environment variables to load,\nand a list of module dependencies.",
@@ -194,6 +244,7 @@
             "discriminator": {
               "mapping": {
                 "apptainer": "#/$defs/ApptainerApp",
+                "binary": "#/$defs/BinaryApp",
                 "shell": "#/$defs/ShellApp"
               },
               "propertyName": "app_type"
@@ -204,6 +255,9 @@
               },
               {
                 "$ref": "#/$defs/ShellApp"
+              },
+              {
+                "$ref": "#/$defs/BinaryApp"
               }
             ]
           },

@@ -12,14 +12,12 @@ mkdir -p "${TMP_DIR}"
 
 deploy-tools sync --from-scratch ${TMP_DIR} ${THIS_DIR}/../src/deploy_tools/demo_configuration
 
-# don't keep the sif or git files!
+# don't keep the sif or git files
 rm -rf $(find ${TMP_DIR} -name "*.sif")
 rm -rf ${TMP_DIR}/.git*
+# also remove binaries
+rm ${TMP_DIR}/modules/argocd/0.1/entrypoints/argocd
 
 rm -rf ${SAMPLES_DIR}
 mkdir -p ${SAMPLES_DIR}
 cp -r ${TMP_DIR} ${SAMPLES_DIR}
-<<<<<<< HEAD
-=======
-
->>>>>>> ce3367b (add test for demo_configuration)

@@ -1,6 +1,10 @@
+import hashlib
 import uuid
 from itertools import chain
 from pathlib import Path
+from urllib.request import urlretrieve
+
+from deploy_tools.models.binary_app import BinaryApp, HashType
 
 from .apptainer import create_sif_file
 from .layout import ModuleBuildLayout
@@ -8,6 +12,8 @@ from .models.apptainer_app import ApptainerApp
 from .models.module import Application, Module
 from .models.shell_app import ShellApp
 from .templater import Templater, TemplateType
+
+ALL_READ_EXECUTE_PERMISSIONS = 0o555
 
 
 class AppBuilderError(Exception):
@@ -27,6 +33,8 @@ class AppBuilder:
                 self._create_apptainer_files(app, module)
             case ShellApp():
                 self._create_shell_file(app, module)
+            case BinaryApp():
+                self._create_binary_file(app, module)
 
     def _create_apptainer_files(self, app: ApptainerApp, module: Module) -> None:
         """Create apptainer entrypoints using a specified image and commands."""
@@ -100,3 +108,37 @@ class AppBuilder:
             executable=True,
             create_parents=True,
         )
+
+    def _create_binary_file(self, app: BinaryApp, module: Module) -> None:
+        """
+        Download a URL, validate it against its hash, make it executable
+        and add it to PATH
+        """
+        binary_folder = self._build_layout.get_entrypoints_folder(
+            module.name, module.version
+        )
+        binary_path = binary_folder / app.name
+        binary_path.parent.mkdir(parents=True, exist_ok=True)
+        urlretrieve(app.url, binary_path)
+
+        match app.hash_type:
+            case HashType.SHA256:
+                h = hashlib.sha256()
+            case HashType.SHA512:
+                h = hashlib.sha512()
+            case HashType.MD5:
+                h = hashlib.md5()
+            case HashType.NONE:
+                h = None
+
+        if h is not None:
+            with open(binary_path, "rb") as fh:
+                while True:
+                    data = fh.read(4096)
+                    if len(data) == 0:
+                        break
+                    h.update(data)
+            if h.hexdigest() != app.hash:
+                raise AppBuilderError(f"Downloaded Binary {app.url} hash check failed")
+
+        binary_path.chmod(ALL_READ_EXECUTE_PERMISSIONS)
