@@ -7,10 +7,6 @@ from shutil import rmtree
 from conftest import run_cli
 from deploy_tools import __version__
 
-PATH_TO_SCHEMAS = (
-    Path(__file__).parent.parent / "src" / "deploy_tools" / "models" / "schemas"
-)
-
 
 def test_cli_version():
     cmd = [sys.executable, "-m", "deploy_tools", "--version"]
