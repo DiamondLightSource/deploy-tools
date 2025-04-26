@@ -1,0 +1,29 @@
+applications:
+- app_type: apptainer
+  container:
+    path: docker://ghcr.io/diamondlightsource/dls-pmac-control
+    version: 3.2.0b1
+  entrypoints:
+  - command: dls-pmac-control
+    name: dls-pmac-control
+    options:
+      apptainer_args: -e
+      command_args: ''
+      host_binaries: []
+      mounts: []
+  global_options:
+    apptainer_args: ''
+    command_args: ''
+    host_binaries: []
+    mounts: []
+- app_type: shell
+  name: test-echo-module-file
+  script:
+  - echo $EXAMPLE_VALUE
+dependencies: []
+description: Demonstration of the deploy-tools process
+env_vars:
+- name: EXAMPLE_VALUE
+  value: Test message EXAMPLE_VALUE from example-module-file version 0.2
+name: dls-pmac-control
+version: '0.2'

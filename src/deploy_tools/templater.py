@@ -50,7 +50,10 @@ class Templater:
 
         open_mode = "w" if overwrite else "x"
         with open(output_file, open_mode) as f:
-            f.write(self._templates[template].render(**parameters))
+            rendered = self._templates[template].render(**parameters)
+            # enforce single trailing newline for pre-commit goodness
+            rendered = rendered.strip() + "\n"
+            f.write(rendered)
 
         permissions = EXECUTABLE_PERMISSIONS if executable else DEFAULT_PERMISSIONS
         output_file.chmod(permissions)

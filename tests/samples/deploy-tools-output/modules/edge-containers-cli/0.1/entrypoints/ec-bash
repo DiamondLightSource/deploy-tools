@@ -7,15 +7,15 @@
 set -e
 
 # Mounts for container
-mounts="{{ mounts }}"
+mounts="/dls/science/users/:/dls/science/users/,/scratch:/scratch,/dls_sw/apps:/dls_sw/apps"
 # Additional arguments for apptainer
-apptainer_args="{{ apptainer_args }}"
+apptainer_args=""
 # Sif file path
-sif_file="$(dirname $0)/{{ relative_sif_file }}"
+sif_file="$(dirname $0)/../sif_files/4b34247055f8388a8877c90302ff30d2.sif"
 # Command to run in container
-command="{{ command }}"
+command="bash"
 # Options and arguments to pass to command
-command_args="{{ command_args }}"
+command_args=""
 
 # Raise an error if sif file does not exist
 if [[ ! -f ${sif_file} ]]; then
@@ -24,7 +24,7 @@ if [[ ! -f ${sif_file} ]]; then
 fi
 
 # add mounts of host binaries into /usr/bin
-for i in {{ host_binaries }}; do
+for i in kubectl helm kubelogin klogout kustomize kubeseal kubectl-oidc_login; do
     binary=$(which $i)
     mounts="${mounts},${binary}:/usr/bin/${i}"
 done

@@ -4,6 +4,4 @@ if [[ -n "${DEPLOY_TOOLS_VERBOSE}" ]]; then
     set -x
 fi
 
-{% for line in script -%}
-{{ line }}
-{% endfor %}
+argocd login argocd.diamond.ac.uk --grpc-web --sso

@@ -1,13 +1,37 @@
 from collections.abc import Sequence
-from typing import Literal
+from typing import Annotated, Literal
+
+from pydantic import Field
 
 from .parent import ParentModel
 
 
 class EntrypointOptions(ParentModel):
-    apptainer_args: str = ""
-    command_args: str = ""
-    mounts: Sequence[str] = []
+    apptainer_args: Annotated[
+        str,
+        Field(description="Apptainer arguments to pass when launching the container"),
+    ] = ""
+
+    command_args: Annotated[
+        str, Field(description="Arguments to pass to command entrypoint")
+    ] = ""
+
+    mounts: Annotated[
+        Sequence[str],
+        Field(
+            description="A list of mount points to add to the container in the form of "
+            "'host_path:container_path'"
+        ),
+    ] = []
+
+    host_binaries: Annotated[
+        Sequence[str],
+        Field(
+            description="A list of host binaries to mount into the container. "
+            "These are discovered on the host using the current PATH and are "
+            "mounted into the container at /usr/bin/<binary_name>."
+        ),
+    ] = []
 
 
 class Entrypoint(ParentModel):
