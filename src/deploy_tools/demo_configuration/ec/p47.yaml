@@ -8,6 +8,8 @@ module:
   dependencies:
     - name: edge-containers-cli
       version: "0.1"
+    - name: pollux
+      version: local
 
   env_vars:
     - name: EC_TARGET
