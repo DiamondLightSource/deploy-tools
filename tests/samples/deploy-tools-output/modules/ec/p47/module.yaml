@@ -2,6 +2,8 @@ applications: []
 dependencies:
 - name: edge-containers-cli
   version: '0.1'
+- name: pollux
+  version: local
 description: ec command line tool configured for p47
 env_vars:
 - name: EC_TARGET

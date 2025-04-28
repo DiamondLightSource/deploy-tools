@@ -24,7 +24,7 @@ if [[ ! -f ${sif_file} ]]; then
 fi
 
 # add mounts of host binaries into /usr/bin
-for i in argocd; do
+for i in argocd kubectl helm kubelogin klogout kustomize kubeseal kubectl-oidc_login; do
     binary=$(which $i)
     mounts="${mounts},${binary}:/usr/bin/${i}"
 done

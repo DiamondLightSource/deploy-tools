@@ -1,7 +1,9 @@
 applications: []
 dependencies:
 - name: edge-containers-cli
-  version: '0.1'
+  version: null
+- name: k8s-i13-1
+  version: local
 description: ec command line tool configured for i13-1
 env_vars:
 - name: EC_TARGET

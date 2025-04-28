@@ -23,6 +23,13 @@ applications:
     command_args: ''
     host_binaries:
     - argocd
+    - kubectl
+    - helm
+    - kubelogin
+    - klogout
+    - kustomize
+    - kubeseal
+    - kubectl-oidc_login
     mounts:
     - /dls/science/users/:/dls/science/users/
     - /scratch:/scratch
@@ -31,6 +38,7 @@ applications:
   name: ec-login
   script:
   - argocd login argocd.diamond.ac.uk --grpc-web --sso
+  - kubectl version
 dependencies:
 - name: argocd
   version: v2.14.10
