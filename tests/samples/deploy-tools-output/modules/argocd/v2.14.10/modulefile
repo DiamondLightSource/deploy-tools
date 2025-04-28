@@ -1,0 +1,15 @@
+#%Module1.0
+##
+## argocd - Demonstration of binary download
+##
+module-whatis "Demonstration of binary download"
+
+if { [module-info mode load] } {
+    if { [is-loaded argocd] } {
+      module unload argocd
+    }
+}
+
+
+
+prepend-path PATH "/tmp/deploy-tools-output/modules/argocd/v2.14.10/entrypoints"

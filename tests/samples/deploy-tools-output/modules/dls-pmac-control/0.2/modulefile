@@ -4,6 +4,12 @@
 ##
 module-whatis "Demonstration of the deploy-tools process"
 
+if { [module-info mode load] } {
+    if { [is-loaded dls-pmac-control] } {
+      module unload dls-pmac-control
+    }
+}
+
 setenv EXAMPLE_VALUE "Test message EXAMPLE_VALUE from example-module-file version 0.2"
 
 

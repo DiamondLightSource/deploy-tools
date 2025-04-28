@@ -4,6 +4,12 @@
 ##
 module-whatis "Demonstration of a module configuration folder"
 
+if { [module-info mode load] } {
+    if { [is-loaded example-module-apps] } {
+      module unload example-module-apps
+    }
+}
+
 setenv OTHER_VALUE "Test message OTHER_VALUE from example-module-folder"
 
 

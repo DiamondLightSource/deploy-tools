@@ -4,6 +4,12 @@
 ##
 module-whatis "ec command line tool for kubernetes IOCs"
 
+if { [module-info mode load] } {
+    if { [is-loaded edge-containers-cli] } {
+      module unload edge-containers-cli
+    }
+}
+
 setenv EC_CLI_BACKEND "ARGOCD"
 setenv EC_LOG_URL "https://graylog.diamond.ac.uk/search?rangetype=relative&fields=message%2Csource&width=1489&highlightMessage=&relative=172800&q=pod_name%3A{service_name}*"
 

@@ -1,0 +1,18 @@
+#%Module1.0
+##
+## ec - ec command line tool configured for p47
+##
+module-whatis "ec command line tool configured for p47"
+
+if { [module-info mode load] } {
+    if { [is-loaded ec] } {
+      module unload ec
+    }
+}
+
+setenv EC_TARGET "p47-beamline/p47"
+setenv EC_SERVICES_REPO "https://github.com/epics-containers/p47-services"
+
+module load edge-containers-cli/0.1
+
+prepend-path PATH "/tmp/deploy-tools-output/modules/ec/p47/entrypoints"

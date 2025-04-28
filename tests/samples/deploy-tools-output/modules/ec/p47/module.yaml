@@ -1,0 +1,12 @@
+applications: []
+dependencies:
+- name: edge-containers-cli
+  version: '0.1'
+description: ec command line tool configured for p47
+env_vars:
+- name: EC_TARGET
+  value: p47-beamline/p47
+- name: EC_SERVICES_REPO
+  value: https://github.com/epics-containers/p47-services
+name: ec
+version: p47
