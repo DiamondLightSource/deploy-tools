@@ -8,4 +8,4 @@ dependencies: []
 description: Demonstration of binary download
 env_vars: []
 name: argocd
-version: '0.1'
+version: v2.14.10

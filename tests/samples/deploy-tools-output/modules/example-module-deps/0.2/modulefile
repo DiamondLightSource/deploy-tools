@@ -4,6 +4,12 @@
 ##
 module-whatis "Demonstration of deploy-tools dependencies"
 
+if { [module-info mode load] } {
+    if { [is-loaded example-module-deps] } {
+      module unload example-module-deps
+    }
+}
+
 
 module load dls-pmac-control/0.1
 module load example-module-apps/0.1

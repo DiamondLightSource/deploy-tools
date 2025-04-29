@@ -1,0 +1,19 @@
+# yaml-language-server: $schema=/workspaces/deploy-tools/src/deploy_tools/models/schemas/release.json
+
+module:
+  name: ec
+  version: i13-1
+  description: ec command line tool configured for i13-1
+
+  dependencies:
+    - name: edge-containers-cli
+    - name: k8s-i13-1
+      version: local
+
+  env_vars:
+    - name: EC_TARGET
+      value: i13-1-beamline/i13-1
+    - name: EC_SERVICES_REPO
+      value: https://gitlab.diamond.ac.uk/controls/containers/beamline/i13-1-services.git
+
+  applications: []
