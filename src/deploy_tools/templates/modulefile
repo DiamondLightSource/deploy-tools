@@ -4,6 +4,12 @@
 ##
 module-whatis "{{ module_description }}"
 
+if { [module-info mode load] } {
+    if { [is-loaded {{ module_name }}] } {
+      module unload {{ module_name }}
+    }
+}
+
 {% for var in env_vars %}
 setenv {{ var.name }} "{{ var.value }}"
 {% endfor %}

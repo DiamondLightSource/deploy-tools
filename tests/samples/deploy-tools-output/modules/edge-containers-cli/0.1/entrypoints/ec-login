@@ -5,3 +5,4 @@ if [[ -n "${DEPLOY_TOOLS_VERBOSE}" ]]; then
 fi
 
 argocd login argocd.diamond.ac.uk --grpc-web --sso
+kubectl version

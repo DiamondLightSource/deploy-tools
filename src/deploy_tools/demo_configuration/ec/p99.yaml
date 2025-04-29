@@ -1,0 +1,19 @@
+# yaml-language-server: $schema=/workspaces/deploy-tools/src/deploy_tools/models/schemas/release.json
+
+module:
+  name: ec
+  version: p99
+  description: ec command line tool configured for p99
+
+  dependencies:
+    - name: edge-containers-cli
+    - name: k8s-p99
+      version: local
+
+  env_vars:
+    - name: EC_TARGET
+      value: p99-beamline/p99
+    - name: EC_SERVICES_REPO
+      value: https://gitlab.diamond.ac.uk/controls/containers/beamline/p99-services.git
+
+  applications: []

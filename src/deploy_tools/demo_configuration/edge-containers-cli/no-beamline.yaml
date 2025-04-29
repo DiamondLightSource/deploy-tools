@@ -2,7 +2,7 @@
 
 module:
   name: edge-containers-cli
-  version: "0.1"
+  version: no-beamline
   description: ec command line tool for kubernetes IOCs
 
   dependencies:
@@ -38,17 +38,8 @@ module:
         host_binaries:
           # argocd deploy-tools
           - argocd
-          # other kubernetes tools from the beamline cluster module
-          - kubectl
-          - helm
-          - kubelogin
-          - klogout
-          - kustomize
-          - kubeseal
-          - kubectl-oidc_login
 
     - app_type: shell
       name: ec-login
       script:
         - argocd login argocd.diamond.ac.uk --grpc-web --sso
-        - kubectl version

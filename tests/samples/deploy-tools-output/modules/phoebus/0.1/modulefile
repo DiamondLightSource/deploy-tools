@@ -4,6 +4,12 @@
 ##
 module-whatis "Containerised release of CSS Phoebus"
 
+if { [module-info mode load] } {
+    if { [is-loaded phoebus] } {
+      module unload phoebus
+    }
+}
+
 
 
 prepend-path PATH "/tmp/deploy-tools-output/modules/phoebus/0.1/entrypoints"

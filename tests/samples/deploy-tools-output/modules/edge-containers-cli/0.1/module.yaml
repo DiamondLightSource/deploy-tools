@@ -22,6 +22,7 @@ applications:
     apptainer_args: ''
     command_args: ''
     host_binaries:
+    - argocd
     - kubectl
     - helm
     - kubelogin
@@ -37,16 +38,15 @@ applications:
   name: ec-login
   script:
   - argocd login argocd.diamond.ac.uk --grpc-web --sso
-dependencies: []
+  - kubectl version
+dependencies:
+- name: argocd
+  version: v2.14.10
 description: ec command line tool for kubernetes IOCs
 env_vars:
 - name: EC_CLI_BACKEND
-  value: K8S
+  value: ARGOCD
 - name: EC_LOG_URL
   value: https://graylog.diamond.ac.uk/search?rangetype=relative&fields=message%2Csource&width=1489&highlightMessage=&relative=172800&q=pod_name%3A{service_name}*
-- name: EC_TARGET
-  value: p47-beamline
-- name: EC_SERVICES_REPO
-  value: https://github.com/epics-containers/p47-services
 name: edge-containers-cli
 version: '0.1'

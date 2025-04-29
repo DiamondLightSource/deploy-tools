@@ -1,6 +1,6 @@
 releases:
   argocd:
-    '0.1':
+    v2.14.10:
       deprecated: false
       module:
         applications:
@@ -13,7 +13,7 @@ releases:
         description: Demonstration of binary download
         env_vars: []
         name: argocd
-        version: '0.1'
+        version: v2.14.10
   dls-pmac-control:
     '0.1':
       deprecated: false
@@ -79,6 +79,41 @@ releases:
           value: Test message EXAMPLE_VALUE from example-module-file version 0.2
         name: dls-pmac-control
         version: '0.2'
+  ec:
+    i13-1:
+      deprecated: false
+      module:
+        applications: []
+        dependencies:
+        - name: edge-containers-cli
+          version: null
+        - name: k8s-i13-1
+          version: local
+        description: ec command line tool configured for i13-1
+        env_vars:
+        - name: EC_TARGET
+          value: i13-1-beamline/i13-1
+        - name: EC_SERVICES_REPO
+          value: https://gitlab.diamond.ac.uk/controls/containers/beamline/i13-1-services.git
+        name: ec
+        version: i13-1
+    p47:
+      deprecated: false
+      module:
+        applications: []
+        dependencies:
+        - name: edge-containers-cli
+          version: '0.1'
+        - name: pollux
+          version: local
+        description: ec command line tool configured for p47
+        env_vars:
+        - name: EC_TARGET
+          value: p47-beamline/p47
+        - name: EC_SERVICES_REPO
+          value: https://github.com/epics-containers/p47-services
+        name: ec
+        version: p47
   edge-containers-cli:
     '0.1':
       deprecated: false
@@ -107,6 +142,7 @@ releases:
             apptainer_args: ''
             command_args: ''
             host_binaries:
+            - argocd
             - kubectl
             - helm
             - kubelogin
@@ -122,17 +158,16 @@ releases:
           name: ec-login
           script:
           - argocd login argocd.diamond.ac.uk --grpc-web --sso
-        dependencies: []
+          - kubectl version
+        dependencies:
+        - name: argocd
+          version: v2.14.10
         description: ec command line tool for kubernetes IOCs
         env_vars:
         - name: EC_CLI_BACKEND
-          value: K8S
+          value: ARGOCD
         - name: EC_LOG_URL
           value: https://graylog.diamond.ac.uk/search?rangetype=relative&fields=message%2Csource&width=1489&highlightMessage=&relative=172800&q=pod_name%3A{service_name}*
-        - name: EC_TARGET
-          value: p47-beamline
-        - name: EC_SERVICES_REPO
-          value: https://github.com/epics-containers/p47-services
         name: edge-containers-cli
         version: '0.1'
   example-module-apps:
