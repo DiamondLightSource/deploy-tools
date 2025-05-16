@@ -1,0 +1,19 @@
+#%Module1.0
+##
+## ec - ec command line tool configured for i02-2
+##
+module-whatis "ec command line tool configured for i02-2"
+
+if { [module-info mode load] } {
+    if { [is-loaded ec] } {
+      module unload ec
+    }
+}
+
+setenv EC_TARGET "i02-2-beamline/i02-2"
+setenv EC_SERVICES_REPO "https://gitlab.diamond.ac.uk/controls/containers/beamline/i02-2-services.git"
+
+module load edge-containers-cli
+module load k8s-i02-2/local
+
+prepend-path PATH "/tmp/deploy-tools-output/modules/ec/i02-2/entrypoints"

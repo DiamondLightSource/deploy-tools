@@ -11,9 +11,9 @@ if { [module-info mode load] } {
 }
 
 setenv EC_TARGET "p47-beamline/p47"
-setenv EC_SERVICES_REPO "https://github.com/epics-containers/p47-services"
+setenv EC_SERVICES_REPO "https://github.com/epics-containers/p47-services.git"
 
-module load edge-containers-cli/0.1
+module load edge-containers-cli
 module load pollux/local
 
 prepend-path PATH "/tmp/deploy-tools-output/modules/ec/p47/entrypoints"

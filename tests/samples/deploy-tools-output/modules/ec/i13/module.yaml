@@ -1,0 +1,14 @@
+applications: []
+dependencies:
+- name: edge-containers-cli
+  version: null
+- name: k8s-i13
+  version: local
+description: ec command line tool configured for i13
+env_vars:
+- name: EC_TARGET
+  value: i13-beamline/i13
+- name: EC_SERVICES_REPO
+  value: https://gitlab.diamond.ac.uk/controls/containers/beamline/i13-services.git
+name: ec
+version: i13

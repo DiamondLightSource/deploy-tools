@@ -1,0 +1,14 @@
+applications: []
+dependencies:
+- name: edge-containers-cli
+  version: null
+- name: k8s-p99
+  version: local
+description: ec command line tool configured for p99
+env_vars:
+- name: EC_TARGET
+  value: p99-beamline/p99
+- name: EC_SERVICES_REPO
+  value: https://gitlab.diamond.ac.uk/controls/containers/beamline/p99-services.git
+name: ec
+version: p99

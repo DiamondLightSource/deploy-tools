@@ -1,0 +1,44 @@
+applications:
+- app_type: apptainer
+  container:
+    path: docker://ghcr.io/epics-containers/edge-containers-cli
+    version: 4.4.1
+  entrypoints:
+  - command: ec
+    name: ec
+    options:
+      apptainer_args: ''
+      command_args: ''
+      host_binaries: []
+      mounts: []
+  - command: bash
+    name: ec-bash
+    options:
+      apptainer_args: ''
+      command_args: ''
+      host_binaries: []
+      mounts: []
+  global_options:
+    apptainer_args: ''
+    command_args: ''
+    host_binaries:
+    - argocd
+    mounts:
+    - /dls/science/users/:/dls/science/users/
+    - /scratch:/scratch
+    - /dls_sw/apps:/dls_sw/apps
+- app_type: shell
+  name: ec-login
+  script:
+  - argocd login argocd.diamond.ac.uk --grpc-web --sso
+dependencies:
+- name: argocd
+  version: v2.14.10
+description: ec command line tool for kubernetes IOCs
+env_vars:
+- name: EC_CLI_BACKEND
+  value: ARGOCD
+- name: EC_LOG_URL
+  value: https://graylog.diamond.ac.uk/search?rangetype=relative&fields=message%2Csource&width=1489&highlightMessage=&relative=172800&q=pod_name%3A{service_name}*
+name: edge-containers-cli
+version: no-beamline

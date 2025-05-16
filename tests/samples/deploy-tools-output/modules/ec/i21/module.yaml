@@ -1,0 +1,14 @@
+applications: []
+dependencies:
+- name: edge-containers-cli
+  version: null
+- name: k8s-i21
+  version: local
+description: ec command line tool configured for i21
+env_vars:
+- name: EC_TARGET
+  value: i21-beamline/i21
+- name: EC_SERVICES_REPO
+  value: https://gitlab.diamond.ac.uk/controls/containers/beamline/i21-services.git
+name: ec
+version: i21

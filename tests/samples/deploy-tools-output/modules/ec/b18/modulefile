@@ -1,0 +1,19 @@
+#%Module1.0
+##
+## ec - ec command line tool configured for b18
+##
+module-whatis "ec command line tool configured for b18"
+
+if { [module-info mode load] } {
+    if { [is-loaded ec] } {
+      module unload ec
+    }
+}
+
+setenv EC_TARGET "b18-beamline/b18"
+setenv EC_SERVICES_REPO "https://gitlab.diamond.ac.uk/controls/containers/beamline/b18-services.git"
+
+module load edge-containers-cli
+module load k8s-b18/local
+
+prepend-path PATH "/tmp/deploy-tools-output/modules/ec/b18/entrypoints"

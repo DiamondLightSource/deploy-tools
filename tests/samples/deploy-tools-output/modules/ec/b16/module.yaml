@@ -1,0 +1,14 @@
+applications: []
+dependencies:
+- name: edge-containers-cli
+  version: null
+- name: k8s-b16
+  version: local
+description: ec command line tool configured for b16
+env_vars:
+- name: EC_TARGET
+  value: b16-beamline/b16
+- name: EC_SERVICES_REPO
+  value: https://gitlab.diamond.ac.uk/controls/containers/beamline/b16-services.git
+name: ec
+version: b16

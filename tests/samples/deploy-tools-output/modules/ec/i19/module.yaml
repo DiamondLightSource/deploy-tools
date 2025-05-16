@@ -1,0 +1,14 @@
+applications: []
+dependencies:
+- name: edge-containers-cli
+  version: null
+- name: k8s-i19
+  version: local
+description: ec command line tool configured for i19
+env_vars:
+- name: EC_TARGET
+  value: i19-beamline/i19
+- name: EC_SERVICES_REPO
+  value: https://gitlab.diamond.ac.uk/controls/containers/beamline/i19-services.git
+name: ec
+version: i19

@@ -4,11 +4,11 @@ dependencies:
   version: null
 - name: pollux
   version: local
-description: ec command line tool configured for p47
+description: ec command line tool configured for p45
 env_vars:
 - name: EC_TARGET
-  value: p47-beamline/p47
+  value: p45-beamline/p45
 - name: EC_SERVICES_REPO
-  value: https://github.com/epics-containers/p47-services.git
+  value: https://github.com/epics-containers/p45-services.git
 name: ec
-version: p47
+version: p45
