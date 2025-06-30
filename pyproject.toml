@@ -8,6 +8,7 @@ classifiers = [
     "Development Status :: 3 - Alpha",
     "License :: OSI Approved :: Apache Software License",
     "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
 ]
 description = "A set of tools used for deploying applications to a shared filesystem."
 dependencies = [
@@ -53,11 +54,10 @@ version_file = "src/deploy_tools/_version.py"
 deploy_tools = ['templates', 'models/schema/*']
 
 [tool.pyright]
-reportMissingImports = false               # Ignore missing stubs in imported modules
-strict = ["src"]
 exclude = ["src/deploy_tools/_version.py"]
 deprecateTypingAliases = true
-typeCheckingMode = "standard"
+typeCheckingMode = "strict"
+reportMissingImports = false               # Ignore missing stubs in imported modules
 
 [tool.pytest.ini_options]
 # Run pytest with all our checkers, and don't spam us with massive tracebacks on error
