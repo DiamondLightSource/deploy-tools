@@ -16,6 +16,7 @@ Source          | <https://github.com/DiamondLightSource/deploy-tools>
 :---:           | :---:
 PyPI            | `pip install dls-deploy-tools`
 Docker          | `docker run ghcr.io/diamondlightsource/deploy-tools:latest`
+Documentation   | <https://diamondlightsource.github.io/deploy-tools>
 Releases        | <https://github.com/DiamondLightSource/deploy-tools/releases>
 
 The demo_configuration folder in this repository can be passed as the config_folder to
@@ -109,3 +110,7 @@ See the Deployment Steps above for an overview of the primary stages of a deploy
 |Deprecate          |Moving a modulefile to the separate Deprecated Folder, to indicate that its use should be discouraged                                                                                                                                                                                                       |
 |Deprecated Folder  |The folder used to contain Modulefiles for Modules that have been deprecated. By adding the modulefiles subdirectory to your MODULEPATH environment variable, you then have the ability to use any deprecated Module as normal.                                                                             |
 |End User           |Refers to anybody who is intending to make use of a deployed Module. This can include the people modifying configuration themselves                                                                                                                                                                         |
+
+<!-- README only content. Anything below this line won't be included in index.md -->
+
+See https://diamondlightsource.github.io/deploy-tools for more detailed documentation.

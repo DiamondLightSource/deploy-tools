@@ -42,6 +42,10 @@ jobs:
       contents: read
       packages: write
 
+  docs:
+    uses: ./.github/workflows/_docs.yml
+
+
   dist:
     uses: ./.github/workflows/_dist.yml
 
@@ -53,7 +57,7 @@ jobs:
       id-token: write
 
   release:
-    needs: [dist, test]
+    needs: [dist, test, docs]
     if: github.ref_type == 'tag'
     uses: ./.github/workflows/_release.yml
     permissions:

@@ -9,7 +9,7 @@ component_type: library
 description: A set of tools used for deploying applications to a shared filesystem.
 distribution_name: dls-deploy-tools
 docker: true
-docs_type: README
+docs_type: sphinx
 git_platform: github.com
 github_org: DiamondLightSource
 package_name: deploy_tools
