@@ -14,10 +14,6 @@
                 "debug-test"
             ],
             "console": "integratedTerminal",
-            "env": {
-                // Enable break on exception when debugging tests (see: tests/conftest.py)
-                "PYTEST_RAISE": "1",
-            },
         },
         {
             "name": "Debug Schema Generation",
@@ -27,10 +23,6 @@
             "program": "/venv/bin/deploy-tools",
             "args": "schema ${input:schema-folder}",
             "console": "integratedTerminal",
-            "env": {
-                // Enable break on exception when debugging tests (see: tests/conftest.py)
-                "PYTEST_RAISE": "1",
-            },
         },
         {
             "name": "Debug Validation",
@@ -40,10 +32,6 @@
             "program": "/venv/bin/deploy-tools",
             "args": "validate ${input:allow-all} ${input:from-scratch} ${input:test-build} ${input:deploy-folder} ${input:config-folder}",
             "console": "integratedTerminal",
-            "env": {
-                // Enable break on exception when debugging tests (see: tests/conftest.py)
-                "PYTEST_RAISE": "1",
-            },
         },
         {
             "name": "Debug Compare",
@@ -53,10 +41,6 @@
             "program": "/venv/bin/deploy-tools",
             "args": "compare ${input:compare-mode} ${input:deploy-folder}",
             "console": "integratedTerminal",
-            "env": {
-                // Enable break on exception when debugging tests (see: tests/conftest.py)
-                "PYTEST_RAISE": "1",
-            },
         },
         {
             "name": "Debug Sync",
@@ -66,10 +50,6 @@
             "program": "/venv/bin/deploy-tools",
             "args": "sync ${input:allow-all} ${input:from-scratch} ${input:deploy-folder} ${input:config-folder}",
             "console": "integratedTerminal",
-            "env": {
-                // Enable break on exception when debugging tests (see: tests/conftest.py)
-                "PYTEST_RAISE": "1",
-            },
         },
     ],
     "inputs": [

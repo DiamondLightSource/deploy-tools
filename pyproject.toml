@@ -8,6 +8,7 @@ classifiers = [
     "Development Status :: 3 - Alpha",
     "License :: OSI Approved :: Apache Software License",
     "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
 ]
 description = "A set of tools used for deploying applications to a shared filesystem."
 dependencies = [
@@ -25,12 +26,17 @@ requires-python = ">=3.12"
 [project.optional-dependencies]
 dev = [
     "copier",
+    "myst-parser",
     "pipdeptree",
     "pre-commit",
+    "pydata-sphinx-theme>=0.12",
     "pyright",
     "pytest",
     "pytest-cov",
     "ruff",
+    "sphinx-autobuild",
+    "sphinx-copybutton",
+    "sphinx-design",
     "tox-direct",
     "types-mock",
 ]
@@ -53,16 +59,15 @@ version_file = "src/deploy_tools/_version.py"
 deploy_tools = ['templates', 'models/schema/*']
 
 [tool.pyright]
-reportMissingImports = false               # Ignore missing stubs in imported modules
-strict = ["src"]
 exclude = ["src/deploy_tools/_version.py"]
 deprecateTypingAliases = true
-typeCheckingMode = "standard"
+typeCheckingMode = "strict"
+reportMissingImports = false               # Ignore missing stubs in imported modules
 
 [tool.pytest.ini_options]
 # Run pytest with all our checkers, and don't spam us with massive tracebacks on error
 addopts = """
-    --tb=native -vv
+    --tb=native -vv --doctest-modules --doctest-glob="*.rst"
     """
 # https://iscinumpy.gitlab.io/post/bound-version-constraints/#watch-for-warnings
 filterwarnings = "error"
@@ -83,7 +88,7 @@ legacy_tox_ini = """
 [tox]
 skipsdist=True
 
-[testenv:{pre-commit,type-checking,tests}]
+[testenv:{pre-commit,type-checking,tests,docs}]
 # Don't create a virtualenv for the command, requires tox-direct plugin
 direct = True
 passenv = *
@@ -91,10 +96,13 @@ allowlist_externals =
     pytest
     pre-commit
     pyright
+    sphinx-build
+    sphinx-autobuild
 commands =
     pre-commit: pre-commit run --all-files --show-diff-on-failure {posargs}
     type-checking: pyright src tests {posargs}
     tests: pytest --cov=deploy_tools --cov-report term --cov-report xml:cov.xml {posargs}
+    docs: sphinx-{posargs:build -EW --keep-going} -T docs build/html
 """
 
 [tool.ruff]
