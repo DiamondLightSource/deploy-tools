@@ -8,7 +8,7 @@ from deploy_tools.__main__ import app
 runner = CliRunner()
 
 
-def run_cli(*args):
+def run_cli(*args: str | Path):
     result = runner.invoke(app, [str(x) for x in args])
     if result.exception:
         raise result.exception
