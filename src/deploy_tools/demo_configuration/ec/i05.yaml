@@ -1,0 +1,19 @@
+# yaml-language-server: $schema=/workspaces/deploy-tools/src/deploy_tools/models/schemas/release.json
+
+module:
+  name: ec
+  version: i05
+  description: ec command line tool configured for i05
+
+  dependencies:
+    - name: edge-containers-cli
+    - name: k8s-i05
+      version: local
+
+  env_vars:
+    - name: EC_TARGET
+      value: i05-beamline/i05
+    - name: EC_SERVICES_REPO
+      value: https://gitlab.diamond.ac.uk/controls/containers/beamline/i05-services.git
+
+  applications: []

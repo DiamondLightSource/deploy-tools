@@ -1,0 +1,19 @@
+# yaml-language-server: $schema=/workspaces/deploy-tools/src/deploy_tools/models/schemas/release.json
+
+module:
+  name: ec
+  version: b23
+  description: ec command line tool configured for b23
+
+  dependencies:
+    - name: edge-containers-cli
+    - name: k8s-b23
+      version: local
+
+  env_vars:
+    - name: EC_TARGET
+      value: b23-beamline/b23
+    - name: EC_SERVICES_REPO
+      value: https://gitlab.diamond.ac.uk/controls/containers/beamline/b23-services.git
+
+  applications: []

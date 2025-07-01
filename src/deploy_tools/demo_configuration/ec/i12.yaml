@@ -1,0 +1,19 @@
+# yaml-language-server: $schema=/workspaces/deploy-tools/src/deploy_tools/models/schemas/release.json
+
+module:
+  name: ec
+  version: i12
+  description: ec command line tool configured for i12
+
+  dependencies:
+    - name: edge-containers-cli
+    - name: k8s-i12
+      version: local
+
+  env_vars:
+    - name: EC_TARGET
+      value: i12-beamline/i12
+    - name: EC_SERVICES_REPO
+      value: https://gitlab.diamond.ac.uk/controls/containers/beamline/i12-services.git
+
+  applications: []

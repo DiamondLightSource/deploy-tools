@@ -2,7 +2,7 @@ applications:
 - app_type: apptainer
   container:
     path: docker://ghcr.io/epics-containers/edge-containers-cli
-    version: 4.4.1
+    version: 4.4.4
   entrypoints:
   - command: ec
     name: ec

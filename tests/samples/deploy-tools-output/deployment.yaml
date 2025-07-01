@@ -97,6 +97,40 @@ releases:
           value: https://gitlab.diamond.ac.uk/controls/containers/beamline/b01-1-services.git
         name: ec
         version: b01-1
+    b07:
+      deprecated: false
+      module:
+        applications: []
+        dependencies:
+        - name: edge-containers-cli
+          version: null
+        - name: k8s-b07
+          version: local
+        description: ec command line tool configured for b07
+        env_vars:
+        - name: EC_TARGET
+          value: b07-beamline/b07
+        - name: EC_SERVICES_REPO
+          value: https://gitlab.diamond.ac.uk/controls/containers/beamline/b07-services.git
+        name: ec
+        version: b07
+    b07-1:
+      deprecated: false
+      module:
+        applications: []
+        dependencies:
+        - name: edge-containers-cli
+          version: null
+        - name: k8s-b07-1
+          version: local
+        description: ec command line tool configured for b07-1
+        env_vars:
+        - name: EC_TARGET
+          value: b07-1-beamline/b07-1
+        - name: EC_SERVICES_REPO
+          value: https://gitlab.diamond.ac.uk/controls/containers/beamline/b07-1-services.git
+        name: ec
+        version: b07-1
     b16:
       deprecated: false
       module:
@@ -148,6 +182,57 @@ releases:
           value: https://gitlab.diamond.ac.uk/controls/containers/beamline/b21-services.git
         name: ec
         version: b21
+    b22:
+      deprecated: false
+      module:
+        applications: []
+        dependencies:
+        - name: edge-containers-cli
+          version: null
+        - name: k8s-b22
+          version: local
+        description: ec command line tool configured for b22
+        env_vars:
+        - name: EC_TARGET
+          value: b22-beamline/b22
+        - name: EC_SERVICES_REPO
+          value: https://gitlab.diamond.ac.uk/controls/containers/beamline/b22-services.git
+        name: ec
+        version: b22
+    b23:
+      deprecated: false
+      module:
+        applications: []
+        dependencies:
+        - name: edge-containers-cli
+          version: null
+        - name: k8s-b23
+          version: local
+        description: ec command line tool configured for b23
+        env_vars:
+        - name: EC_TARGET
+          value: b23-beamline/b23
+        - name: EC_SERVICES_REPO
+          value: https://gitlab.diamond.ac.uk/controls/containers/beamline/b23-services.git
+        name: ec
+        version: b23
+    b24:
+      deprecated: false
+      module:
+        applications: []
+        dependencies:
+        - name: edge-containers-cli
+          version: null
+        - name: k8s-b24
+          version: local
+        description: ec command line tool configured for b24
+        env_vars:
+        - name: EC_TARGET
+          value: b24-beamline/b24
+        - name: EC_SERVICES_REPO
+          value: https://gitlab.diamond.ac.uk/controls/containers/beamline/b24-services.git
+        name: ec
+        version: b24
     i02-1:
       deprecated: false
       module:
@@ -250,6 +335,23 @@ releases:
           value: https://gitlab.diamond.ac.uk/controls/containers/beamline/i04-1-services.git
         name: ec
         version: i04-1
+    i05:
+      deprecated: false
+      module:
+        applications: []
+        dependencies:
+        - name: edge-containers-cli
+          version: null
+        - name: k8s-i05
+          version: local
+        description: ec command line tool configured for i05
+        env_vars:
+        - name: EC_TARGET
+          value: i05-beamline/i05
+        - name: EC_SERVICES_REPO
+          value: https://gitlab.diamond.ac.uk/controls/containers/beamline/i05-services.git
+        name: ec
+        version: i05
     i06:
       deprecated: false
       module:
@@ -267,6 +369,57 @@ releases:
           value: https://gitlab.diamond.ac.uk/controls/containers/beamline/i06-services.git
         name: ec
         version: i06
+    i07:
+      deprecated: false
+      module:
+        applications: []
+        dependencies:
+        - name: edge-containers-cli
+          version: null
+        - name: k8s-i07
+          version: local
+        description: ec command line tool configured for i07
+        env_vars:
+        - name: EC_TARGET
+          value: i07-beamline/i07
+        - name: EC_SERVICES_REPO
+          value: https://gitlab.diamond.ac.uk/controls/containers/beamline/i07-services.git
+        name: ec
+        version: i07
+    i08:
+      deprecated: false
+      module:
+        applications: []
+        dependencies:
+        - name: edge-containers-cli
+          version: null
+        - name: k8s-i08
+          version: local
+        description: ec command line tool configured for i08
+        env_vars:
+        - name: EC_TARGET
+          value: i08-beamline/i08
+        - name: EC_SERVICES_REPO
+          value: https://gitlab.diamond.ac.uk/controls/containers/beamline/i08-services.git
+        name: ec
+        version: i08
+    i09:
+      deprecated: false
+      module:
+        applications: []
+        dependencies:
+        - name: edge-containers-cli
+          version: null
+        - name: k8s-i09
+          version: local
+        description: ec command line tool configured for i09
+        env_vars:
+        - name: EC_TARGET
+          value: i09-beamline/i09
+        - name: EC_SERVICES_REPO
+          value: https://gitlab.diamond.ac.uk/controls/containers/beamline/i09-services.git
+        name: ec
+        version: i09
     i10:
       deprecated: false
       module:
@@ -301,6 +454,23 @@ releases:
           value: https://gitlab.diamond.ac.uk/controls/containers/beamline/i11-services.git
         name: ec
         version: i11
+    i12:
+      deprecated: false
+      module:
+        applications: []
+        dependencies:
+        - name: edge-containers-cli
+          version: null
+        - name: k8s-i12
+          version: local
+        description: ec command line tool configured for i12
+        env_vars:
+        - name: EC_TARGET
+          value: i12-beamline/i12
+        - name: EC_SERVICES_REPO
+          value: https://gitlab.diamond.ac.uk/controls/containers/beamline/i12-services.git
+        name: ec
+        version: i12
     i13:
       deprecated: false
       module:
@@ -335,6 +505,23 @@ releases:
           value: https://gitlab.diamond.ac.uk/controls/containers/beamline/i13-1-services.git
         name: ec
         version: i13-1
+    i14:
+      deprecated: false
+      module:
+        applications: []
+        dependencies:
+        - name: edge-containers-cli
+          version: null
+        - name: k8s-i14
+          version: local
+        description: ec command line tool configured for i14
+        env_vars:
+        - name: EC_TARGET
+          value: i14-beamline/i14
+        - name: EC_SERVICES_REPO
+          value: https://gitlab.diamond.ac.uk/controls/containers/beamline/i14-services.git
+        name: ec
+        version: i14
     i15-1:
       deprecated: false
       module:
@@ -403,6 +590,23 @@ releases:
           value: https://gitlab.diamond.ac.uk/controls/containers/beamline/i19-services.git
         name: ec
         version: i19
+    i20:
+      deprecated: false
+      module:
+        applications: []
+        dependencies:
+        - name: edge-containers-cli
+          version: null
+        - name: k8s-i20
+          version: local
+        description: ec command line tool configured for i20
+        env_vars:
+        - name: EC_TARGET
+          value: i20-beamline/i20
+        - name: EC_SERVICES_REPO
+          value: https://gitlab.diamond.ac.uk/controls/containers/beamline/i20-services.git
+        name: ec
+        version: i20
     i20-1:
       deprecated: false
       module:
@@ -643,7 +847,7 @@ releases:
         - app_type: apptainer
           container:
             path: docker://ghcr.io/epics-containers/edge-containers-cli
-            version: 4.4.1
+            version: 4.4.4
           entrypoints:
           - command: ec
             name: ec
@@ -698,7 +902,7 @@ releases:
         - app_type: apptainer
           container:
             path: docker://ghcr.io/epics-containers/edge-containers-cli
-            version: 4.4.1
+            version: 4.4.4
           entrypoints:
           - command: ec
             name: ec

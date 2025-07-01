@@ -1,0 +1,19 @@
+#%Module1.0
+##
+## ec - ec command line tool configured for i14
+##
+module-whatis "ec command line tool configured for i14"
+
+if { [module-info mode load] } {
+    if { [is-loaded ec] } {
+      module unload ec
+    }
+}
+
+setenv EC_TARGET "i14-beamline/i14"
+setenv EC_SERVICES_REPO "https://gitlab.diamond.ac.uk/controls/containers/beamline/i14-services.git"
+
+module load edge-containers-cli
+module load k8s-i14/local
+
+prepend-path PATH "/tmp/deploy-tools-output/modules/ec/i14/entrypoints"
