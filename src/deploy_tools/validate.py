@@ -10,13 +10,11 @@ from .models.changes import DeploymentChanges, ReleaseChanges
 from .models.deployment import (
     DefaultVersionsByName,
     Deployment,
+    ModulesByName,
     ReleasesByNameAndVersion,
 )
 from .models.module import Release
 from .models.save_and_load import load_deployment
-from .modulefile import (
-    ModuleVersionsByName,
-)
 from .print_updates import print_updates
 from .snapshot import load_snapshot
 
@@ -186,7 +184,7 @@ def validate_default_versions(deployment: Deployment) -> DefaultVersionsByName:
             )
 
     default_versions = _get_all_default_versions(
-        deployment.settings.default_versions, final_deployed_versions
+        deployment.settings.default_versions, deployment.get_final_deployed_modules()
     )
 
     return default_versions
@@ -194,7 +192,7 @@ def validate_default_versions(deployment: Deployment) -> DefaultVersionsByName:
 
 def _get_all_default_versions(
     initial_defaults: DefaultVersionsByName,
-    final_deployed_module_versions: ModuleVersionsByName,
+    final_deployed_modules: ModulesByName,
 ) -> DefaultVersionsByName:
     """Return the default versions that will be used for all modules in configuration.
 
@@ -205,16 +203,29 @@ def _get_all_default_versions(
     final_defaults: DefaultVersionsByName = {}
     final_defaults.update(initial_defaults)
 
-    for name in final_deployed_module_versions:
+    for name in final_deployed_modules:
         if name in final_defaults:
             continue
 
+        versions = [
+            module.version
+            for module in final_deployed_modules[name]
+            if not module.exclude_from_defaults
+        ]
+
+        if not versions:
+            # This prevents accidentally making a module that is not production-ready
+            # the default. Environment Modules will otherwise make an arbitrary module
+            # the default
+            raise ValidationError(
+                f"All modules require a default, but every version for name: {name} "
+                f"has set exclude_from_defaults=true. Please specify an explicit "
+                f"default or provide an alternative version without the exclusion."
+            )
+
         # The key follows natsort's documentation for supporting non-SemVer strings
         # E.g. 1.2rc1 should come before 1.2.1 or 1.2
-        sorted_versions = natsorted(
-            final_deployed_module_versions[name],
-            key=lambda x: x.replace(".", "~") + "z",
-        )
+        sorted_versions = natsorted(versions, key=lambda x: x.replace(".", "~") + "z")
         final_defaults[name] = sorted_versions[-1]
 
     return final_defaults

@@ -46,6 +46,7 @@ class Module(ParentModel):
     env_vars: Sequence[EnvVar] = []
     applications: list[Application]
     allow_updates: bool = False
+    exclude_from_defaults: bool = False
 
 
 class Release(ParentModel):

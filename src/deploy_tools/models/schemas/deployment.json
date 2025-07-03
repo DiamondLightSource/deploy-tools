@@ -286,6 +286,11 @@
           "default": false,
           "title": "Allow Updates",
           "type": "boolean"
+        },
+        "exclude_from_defaults": {
+          "default": false,
+          "title": "Exclude From Defaults",
+          "type": "boolean"
         }
       },
       "required": [
