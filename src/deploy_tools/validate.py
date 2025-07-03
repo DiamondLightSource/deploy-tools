@@ -1,5 +1,4 @@
 import logging
-from collections import defaultdict
 from pathlib import Path
 from tempfile import TemporaryDirectory
 
@@ -92,40 +91,19 @@ def _validate_module_dependencies(deployment: Deployment) -> None:
     only valid for dependencies that are managed outside of the current deployment
     configuration.
     """
-    final_deployed_modules = _get_final_deployed_module_versions(deployment)
+    final_deployed_versions = deployment.get_final_deployed_versions()
 
     for name, release_versions in deployment.releases.items():
         for version, release in release_versions.items():
             for dependency in release.module.dependencies:
                 dep_name = dependency.name
                 dep_version = dependency.version
-                if dep_version is not None and dep_name in final_deployed_modules:
-                    if dep_version not in final_deployed_modules[dep_name]:
+                if dep_version is not None and dep_name in final_deployed_versions:
+                    if dep_version not in final_deployed_versions[dep_name]:
                         raise ValidationError(
                             f"Module {name}/{version} has unknown module dependency "
                             f"{dep_name}/{dep_version}."
                         )
-
-
-def _get_final_deployed_module_versions(
-    deployment: Deployment,
-) -> ModuleVersionsByName:
-    """Return module versions that will be deployed after sync action has completed.
-
-    This explicitly excludes any deprecated modules.
-    """
-    final_versions: ModuleVersionsByName = defaultdict(list)
-    for name, release_versions in deployment.releases.items():
-        versions = [
-            version
-            for version, release in release_versions.items()
-            if not release.deprecated
-        ]
-
-        if versions:
-            final_versions[name] = versions
-
-    return final_versions
 
 
 def _get_release_changes(
@@ -198,17 +176,17 @@ def _validate_removed_modules(releases: list[Release], allow_all: bool) -> None:
 
 def validate_default_versions(deployment: Deployment) -> DefaultVersionsByName:
     """Validate configuration to get set of default version changes."""
-    final_deployed_modules = _get_final_deployed_module_versions(deployment)
+    final_deployed_versions = deployment.get_final_deployed_versions()
 
     for name, version in deployment.settings.default_versions.items():
-        if version not in final_deployed_modules[name]:
+        if version not in final_deployed_versions[name]:
             raise ValidationError(
                 f"Unable to configure {name}/{version} as default; module will not "
                 f"exist."
             )
 
     default_versions = _get_all_default_versions(
-        deployment.settings.default_versions, final_deployed_modules
+        deployment.settings.default_versions, final_deployed_versions
     )
 
     return default_versions
