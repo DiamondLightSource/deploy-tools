@@ -2,10 +2,8 @@ import re
 from collections import defaultdict
 
 from .layout import Layout
-from .models.deployment import DefaultVersionsByName
+from .models.deployment import DefaultVersionsByName, ModuleVersionsByName
 from .templater import Templater, TemplateType
-
-type ModuleVersionsByName = dict[str, list[str]]
 
 VERSION_GLOB = f"*/[!{Layout.DEFAULT_VERSION_FILENAME}]*"
 

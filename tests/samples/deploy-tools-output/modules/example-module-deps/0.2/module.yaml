@@ -1,3 +1,4 @@
+allow_updates: false
 applications: []
 dependencies:
 - name: dls-pmac-control
@@ -6,5 +7,6 @@ dependencies:
   version: '0.1'
 description: Demonstration of deploy-tools dependencies
 env_vars: []
+exclude_from_defaults: false
 name: example-module-deps
 version: '0.2'

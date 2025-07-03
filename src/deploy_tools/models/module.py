@@ -13,8 +13,6 @@ Application = Annotated[
     ApptainerApp | ShellApp | BinaryApp, Field(..., discriminator="app_type")
 ]
 
-DEVELOPMENT_VERSION = "dev"
-
 
 class ModuleDependency(ParentModel):
     """Specify an Environment Module to include as a dependency.
@@ -47,9 +45,8 @@ class Module(ParentModel):
     dependencies: Sequence[ModuleDependency] = []
     env_vars: Sequence[EnvVar] = []
     applications: list[Application]
-
-    def is_dev_mode(self) -> bool:
-        return self.version == DEVELOPMENT_VERSION
+    allow_updates: bool = False
+    exclude_from_defaults: bool = False
 
 
 class Release(ParentModel):

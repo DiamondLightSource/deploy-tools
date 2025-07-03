@@ -1,3 +1,4 @@
+allow_updates: false
 applications:
 - app_type: apptainer
   container:
@@ -48,5 +49,6 @@ env_vars:
   value: ARGOCD
 - name: EC_LOG_URL
   value: https://graylog.diamond.ac.uk/search?rangetype=relative&fields=message%2Csource&width=1489&highlightMessage=&relative=172800&q=pod_name%3A{service_name}*
+exclude_from_defaults: false
 name: edge-containers-cli
 version: '0.1'
