@@ -13,6 +13,7 @@ releases:
         dependencies: []
         description: Demonstration of binary download
         env_vars: []
+        exclude_from_defaults: false
         name: argocd
         version: v2.14.10
   dls-pmac-control:
@@ -47,6 +48,7 @@ releases:
         env_vars:
         - name: EXAMPLE_VALUE
           value: Test message EXAMPLE_VALUE from example-module-file version 0.1
+        exclude_from_defaults: false
         name: dls-pmac-control
         version: '0.1'
     '0.2':
@@ -80,6 +82,7 @@ releases:
         env_vars:
         - name: EXAMPLE_VALUE
           value: Test message EXAMPLE_VALUE from example-module-file version 0.2
+        exclude_from_defaults: false
         name: dls-pmac-control
         version: '0.2'
   ec:
@@ -99,6 +102,7 @@ releases:
           value: i13-1-beamline/i13-1
         - name: EC_SERVICES_REPO
           value: https://gitlab.diamond.ac.uk/controls/containers/beamline/i13-1-services.git
+        exclude_from_defaults: false
         name: ec
         version: i13-1
     p47:
@@ -117,6 +121,7 @@ releases:
           value: p47-beamline/p47
         - name: EC_SERVICES_REPO
           value: https://github.com/epics-containers/p47-services
+        exclude_from_defaults: false
         name: ec
         version: p47
   edge-containers-cli:
@@ -174,6 +179,7 @@ releases:
           value: ARGOCD
         - name: EC_LOG_URL
           value: https://graylog.diamond.ac.uk/search?rangetype=relative&fields=message%2Csource&width=1489&highlightMessage=&relative=172800&q=pod_name%3A{service_name}*
+        exclude_from_defaults: false
         name: edge-containers-cli
         version: '0.1'
   example-module-apps:
@@ -222,6 +228,7 @@ releases:
         env_vars:
         - name: OTHER_VALUE
           value: Test message OTHER_VALUE from example-module-folder
+        exclude_from_defaults: false
         name: example-module-apps
         version: '0.1'
   example-module-deps:
@@ -237,6 +244,7 @@ releases:
           version: '0.1'
         description: Demonstration of deploy-tools dependencies
         env_vars: []
+        exclude_from_defaults: false
         name: example-module-deps
         version: '0.2'
   phoebus:
@@ -265,6 +273,7 @@ releases:
         dependencies: []
         description: Containerised release of CSS Phoebus
         env_vars: []
+        exclude_from_defaults: false
         name: phoebus
         version: '0.1'
 settings:

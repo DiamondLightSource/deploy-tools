@@ -26,5 +26,6 @@ description: Demonstration of the deploy-tools process
 env_vars:
 - name: EXAMPLE_VALUE
   value: Test message EXAMPLE_VALUE from example-module-file version 0.1
+exclude_from_defaults: false
 name: dls-pmac-control
 version: '0.1'

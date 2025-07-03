@@ -40,5 +40,6 @@ description: Demonstration of a module configuration folder
 env_vars:
 - name: OTHER_VALUE
   value: Test message OTHER_VALUE from example-module-folder
+exclude_from_defaults: false
 name: example-module-apps
 version: '0.1'

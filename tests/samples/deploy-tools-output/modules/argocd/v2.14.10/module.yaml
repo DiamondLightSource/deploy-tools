@@ -8,5 +8,6 @@ applications:
 dependencies: []
 description: Demonstration of binary download
 env_vars: []
+exclude_from_defaults: false
 name: argocd
 version: v2.14.10
