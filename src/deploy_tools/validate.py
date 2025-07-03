@@ -1,8 +1,9 @@
 import logging
 from collections import defaultdict
-from copy import deepcopy
 from pathlib import Path
 from tempfile import TemporaryDirectory
+
+from natsort import natsorted
 
 from .build import build
 from .layout import Layout
@@ -230,8 +231,12 @@ def _get_all_default_versions(
         if name in final_defaults:
             continue
 
-        version_list = deepcopy(final_deployed_module_versions[name])
-        version_list.sort()
-        final_defaults[name] = version_list[-1]
+        # The key follows natsort's documentation for supporting non-SemVer strings
+        # E.g. 1.2rc1 should come before 1.2.1 or 1.2
+        sorted_versions = natsorted(
+            final_deployed_module_versions[name],
+            key=lambda x: x.replace(".", "~") + "z",
+        )
+        final_defaults[name] = sorted_versions[-1]
 
     return final_defaults
