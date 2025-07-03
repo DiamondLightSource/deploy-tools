@@ -12,7 +12,7 @@ from .models.deployment import (
     Deployment,
     ReleasesByNameAndVersion,
 )
-from .models.module import DEVELOPMENT_VERSION, Release
+from .models.module import Release
 from .models.save_and_load import load_deployment
 from .modulefile import (
     ModuleVersionsByName,
@@ -146,7 +146,7 @@ def _get_release_changes(
             old_release = old_releases[name][version]
 
             if old_release.module != new_release.module:
-                if new_release.module.is_dev_mode():
+                if old_release.module.allow_updates:
                     release_changes.to_update.append(new_release)
                     continue
 
@@ -169,8 +169,6 @@ def _get_release_changes(
                 release_changes.to_remove.append(old_release)
 
     _validate_added_modules(release_changes.to_add, allow_all)
-    _validate_updated_modules(release_changes.to_update)
-    _validate_deprecated_modules(release_changes.to_deprecate)
     _validate_removed_modules(release_changes.to_remove, allow_all)
 
     return release_changes
@@ -180,12 +178,6 @@ def _validate_added_modules(releases: list[Release], from_scratch: bool) -> None
     for release in releases:
         module = release.module
         if release.deprecated:
-            if module.is_dev_mode():
-                raise ValidationError(
-                    f"Module {module.name}/{module.version} cannot be specified as"
-                    f"deprecated as it is in development mode."
-                )
-
             if not from_scratch:
                 raise ValidationError(
                     f"Module {module.name}/{module.version} cannot have deprecated "
@@ -193,30 +185,10 @@ def _validate_added_modules(releases: list[Release], from_scratch: bool) -> None
                 )
 
 
-def _validate_updated_modules(releases: list[Release]) -> None:
-    for release in releases:
-        module = release.module
-        if release.deprecated:
-            raise ValidationError(
-                f"Module {module.name}/{module.version} cannot be specified as "
-                f"deprecated as it is in development mode."
-            )
-
-
-def _validate_deprecated_modules(releases: list[Release]) -> None:
-    for release in releases:
-        module = release.module
-        if module.is_dev_mode():
-            raise ValidationError(
-                f"Module {module.name}/{module.version} cannot be specified as "
-                f"deprecated as it is in development mode."
-            )
-
-
 def _validate_removed_modules(releases: list[Release], allow_all: bool) -> None:
     for release in releases:
         module = release.module
-        if not allow_all and not module.is_dev_mode() and not release.deprecated:
+        if not allow_all and not module.allow_updates and not release.deprecated:
             raise ValidationError(
                 f"Module {module.name}/{module.version} removed without prior "
                 f"deprecation."
@@ -259,9 +231,6 @@ def _get_all_default_versions(
             continue
 
         version_list = deepcopy(final_deployed_module_versions[name])
-        if DEVELOPMENT_VERSION in version_list:
-            version_list.remove(DEVELOPMENT_VERSION)
-
         version_list.sort()
         final_defaults[name] = version_list[-1]
 

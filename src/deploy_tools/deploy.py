@@ -51,9 +51,9 @@ def _remove_releases(to_remove: list[Release], layout: Layout) -> None:
     for release in to_remove:
         name = release.module.name
         version = release.module.version
+        deprecated = release.deprecated
 
-        from_deprecated = not release.module.is_dev_mode()
-        _remove_deployed_module(name, version, layout, from_deprecated)
+        _remove_deployed_module(name, version, layout, from_deprecated=deprecated)
 
 
 def _deploy_new_releases(to_add: list[Release], layout: Layout) -> None:
@@ -146,7 +146,7 @@ def _remove_name_folders(
         _delete_modulefiles_name_folder(layout, release.module.name, True)
 
     for release in removed:
-        _delete_modulefiles_name_folder(layout, release.module.name, True)
+        _delete_modulefiles_name_folder(layout, release.module.name, release.deprecated)
         _delete_name_folder(release.module.name, layout.modules_root)
 
 

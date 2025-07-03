@@ -281,6 +281,11 @@
           },
           "title": "Applications",
           "type": "array"
+        },
+        "allow_updates": {
+          "default": false,
+          "title": "Allow Updates",
+          "type": "boolean"
         }
       },
       "required": [
