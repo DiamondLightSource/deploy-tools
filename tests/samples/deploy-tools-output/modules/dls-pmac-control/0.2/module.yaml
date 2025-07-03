@@ -1,3 +1,4 @@
+allow_updates: false
 applications:
 - app_type: apptainer
   container:

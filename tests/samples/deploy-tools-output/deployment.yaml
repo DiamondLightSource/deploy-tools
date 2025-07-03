@@ -3,6 +3,7 @@ releases:
     v2.14.10:
       deprecated: false
       module:
+        allow_updates: false
         applications:
         - app_type: binary
           hash: d1750274a336f0a090abf196a832cee14cb9f1c2fc3d20d80b0dbfeff83550fa
@@ -18,6 +19,7 @@ releases:
     '0.1':
       deprecated: false
       module:
+        allow_updates: false
         applications:
         - app_type: apptainer
           container:
@@ -50,6 +52,7 @@ releases:
     '0.2':
       deprecated: false
       module:
+        allow_updates: false
         applications:
         - app_type: apptainer
           container:
@@ -83,6 +86,7 @@ releases:
     i13-1:
       deprecated: false
       module:
+        allow_updates: false
         applications: []
         dependencies:
         - name: edge-containers-cli
@@ -100,6 +104,7 @@ releases:
     p47:
       deprecated: false
       module:
+        allow_updates: false
         applications: []
         dependencies:
         - name: edge-containers-cli
@@ -118,6 +123,7 @@ releases:
     '0.1':
       deprecated: false
       module:
+        allow_updates: false
         applications:
         - app_type: apptainer
           container:
@@ -174,6 +180,7 @@ releases:
     '0.1':
       deprecated: false
       module:
+        allow_updates: false
         applications:
         - app_type: apptainer
           container:
@@ -221,6 +228,7 @@ releases:
     '0.2':
       deprecated: false
       module:
+        allow_updates: false
         applications: []
         dependencies:
         - name: dls-pmac-control
@@ -235,6 +243,7 @@ releases:
     '0.1':
       deprecated: false
       module:
+        allow_updates: false
         applications:
         - app_type: apptainer
           container:

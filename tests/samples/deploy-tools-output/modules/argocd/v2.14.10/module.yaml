@@ -1,3 +1,4 @@
+allow_updates: false
 applications:
 - app_type: binary
   hash: d1750274a336f0a090abf196a832cee14cb9f1c2fc3d20d80b0dbfeff83550fa
