@@ -4,6 +4,7 @@ module:
   name: edge-containers-cli
   version: no-beamline
   description: ec command line tool for kubernetes IOCs
+  allow_updates: true
 
   dependencies:
     - name: argocd

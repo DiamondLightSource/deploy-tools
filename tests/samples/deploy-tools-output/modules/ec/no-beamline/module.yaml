@@ -1,8 +1,10 @@
+allow_updates: false
 applications: []
 dependencies:
 - name: edge-containers-cli
   version: no-beamline
 description: ec command line tool standalone
 env_vars: []
+exclude_from_defaults: false
 name: ec
 version: no-beamline

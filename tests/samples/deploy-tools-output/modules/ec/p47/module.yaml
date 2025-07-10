@@ -1,16 +1,16 @@
 allow_updates: false
 applications: []
 dependencies:
-  - name: edge-containers-cli
-    version: null
-  - name: pollux
-    version: local
+- name: edge-containers-cli
+  version: null
+- name: pollux
+  version: local
 description: ec command line tool configured for p47
 env_vars:
-  - name: EC_TARGET
-    value: p47-beamline/p47
-  - name: EC_SERVICES_REPO
-    value: https://github.com/epics-containers/p47-services
+- name: EC_TARGET
+  value: p47-beamline/p47
+- name: EC_SERVICES_REPO
+  value: https://github.com/epics-containers/p47-services.git
 exclude_from_defaults: false
 name: ec
 version: p47

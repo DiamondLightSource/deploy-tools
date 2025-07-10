@@ -1,3 +1,4 @@
+allow_updates: false
 applications: []
 dependencies:
 - name: edge-containers-cli
@@ -10,5 +11,6 @@ env_vars:
   value: b07-1-beamline/b07-1
 - name: EC_SERVICES_REPO
   value: https://gitlab.diamond.ac.uk/controls/containers/beamline/b07-1-services.git
+exclude_from_defaults: false
 name: ec
 version: b07-1

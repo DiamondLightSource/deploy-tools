@@ -1,3 +1,4 @@
+allow_updates: false
 applications: []
 dependencies:
 - name: edge-containers-cli
@@ -10,5 +11,6 @@ env_vars:
   value: p99-beamline/p99
 - name: EC_SERVICES_REPO
   value: https://gitlab.diamond.ac.uk/controls/containers/beamline/p99-services.git
+exclude_from_defaults: false
 name: ec
 version: p99
