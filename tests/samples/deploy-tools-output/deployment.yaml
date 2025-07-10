@@ -95,7 +95,7 @@ releases:
         - name: edge-containers-cli
           version: null
         - name: k8s-b01-1
-          version: '0.1'
+          version: local
         description: ec command line tool configured for b01-1
         env_vars:
         - name: EC_TARGET
@@ -116,7 +116,7 @@ releases:
         - name: edge-containers-cli
           version: null
         - name: k8s-b07
-          version: '0.1'
+          version: local
         description: ec command line tool configured for b07
         env_vars:
         - name: EC_TARGET
@@ -137,7 +137,7 @@ releases:
         - name: edge-containers-cli
           version: null
         - name: k8s-b07-1
-          version: '0.1'
+          version: local
         description: ec command line tool configured for b07-1
         env_vars:
         - name: EC_TARGET
@@ -158,7 +158,7 @@ releases:
         - name: edge-containers-cli
           version: null
         - name: k8s-b16
-          version: '0.1'
+          version: local
         description: ec command line tool configured for b16
         env_vars:
         - name: EC_TARGET
@@ -179,7 +179,7 @@ releases:
         - name: edge-containers-cli
           version: null
         - name: k8s-b18
-          version: '0.1'
+          version: local
         description: ec command line tool configured for b18
         env_vars:
         - name: EC_TARGET
@@ -200,7 +200,7 @@ releases:
         - name: edge-containers-cli
           version: null
         - name: k8s-b21
-          version: '0.1'
+          version: local
         description: ec command line tool configured for b21
         env_vars:
         - name: EC_TARGET
@@ -221,7 +221,7 @@ releases:
         - name: edge-containers-cli
           version: null
         - name: k8s-b22
-          version: '0.1'
+          version: local
         description: ec command line tool configured for b22
         env_vars:
         - name: EC_TARGET
@@ -242,7 +242,7 @@ releases:
         - name: edge-containers-cli
           version: null
         - name: k8s-b23
-          version: '0.1'
+          version: local
         description: ec command line tool configured for b23
         env_vars:
         - name: EC_TARGET
@@ -263,7 +263,7 @@ releases:
         - name: edge-containers-cli
           version: null
         - name: k8s-b24
-          version: '0.1'
+          version: local
         description: ec command line tool configured for b24
         env_vars:
         - name: EC_TARGET
@@ -284,7 +284,7 @@ releases:
         - name: edge-containers-cli
           version: null
         - name: k8s-i02-1
-          version: '0.1'
+          version: local
         description: ec command line tool configured for i02-1
         env_vars:
         - name: EC_TARGET
@@ -305,7 +305,7 @@ releases:
         - name: edge-containers-cli
           version: null
         - name: k8s-i02-2
-          version: '0.1'
+          version: local
         description: ec command line tool configured for i02-2
         env_vars:
         - name: EC_TARGET
@@ -326,7 +326,7 @@ releases:
         - name: edge-containers-cli
           version: null
         - name: k8s-i03
-          version: '0.1'
+          version: local
         description: ec command line tool configured for i03
         env_vars:
         - name: EC_TARGET
@@ -366,7 +366,7 @@ releases:
         - name: edge-containers-cli
           version: null
         - name: k8s-i04
-          version: '0.1'
+          version: local
         description: ec command line tool configured for i04
         env_vars:
         - name: EC_TARGET
@@ -387,7 +387,7 @@ releases:
         - name: edge-containers-cli
           version: null
         - name: k8s-i04-1
-          version: '0.1'
+          version: local
         description: ec command line tool configured for i04-1
         env_vars:
         - name: EC_TARGET
@@ -408,7 +408,7 @@ releases:
         - name: edge-containers-cli
           version: null
         - name: k8s-i05
-          version: '0.1'
+          version: local
         description: ec command line tool configured for i05
         env_vars:
         - name: EC_TARGET
@@ -429,7 +429,7 @@ releases:
         - name: edge-containers-cli
           version: null
         - name: k8s-i06
-          version: '0.1'
+          version: local
         description: ec command line tool configured for i06
         env_vars:
         - name: EC_TARGET
@@ -450,7 +450,7 @@ releases:
         - name: edge-containers-cli
           version: null
         - name: k8s-i07
-          version: '0.1'
+          version: local
         description: ec command line tool configured for i07
         env_vars:
         - name: EC_TARGET
@@ -471,7 +471,7 @@ releases:
         - name: edge-containers-cli
           version: null
         - name: k8s-i08
-          version: '0.1'
+          version: local
         description: ec command line tool configured for i08
         env_vars:
         - name: EC_TARGET
@@ -492,7 +492,7 @@ releases:
         - name: edge-containers-cli
           version: null
         - name: k8s-i09
-          version: '0.1'
+          version: local
         description: ec command line tool configured for i09
         env_vars:
         - name: EC_TARGET
@@ -513,7 +513,7 @@ releases:
         - name: edge-containers-cli
           version: null
         - name: k8s-i10
-          version: '0.1'
+          version: local
         description: ec command line tool configured for i10
         env_vars:
         - name: EC_TARGET
@@ -534,7 +534,7 @@ releases:
         - name: edge-containers-cli
           version: null
         - name: k8s-i11
-          version: '0.1'
+          version: local
         description: ec command line tool configured for i11
         env_vars:
         - name: EC_TARGET
@@ -555,7 +555,7 @@ releases:
         - name: edge-containers-cli
           version: null
         - name: k8s-i12
-          version: '0.1'
+          version: local
         description: ec command line tool configured for i12
         env_vars:
         - name: EC_TARGET
@@ -576,7 +576,7 @@ releases:
         - name: edge-containers-cli
           version: null
         - name: k8s-i13
-          version: '0.1'
+          version: local
         description: ec command line tool configured for i13
         env_vars:
         - name: EC_TARGET
@@ -597,7 +597,7 @@ releases:
         - name: edge-containers-cli
           version: null
         - name: k8s-i13-1
-          version: '0.1'
+          version: local
         description: ec command line tool configured for i13-1
         env_vars:
         - name: EC_TARGET
@@ -618,7 +618,7 @@ releases:
         - name: edge-containers-cli
           version: null
         - name: k8s-i14
-          version: '0.1'
+          version: local
         description: ec command line tool configured for i14
         env_vars:
         - name: EC_TARGET
@@ -639,7 +639,7 @@ releases:
         - name: edge-containers-cli
           version: null
         - name: k8s-i15-1
-          version: '0.1'
+          version: local
         description: ec command line tool configured for i15-1
         env_vars:
         - name: EC_TARGET
@@ -660,7 +660,7 @@ releases:
         - name: edge-containers-cli
           version: null
         - name: k8s-i16
-          version: '0.1'
+          version: local
         description: ec command line tool configured for i16
         env_vars:
         - name: EC_TARGET
@@ -681,7 +681,7 @@ releases:
         - name: edge-containers-cli
           version: null
         - name: k8s-i18
-          version: '0.1'
+          version: local
         description: ec command line tool configured for i18
         env_vars:
         - name: EC_TARGET
@@ -702,7 +702,7 @@ releases:
         - name: edge-containers-cli
           version: null
         - name: k8s-i19
-          version: '0.1'
+          version: local
         description: ec command line tool configured for i19
         env_vars:
         - name: EC_TARGET
@@ -723,7 +723,7 @@ releases:
         - name: edge-containers-cli
           version: null
         - name: k8s-i20
-          version: '0.1'
+          version: local
         description: ec command line tool configured for i20
         env_vars:
         - name: EC_TARGET
@@ -744,7 +744,7 @@ releases:
         - name: edge-containers-cli
           version: null
         - name: k8s-i20-1
-          version: '0.1'
+          version: local
         description: ec command line tool configured for i20-1
         env_vars:
         - name: EC_TARGET
@@ -765,7 +765,7 @@ releases:
         - name: edge-containers-cli
           version: null
         - name: k8s-i21
-          version: '0.1'
+          version: local
         description: ec command line tool configured for i21
         env_vars:
         - name: EC_TARGET
@@ -786,7 +786,7 @@ releases:
         - name: edge-containers-cli
           version: null
         - name: k8s-i22
-          version: '0.1'
+          version: local
         description: ec command line tool configured for i22
         env_vars:
         - name: EC_TARGET
@@ -807,7 +807,7 @@ releases:
         - name: edge-containers-cli
           version: null
         - name: k8s-i23
-          version: '0.1'
+          version: local
         description: ec command line tool configured for i23
         env_vars:
         - name: EC_TARGET
@@ -828,7 +828,7 @@ releases:
         - name: edge-containers-cli
           version: null
         - name: k8s-i24
-          version: '0.1'
+          version: local
         description: ec command line tool configured for i24
         env_vars:
         - name: EC_TARGET
@@ -849,7 +849,7 @@ releases:
         - name: edge-containers-cli
           version: null
         - name: k8s-k11
-          version: '0.1'
+          version: local
         description: ec command line tool configured for k11
         env_vars:
         - name: EC_TARGET
@@ -883,7 +883,7 @@ releases:
         - name: edge-containers-cli
           version: null
         - name: k8s-p38
-          version: '0.1'
+          version: local
         description: ec command line tool configured for p38
         env_vars:
         - name: EC_TARGET
@@ -904,7 +904,7 @@ releases:
         - name: edge-containers-cli
           version: null
         - name: pollux
-          version: '0.1'
+          version: local
         description: ec command line tool configured for p45
         env_vars:
         - name: EC_TARGET
@@ -925,7 +925,7 @@ releases:
         - name: edge-containers-cli
           version: null
         - name: pollux
-          version: '0.1'
+          version: local
         description: ec command line tool configured for p46
         env_vars:
         - name: EC_TARGET
@@ -946,7 +946,7 @@ releases:
         - name: edge-containers-cli
           version: null
         - name: pollux
-          version: '0.1'
+          version: local
         description: ec command line tool configured for p47
         env_vars:
         - name: EC_TARGET
@@ -967,7 +967,7 @@ releases:
         - name: edge-containers-cli
           version: null
         - name: pollux
-          version: '0.1'
+          version: local
         description: ec command line tool configured for p48
         env_vars:
         - name: EC_TARGET
@@ -988,7 +988,7 @@ releases:
         - name: edge-containers-cli
           version: null
         - name: pollux
-          version: '0.1'
+          version: local
         description: ec command line tool configured for p49
         env_vars:
         - name: EC_TARGET
@@ -1009,7 +1009,7 @@ releases:
         - name: edge-containers-cli
           version: null
         - name: k8s-p99
-          version: '0.1'
+          version: local
         description: ec command line tool configured for p99
         env_vars:
         - name: EC_TARGET

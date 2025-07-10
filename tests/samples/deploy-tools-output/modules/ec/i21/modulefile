@@ -15,6 +15,6 @@ setenv EC_K8S_NAMESPACE "i21-beamline"
 setenv EC_SERVICES_REPO "https://gitlab.diamond.ac.uk/controls/containers/beamline/i21-services.git"
 
 module load edge-containers-cli
-module load k8s-i21/0.1
+module load k8s-i21/local
 
 prepend-path PATH "/tmp/deploy-tools-output/modules/ec/i21/entrypoints"

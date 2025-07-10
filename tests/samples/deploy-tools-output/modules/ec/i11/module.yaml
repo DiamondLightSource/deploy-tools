@@ -4,7 +4,7 @@ dependencies:
 - name: edge-containers-cli
   version: null
 - name: k8s-i11
-  version: '0.1'
+  version: local
 description: ec command line tool configured for i11
 env_vars:
 - name: EC_TARGET

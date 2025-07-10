@@ -9,7 +9,7 @@ module:
   dependencies:
     - name: edge-containers-cli
     - name: k8s-i08
-      version: "0.1"
+      version: local
 
   env_vars:
     - name: EC_TARGET
