@@ -11,9 +11,10 @@ if { [module-info mode load] } {
 }
 
 setenv EC_TARGET "i04-1-beamline/i04-1"
+setenv EC_K8S_NAMESPACE "i04-1-beamline"
 setenv EC_SERVICES_REPO "https://gitlab.diamond.ac.uk/controls/containers/beamline/i04-1-services.git"
 
 module load edge-containers-cli
-module load k8s-i04-1/local
+module load k8s-i04-1/0.1
 
 prepend-path PATH "/tmp/deploy-tools-output/modules/ec/i04-1/entrypoints"

@@ -9,11 +9,13 @@ module:
   dependencies:
     - name: edge-containers-cli
     - name: {{ cluster_name }}
-      version: local
+      version: "0.1"
 
   env_vars:
     - name: EC_TARGET
       value: {{ name }}-beamline/{{ name }}
+    - name: EC_K8S_NAMESPACE
+      value: {{ name }}-beamline
     - name: EC_SERVICES_REPO
       value: https://{{ organization }}/{{ name }}-services.git
 

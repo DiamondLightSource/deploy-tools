@@ -1,14 +1,16 @@
-allow_updates: false
+allow_updates: true
 applications: []
 dependencies:
 - name: edge-containers-cli
   version: null
 - name: k8s-i03
-  version: local
+  version: '0.1'
 description: ec command line tool configured for i03
 env_vars:
 - name: EC_TARGET
   value: i03-beamline/i03
+- name: EC_K8S_NAMESPACE
+  value: i03-beamline
 - name: EC_SERVICES_REPO
   value: https://gitlab.diamond.ac.uk/controls/containers/beamline/i03-services.git
 exclude_from_defaults: false

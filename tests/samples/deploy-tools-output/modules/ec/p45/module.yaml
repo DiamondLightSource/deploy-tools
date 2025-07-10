@@ -1,14 +1,16 @@
-allow_updates: false
+allow_updates: true
 applications: []
 dependencies:
 - name: edge-containers-cli
   version: null
 - name: pollux
-  version: local
+  version: '0.1'
 description: ec command line tool configured for p45
 env_vars:
 - name: EC_TARGET
   value: p45-beamline/p45
+- name: EC_K8S_NAMESPACE
+  value: p45-beamline
 - name: EC_SERVICES_REPO
   value: https://github.com/epics-containers/p45-services.git
 exclude_from_defaults: false

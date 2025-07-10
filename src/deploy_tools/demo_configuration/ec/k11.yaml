@@ -4,15 +4,18 @@ module:
   name: ec
   version: k11
   description: ec command line tool configured for k11
+  allow_updates: true
 
   dependencies:
     - name: edge-containers-cli
     - name: k8s-k11
-      version: local
+      version: "0.1"
 
   env_vars:
     - name: EC_TARGET
       value: k11-beamline/k11
+    - name: EC_K8S_NAMESPACE
+      value: k11-beamline
     - name: EC_SERVICES_REPO
       value: https://gitlab.diamond.ac.uk/controls/containers/beamline/k11-services.git
 

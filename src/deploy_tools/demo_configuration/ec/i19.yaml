@@ -4,15 +4,18 @@ module:
   name: ec
   version: i19
   description: ec command line tool configured for i19
+  allow_updates: true
 
   dependencies:
     - name: edge-containers-cli
     - name: k8s-i19
-      version: local
+      version: "0.1"
 
   env_vars:
     - name: EC_TARGET
       value: i19-beamline/i19
+    - name: EC_K8S_NAMESPACE
+      value: i19-beamline
     - name: EC_SERVICES_REPO
       value: https://gitlab.diamond.ac.uk/controls/containers/beamline/i19-services.git
 

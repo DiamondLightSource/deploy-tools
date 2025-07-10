@@ -4,6 +4,7 @@ module:
   name: ec
   version: no-beamline
   description: ec command line tool standalone
+  allow_updates: true
 
   dependencies:
     - name: edge-containers-cli

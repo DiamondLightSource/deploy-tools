@@ -1,14 +1,16 @@
-allow_updates: false
+allow_updates: true
 applications: []
 dependencies:
 - name: edge-containers-cli
   version: null
 - name: k8s-b24
-  version: local
+  version: '0.1'
 description: ec command line tool configured for b24
 env_vars:
 - name: EC_TARGET
   value: b24-beamline/b24
+- name: EC_K8S_NAMESPACE
+  value: b24-beamline
 - name: EC_SERVICES_REPO
   value: https://gitlab.diamond.ac.uk/controls/containers/beamline/b24-services.git
 exclude_from_defaults: false

@@ -1,14 +1,16 @@
-allow_updates: false
+allow_updates: true
 applications: []
 dependencies:
 - name: edge-containers-cli
   version: null
 - name: k8s-p38
-  version: local
+  version: '0.1'
 description: ec command line tool configured for p38
 env_vars:
 - name: EC_TARGET
   value: p38-beamline/p38
+- name: EC_K8S_NAMESPACE
+  value: p38-beamline
 - name: EC_SERVICES_REPO
   value: https://gitlab.diamond.ac.uk/controls/containers/beamline/p38-services.git
 exclude_from_defaults: false
