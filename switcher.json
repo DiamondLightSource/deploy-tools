@@ -2,5 +2,9 @@
   {
     "version": "main",
     "url": "https://DiamondLightSource.github.io/deploy-tools/main/"
+  },
+  {
+    "version": "0.5",
+    "url": "https://DiamondLightSource.github.io/deploy-tools/0.5/"
   }
 ]
