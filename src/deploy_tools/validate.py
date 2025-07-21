@@ -1,8 +1,8 @@
 import logging
-from collections import defaultdict
-from copy import deepcopy
 from pathlib import Path
 from tempfile import TemporaryDirectory
+
+from natsort import natsorted
 
 from .build import build
 from .layout import Layout
@@ -10,13 +10,11 @@ from .models.changes import DeploymentChanges, ReleaseChanges
 from .models.deployment import (
     DefaultVersionsByName,
     Deployment,
+    ModulesByName,
     ReleasesByNameAndVersion,
 )
-from .models.module import DEVELOPMENT_VERSION, Release
+from .models.module import Release
 from .models.save_and_load import load_deployment
-from .modulefile import (
-    ModuleVersionsByName,
-)
 from .print_updates import print_updates
 from .snapshot import load_snapshot
 
@@ -91,40 +89,19 @@ def _validate_module_dependencies(deployment: Deployment) -> None:
     only valid for dependencies that are managed outside of the current deployment
     configuration.
     """
-    final_deployed_modules = _get_final_deployed_module_versions(deployment)
+    final_deployed_versions = deployment.get_final_deployed_versions()
 
     for name, release_versions in deployment.releases.items():
         for version, release in release_versions.items():
             for dependency in release.module.dependencies:
                 dep_name = dependency.name
                 dep_version = dependency.version
-                if dep_version is not None and dep_name in final_deployed_modules:
-                    if dep_version not in final_deployed_modules[dep_name]:
+                if dep_version is not None and dep_name in final_deployed_versions:
+                    if dep_version not in final_deployed_versions[dep_name]:
                         raise ValidationError(
                             f"Module {name}/{version} has unknown module dependency "
                             f"{dep_name}/{dep_version}."
                         )
-
-
-def _get_final_deployed_module_versions(
-    deployment: Deployment,
-) -> ModuleVersionsByName:
-    """Return module versions that will be deployed after sync action has completed.
-
-    This explicitly excludes any deprecated modules.
-    """
-    final_versions: ModuleVersionsByName = defaultdict(list)
-    for name, release_versions in deployment.releases.items():
-        versions = [
-            version
-            for version, release in release_versions.items()
-            if not release.deprecated
-        ]
-
-        if versions:
-            final_versions[name] = versions
-
-    return final_versions
 
 
 def _get_release_changes(
@@ -146,7 +123,7 @@ def _get_release_changes(
             old_release = old_releases[name][version]
 
             if old_release.module != new_release.module:
-                if new_release.module.is_dev_mode():
+                if old_release.module.allow_updates:
                     release_changes.to_update.append(new_release)
                     continue
 
@@ -169,8 +146,6 @@ def _get_release_changes(
                 release_changes.to_remove.append(old_release)
 
     _validate_added_modules(release_changes.to_add, allow_all)
-    _validate_updated_modules(release_changes.to_update)
-    _validate_deprecated_modules(release_changes.to_deprecate)
     _validate_removed_modules(release_changes.to_remove, allow_all)
 
     return release_changes
@@ -180,12 +155,6 @@ def _validate_added_modules(releases: list[Release], from_scratch: bool) -> None
     for release in releases:
         module = release.module
         if release.deprecated:
-            if module.is_dev_mode():
-                raise ValidationError(
-                    f"Module {module.name}/{module.version} cannot be specified as"
-                    f"deprecated as it is in development mode."
-                )
-
             if not from_scratch:
                 raise ValidationError(
                     f"Module {module.name}/{module.version} cannot have deprecated "
@@ -193,30 +162,10 @@ def _validate_added_modules(releases: list[Release], from_scratch: bool) -> None
                 )
 
 
-def _validate_updated_modules(releases: list[Release]) -> None:
-    for release in releases:
-        module = release.module
-        if release.deprecated:
-            raise ValidationError(
-                f"Module {module.name}/{module.version} cannot be specified as "
-                f"deprecated as it is in development mode."
-            )
-
-
-def _validate_deprecated_modules(releases: list[Release]) -> None:
-    for release in releases:
-        module = release.module
-        if module.is_dev_mode():
-            raise ValidationError(
-                f"Module {module.name}/{module.version} cannot be specified as "
-                f"deprecated as it is in development mode."
-            )
-
-
 def _validate_removed_modules(releases: list[Release], allow_all: bool) -> None:
     for release in releases:
         module = release.module
-        if not allow_all and not module.is_dev_mode() and not release.deprecated:
+        if not allow_all and not module.allow_updates and not release.deprecated:
             raise ValidationError(
                 f"Module {module.name}/{module.version} removed without prior "
                 f"deprecation."
@@ -225,17 +174,17 @@ def _validate_removed_modules(releases: list[Release], allow_all: bool) -> None:
 
 def validate_default_versions(deployment: Deployment) -> DefaultVersionsByName:
     """Validate configuration to get set of default version changes."""
-    final_deployed_modules = _get_final_deployed_module_versions(deployment)
+    final_deployed_versions = deployment.get_final_deployed_versions()
 
     for name, version in deployment.settings.default_versions.items():
-        if version not in final_deployed_modules[name]:
+        if version not in final_deployed_versions[name]:
             raise ValidationError(
                 f"Unable to configure {name}/{version} as default; module will not "
                 f"exist."
             )
 
     default_versions = _get_all_default_versions(
-        deployment.settings.default_versions, final_deployed_modules
+        deployment.settings.default_versions, deployment.get_final_deployed_modules()
     )
 
     return default_versions
@@ -243,7 +192,7 @@ def validate_default_versions(deployment: Deployment) -> DefaultVersionsByName:
 
 def _get_all_default_versions(
     initial_defaults: DefaultVersionsByName,
-    final_deployed_module_versions: ModuleVersionsByName,
+    final_deployed_modules: ModulesByName,
 ) -> DefaultVersionsByName:
     """Return the default versions that will be used for all modules in configuration.
 
@@ -254,15 +203,29 @@ def _get_all_default_versions(
     final_defaults: DefaultVersionsByName = {}
     final_defaults.update(initial_defaults)
 
-    for name in final_deployed_module_versions:
+    for name in final_deployed_modules:
         if name in final_defaults:
             continue
 
-        version_list = deepcopy(final_deployed_module_versions[name])
-        if DEVELOPMENT_VERSION in version_list:
-            version_list.remove(DEVELOPMENT_VERSION)
+        versions = [
+            module.version
+            for module in final_deployed_modules[name]
+            if not module.exclude_from_defaults
+        ]
 
-        version_list.sort()
-        final_defaults[name] = version_list[-1]
+        if not versions:
+            # This prevents accidentally making a module that is not production-ready
+            # the default. Environment Modules will otherwise make an arbitrary module
+            # the default
+            raise ValidationError(
+                f"All modules require a default, but every version for name: {name} "
+                f"has set exclude_from_defaults=true. Please specify an explicit "
+                f"default or provide an alternative version without the exclusion."
+            )
+
+        # The key follows natsort's documentation for supporting non-SemVer strings
+        # E.g. 1.2rc1 should come before 1.2.1 or 1.2
+        sorted_versions = natsorted(versions, key=lambda x: x.replace(".", "~") + "z")
+        final_defaults[name] = sorted_versions[-1]
 
     return final_defaults
