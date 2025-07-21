@@ -11,7 +11,7 @@ mounts="/dls/science/users/:/dls/science/users/,/scratch:/scratch,/dls_sw/apps:/
 # Additional arguments for apptainer
 apptainer_args=""
 # Sif file path
-sif_file="$(dirname $0)/../sif_files/4b34247055f8388a8877c90302ff30d2.sif"
+sif_file="$(dirname $0)/../sif_files/00558f3680613da6ad6091d87ea4d3ff.sif"
 # Command to run in container
 command="ec"
 # Options and arguments to pass to command

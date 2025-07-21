@@ -1,0 +1,16 @@
+#%Module1.0
+##
+## ec - ec command line tool standalone
+##
+module-whatis "ec command line tool standalone"
+
+if { [module-info mode load] } {
+    if { [is-loaded ec] } {
+      module unload ec
+    }
+}
+
+
+module load edge-containers-cli/no-beamline
+
+prepend-path PATH "/tmp/deploy-tools-output/modules/ec/no-beamline/entrypoints"
