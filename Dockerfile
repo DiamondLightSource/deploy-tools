@@ -1,6 +1,6 @@
 # The devcontainer should use the developer target and run as root with podman
 # or docker with user namespaces.
-ARG PYTHON_VERSION=3.12
+ARG PYTHON_VERSION=3.12-bookworm
 FROM python:${PYTHON_VERSION} AS developer
 
 # Add any system dependencies for the developer/build environment here
@@ -17,8 +17,9 @@ ENV PATH=/venv/bin:$PATH
 
 # The build stage installs the context into the venv
 FROM developer AS build
-COPY . /context
-WORKDIR /context
+# Requires buildkit 0.17.0
+COPY --chmod=o+wrX . /workspaces/deploy-tools
+WORKDIR /workspaces/deploy-tools
 RUN touch dev-requirements.txt && pip install -c dev-requirements.txt .
 
 FROM build AS runtime
