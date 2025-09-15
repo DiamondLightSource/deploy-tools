@@ -1,5 +1,9 @@
 # yaml-language-server: $schema=/workspaces/deploy-tools/src/deploy_tools/models/schemas/release.json
 
+# NOTE: this no-beamline configuration is for installing the ec CLI and argocd
+# CLI only. It is required to allow us to set up command line completion in
+# .bashrc. It is missing the kubectl etc because that requires loading a
+# beamline cluster module which is not appropriate in a rc file.
 module:
   name: edge-containers-cli
   version: no-beamline
