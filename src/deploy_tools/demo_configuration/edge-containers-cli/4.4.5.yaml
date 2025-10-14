@@ -16,7 +16,7 @@ module:
     - name: EC_CLI_BACKEND
       value: ARGOCD
     - name: EC_LOG_URL
-      value: "https://graylog.diamond.ac.uk/search?rangetype=relative&fields=message%2Csource&width=1489&highlightMessage=&relative=172800&q=pod_name%3A{service_name}*"
+      value: "https://graylog.diamond.ac.uk/search/685bf28614798490bd989745?q=pod_name%3A{service_name}%2A&rangetype=relative&from=28800"
     - name: EC_LOGIN
       value: argocd login argocd.diamond.ac.uk --grpc-web --sso
 
