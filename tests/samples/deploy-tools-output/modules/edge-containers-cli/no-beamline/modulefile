@@ -11,7 +11,8 @@ if { [module-info mode load] } {
 }
 
 setenv EC_CLI_BACKEND "ARGOCD"
-setenv EC_LOG_URL "https://graylog.diamond.ac.uk/search?rangetype=relative&fields=message%2Csource&width=1489&highlightMessage=&relative=172800&q=pod_name%3A{service_name}*"
+setenv EC_LOG_URL "https://graylog.diamond.ac.uk/search/68b837590236942c70cfdf96?q=pod_name%3A{service_name}%2A&rangetype=relative&from=604800"
+setenv EC_LOGIN "argocd login argocd.diamond.ac.uk --grpc-web --sso"
 
 module load argocd/v2.14.10
 
