@@ -8,6 +8,6 @@ module:
 
   dependencies:
     - name: edge-containers-cli
-      version: no-beamline
+      version: 4.4.5
 
   applications: []
