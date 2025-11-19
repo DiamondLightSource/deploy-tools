@@ -47,6 +47,8 @@ class Module(ParentModel):
     applications: list[Application]
     allow_updates: bool = False
     exclude_from_defaults: bool = False
+    load_script: list[str] = []
+    unload_script: list[str] = []
 
 
 class Release(ParentModel):

@@ -38,6 +38,8 @@ class ModuleBuilder:
             "env_vars": module.env_vars,
             "dependencies": module.dependencies,
             "entrypoint_folder": entrypoints_folder,
+            "load_script": module.load_script,
+            "unload_script": module.unload_script,
         }
 
         built_modulefile = self._build_layout.get_modulefile(

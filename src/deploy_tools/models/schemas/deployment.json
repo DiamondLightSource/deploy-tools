@@ -291,6 +291,22 @@
           "default": false,
           "title": "Exclude From Defaults",
           "type": "boolean"
+        },
+        "load_script": {
+          "default": [],
+          "items": {
+            "type": "string"
+          },
+          "title": "Load Script",
+          "type": "array"
+        },
+        "unload_script": {
+          "default": [],
+          "items": {
+            "type": "string"
+          },
+          "title": "Unload Script",
+          "type": "array"
         }
       },
       "required": [

@@ -22,4 +22,20 @@ module load {{ module.name }}/{{ module.version }}
 {% endif %}
 {% endfor %}
 
+{% if load_script|length %}
+if { [module-info mode load] } {
+{% for line in load_script %}
+    {{ line }}
+{% endfor %}
+}
+
+{% endif -%}
+{% if unload_script|length %}
+if { [module-info mode unload] } {
+{% for line in unload_script %}
+    {{ line }}
+{% endfor %}
+}
+
+{% endif -%}
 prepend-path PATH "{{ entrypoint_folder }}"
