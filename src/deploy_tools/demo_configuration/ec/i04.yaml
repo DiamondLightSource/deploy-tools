@@ -23,6 +23,3 @@ module:
 
   load_script:
     - system kubectl config set-context --current --namespace=i04-beamline
-
-  unload_script:
-    - system kubectl config set-context --current --namespace=$env(USER)
