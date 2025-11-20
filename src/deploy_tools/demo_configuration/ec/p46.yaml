@@ -2,8 +2,8 @@
 
 module:
   name: ec
-  version: p47
-  description: ec command line tool configured for p47
+  version: p46
+  description: ec command line tool configured for p46
   allow_updates: true
 
   dependencies:
@@ -13,10 +13,10 @@ module:
 
   env_vars:
     - name: EC_TARGET
-      value: p47-beamline/p47
+      value: p46-beamline/p46
     - name: EC_K8S_NAMESPACE
-      value: p47-beamline
+      value: p46-beamline
     - name: EC_SERVICES_REPO
-      value: https://github.com/epics-containers/p47-services.git
+      value: https://github.com/epics-containers/p46-services.git
 
   applications: []

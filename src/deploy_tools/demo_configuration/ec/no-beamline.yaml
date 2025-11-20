@@ -1,0 +1,13 @@
+# yaml-language-server: $schema=/workspaces/deploy-tools/src/deploy_tools/models/schemas/release.json
+
+module:
+  name: ec
+  version: no-beamline
+  description: ec command line tool standalone
+  allow_updates: true
+
+  dependencies:
+    - name: edge-containers-cli
+      version: 4.4.5
+
+  applications: []

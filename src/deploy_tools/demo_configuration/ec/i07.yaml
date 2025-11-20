@@ -2,21 +2,21 @@
 
 module:
   name: ec
-  version: p47
-  description: ec command line tool configured for p47
+  version: i07
+  description: ec command line tool configured for i07
   allow_updates: true
 
   dependencies:
     - name: edge-containers-cli
-    - name: pollux
+    - name: k8s-i07
       version: local
 
   env_vars:
     - name: EC_TARGET
-      value: p47-beamline/p47
+      value: i07-beamline/i07
     - name: EC_K8S_NAMESPACE
-      value: p47-beamline
+      value: i07-beamline
     - name: EC_SERVICES_REPO
-      value: https://github.com/epics-containers/p47-services.git
+      value: https://gitlab.diamond.ac.uk/controls/containers/beamline/i07-services.git
 
   applications: []

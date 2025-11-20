@@ -2,21 +2,21 @@
 
 module:
   name: ec
-  version: p47
-  description: ec command line tool configured for p47
+  version: i23
+  description: ec command line tool configured for i23
   allow_updates: true
 
   dependencies:
     - name: edge-containers-cli
-    - name: pollux
+    - name: k8s-i23
       version: local
 
   env_vars:
     - name: EC_TARGET
-      value: p47-beamline/p47
+      value: i23-beamline/i23
     - name: EC_K8S_NAMESPACE
-      value: p47-beamline
+      value: i23-beamline
     - name: EC_SERVICES_REPO
-      value: https://github.com/epics-containers/p47-services.git
+      value: https://gitlab.diamond.ac.uk/controls/containers/beamline/i23-services.git
 
   applications: []
