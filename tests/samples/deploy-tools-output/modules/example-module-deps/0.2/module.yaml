@@ -8,5 +8,7 @@ dependencies:
 description: Demonstration of deploy-tools dependencies
 env_vars: []
 exclude_from_defaults: false
+load_script: []
 name: example-module-deps
+unload_script: []
 version: '0.2'

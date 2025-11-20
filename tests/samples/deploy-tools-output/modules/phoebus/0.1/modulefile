@@ -10,6 +10,4 @@ if { [module-info mode load] } {
     }
 }
 
-
-
 prepend-path PATH "/tmp/deploy-tools-output/modules/phoebus/0.1/entrypoints"

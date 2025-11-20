@@ -41,5 +41,7 @@ env_vars:
 - name: OTHER_VALUE
   value: Test message OTHER_VALUE from example-module-folder
 exclude_from_defaults: false
+load_script: []
 name: example-module-apps
+unload_script: []
 version: '0.1'

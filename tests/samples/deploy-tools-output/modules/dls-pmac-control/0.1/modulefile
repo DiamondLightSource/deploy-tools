@@ -12,5 +12,4 @@ if { [module-info mode load] } {
 
 setenv EXAMPLE_VALUE "Test message EXAMPLE_VALUE from example-module-file version 0.1"
 
-
 prepend-path PATH "/tmp/deploy-tools-output/modules/dls-pmac-control/0.1/entrypoints"

@@ -10,10 +10,13 @@ if { [module-info mode load] } {
     }
 }
 
+{% if env_vars|length %}
 {% for var in env_vars %}
 setenv {{ var.name }} "{{ var.value }}"
 {% endfor %}
 
+{% endif -%}
+{% if dependencies|length %}
 {% for module in dependencies %}
 {% if module.version == None %}
 module load {{ module.name }}
@@ -22,4 +25,21 @@ module load {{ module.name }}/{{ module.version }}
 {% endif %}
 {% endfor %}
 
+{% endif -%}
+{% if load_script|length %}
+if { [module-info mode load] } {
+{% for line in load_script %}
+    {{ line }}
+{% endfor %}
+}
+
+{% endif -%}
+{% if unload_script|length %}
+if { [module-info mode unload] } {
+{% for line in unload_script %}
+    {{ line }}
+{% endfor %}
+}
+
+{% endif -%}
 prepend-path PATH "{{ entrypoint_folder }}"

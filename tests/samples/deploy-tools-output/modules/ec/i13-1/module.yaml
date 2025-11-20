@@ -12,5 +12,7 @@ env_vars:
 - name: EC_SERVICES_REPO
   value: https://gitlab.diamond.ac.uk/controls/containers/beamline/i13-1-services.git
 exclude_from_defaults: false
+load_script: []
 name: ec
+unload_script: []
 version: i13-1
