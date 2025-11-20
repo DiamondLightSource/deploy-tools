@@ -9,5 +9,7 @@ dependencies: []
 description: Demonstration of binary download
 env_vars: []
 exclude_from_defaults: false
+load_script: []
 name: argocd
+unload_script: []
 version: v2.14.10

@@ -10,7 +10,6 @@ if { [module-info mode load] } {
     }
 }
 
-
 module load dls-pmac-control/0.1
 module load example-module-apps/0.1
 

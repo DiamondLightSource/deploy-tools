@@ -21,5 +21,7 @@ dependencies: []
 description: Containerised release of CSS Phoebus
 env_vars: []
 exclude_from_defaults: false
+load_script: []
 name: phoebus
+unload_script: []
 version: '0.1'

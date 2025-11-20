@@ -14,7 +14,9 @@ releases:
         description: Demonstration of binary download
         env_vars: []
         exclude_from_defaults: false
+        load_script: []
         name: argocd
+        unload_script: []
         version: v2.14.10
   dls-pmac-control:
     '0.1':
@@ -49,7 +51,9 @@ releases:
         - name: EXAMPLE_VALUE
           value: Test message EXAMPLE_VALUE from example-module-file version 0.1
         exclude_from_defaults: false
+        load_script: []
         name: dls-pmac-control
+        unload_script: []
         version: '0.1'
     '0.2':
       deprecated: false
@@ -83,7 +87,9 @@ releases:
         - name: EXAMPLE_VALUE
           value: Test message EXAMPLE_VALUE from example-module-file version 0.2
         exclude_from_defaults: false
+        load_script: []
         name: dls-pmac-control
+        unload_script: []
         version: '0.2'
   ec:
     i13-1:
@@ -103,7 +109,9 @@ releases:
         - name: EC_SERVICES_REPO
           value: https://gitlab.diamond.ac.uk/controls/containers/beamline/i13-1-services.git
         exclude_from_defaults: false
+        load_script: []
         name: ec
+        unload_script: []
         version: i13-1
     p47:
       deprecated: false
@@ -122,7 +130,9 @@ releases:
         - name: EC_SERVICES_REPO
           value: https://github.com/epics-containers/p47-services
         exclude_from_defaults: false
+        load_script: []
         name: ec
+        unload_script: []
         version: p47
   edge-containers-cli:
     '0.1':
@@ -180,7 +190,9 @@ releases:
         - name: EC_LOG_URL
           value: https://graylog.diamond.ac.uk/search?rangetype=relative&fields=message%2Csource&width=1489&highlightMessage=&relative=172800&q=pod_name%3A{service_name}*
         exclude_from_defaults: false
+        load_script: []
         name: edge-containers-cli
+        unload_script: []
         version: '0.1'
   example-module-apps:
     '0.1':
@@ -229,7 +241,9 @@ releases:
         - name: OTHER_VALUE
           value: Test message OTHER_VALUE from example-module-folder
         exclude_from_defaults: false
+        load_script: []
         name: example-module-apps
+        unload_script: []
         version: '0.1'
   example-module-deps:
     '0.2':
@@ -245,7 +259,9 @@ releases:
         description: Demonstration of deploy-tools dependencies
         env_vars: []
         exclude_from_defaults: false
+        load_script: []
         name: example-module-deps
+        unload_script: []
         version: '0.2'
   phoebus:
     '0.1':
@@ -274,7 +290,9 @@ releases:
         description: Containerised release of CSS Phoebus
         env_vars: []
         exclude_from_defaults: false
+        load_script: []
         name: phoebus
+        unload_script: []
         version: '0.1'
 settings:
   default_versions:

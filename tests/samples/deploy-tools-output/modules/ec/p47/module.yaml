@@ -12,5 +12,7 @@ env_vars:
 - name: EC_SERVICES_REPO
   value: https://github.com/epics-containers/p47-services
 exclude_from_defaults: false
+load_script: []
 name: ec
+unload_script: []
 version: p47
