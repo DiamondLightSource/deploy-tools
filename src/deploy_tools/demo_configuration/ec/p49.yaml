@@ -20,3 +20,9 @@ module:
       value: https://github.com/epics-containers/p49-services.git
 
   applications: []
+
+  load_script:
+    - system kubectl config set-context --current --namespace=p49-beamline
+
+  unload_script:
+    - system kubectl config set-context --current --namespace=$env(USER)

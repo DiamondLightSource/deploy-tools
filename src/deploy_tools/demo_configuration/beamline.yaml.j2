@@ -22,7 +22,7 @@ module:
   applications: []
 
   load_script:
-    - kubectl config set-context --current --namespace={{ name }}-beamline
+    - system kubectl config set-context --current --namespace={{ name }}-beamline
 
   unload_script:
-    - kubectl config set-context --current --namespace=p47-beamline
+    - system kubectl config set-context --current --namespace=$env(USER)

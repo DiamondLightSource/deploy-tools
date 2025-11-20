@@ -2,3 +2,4 @@
 
 default_versions:
   ec: no-beamline
+  edge-containers-cli: 5.0.0

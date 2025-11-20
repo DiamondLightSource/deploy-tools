@@ -20,3 +20,9 @@ module:
       value: https://gitlab.diamond.ac.uk/controls/containers/beamline/i13-services.git
 
   applications: []
+
+  load_script:
+    - system kubectl config set-context --current --namespace=i13-beamline
+
+  unload_script:
+    - system kubectl config set-context --current --namespace=$env(USER)

@@ -20,3 +20,9 @@ module:
       value: https://gitlab.diamond.ac.uk/controls/containers/beamline/b24-services.git
 
   applications: []
+
+  load_script:
+    - system kubectl config set-context --current --namespace=b24-beamline
+
+  unload_script:
+    - system kubectl config set-context --current --namespace=$env(USER)
