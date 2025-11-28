@@ -8,6 +8,7 @@ module:
 
   dependencies:
     - name: edge-containers-cli
+    - name: plandev
     - name: pollux
       version: local
 
@@ -18,6 +19,8 @@ module:
       value: p48-beamline
     - name: EC_SERVICES_REPO
       value: https://github.com/epics-containers/p48-services.git
+    - name: EC_BEAMLINE
+      value: p48
 
   applications: []
 

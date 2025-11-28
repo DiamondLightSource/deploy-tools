@@ -8,6 +8,7 @@ module:
 
   dependencies:
     - name: edge-containers-cli
+    - name: plandev
     - name: k8s-p99
       version: local
 
@@ -18,6 +19,8 @@ module:
       value: p99-beamline
     - name: EC_SERVICES_REPO
       value: https://gitlab.diamond.ac.uk/controls/containers/beamline/p99-services.git
+    - name: EC_BEAMLINE
+      value: p99
 
   applications: []
 

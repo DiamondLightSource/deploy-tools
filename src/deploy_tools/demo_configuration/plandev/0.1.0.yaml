@@ -1,0 +1,55 @@
+# yaml-language-server: $schema=/workspaces/deploy-tools/src/deploy_tools/models/schemas/release.json
+
+module:
+  name: plandev
+  version: 0.1.0
+  description: launch plan in cluster development environment
+  allow_updates: true
+
+  # this is intended to be a dependency of the ec/ixx modules as it relies upon
+  # environment variables and modules they set up.
+
+  dependencies:
+    - name: vscode
+
+  applications:
+    - app_type: shell
+      name: plandev
+      script:
+        - |
+          RED='\033[0;31m'
+          NC='\033[0m'
+
+          usage() {
+            echo "Usage: ${0} [Optional override workspace file path (file must have '.code-workspace' extension).]"
+          }
+
+          if [[ ${@} == "--help" || ${@} == "-h" ]]; then
+            usage
+            exit 0
+          fi
+
+          if [[ ${#} > 1 ]]; then
+              echo -e "${RED}ERROR:${NC} Too many arguments"
+              usage
+              exit 1
+          elif [[ ${#} == 1 ]]; then
+            if [[ ${1} != *.code-workspace ]];then
+              echo -e "${RED}ERROR:${NC} Filename must have extension '.code-workspace'"
+              exit 1
+            fi
+            WORKSPACE_PATH=${1}
+          else
+            WORKSPACE_PATH="/scratch/${USER}/blueapi-workspaces/${EC_BEAMLINE}.code-workspace"
+          fi
+
+          if [[ -e ${WORKSPACE_PATH} ]];then
+            kubectl config set-context --current --namespace="${EC_BEAMLINE}-beamline"
+            kubectl version
+            code ${WORKSPACE_PATH}
+            exit 0
+          else
+            echo -e "${RED}ERROR:${NC} File ${WORKSPACE_PATH} does not exist"
+            exit 1
+            # Alternatively could clone/update the repo containing all the workspace files in this case and retry
+          fi

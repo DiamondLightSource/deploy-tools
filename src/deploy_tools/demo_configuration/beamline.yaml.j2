@@ -8,6 +8,7 @@ module:
 
   dependencies:
     - name: edge-containers-cli
+    - name: plandev
     - name: {{ cluster_name }}
       version: local
 
@@ -18,6 +19,8 @@ module:
       value: {{ name }}-beamline
     - name: EC_SERVICES_REPO
       value: https://{{ organization }}/{{ name }}-services.git
+    - name: EC_BEAMLINE
+      value: {{ name }}
 
   applications: []
 

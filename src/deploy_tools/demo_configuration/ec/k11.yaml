@@ -8,6 +8,7 @@ module:
 
   dependencies:
     - name: edge-containers-cli
+    - name: plandev
     - name: k8s-k11
       version: local
 
@@ -18,6 +19,8 @@ module:
       value: k11-beamline
     - name: EC_SERVICES_REPO
       value: https://gitlab.diamond.ac.uk/controls/containers/beamline/k11-services.git
+    - name: EC_BEAMLINE
+      value: k11
 
   applications: []
 
