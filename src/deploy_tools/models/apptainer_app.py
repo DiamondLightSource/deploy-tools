@@ -1,4 +1,3 @@
-from collections.abc import Sequence
 from typing import Annotated, Literal
 
 from pydantic import Field
@@ -17,7 +16,7 @@ class EntrypointOptions(ParentModel):
     ] = ""
 
     mounts: Annotated[
-        Sequence[str],
+        list[str],
         Field(
             description="A list of mount points to add to the container in the form of "
             "'host_path:container_path'"
@@ -25,7 +24,7 @@ class EntrypointOptions(ParentModel):
     ] = []
 
     host_binaries: Annotated[
-        Sequence[str],
+        list[str],
         Field(
             description="A list of host binaries to mount into the container. "
             "These are discovered on the host using the current PATH and are "
@@ -64,5 +63,5 @@ class ApptainerApp(ParentModel):
 
     app_type: Literal["apptainer"]
     container: ContainerImage
-    entrypoints: Sequence[Entrypoint]
+    entrypoints: list[Entrypoint]
     global_options: EntrypointOptions = EntrypointOptions()
