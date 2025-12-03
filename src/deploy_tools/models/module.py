@@ -1,4 +1,3 @@
-from collections.abc import Sequence
 from typing import Annotated
 
 from pydantic import Field
@@ -42,8 +41,8 @@ class Module(ParentModel):
     name: str
     version: str
     description: str | None = None
-    dependencies: Sequence[ModuleDependency] = []
-    env_vars: Sequence[EnvVar] = []
+    dependencies: list[ModuleDependency] = []
+    env_vars: list[EnvVar] = []
     applications: list[Application]
     allow_updates: bool = False
     exclude_from_defaults: bool = False
