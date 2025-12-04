@@ -1,8 +1,11 @@
 from typing import Annotated, Literal
 
-from pydantic import Field
+from pydantic import Field, StringConstraints
 
 from .parent import ParentModel
+
+MOUNT_PATH_REGEX = r"/[^:]*"  # Colon is excluded in short-form apptainer mounts
+MOUNT_REGEX = rf"^{MOUNT_PATH_REGEX}(:{MOUNT_PATH_REGEX}(:(ro|rw))?)?$"
 
 
 class EntrypointOptions(ParentModel):
@@ -16,10 +19,11 @@ class EntrypointOptions(ParentModel):
     ] = ""
 
     mounts: Annotated[
-        list[str],
+        list[Annotated[str, StringConstraints(pattern=MOUNT_REGEX)]],
         Field(
             description="A list of mount points to add to the container in the form of "
-            "'host_path:container_path'"
+            "'host_path[:container_path[:opts]]' where opts (mount options) can be "
+            "'ro' or 'rw' and defaults to 'rw'"
         ),
     ] = []
 
