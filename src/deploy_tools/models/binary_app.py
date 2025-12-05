@@ -1,5 +1,5 @@
 from enum import StrEnum
-from typing import Literal
+from typing import Annotated, Literal
 
 from pydantic import Field
 
@@ -23,20 +23,15 @@ class BinaryApp(ParentModel):
     location to that path.
     """
 
-    app_type: Literal["binary"]
-    name: str = Field(
-        ...,
-        description="Binary filename to use locally",
-    )
-    url: str = Field(
-        ...,
-        description="URL to download the binary from.",
-    )
-    hash: str = Field(
-        "",
-        description="Hash to verify binary integrity",
-    )
-    hash_type: HashType = Field(
-        ...,
-        description="Type of hash used to check the binary.",
-    )
+    app_type: Annotated[
+        Literal["binary"],
+        Field(description="A standalone binary to be downloaded and added to the path"),
+    ]
+    name: Annotated[
+        str, Field(description="Name of executable to use after loading the Module")
+    ]
+    url: Annotated[str, Field(description="URL to download the binary from")]
+    hash: Annotated[str, Field(description="Hash to verify binary integrity")] = ""
+    hash_type: Annotated[
+        HashType, Field(description="Type of hash used to check the binary")
+    ]
