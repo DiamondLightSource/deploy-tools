@@ -12,7 +12,8 @@
   "properties": {
     "default_versions": {
       "$ref": "#/$defs/DefaultVersionsByName",
-      "default": {}
+      "default": {},
+      "description": "Mapping of <module name>: <version> to use as default when no version is specified"
     }
   },
   "title": "DeploymentSettings",

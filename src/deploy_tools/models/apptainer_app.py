@@ -19,7 +19,8 @@ class EntrypointOptions(ParentModel):
         list[str],
         Field(
             description="A list of mount points to add to the container in the form of "
-            "'host_path:container_path'"
+            "'host_path[:container_path[:opts]]' where opts (mount options) can be "
+            "'ro' or 'rw' and defaults to 'rw'"
         ),
     ] = []
 
@@ -39,14 +40,20 @@ class Entrypoint(ParentModel):
     If no command is provided, the entrypoint (`name`) is used by default. This
     corresponds to the name of the executable provided by the Module."""
 
-    name: str
-    command: str | None = None
-    options: EntrypointOptions = EntrypointOptions()
+    name: Annotated[
+        str, Field(description="Name of executable to use after loading the Module")
+    ]
+    command: Annotated[str | None, Field(description="Command to run in container")] = (
+        None
+    )
+    options: Annotated[
+        EntrypointOptions, Field("Options to apply for this entrypoint")
+    ] = EntrypointOptions()
 
 
 class ContainerImage(ParentModel):
-    path: str
-    version: str
+    path: Annotated[str, Field(description="Image URL excluding the version")]
+    version: Annotated[str, Field(description="Version of the docker image")]
 
     @property
     def url(self) -> str:
@@ -61,7 +68,19 @@ class ApptainerApp(ParentModel):
     container image.
     """
 
-    app_type: Literal["apptainer"]
-    container: ContainerImage
-    entrypoints: list[Entrypoint]
-    global_options: EntrypointOptions = EntrypointOptions()
+    app_type: Annotated[
+        Literal["apptainer"],
+        Field(
+            description="An Apptainer (executable container image) with multiple "
+            "potential entrypoints"
+        ),
+    ]
+    container: Annotated[ContainerImage, Field(description="Container URL information")]
+    entrypoints: Annotated[
+        list[Entrypoint],
+        Field(description="List of executables to run using the Apptainer"),
+    ]
+    global_options: Annotated[
+        EntrypointOptions,
+        Field(description="Global options that apply to all Entrypoints"),
+    ] = EntrypointOptions()
