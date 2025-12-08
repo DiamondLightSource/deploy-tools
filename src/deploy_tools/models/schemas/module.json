@@ -2,7 +2,7 @@
   "$defs": {
     "ApptainerApp": {
       "additionalProperties": false,
-      "description": "Represents an Apptainer application or set of applications for a single image.\n\nThis uses Apptainer to deploy a portable image of the desired container. Several\nentrypoints can then be specified to allow for multiple commands run on the same\ncontainer image.",
+      "description": "Represents an Apptainer application or set of applications for a single image.\n\nThis uses Apptainer to deploy a portable image of the desired container. Several\nentrypoints can then be specified to allow for multiple commands to be run on the \"\n\"same container image.",
       "properties": {
         "app_type": {
           "const": "apptainer",
@@ -43,7 +43,7 @@
     },
     "BinaryApp": {
       "additionalProperties": false,
-      "description": "Represents a standalone Binary application.\n\nThis will fetch a standalone binary, validate its hash and add its\nlocation to that path.",
+      "description": "Represents a standalone Binary application.\n\nThis will fetch a standalone binary, validate its hash and add its\nlocation to the path.",
       "properties": {
         "app_type": {
           "const": "binary",
