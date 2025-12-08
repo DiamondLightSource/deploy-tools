@@ -38,7 +38,8 @@ class Entrypoint(ParentModel):
     """Represents an entrypoint to a command on the Apptainer image.
 
     If no command is provided, the entrypoint (`name`) is used by default. This
-    corresponds to the name of the executable provided by the Module."""
+    corresponds to the name of the executable provided by the Module.
+    """
 
     name: Annotated[
         str, Field(description="Name of executable to use after loading the Module")
@@ -64,8 +65,8 @@ class ApptainerApp(ParentModel):
     """Represents an Apptainer application or set of applications for a single image.
 
     This uses Apptainer to deploy a portable image of the desired container. Several
-    entrypoints can then be specified to allow for multiple commands run on the same
-    container image.
+    entrypoints can then be specified to allow for multiple commands to be run on the "
+    "same container image.
     """
 
     app_type: Annotated[
