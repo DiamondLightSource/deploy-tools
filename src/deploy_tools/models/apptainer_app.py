@@ -47,6 +47,7 @@ class Entrypoint(ParentModel):
     command: Annotated[str | None, Field(description="Command to run in container")] = (
         None
     )
+
     options: Annotated[
         EntrypointOptions, Field("Options to apply for this entrypoint")
     ] = EntrypointOptions()
@@ -62,11 +63,11 @@ class ContainerImage(ParentModel):
 
 
 class ApptainerApp(ParentModel):
-    """Represents an Apptainer application or set of applications for a single image.
+    """Represents an Apptainer application or set of applications using a single image.
 
-    This uses Apptainer to deploy a portable image of the desired container. Several
-    entrypoints can then be specified to allow for multiple commands to be run on the "
-    "same container image.
+    This uses Apptainer to deploy a portable image of the desired container. Multiple
+    entrypoints can be specified to allow different commands to be run on the same
+    container image.
     """
 
     app_type: Annotated[

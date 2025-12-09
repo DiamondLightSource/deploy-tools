@@ -2,7 +2,7 @@
   "$defs": {
     "ApptainerApp": {
       "additionalProperties": false,
-      "description": "Represents an Apptainer application or set of applications for a single image.\n\nThis uses Apptainer to deploy a portable image of the desired container. Several\nentrypoints can then be specified to allow for multiple commands to be run on the \"\n\"same container image.",
+      "description": "Represents an Apptainer application or set of applications using a single image.\n\nThis uses Apptainer to deploy a portable image of the desired container. Multiple\nentrypoints can be specified to allow different commands to be run on the same\ncontainer image.",
       "properties": {
         "app_type": {
           "const": "apptainer",
@@ -115,7 +115,7 @@
         "default_versions": {
           "$ref": "#/$defs/DefaultVersionsByName",
           "default": {},
-          "description": "Mapping of <module name>: <version> to use as default when no version is specified"
+          "description": "Mapping of <module name>: <version> to use as default when no version is specified in a `module load` command`. If no default is specified, deploy-tools will use natsort to place e.g. 1.2 after all alpha, beta and rc candidates as described here: https://natsort.readthedocs.io/en/7.1.1/examples.html#sorting-more-expressive-versioning-schemes"
         }
       },
       "title": "DeploymentSettings",
@@ -314,7 +314,7 @@
         },
         "load_script": {
           "default": [],
-          "description": "Provide list of commands that are run on module load. You will need to use the `system` command to specify bash. This should be used carefully; please speak to a deploy-tools admin before use",
+          "description": "Provide list of commands that are run on module load. You need to add `system` before any bash command (e.g. `system ls /dir`), as Modulefiles otherwise use Tcl. This field should be used carefully; please speak to a deploy-tools admin before use",
           "items": {
             "type": "string"
           },
@@ -323,7 +323,7 @@
         },
         "unload_script": {
           "default": [],
-          "description": "Provide list of commands that are run on module unload. You will need to use the `system` command to specify bash. This should be used carefully; please speak to a deploy-tools admin before use",
+          "description": "Provide list of commands that are run on module unload. You need to add `system` before any bash command (e.g. `system ls /dir`), as Modulefiles otherwise use Tcl. This field should be used carefully; please speak to a deploy-tools admin before use",
           "items": {
             "type": "string"
           },

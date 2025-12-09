@@ -20,8 +20,11 @@ class DeploymentSettings(ParentModel):
     default_versions: Annotated[
         DefaultVersionsByName,
         Field(
-            description="Mapping of <module name>: <version> to use as default when no "
-            "version is specified"
+            description="Mapping of <module name>: <version> to use as default when "
+            "no version is specified in a `module load` command`. If no default is "
+            "specified, deploy-tools will use natsort to place e.g. 1.2 after all "
+            "alpha, beta and rc candidates as described here: "
+            "https://natsort.readthedocs.io/en/7.1.1/examples.html#sorting-more-expressive-versioning-schemes"
         ),
     ] = {}
 

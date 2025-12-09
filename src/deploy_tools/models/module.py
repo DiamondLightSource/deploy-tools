@@ -86,16 +86,18 @@ class Module(ParentModel):
         list[str],
         Field(
             description="Provide list of commands that are run on module load. You "
-            "will need to use the `system` command to specify bash. This should be "
-            "used carefully; please speak to a deploy-tools admin before use"
+            "need to add `system` before any bash command (e.g. `system ls /dir`), as "
+            "Modulefiles otherwise use Tcl. This field should be used carefully; "
+            "please speak to a deploy-tools admin before use"
         ),
     ] = []
     unload_script: Annotated[
         list[str],
         Field(
             description="Provide list of commands that are run on module unload. You "
-            "will need to use the `system` command to specify bash. This should be "
-            "used carefully; please speak to a deploy-tools admin before use"
+            "need to add `system` before any bash command (e.g. `system ls /dir`), as "
+            "Modulefiles otherwise use Tcl. This field should be used carefully; "
+            "please speak to a deploy-tools admin before use"
         ),
     ] = []
 
