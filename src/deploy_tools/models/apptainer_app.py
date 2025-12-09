@@ -44,9 +44,10 @@ class Entrypoint(ParentModel):
     name: Annotated[
         str, Field(description="Name of executable to use after loading the Module")
     ]
-    command: Annotated[str | None, Field(description="Command to run in container")] = (
-        None
-    )
+    command: Annotated[
+        str | None,
+        Field(description="Command to run in container. Defaults to `name`"),
+    ] = None
 
     options: Annotated[
         EntrypointOptions, Field("Options to apply for this entrypoint")
@@ -54,8 +55,15 @@ class Entrypoint(ParentModel):
 
 
 class ContainerImage(ParentModel):
-    path: Annotated[str, Field(description="Image URL excluding the version")]
-    version: Annotated[str, Field(description="Version of the docker image")]
+    path: Annotated[
+        str,
+        Field(
+            description="Image URL excluding the version/tag. Must be a valid URL as "
+            "described here: "
+            "https://apptainer.org/docs/user/main/cli/apptainer_pull.html#synopsis"
+        ),
+    ]
+    version: Annotated[str, Field(description="Version or tag of the docker image")]
 
     @property
     def url(self) -> str:

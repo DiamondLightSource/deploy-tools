@@ -85,12 +85,12 @@
       "additionalProperties": false,
       "properties": {
         "path": {
-          "description": "Image URL excluding the version",
+          "description": "Image URL excluding the version/tag. Must be a valid URL as described here: https://apptainer.org/docs/user/main/cli/apptainer_pull.html#synopsis",
           "title": "Path",
           "type": "string"
         },
         "version": {
-          "description": "Version of the docker image",
+          "description": "Version or tag of the docker image",
           "title": "Version",
           "type": "string"
         }
@@ -121,7 +121,7 @@
             }
           ],
           "default": null,
-          "description": "Command to run in container",
+          "description": "Command to run in container. Defaults to `name`",
           "title": "Command"
         },
         "options": {
