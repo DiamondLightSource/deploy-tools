@@ -29,7 +29,7 @@ class EntrypointOptions(ParentModel):
         Field(
             description="A list of host binaries to mount into the container. "
             "These are discovered on the host using the current PATH and are "
-            "mounted into the container at /usr/bin/<binary_name>."
+            "mounted into the container at /usr/bin/[binary_name]"
         ),
     ] = []
 

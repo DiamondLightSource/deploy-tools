@@ -49,14 +49,14 @@ class Module(ParentModel):
         str,
         Field(
             description="Version of this module. The filename must match as "
-            "`<version>.yaml`"
+            "`[version].yaml`"
         ),
     ]
     description: Annotated[
         str | None,
         Field(
             description="Description that can be read with the `module whatis "
-            "<module-name>` command"
+            "[module-name]` command"
         ),
     ] = None
     dependencies: Annotated[

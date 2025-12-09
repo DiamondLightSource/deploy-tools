@@ -115,7 +115,7 @@
         "default_versions": {
           "$ref": "#/$defs/DefaultVersionsByName",
           "default": {},
-          "description": "Mapping of <module name>: <version> to use as default when no version is specified in a `module load` command`. If no default is specified, deploy-tools will use natsort to place e.g. 1.2 after all alpha, beta and rc candidates as described here: https://natsort.readthedocs.io/en/7.1.1/examples.html#sorting-more-expressive-versioning-schemes"
+          "description": "Mapping of [module-name]:[version] to use as default when no version is specified in a `module load` command. If no default is specified, deploy-tools will use natsort to place e.g. 1.2 after all alpha, beta and rc candidates as described here: https://natsort.readthedocs.io/en/7.1.1/examples.html#sorting-more-expressive-versioning-schemes"
         }
       },
       "title": "DeploymentSettings",
@@ -185,7 +185,7 @@
         },
         "host_binaries": {
           "default": [],
-          "description": "A list of host binaries to mount into the container. These are discovered on the host using the current PATH and are mounted into the container at /usr/bin/<binary_name>.",
+          "description": "A list of host binaries to mount into the container. These are discovered on the host using the current PATH and are mounted into the container at /usr/bin/[binary_name]",
           "items": {
             "type": "string"
           },
@@ -239,7 +239,7 @@
           "type": "string"
         },
         "version": {
-          "description": "Version of this module. The filename must match as `<version>.yaml`",
+          "description": "Version of this module. The filename must match as `[version].yaml`",
           "title": "Version",
           "type": "string"
         },
@@ -253,7 +253,7 @@
             }
           ],
           "default": null,
-          "description": "Description that can be read with the `module whatis <module-name>` command",
+          "description": "Description that can be read with the `module whatis [module-name]` command",
           "title": "Description"
         },
         "dependencies": {
