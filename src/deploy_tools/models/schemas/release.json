@@ -2,17 +2,20 @@
   "$defs": {
     "ApptainerApp": {
       "additionalProperties": false,
-      "description": "Represents an Apptainer application or set of applications for a single image.\n\nThis uses Apptainer to deploy a portable image of the desired container. Several\nentrypoints can then be specified to allow for multiple commands run on the same\ncontainer image.",
+      "description": "Represents an Apptainer application or set of applications using a single image.\n\nThis uses Apptainer to deploy a portable image of the desired container. Multiple\nentrypoints can be specified to allow different commands to be run on the same\ncontainer image.",
       "properties": {
         "app_type": {
           "const": "apptainer",
+          "description": "An Apptainer (executable container image) with multiple potential entrypoints",
           "title": "App Type",
           "type": "string"
         },
         "container": {
-          "$ref": "#/$defs/ContainerImage"
+          "$ref": "#/$defs/ContainerImage",
+          "description": "Container URL information"
         },
         "entrypoints": {
+          "description": "List of executables to run using the Apptainer",
           "items": {
             "$ref": "#/$defs/Entrypoint"
           },
@@ -26,7 +29,8 @@
             "command_args": "",
             "mounts": [],
             "host_binaries": []
-          }
+          },
+          "description": "Global options that apply to all Entrypoints"
         }
       },
       "required": [
@@ -39,20 +43,21 @@
     },
     "BinaryApp": {
       "additionalProperties": false,
-      "description": "Represents a standalone Binary application.\n\nThis will fetch a standalone binary, validate its hash and add its\nlocation to that path.",
+      "description": "Represents a standalone Binary application.\n\nThis will fetch a standalone binary, validate its hash and add its\nlocation to the path.",
       "properties": {
         "app_type": {
           "const": "binary",
+          "description": "A standalone binary to be downloaded and added to the path",
           "title": "App Type",
           "type": "string"
         },
         "name": {
-          "description": "Binary filename to use locally",
+          "description": "Name of executable to use after loading the Module",
           "title": "Name",
           "type": "string"
         },
         "url": {
-          "description": "URL to download the binary from.",
+          "description": "URL to download the binary from",
           "title": "Url",
           "type": "string"
         },
@@ -64,7 +69,7 @@
         },
         "hash_type": {
           "$ref": "#/$defs/HashType",
-          "description": "Type of hash used to check the binary."
+          "description": "Type of hash used to check the binary"
         }
       },
       "required": [
@@ -80,10 +85,12 @@
       "additionalProperties": false,
       "properties": {
         "path": {
+          "description": "Image URL excluding the version/tag. Must be a valid URL as described here: https://apptainer.org/docs/user/main/cli/apptainer_pull.html#synopsis",
           "title": "Path",
           "type": "string"
         },
         "version": {
+          "description": "Version or tag of the docker image",
           "title": "Version",
           "type": "string"
         }
@@ -100,6 +107,7 @@
       "description": "Represents an entrypoint to a command on the Apptainer image.\n\nIf no command is provided, the entrypoint (`name`) is used by default. This\ncorresponds to the name of the executable provided by the Module.",
       "properties": {
         "name": {
+          "description": "Name of executable to use after loading the Module",
           "title": "Name",
           "type": "string"
         },
@@ -113,6 +121,7 @@
             }
           ],
           "default": null,
+          "description": "Command to run in container. Defaults to `name`",
           "title": "Command"
         },
         "options": {
@@ -148,7 +157,7 @@
         },
         "mounts": {
           "default": [],
-          "description": "A list of mount points to add to the container in the form of 'host_path:container_path'",
+          "description": "A list of mount points to add to the container in the form of 'host_path[:container_path[:opts]]' where opts (mount options) can be 'ro' or 'rw' and defaults to 'rw'",
           "items": {
             "type": "string"
           },
@@ -157,7 +166,7 @@
         },
         "host_binaries": {
           "default": [],
-          "description": "A list of host binaries to mount into the container. These are discovered on the host using the current PATH and are mounted into the container at /usr/bin/<binary_name>.",
+          "description": "A list of host binaries to mount into the container. These are discovered on the host using the current PATH and are mounted into the container at /usr/bin/[binary_name]",
           "items": {
             "type": "string"
           },
@@ -173,10 +182,12 @@
       "description": "Represents an environment variable to set when loading the Module.",
       "properties": {
         "name": {
+          "description": "Name of environment variable",
           "title": "Name",
           "type": "string"
         },
         "value": {
+          "description": "Value of environment variable",
           "title": "Value",
           "type": "string"
         }
@@ -204,10 +215,12 @@
       "description": "Represents a Module to be deployed.\n\nModules can optionally include a set of applications, environment variables to load,\nand a list of module dependencies.",
       "properties": {
         "name": {
+          "description": "Name of module to use when loading",
           "title": "Name",
           "type": "string"
         },
         "version": {
+          "description": "Version of this module. The filename must match as `[version].yaml`",
           "title": "Version",
           "type": "string"
         },
@@ -221,10 +234,12 @@
             }
           ],
           "default": null,
+          "description": "Description that can be read with the `module whatis [module-name]` command",
           "title": "Description"
         },
         "dependencies": {
           "default": [],
+          "description": "List of module dependencies",
           "items": {
             "$ref": "#/$defs/ModuleDependency"
           },
@@ -233,6 +248,7 @@
         },
         "env_vars": {
           "default": [],
+          "description": "List of environment variables to set when loading module",
           "items": {
             "$ref": "#/$defs/EnvVar"
           },
@@ -240,6 +256,7 @@
           "type": "array"
         },
         "applications": {
+          "description": "Applications to be included in Module",
           "items": {
             "discriminator": {
               "mapping": {
@@ -266,16 +283,19 @@
         },
         "allow_updates": {
           "default": false,
+          "description": "Allow updates to this module version after initial deployment",
           "title": "Allow Updates",
           "type": "boolean"
         },
         "exclude_from_defaults": {
           "default": false,
+          "description": "Exclude this module version from being automatically set as default, but you can still manually set it. This is used for e.g. alphas",
           "title": "Exclude From Defaults",
           "type": "boolean"
         },
         "load_script": {
           "default": [],
+          "description": "Provide list of commands that are run on module load. You need to add `system` before any bash command (e.g. `system ls /dir`), as Modulefiles otherwise use Tcl. This field should be used carefully; please speak to a deploy-tools admin before use",
           "items": {
             "type": "string"
           },
@@ -284,6 +304,7 @@
         },
         "unload_script": {
           "default": [],
+          "description": "Provide list of commands that are run on module unload. You need to add `system` before any bash command (e.g. `system ls /dir`), as Modulefiles otherwise use Tcl. This field should be used carefully; please speak to a deploy-tools admin before use",
           "items": {
             "type": "string"
           },
@@ -304,6 +325,7 @@
       "description": "Specify an Environment Module to include as a dependency.\n\nIf the dependent Environment Module is managed by this same Deployment (i.e. is a\nModule), you must specify a specific version in order to pass validation.",
       "properties": {
         "name": {
+          "description": "Name of module dependency",
           "title": "Name",
           "type": "string"
         },
@@ -317,6 +339,7 @@
             }
           ],
           "default": null,
+          "description": "Version of dependency. Will use default if none specified, but this is only valid for modules not managed using deploy-tools",
           "title": "Version"
         }
       },
@@ -332,14 +355,18 @@
       "properties": {
         "app_type": {
           "const": "shell",
+          "description": "A shell application with the given script",
           "title": "App Type",
           "type": "string"
         },
         "name": {
+          "description": "Name of executable to use after loading the Module",
           "title": "Name",
           "type": "string"
         },
         "script": {
+          "default": [],
+          "description": "Script to be run",
           "items": {
             "type": "string"
           },
@@ -349,8 +376,7 @@
       },
       "required": [
         "app_type",
-        "name",
-        "script"
+        "name"
       ],
       "title": "ShellApp",
       "type": "object"
@@ -360,10 +386,12 @@
   "description": "Represents a Module along with its lifecycle (deprecation) status.",
   "properties": {
     "module": {
-      "$ref": "#/$defs/Module"
+      "$ref": "#/$defs/Module",
+      "description": "Module (name, version & configuration) to release"
     },
     "deprecated": {
       "default": false,
+      "description": "Whether this Module version is deprecated",
       "title": "Deprecated",
       "type": "boolean"
     }

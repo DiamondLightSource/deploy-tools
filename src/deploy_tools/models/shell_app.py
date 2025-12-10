@@ -1,4 +1,6 @@
-from typing import Literal
+from typing import Annotated, Literal
+
+from pydantic import Field
 
 from .parent import ParentModel
 
@@ -11,6 +13,11 @@ class ShellApp(ParentModel):
     distributions.
     """
 
-    app_type: Literal["shell"]
-    name: str
-    script: list[str]
+    app_type: Annotated[
+        Literal["shell"],
+        Field(description="A shell application with the given script"),
+    ]
+    name: Annotated[
+        str, Field(description="Name of executable to use after loading the Module")
+    ]
+    script: Annotated[list[str], Field(description="Script to be run")] = []

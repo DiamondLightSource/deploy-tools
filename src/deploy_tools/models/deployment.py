@@ -1,4 +1,7 @@
 from collections import defaultdict
+from typing import Annotated
+
+from pydantic import Field
 
 from .module import Module, Release
 from .parent import ParentModel
@@ -14,7 +17,16 @@ type ModuleVersionsByName = dict[str, list[str]]
 class DeploymentSettings(ParentModel):
     """All global configuration settings for the Deployment."""
 
-    default_versions: DefaultVersionsByName = {}
+    default_versions: Annotated[
+        DefaultVersionsByName,
+        Field(
+            description="Mapping of [module-name]:[version] to use as default when "
+            "no version is specified in a `module load` command. If no default is "
+            "specified, deploy-tools will use natsort to place e.g. 1.2 after all "
+            "alpha, beta and rc candidates as described here: "
+            "https://natsort.readthedocs.io/en/7.1.1/examples.html#sorting-more-expressive-versioning-schemes"
+        ),
+    ] = {}
 
 
 class Deployment(ParentModel):

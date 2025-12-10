@@ -1,4 +1,3 @@
-from collections.abc import Sequence
 from typing import Annotated, Literal
 
 from pydantic import Field
@@ -17,19 +16,20 @@ class EntrypointOptions(ParentModel):
     ] = ""
 
     mounts: Annotated[
-        Sequence[str],
+        list[str],
         Field(
             description="A list of mount points to add to the container in the form of "
-            "'host_path:container_path'"
+            "'host_path[:container_path[:opts]]' where opts (mount options) can be "
+            "'ro' or 'rw' and defaults to 'rw'"
         ),
     ] = []
 
     host_binaries: Annotated[
-        Sequence[str],
+        list[str],
         Field(
             description="A list of host binaries to mount into the container. "
             "These are discovered on the host using the current PATH and are "
-            "mounted into the container at /usr/bin/<binary_name>."
+            "mounted into the container at /usr/bin/[binary_name]"
         ),
     ] = []
 
@@ -38,16 +38,32 @@ class Entrypoint(ParentModel):
     """Represents an entrypoint to a command on the Apptainer image.
 
     If no command is provided, the entrypoint (`name`) is used by default. This
-    corresponds to the name of the executable provided by the Module."""
+    corresponds to the name of the executable provided by the Module.
+    """
 
-    name: str
-    command: str | None = None
-    options: EntrypointOptions = EntrypointOptions()
+    name: Annotated[
+        str, Field(description="Name of executable to use after loading the Module")
+    ]
+    command: Annotated[
+        str | None,
+        Field(description="Command to run in container. Defaults to `name`"),
+    ] = None
+
+    options: Annotated[
+        EntrypointOptions, Field("Options to apply for this entrypoint")
+    ] = EntrypointOptions()
 
 
 class ContainerImage(ParentModel):
-    path: str
-    version: str
+    path: Annotated[
+        str,
+        Field(
+            description="Image URL excluding the version/tag. Must be a valid URL as "
+            "described here: "
+            "https://apptainer.org/docs/user/main/cli/apptainer_pull.html#synopsis"
+        ),
+    ]
+    version: Annotated[str, Field(description="Version or tag of the docker image")]
 
     @property
     def url(self) -> str:
@@ -55,14 +71,26 @@ class ContainerImage(ParentModel):
 
 
 class ApptainerApp(ParentModel):
-    """Represents an Apptainer application or set of applications for a single image.
+    """Represents an Apptainer application or set of applications using a single image.
 
-    This uses Apptainer to deploy a portable image of the desired container. Several
-    entrypoints can then be specified to allow for multiple commands run on the same
+    This uses Apptainer to deploy a portable image of the desired container. Multiple
+    entrypoints can be specified to allow different commands to be run on the same
     container image.
     """
 
-    app_type: Literal["apptainer"]
-    container: ContainerImage
-    entrypoints: Sequence[Entrypoint]
-    global_options: EntrypointOptions = EntrypointOptions()
+    app_type: Annotated[
+        Literal["apptainer"],
+        Field(
+            description="An Apptainer (executable container image) with multiple "
+            "potential entrypoints"
+        ),
+    ]
+    container: Annotated[ContainerImage, Field(description="Container URL information")]
+    entrypoints: Annotated[
+        list[Entrypoint],
+        Field(description="List of executables to run using the Apptainer"),
+    ]
+    global_options: Annotated[
+        EntrypointOptions,
+        Field(description="Global options that apply to all Entrypoints"),
+    ] = EntrypointOptions()
