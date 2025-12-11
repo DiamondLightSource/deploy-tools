@@ -240,7 +240,8 @@
           "type": "string"
         },
         "version": {
-          "description": "Version of this module. The filename must match as `[version].yaml`",
+          "description": "Version of this module. This cannot include spaces, cannot start with a full stop and the filename must match as `[version].yaml`",
+          "pattern": "^[^.].*$",
           "title": "Version",
           "type": "string"
         },
