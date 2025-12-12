@@ -17,8 +17,6 @@ module:
       value: $env(USER)/t01
     - name: EC_K8S_NAMESPACE
       value: $env(USER)
-    - name: EC_SERVICES_REPO
-      value: https://github.com/$env(USER)/t01-services.git
     - name: EC_BEAMLINE
       value: t01
 
@@ -26,3 +24,7 @@ module:
 
   load_script:
     - system kubectl config set-context --current --namespace=$env(USER)
+    - set channel [open "| git remote get-url origin" r]
+    - setenv EC_SERVICES_REPO [read $channel]
+    - puts stderr "\n\n WARNING Set EC_SERVICES_REPO to current remote - $env(EC_SERVICES_REPO)"
+    - close $channel
