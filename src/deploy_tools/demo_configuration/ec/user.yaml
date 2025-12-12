@@ -1,0 +1,28 @@
+# yaml-language-server: $schema=/workspaces/deploy-tools/src/deploy_tools/models/schemas/release.json
+
+module:
+  name: ec
+  version: user
+  description: ec command line tool configured for a users personal namespace on Argus
+  allow_updates: true
+
+  dependencies:
+    - name: edge-containers-cli
+    - name: plandev
+    - name: argus
+      version: local
+
+  env_vars:
+    - name: EC_TARGET
+      value: $env(USER)/t01
+    - name: EC_K8S_NAMESPACE
+      value: $env(USER)
+    - name: EC_SERVICES_REPO
+      value: https://github.com/$env(USER)/t01-services.git
+    - name: EC_BEAMLINE
+      value: t01
+
+  applications: []
+
+  load_script:
+    - system kubectl config set-context --current --namespace=$env(USER)
