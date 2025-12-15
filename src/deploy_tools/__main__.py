@@ -108,7 +108,7 @@ VERBOSE_OPTION = Annotated[
 ]
 
 
-app = typer.Typer(no_args_is_help=True)
+app = typer.Typer(no_args_is_help=True, pretty_exceptions_show_locals=False)
 
 
 @app.command(no_args_is_help=True)
