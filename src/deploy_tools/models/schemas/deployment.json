@@ -240,6 +240,7 @@
       "properties": {
         "name": {
           "description": "Name of module to use when loading",
+          "pattern": "^[a-zA-Z][0-9a-zA-Z_-]*$",
           "title": "Name",
           "type": "string"
         },

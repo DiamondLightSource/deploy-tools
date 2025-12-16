@@ -12,6 +12,7 @@ Application = Annotated[
     ApptainerApp | ShellApp | BinaryApp, Field(..., discriminator="app_type")
 ]
 
+MODULE_NAME_REGEX = "^[a-zA-Z][0-9a-zA-Z_-]*$"  # Don't allow leading underscore
 MODULE_VERSION_REGEX = "^[^.].*$"
 ENV_VAR_NAME_REGEX = "^[a-zA-Z_][a-zA-Z0-9_]*$"  # Environment Modules & shell standard
 
@@ -51,7 +52,11 @@ class Module(ParentModel):
     and a list of module dependencies.
     """
 
-    name: Annotated[str, Field(description="Name of module to use when loading")]
+    name: Annotated[
+        str,
+        StringConstraints(pattern=MODULE_NAME_REGEX),
+        Field(description="Name of module to use when loading"),
+    ]
     version: Annotated[
         str,
         StringConstraints(pattern=MODULE_VERSION_REGEX),
