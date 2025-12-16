@@ -2,6 +2,7 @@ from typing import Annotated, Literal
 
 from pydantic import Field, StringConstraints
 
+from .app import ENTRYPOINT_NAME_REGEX
 from .parent import ParentModel
 
 MOUNT_PATH_REGEX = r"/[^:]*"  # Colon is excluded in short-form apptainer mounts
@@ -46,7 +47,9 @@ class Entrypoint(ParentModel):
     """
 
     name: Annotated[
-        str, Field(description="Name of executable to use after loading the Module")
+        str,
+        StringConstraints(pattern=ENTRYPOINT_NAME_REGEX),
+        Field(description="Name of executable to use after loading the Module"),
     ]
     command: Annotated[
         str | None,

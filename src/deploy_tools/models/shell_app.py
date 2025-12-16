@@ -1,7 +1,8 @@
 from typing import Annotated, Literal
 
-from pydantic import Field
+from pydantic import Field, StringConstraints
 
+from .app import ENTRYPOINT_NAME_REGEX
 from .parent import ParentModel
 
 
@@ -18,6 +19,8 @@ class ShellApp(ParentModel):
         Field(description="A shell application with the given script"),
     ]
     name: Annotated[
-        str, Field(description="Name of executable to use after loading the Module")
+        str,
+        StringConstraints(pattern=ENTRYPOINT_NAME_REGEX),
+        Field(description="Name of executable to use after loading the Module"),
     ]
     script: Annotated[list[str], Field(description="Script to be run")] = []

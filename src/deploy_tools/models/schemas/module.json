@@ -53,6 +53,7 @@
         },
         "name": {
           "description": "Name of executable to use after loading the Module",
+          "pattern": "^[a-zA-Z_][0-9a-zA-Z_-]*$",
           "title": "Name",
           "type": "string"
         },
@@ -109,6 +110,7 @@
       "properties": {
         "name": {
           "description": "Name of executable to use after loading the Module",
+          "pattern": "^[a-zA-Z_][0-9a-zA-Z_-]*$",
           "title": "Name",
           "type": "string"
         },
@@ -365,6 +367,7 @@
         },
         "name": {
           "description": "Name of executable to use after loading the Module",
+          "pattern": "^[a-zA-Z_][0-9a-zA-Z_-]*$",
           "title": "Name",
           "type": "string"
         },
