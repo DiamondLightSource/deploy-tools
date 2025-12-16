@@ -6,6 +6,7 @@ from .parent import ParentModel
 
 MOUNT_PATH_REGEX = r"/[^:]*"  # Colon is excluded in short-form apptainer mounts
 MOUNT_REGEX = rf"^{MOUNT_PATH_REGEX}(:{MOUNT_PATH_REGEX}(:(ro|rw))?)?$"
+IMAGE_VERSION_REGEX = r"^[a-zA-Z0-9_][a-zA-Z0-9._-]{0,127}$"  # OCI specification
 
 
 class EntrypointOptions(ParentModel):
@@ -66,7 +67,11 @@ class ContainerImage(ParentModel):
             "https://apptainer.org/docs/user/main/cli/apptainer_pull.html#synopsis"
         ),
     ]
-    version: Annotated[str, Field(description="Version or tag of the docker image")]
+    version: Annotated[
+        str,
+        StringConstraints(pattern=IMAGE_VERSION_REGEX),
+        Field(description="Version or tag of the docker image"),
+    ]
 
     @property
     def url(self) -> str:

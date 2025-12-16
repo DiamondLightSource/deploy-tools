@@ -91,6 +91,7 @@
         },
         "version": {
           "description": "Version or tag of the docker image",
+          "pattern": "^[a-zA-Z0-9_][a-zA-Z0-9._-]{0,127}$",
           "title": "Version",
           "type": "string"
         }
