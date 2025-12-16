@@ -36,7 +36,11 @@ class ModuleDependency(ParentModel):
 class EnvVar(ParentModel):
     """Represents an environment variable to set when loading the Module."""
 
-    name: Annotated[str, Field(description="Name of environment variable")]
+    name: Annotated[
+        str,
+        StringConstraints(pattern=ENV_VAR_NAME_REGEX),
+        Field(description="Name of environment variable"),
+    ]
     value: Annotated[str, Field(description="Value of environment variable")]
 
 
