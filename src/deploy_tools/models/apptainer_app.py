@@ -1,6 +1,6 @@
 from typing import Annotated, Literal
 
-from pydantic import Field, StringConstraints
+from pydantic import AnyUrl, Field, StringConstraints, UrlConstraints
 
 from .app import ENTRYPOINT_NAME_REGEX
 from .parent import ParentModel
@@ -63,7 +63,8 @@ class Entrypoint(ParentModel):
 
 class ContainerImage(ParentModel):
     path: Annotated[
-        str,
+        AnyUrl,
+        UrlConstraints(allowed_schemes=["docker", "shub", "oras", "https"]),
         Field(
             description="Image URL excluding the version/tag. Must be a valid URL as "
             "described here: "
