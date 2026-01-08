@@ -1,4 +1,5 @@
 import logging
+import subprocess
 from pathlib import Path
 from tempfile import TemporaryDirectory
 
@@ -19,6 +20,9 @@ from .print_updates import print_updates
 from .snapshot import load_snapshot
 
 logger = logging.getLogger(__name__)
+
+
+SCRIPT_INDICATOR_PHRASE = "shell script"
 
 
 class ValidationError(Exception):
@@ -52,6 +56,7 @@ def validate_and_test_configuration(
         if test_build:
             logger.info("Performing test build")
             build(deployment_changes, layout)
+            check_built_scripts(deployment_changes, layout)
 
         logger.info("Printing updates")
         print_updates(snapshot_default_versions, deployment_changes)
@@ -229,3 +234,49 @@ def _get_all_default_versions(
         final_defaults[name] = sorted_versions[-1]
 
     return final_defaults
+
+
+def is_shell_script(file: Path) -> bool:
+    """Determine whether specified file is a shell script.
+
+    This uses the output of the Linux 'file' command, which is dependent on the
+    shebang line as well as the OS. Both are controlled in our deployment.
+    """
+    result = subprocess.run(
+        ["file", f"{file.absolute()}"], capture_output=True, text=True
+    )
+    return SCRIPT_INDICATOR_PHRASE in result.stdout
+
+
+def check_bash_syntax(file: Path) -> None:
+    """Check bash syntax is valid for the given file.
+
+    Since failing this validation will prevent a deploy-tools job from continuing, we
+    don't want to use more stringent tests as with e.g. shellcheck.
+
+    This is also unable to check that all required functions and tools are available, so
+    some typos are likely to pass.
+    """
+    result = subprocess.run(
+        ["bash", "-n", f"{file.absolute()}"],
+        capture_output=True,
+        text=True,
+    )
+    if result.stderr:
+        raise ValidationError(
+            f"Output script {file.absolute()} is invalid with errors:\n{result.stderr}"
+        )
+
+
+def check_built_scripts(changes: DeploymentChanges, layout: Layout) -> None:
+    release_changes = changes.release_changes
+    releases = release_changes.to_add + release_changes.to_update
+    build_layout = layout.build_layout
+
+    for release in releases:
+        name = release.module.name
+        version = release.module.version
+
+        for entrypoint in build_layout.get_entrypoints_folder(name, version).glob("*"):
+            if is_shell_script(entrypoint):
+                check_bash_syntax(entrypoint)
