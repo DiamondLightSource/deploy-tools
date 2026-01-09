@@ -1,8 +1,13 @@
 from typing import Annotated, Literal
 
-from pydantic import Field
+from pydantic import Field, StringConstraints
 
+from .app import ENTRYPOINT_NAME_REGEX
 from .parent import ParentModel
+
+MOUNT_PATH_REGEX = r"/[^:]*"  # Colon is excluded in short-form apptainer mounts
+MOUNT_REGEX = rf"^{MOUNT_PATH_REGEX}(:{MOUNT_PATH_REGEX}(:(ro|rw))?)?$"
+IMAGE_VERSION_REGEX = r"^[a-zA-Z0-9_][a-zA-Z0-9._-]{0,127}$"  # OCI specification
 
 
 class EntrypointOptions(ParentModel):
@@ -16,7 +21,7 @@ class EntrypointOptions(ParentModel):
     ] = ""
 
     mounts: Annotated[
-        list[str],
+        list[Annotated[str, StringConstraints(pattern=MOUNT_REGEX)]],
         Field(
             description="A list of mount points to add to the container in the form of "
             "'host_path[:container_path[:opts]]' where opts (mount options) can be "
@@ -42,7 +47,9 @@ class Entrypoint(ParentModel):
     """
 
     name: Annotated[
-        str, Field(description="Name of executable to use after loading the Module")
+        str,
+        StringConstraints(pattern=ENTRYPOINT_NAME_REGEX),
+        Field(description="Name of executable to use after loading the Module"),
     ]
     command: Annotated[
         str | None,
@@ -63,7 +70,11 @@ class ContainerImage(ParentModel):
             "https://apptainer.org/docs/user/main/cli/apptainer_pull.html#synopsis"
         ),
     ]
-    version: Annotated[str, Field(description="Version or tag of the docker image")]
+    version: Annotated[
+        str,
+        StringConstraints(pattern=IMAGE_VERSION_REGEX),
+        Field(description="Version or tag of the docker image"),
+    ]
 
     @property
     def url(self) -> str:

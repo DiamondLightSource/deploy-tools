@@ -14,7 +14,7 @@ from .modulefile import (
 
 logger = logging.getLogger(__name__)
 
-MODULE_VERSIONS_GLOB = f"[!{Layout.DEFAULT_VERSION_FILENAME}]*"
+MODULE_VERSIONS_GLOB = "[!.]*"
 
 
 def deploy_changes(changes: DeploymentChanges, layout: Layout) -> None:

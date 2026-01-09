@@ -53,6 +53,7 @@
         },
         "name": {
           "description": "Name of executable to use after loading the Module",
+          "pattern": "^[a-zA-Z_][0-9a-zA-Z_-]*$",
           "title": "Name",
           "type": "string"
         },
@@ -91,6 +92,7 @@
         },
         "version": {
           "description": "Version or tag of the docker image",
+          "pattern": "^[a-zA-Z0-9_][a-zA-Z0-9._-]{0,127}$",
           "title": "Version",
           "type": "string"
         }
@@ -108,6 +110,7 @@
       "properties": {
         "name": {
           "description": "Name of executable to use after loading the Module",
+          "pattern": "^[a-zA-Z_][0-9a-zA-Z_-]*$",
           "title": "Name",
           "type": "string"
         },
@@ -159,6 +162,7 @@
           "default": [],
           "description": "A list of mount points to add to the container in the form of 'host_path[:container_path[:opts]]' where opts (mount options) can be 'ro' or 'rw' and defaults to 'rw'",
           "items": {
+            "pattern": "^/[^:]*(:/[^:]*(:(ro|rw))?)?$",
             "type": "string"
           },
           "title": "Mounts",
@@ -183,6 +187,7 @@
       "properties": {
         "name": {
           "description": "Name of environment variable",
+          "pattern": "^[a-zA-Z_][a-zA-Z0-9_]*$",
           "title": "Name",
           "type": "string"
         },
@@ -216,11 +221,13 @@
       "properties": {
         "name": {
           "description": "Name of module to use when loading",
+          "pattern": "^[a-zA-Z][0-9a-zA-Z_-]*$",
           "title": "Name",
           "type": "string"
         },
         "version": {
-          "description": "Version of this module. The filename must match as `[version].yaml`",
+          "description": "Version of this module. This cannot include spaces, cannot start with a full stop and the filename must match as `[version].yaml`",
+          "pattern": "^[^.].*$",
           "title": "Version",
           "type": "string"
         },
@@ -361,6 +368,7 @@
         },
         "name": {
           "description": "Name of executable to use after loading the Module",
+          "pattern": "^[a-zA-Z_][0-9a-zA-Z_-]*$",
           "title": "Name",
           "type": "string"
         },

@@ -5,7 +5,7 @@ from .layout import Layout
 from .models.deployment import DefaultVersionsByName, ModuleVersionsByName
 from .templater import Templater, TemplateType
 
-VERSION_GLOB = f"*/[!{Layout.DEFAULT_VERSION_FILENAME}]*"
+VERSION_GLOB = "*/[!.]*"
 
 DEFAULT_VERSION_REGEX = "^set ModulesVersion (.*)$"
 

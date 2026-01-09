@@ -1,6 +1,6 @@
 from typing import Annotated
 
-from pydantic import Field
+from pydantic import Field, StringConstraints
 
 from deploy_tools.models.binary_app import BinaryApp
 
@@ -11,6 +11,10 @@ from .shell_app import ShellApp
 Application = Annotated[
     ApptainerApp | ShellApp | BinaryApp, Field(..., discriminator="app_type")
 ]
+
+MODULE_NAME_REGEX = "^[a-zA-Z][0-9a-zA-Z_-]*$"  # Don't allow leading underscore
+MODULE_VERSION_REGEX = "^[^.].*$"
+ENV_VAR_NAME_REGEX = "^[a-zA-Z_][a-zA-Z0-9_]*$"  # Environment Modules & shell standard
 
 
 class ModuleDependency(ParentModel):
@@ -33,7 +37,11 @@ class ModuleDependency(ParentModel):
 class EnvVar(ParentModel):
     """Represents an environment variable to set when loading the Module."""
 
-    name: Annotated[str, Field(description="Name of environment variable")]
+    name: Annotated[
+        str,
+        StringConstraints(pattern=ENV_VAR_NAME_REGEX),
+        Field(description="Name of environment variable"),
+    ]
     value: Annotated[str, Field(description="Value of environment variable")]
 
 
@@ -44,12 +52,17 @@ class Module(ParentModel):
     and a list of module dependencies.
     """
 
-    name: Annotated[str, Field(description="Name of module to use when loading")]
+    name: Annotated[
+        str,
+        StringConstraints(pattern=MODULE_NAME_REGEX),
+        Field(description="Name of module to use when loading"),
+    ]
     version: Annotated[
         str,
+        StringConstraints(pattern=MODULE_VERSION_REGEX),
         Field(
-            description="Version of this module. The filename must match as "
-            "`[version].yaml`"
+            description="Version of this module. This cannot include spaces, cannot "
+            "start with a full stop and the filename must match as `[version].yaml`"
         ),
     ]
     description: Annotated[
