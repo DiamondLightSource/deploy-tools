@@ -28,6 +28,8 @@ def save_as_yaml(
         output_path.parent.mkdir(exist_ok=True, parents=True)
 
     with open(output_path, "w") as f:
+        # Use model_dump_json() and then yaml.safe_dump() to allow us to use Pydantic
+        # types such as AnyURL with YAML without needing a custom serializer
         load_json = json.loads(obj.model_dump_json())
         yaml.safe_dump(load_json, f)
 
