@@ -1,7 +1,7 @@
 from enum import StrEnum
 from typing import Annotated, Literal
 
-from pydantic import Field, StringConstraints
+from pydantic import AnyUrl, Field, StringConstraints
 
 from .app import ENTRYPOINT_NAME_REGEX
 from .parent import ParentModel
@@ -32,7 +32,7 @@ class BinaryApp(ParentModel):
         StringConstraints(pattern=ENTRYPOINT_NAME_REGEX),
         Field(description="Name of executable to use after loading the Module"),
     ]
-    url: Annotated[str, Field(description="URL to download the binary from")]
+    url: Annotated[AnyUrl, Field(description="URL to download the binary from")]
     hash: Annotated[str, Field(description="Hash to verify binary integrity")] = ""
     hash_type: Annotated[
         HashType, Field(description="Type of hash used to check the binary")

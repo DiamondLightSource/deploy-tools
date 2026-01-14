@@ -1,3 +1,4 @@
+import json
 from collections import defaultdict
 from pathlib import Path
 from typing import BinaryIO, TextIO
@@ -27,7 +28,10 @@ def save_as_yaml(
         output_path.parent.mkdir(exist_ok=True, parents=True)
 
     with open(output_path, "w") as f:
-        yaml.safe_dump(obj.model_dump(), f)
+        # Use model_dump_json() and then yaml.safe_dump() to allow us to use Pydantic
+        # types such as AnyURL with YAML without needing a custom serializer
+        load_json = json.loads(obj.model_dump_json())
+        yaml.safe_dump(load_json, f)
 
 
 def load_from_yaml[T: BaseModel](model: type[T], input_stream: TextIO | BinaryIO) -> T:

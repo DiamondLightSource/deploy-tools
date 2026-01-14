@@ -59,6 +59,8 @@
         },
         "url": {
           "description": "URL to download the binary from",
+          "format": "uri",
+          "minLength": 1,
           "title": "Url",
           "type": "string"
         },
@@ -87,6 +89,8 @@
       "properties": {
         "path": {
           "description": "Image URL excluding the version/tag. Must be a valid URL as described here: https://apptainer.org/docs/user/main/cli/apptainer_pull.html#synopsis",
+          "format": "uri",
+          "minLength": 1,
           "title": "Path",
           "type": "string"
         },

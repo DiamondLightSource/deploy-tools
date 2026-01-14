@@ -120,7 +120,7 @@ class AppBuilder:
         )
         binary_path = binary_folder / app.name
         binary_path.parent.mkdir(parents=True, exist_ok=True)
-        urlretrieve(app.url, binary_path)
+        urlretrieve(str(app.url), binary_path)
 
         match app.hash_type:
             case HashType.SHA256:
