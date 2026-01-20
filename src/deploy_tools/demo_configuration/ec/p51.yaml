@@ -1,0 +1,28 @@
+# yaml-language-server: $schema=/workspaces/deploy-tools/src/deploy_tools/models/schemas/release.json
+
+module:
+  name: ec
+  version: p51
+  description: ec command line tool configured for p51
+  allow_updates: true
+
+  dependencies:
+    - name: edge-containers-cli
+    - name: plandev
+    - name: k8s-i20-1
+      version: local
+
+  env_vars:
+    - name: EC_TARGET
+      value: p51-beamline/p51
+    - name: EC_K8S_NAMESPACE
+      value: p51-beamline
+    - name: EC_SERVICES_REPO
+      value: https://gitlab.diamond.ac.uk/controls/containers/beamline/p51-services.git
+    - name: EC_BEAMLINE
+      value: p51
+
+  applications: []
+
+  load_script:
+    - system kubectl config set-context --current --namespace=p51-beamline
