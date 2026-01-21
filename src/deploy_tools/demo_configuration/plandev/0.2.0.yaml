@@ -1,0 +1,95 @@
+# yaml-language-server: $schema=/workspaces/deploy-tools/src/deploy_tools/models/schemas/release.json
+
+module:
+  name: plandev
+  version: 0.2.0
+  description: launch plan in cluster development environment
+  allow_updates: true
+
+  # this is intended to be a dependency of the ec/ixx modules as it relies upon
+  # environment variables and modules they set up.
+
+  dependencies:
+    - name: vscode
+
+  applications:
+    - app_type: shell
+      name: workspacegen
+      script:
+        - |
+          #!/bin/bash
+
+          if [[ -n "${DEPLOY_TOOLS_VERBOSE}" ]]; then
+            set -x
+          fi
+
+          # Set the file separator character
+          IFS=' '
+
+          # First get and array of the kubernetes context properties
+          # element 1 is the cluster user and element 4 is the namespace
+          read -ra contextarr <<< `kubectl config get-contexts --no-headers | grep '*'`
+
+          # Next get the pods, filtering for those that match blueapi,
+          # make that into an array. Element 0 is the pod name
+          read -ra podarr <<< `kubectl get pods | grep ^.*blueapi-[0-9]`
+
+          # Now describe the pod, filtering again for unique blueapi matches
+          # and make that into an array, the image name is element 1
+          read -ra imgarr <<< `kubectl describe pod "${podarr[0]}" | grep "ghcr.*blueapi:[0-9]\." | sort -u `
+
+          # Create the json template to generate the Remote Authority hex
+          # string and then use xxd to convert it to hex
+          template="{\"context\":\"${contextarr[1]}\",\"podname\":\"${podarr[0]}\",\"namespace\":\"${contextarr[4]}\",\"name\":\"blueapi\",\"image\":\"${imgarr[1]}\"}"
+          export REMOTE_AUTHORITY=`echo -n "${template}" | xxd -p -c 700`
+
+          # Write the output file using the template, wanting the user if it already exists
+          filename="/scratch/${USER}/blueapi-workspaces/${EC_BEAMLINE}.code-workspace"
+          if [[ -f $filename ]]; then
+              read -rsn1 -p "The ${filename} file already exists, press 'o' if you wish to overwrite it, any other key to abort: " choice;echo
+              if [[ "$choice" != +(o|O) ]]; then
+                  exit 0
+              fi
+          fi
+          sed -e "s/__REMOTE_AUTHORITY__/$REMOTE_AUTHORITY/g" /scratch/${USER}/blueapi-workspaces/template/template.code-workspace  > "${filename}"
+
+    - app_type: shell
+      name: plandev
+      script:
+        - |
+          RED='\033[0;31m'
+          NC='\033[0m'
+
+          usage() {
+            echo "Usage: ${0} [Optional override workspace file path (file must have '.code-workspace' extension).]"
+          }
+
+          if [[ ${@} == "--help" || ${@} == "-h" ]]; then
+            usage
+            exit 0
+          fi
+
+          if [[ ${#} > 1 ]]; then
+              echo -e "${RED}ERROR:${NC} Too many arguments"
+              usage
+              exit 1
+          elif [[ ${#} == 1 ]]; then
+            if [[ ${1} != *.code-workspace ]];then
+              echo -e "${RED}ERROR:${NC} Filename must have extension '.code-workspace'"
+              exit 1
+            fi
+            WORKSPACE_PATH=${1}
+          else
+            WORKSPACE_PATH="/scratch/${USER}/blueapi-workspaces/${EC_BEAMLINE}.code-workspace"
+          fi
+
+          if [[ -e ${WORKSPACE_PATH} ]];then
+            kubectl config set-context --current --namespace="${EC_BEAMLINE}-beamline"
+            kubectl version
+            code ${WORKSPACE_PATH}
+            exit 0
+          else
+            echo -e "${RED}ERROR:${NC} File ${WORKSPACE_PATH} does not exist"
+            exit 1
+            # Alternatively could clone/update the repo containing all the workspace files in this case and retry
+          fi
