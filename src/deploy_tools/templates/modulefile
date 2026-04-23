@@ -10,12 +10,6 @@ if { [module-info mode load] } {
     }
 }
 
-{% if env_vars|length %}
-{% for var in env_vars %}
-setenv {{ var.name }} "{{ var.value }}"
-{% endfor %}
-
-{% endif -%}
 {% if dependencies|length %}
 {% for module in dependencies %}
 {% if module.version == None %}
@@ -23,6 +17,12 @@ module load {{ module.name }}
 {% else %}
 module load {{ module.name }}/{{ module.version }}
 {% endif %}
+{% endfor %}
+
+{% endif -%}
+{% if env_vars|length %}
+{% for var in env_vars %}
+setenv {{ var.name }} "{{ var.value }}"
 {% endfor %}
 
 {% endif -%}
