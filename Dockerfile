@@ -31,7 +31,7 @@ FROM ubuntu:noble AS runtime
 
 # Add apt-get system dependecies for runtime here if needed
 RUN apt-get update -y && apt-get install -y --no-install-recommends \
-    graphviz environment-modules wget git ca-certificates \
+    graphviz environment-modules wget git ca-certificates file \
     && update-ca-certificates \
     && cd /tmp \
     && wget https://github.com/apptainer/apptainer/releases/download/v1.3.3/apptainer_1.3.3_amd64.deb \
