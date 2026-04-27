@@ -16,7 +16,7 @@ Source          | <https://github.com/DiamondLightSource/deploy-tools>
 :---:           | :---:
 PyPI            | `pip install dls-deploy-tools`
 Docker          | `docker run ghcr.io/diamondlightsource/deploy-tools:latest`
-Documentation   | <https://diamondlightsource.github.io/deploy-tools>
+Documentation   | Work in progress <https://diamondlightsource.github.io/deploy-tools>
 Releases        | <https://github.com/DiamondLightSource/deploy-tools/releases>
 
 The demo_configuration folder in this repository can be passed as the config_folder to
