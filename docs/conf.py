@@ -49,6 +49,8 @@ extensions = [
     "sphinx_design",
     # So we can write markdown files
     "myst_parser",
+    # For the generation of schema docs
+    "sphinx-jsonschema",
 ]
 
 # So we can use the ::: syntax
@@ -84,7 +86,15 @@ autodoc_member_order = "bysource"
 autodoc_inherit_docstrings = False
 
 # Document only what is in __all__
-autosummary_ignore_module_all = False
+autosummary_ignore_module_all = True
+
+# Set global options for sphinx-jsonschema
+jsonschema_options = {
+    "lift_description": True,
+    "lift_definitions": True,
+    "auto_target": True,
+    "auto_reference": True,
+}
 
 # Add any paths that contain templates here, relative to this directory.
 templates_path = ["_templates"]
