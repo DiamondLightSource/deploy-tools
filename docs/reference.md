@@ -7,6 +7,7 @@ Technical reference material including APIs and release notes.
 :glob:
 
 API <_api/deploy_tools>
+Schemas <schemas>
 genindex
 Release Notes <https://github.com/DiamondLightSource/deploy-tools/releases>
 ```

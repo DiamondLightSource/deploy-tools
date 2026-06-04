@@ -36,6 +36,7 @@ dev = [
     "ruff",
     "sphinx-autobuild",
     "sphinx-copybutton",
+    "sphinx-jsonschema",
     "sphinx-design",
     "tox-uv",
     "types-mock",
