@@ -12,8 +12,9 @@ access to a shared filesystem. We use the
 [Environment Modules](https://modules.readthedocs.io/en/latest/) package to make these
 applications available to the end user.
 
-Source          | <https://github.com/DiamondLightSource/deploy-tools>
+What            | Where
 :---:           | :---:
+Source          | <https://github.com/DiamondLightSource/deploy-tools>
 PyPI            | `pip install dls-deploy-tools`
 Docker          | `docker run ghcr.io/diamondlightsource/deploy-tools:latest`
 Documentation   | Work in progress <https://diamondlightsource.github.io/deploy-tools>
