@@ -42,7 +42,7 @@ class EntrypointOptions(ParentModel):
 class Entrypoint(ParentModel):
     """Represents an entrypoint to a command on the Apptainer image.
 
-    If no command is provided, the entrypoint (`name`) is used by default. This
+    If no command is provided, the entrypoint (``name``) is used by default. This
     corresponds to the name of the executable provided by the Module.
     """
 

@@ -110,7 +110,7 @@
     },
     "Entrypoint": {
       "additionalProperties": false,
-      "description": "Represents an entrypoint to a command on the Apptainer image.\n\nIf no command is provided, the entrypoint (`name`) is used by default. This\ncorresponds to the name of the executable provided by the Module.",
+      "description": "Represents an entrypoint to a command on the Apptainer image.\n\nIf no command is provided, the entrypoint (``name``) is used by default. This\ncorresponds to the name of the executable provided by the Module.",
       "properties": {
         "name": {
           "description": "Name of executable to use after loading the Module",
