@@ -9,6 +9,8 @@ MOUNT_PATH_REGEX = r"/[^:]*"  # Colon is excluded in short-form apptainer mounts
 MOUNT_REGEX = rf"^{MOUNT_PATH_REGEX}(:{MOUNT_PATH_REGEX}(:(ro|rw))?)?$"
 IMAGE_VERSION_REGEX = r"^[a-zA-Z0-9_][a-zA-Z0-9._-]{0,127}$"  # OCI specification
 
+type MountPoint = Annotated[str, StringConstraints(pattern=MOUNT_REGEX)]
+
 
 class EntrypointOptions(ParentModel):
     """Options applied when running an Apptainer entrypoint."""
@@ -23,7 +25,7 @@ class EntrypointOptions(ParentModel):
     ] = ""
 
     mounts: Annotated[
-        list[Annotated[str, StringConstraints(pattern=MOUNT_REGEX)]],
+        list[MountPoint],
         Field(
             description="A list of mount points to add to the container in the form of "
             "'host_path[:container_path[:opts]]' where opts (mount options) can be "

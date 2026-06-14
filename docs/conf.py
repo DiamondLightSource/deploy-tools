@@ -83,6 +83,7 @@ nitpick_ignore = [
     ("py:class", "deploy_tools.models.deployment.ReleasesByNameAndVersion"),
     ("py:class", "deploy_tools.models.deployment.ReleasesByVersion"),
     ("py:class", "deploy_tools.models.deployment.ModulesByName"),
+    ("py:class", "deploy_tools.models.apptainer_app.MountPoint"),
 ]
 
 # Use only the class docstring in the main body of the autoclass directive. The

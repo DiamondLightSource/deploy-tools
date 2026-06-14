@@ -187,8 +187,7 @@
           "default": [],
           "description": "A list of mount points to add to the container in the form of 'host_path[:container_path[:opts]]' where opts (mount options) can be 'ro' or 'rw' and defaults to 'rw'",
           "items": {
-            "pattern": "^/[^:]*(:/[^:]*(:(ro|rw))?)?$",
-            "type": "string"
+            "$ref": "#/$defs/MountPoint"
           },
           "title": "Mounts",
           "type": "array"
@@ -380,6 +379,10 @@
       ],
       "title": "ModuleDependency",
       "type": "object"
+    },
+    "MountPoint": {
+      "pattern": "^/[^:]*(:/[^:]*(:(ro|rw))?)?$",
+      "type": "string"
     },
     "Release": {
       "additionalProperties": false,
