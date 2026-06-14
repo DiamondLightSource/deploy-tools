@@ -2,12 +2,11 @@ from pydantic import BaseModel, ConfigDict
 
 
 class ParentModel(BaseModel):
-    """
-    Provides Model Config for all Pydantic models in this project:
+    """Provide model config for all Pydantic models in this project.
 
-      forbid:          forbid any extra parameters being provided in any subclass.
-      use_enum_values: use the enum value only when serializing the model,
-                       this means the yaml serializer can work with enums
+    - ``extra="forbid"``: forbid any extra parameters being provided in any subclass.
+    - ``use_enum_values=True``: use the enum value only when serializing the model, so
+      the YAML serializer can work with enums.
     """
 
     model_config = ConfigDict(
