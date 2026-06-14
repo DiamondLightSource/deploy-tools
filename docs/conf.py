@@ -73,6 +73,14 @@ nitpick_ignore = [
     ("py:class", "'object'"),
     ("py:class", "'id'"),
     ("py:class", "typing_extensions.Literal"),
+    # Generic type variable used in save_and_load.load_from_yaml
+    ("py:class", "T"),
+    # PEP 695 type aliases in models.deployment cannot be resolved as classes
+    ("py:class", "deploy_tools.models.deployment.DefaultVersionsByName"),
+    ("py:class", "deploy_tools.models.deployment.ModuleVersionsByName"),
+    ("py:class", "deploy_tools.models.deployment.ReleasesByNameAndVersion"),
+    ("py:class", "deploy_tools.models.deployment.ReleasesByVersion"),
+    ("py:class", "deploy_tools.models.deployment.ModulesByName"),
 ]
 
 # Use only the class docstring in the main body of the autoclass directive. The
