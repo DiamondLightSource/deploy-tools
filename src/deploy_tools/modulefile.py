@@ -11,6 +11,7 @@ DEFAULT_VERSION_REGEX = "^set ModulesVersion (.*)$"
 
 
 def deprecate_modulefile_link(name: str, version: str, layout: Layout) -> None:
+    """Move a module's modulefile link into the deprecated area."""
     mf_link = layout.get_modulefile_link(name, version)
     deprecated_mf_link = layout.get_modulefile_link(name, version, from_deprecated=True)
 
@@ -19,6 +20,7 @@ def deprecate_modulefile_link(name: str, version: str, layout: Layout) -> None:
 
 
 def restore_modulefile_link(name: str, version: str, layout: Layout) -> None:
+    """Move a module's modulefile link out of the deprecated area."""
     mf_link = layout.get_modulefile_link(name, version)
     deprecated_mf_link = layout.get_modulefile_link(name, version, from_deprecated=True)
 
@@ -27,6 +29,7 @@ def restore_modulefile_link(name: str, version: str, layout: Layout) -> None:
 
 
 def get_default_modulefile_version(name: str, layout: Layout) -> str | None:
+    """Return the default version recorded in a module's .version file, if any."""
     version_regex = re.compile(DEFAULT_VERSION_REGEX)
     default_version_file = layout.get_default_version_file(name)
 

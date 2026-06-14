@@ -7,6 +7,7 @@ from .templater import Templater
 
 
 def clean_build_area(layout: Layout) -> None:
+    """Remove the build area directory if it exists."""
     build_path = layout.build_layout.build_root
 
     if build_path.exists():

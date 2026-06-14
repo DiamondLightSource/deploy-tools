@@ -17,7 +17,7 @@ ALL_READ_EXECUTE_PERMISSIONS = 0o555
 
 
 class AppBuilderError(Exception):
-    pass
+    """Raised when building an application's files fails."""
 
 
 class AppBuilder:

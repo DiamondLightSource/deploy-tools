@@ -3,7 +3,7 @@ from pathlib import Path
 
 
 class ApptainerError(Exception):
-    pass
+    """Raised when building an Apptainer SIF file fails."""
 
 
 def create_sif_file(
@@ -11,6 +11,7 @@ def create_sif_file(
     container_url: str,
     create_parents: bool = False,
 ) -> None:
+    """Build an Apptainer SIF file at the given path from a container image URL."""
     if create_parents:
         output_path.parent.mkdir(parents=True, exist_ok=True)
 

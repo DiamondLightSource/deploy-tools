@@ -26,7 +26,7 @@ SCRIPT_INDICATOR_PHRASE = "shell script"
 
 
 class ValidationError(Exception):
-    pass
+    """Raised when the deployment configuration fails validation."""
 
 
 def validate_and_test_configuration(
@@ -269,6 +269,7 @@ def check_bash_syntax(file: Path) -> None:
 
 
 def check_built_scripts(changes: DeploymentChanges, layout: Layout) -> None:
+    """Check the syntax of all shell-script entrypoints in the built modules."""
     release_changes = changes.release_changes
     releases = release_changes.to_add + release_changes.to_update
     build_layout = layout.build_layout

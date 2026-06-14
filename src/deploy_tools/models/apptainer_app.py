@@ -11,6 +11,8 @@ IMAGE_VERSION_REGEX = r"^[a-zA-Z0-9_][a-zA-Z0-9._-]{0,127}$"  # OCI specificatio
 
 
 class EntrypointOptions(ParentModel):
+    """Options applied when running an Apptainer entrypoint."""
+
     apptainer_args: Annotated[
         str,
         Field(description="Apptainer arguments to pass when launching the container"),
@@ -62,6 +64,8 @@ class Entrypoint(ParentModel):
 
 
 class ContainerImage(ParentModel):
+    """Reference to a container image, split into a base path and version/tag."""
+
     path: Annotated[
         AnyUrl,
         UrlConstraints(allowed_schemes=["docker", "shub", "oras", "https"]),

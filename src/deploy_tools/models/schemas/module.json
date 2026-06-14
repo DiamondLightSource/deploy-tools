@@ -86,6 +86,7 @@
     },
     "ContainerImage": {
       "additionalProperties": false,
+      "description": "Reference to a container image, split into a base path and version/tag.",
       "properties": {
         "path": {
           "description": "Image URL excluding the version/tag. Must be a valid URL as described here: https://apptainer.org/docs/user/main/cli/apptainer_pull.html#synopsis",
@@ -149,6 +150,7 @@
     },
     "EntrypointOptions": {
       "additionalProperties": false,
+      "description": "Options applied when running an Apptainer entrypoint.",
       "properties": {
         "apptainer_args": {
           "default": "",

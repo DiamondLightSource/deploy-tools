@@ -24,7 +24,7 @@ logger = logging.getLogger(__name__)
 
 
 class ComparisonError(Exception):
-    pass
+    """Raised when comparing the deployment area to its snapshot fails."""
 
 
 def compare_to_snapshot(

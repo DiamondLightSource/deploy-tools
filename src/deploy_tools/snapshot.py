@@ -11,7 +11,7 @@ logger = logging.getLogger(__name__)
 
 
 class SnapshotError(Exception):
-    pass
+    """Raised when a deployment snapshot is missing or in an unexpected state."""
 
 
 def create_snapshot(deployment: Deployment, layout: Layout) -> None:
@@ -58,6 +58,7 @@ def load_snapshot(layout: Layout, from_scratch: bool = False) -> Deployment:
 
 
 def load_snapshot_from_ref(layout: Layout, ref: str) -> Deployment:
+    """Load the deployment snapshot from the given git ref of the deployment area."""
     logger.debug("Loading snapshot from ref: %s", ref)
     repo = Repo(layout.deployment_root)
     ref_snapshot = repo.commit(ref).tree[layout.DEPLOYMENT_SNAPSHOT_FILENAME]
