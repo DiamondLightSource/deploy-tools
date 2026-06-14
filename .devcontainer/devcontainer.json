@@ -39,7 +39,10 @@
                 "redhat.vscode-yaml",
                 "ryanluker.vscode-coverage-gutters",
                 "charliermarsh.ruff",
-                "ms-azuretools.vscode-docker"
+                "ms-azuretools.vscode-docker",
+                // Embedded HTML preview for built Sphinx docs (right-click
+                // build/html/index.html -> "Show Preview")
+                "ms-vscode.live-server"
             ]
         }
     },
