@@ -51,6 +51,8 @@ extensions = [
     "myst_parser",
     # For the generation of schema docs
     "sphinx-jsonschema",
+    # Render Pydantic models cleanly (hides internals like model_config / FieldInfo)
+    "sphinxcontrib.autodoc_pydantic",
 ]
 
 # So we can use the ::: syntax
