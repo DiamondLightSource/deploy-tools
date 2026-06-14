@@ -51,7 +51,11 @@ class Entrypoint(ParentModel):
     name: Annotated[
         str,
         StringConstraints(pattern=ENTRYPOINT_NAME_REGEX),
-        Field(description="Name of executable to use after loading the Module"),
+        Field(
+            description="Name of executable to use after loading the Module. Must "
+            "start with a letter or underscore and contain only letters, digits, "
+            "hyphens or underscores."
+        ),
     ]
     command: Annotated[
         str | None,
@@ -78,7 +82,11 @@ class ContainerImage(ParentModel):
     version: Annotated[
         str,
         StringConstraints(pattern=IMAGE_VERSION_REGEX),
-        Field(description="Version or tag of the docker image"),
+        Field(
+            description="Version or tag of the docker image. Must follow the OCI tag "
+            "format: start with a letter, digit or underscore, followed by up to 127 "
+            "letters, digits, full stops, hyphens or underscores."
+        ),
     ]
 
     @property

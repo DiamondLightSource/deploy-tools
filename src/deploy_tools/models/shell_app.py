@@ -21,6 +21,10 @@ class ShellApp(ParentModel):
     name: Annotated[
         str,
         StringConstraints(pattern=ENTRYPOINT_NAME_REGEX),
-        Field(description="Name of executable to use after loading the Module"),
+        Field(
+            description="Name of executable to use after loading the Module. Must "
+            "start with a letter or underscore and contain only letters, digits, "
+            "hyphens or underscores."
+        ),
     ]
     script: Annotated[list[str], Field(description="Script to be run")] = []

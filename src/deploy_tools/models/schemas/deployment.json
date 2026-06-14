@@ -52,7 +52,7 @@
           "type": "string"
         },
         "name": {
-          "description": "Name of executable to use after loading the Module",
+          "description": "Name of executable to use after loading the Module. Must start with a letter or underscore and contain only letters, digits, hyphens or underscores.",
           "pattern": "^[a-zA-Z_][0-9a-zA-Z_-]*$",
           "title": "Name",
           "type": "string"
@@ -96,7 +96,7 @@
           "type": "string"
         },
         "version": {
-          "description": "Version or tag of the docker image",
+          "description": "Version or tag of the docker image. Must follow the OCI tag format: start with a letter, digit or underscore, followed by up to 127 letters, digits, full stops, hyphens or underscores.",
           "pattern": "^[a-zA-Z0-9_][a-zA-Z0-9._-]{0,127}$",
           "title": "Version",
           "type": "string"
@@ -133,7 +133,7 @@
       "description": "Represents an entrypoint to a command on the Apptainer image.\n\nIf no command is provided, the entrypoint (``name``) is used by default. This\ncorresponds to the name of the executable provided by the Module.",
       "properties": {
         "name": {
-          "description": "Name of executable to use after loading the Module",
+          "description": "Name of executable to use after loading the Module. Must start with a letter or underscore and contain only letters, digits, hyphens or underscores.",
           "pattern": "^[a-zA-Z_][0-9a-zA-Z_-]*$",
           "title": "Name",
           "type": "string"
@@ -211,7 +211,7 @@
       "description": "Represents an environment variable to set when loading the Module.",
       "properties": {
         "name": {
-          "description": "Name of environment variable",
+          "description": "Name of environment variable. Must start with a letter or underscore and contain only letters, digits or underscores.",
           "pattern": "^[a-zA-Z_][a-zA-Z0-9_]*$",
           "title": "Name",
           "type": "string"
@@ -245,7 +245,7 @@
       "description": "Represents a Module to be deployed.\n\nModules can optionally include a set of applications, environment variables to load,\nand a list of module dependencies.",
       "properties": {
         "name": {
-          "description": "Name of module to use when loading",
+          "description": "Name of module to use when loading. Must start with a letter and contain only letters, digits, hyphens or underscores.",
           "pattern": "^[a-zA-Z][0-9a-zA-Z_-]*$",
           "title": "Name",
           "type": "string"
@@ -425,7 +425,7 @@
           "type": "string"
         },
         "name": {
-          "description": "Name of executable to use after loading the Module",
+          "description": "Name of executable to use after loading the Module. Must start with a letter or underscore and contain only letters, digits, hyphens or underscores.",
           "pattern": "^[a-zA-Z_][0-9a-zA-Z_-]*$",
           "title": "Name",
           "type": "string"
