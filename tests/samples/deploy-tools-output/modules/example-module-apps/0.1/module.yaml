@@ -12,21 +12,13 @@ applications:
       command_args: Hello
       host_binaries: []
       mounts: []
-  - command: ls
-    name: show-directory
-    options:
-      apptainer_args: ''
-      command_args: -al /dls_sw_test
-      host_binaries: []
-      mounts: []
   global_options:
     apptainer_args: ''
     command_args: ''
     host_binaries: []
-    mounts:
-    - /dls_sw:/dls_sw_test:ro
+    mounts: []
 - app_type: shell
-  name: test-echo-module-folder
+  name: test-echo-module-var
   script:
   - echo $OTHER_VALUE
 - app_type: shell
@@ -39,7 +31,7 @@ dependencies: []
 description: Demonstration of a module configuration folder
 env_vars:
 - name: OTHER_VALUE
-  value: Test message OTHER_VALUE from example-module-folder
+  value: Version 0.1
 exclude_from_defaults: false
 load_script: []
 name: example-module-apps

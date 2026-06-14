@@ -15,8 +15,6 @@ deploy-tools sync --from-scratch ${TMP_DIR} ${THIS_DIR}/../src/deploy_tools/demo
 # don't keep the sif or git files
 rm -rf $(find ${TMP_DIR} -name "*.sif")
 rm -rf ${TMP_DIR}/.git*
-# also remove binaries
-rm ${TMP_DIR}/modules/argocd/*/entrypoints/argocd
 
 rm -rf ${SAMPLES_DIR}
 mkdir -p ${SAMPLES_DIR}

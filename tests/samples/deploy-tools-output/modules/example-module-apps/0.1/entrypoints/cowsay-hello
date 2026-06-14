@@ -7,7 +7,7 @@
 set -e
 
 # Mounts for container
-mounts="/dls_sw:/dls_sw_test:ro"
+mounts=""
 # Additional arguments for apptainer
 apptainer_args=""
 # Sif file path

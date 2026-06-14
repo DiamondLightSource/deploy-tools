@@ -10,6 +10,6 @@ if { [module-info mode load] } {
     }
 }
 
-setenv OTHER_VALUE "Test message OTHER_VALUE from example-module-folder"
+setenv OTHER_VALUE "Version 0.1"
 
 prepend-path PATH "/tmp/deploy-tools-output/modules/example-module-apps/0.1/entrypoints"

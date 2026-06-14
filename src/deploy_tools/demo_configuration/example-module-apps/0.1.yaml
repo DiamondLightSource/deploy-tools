@@ -7,7 +7,7 @@ module:
 
   env_vars:
     - name: OTHER_VALUE
-      value: Test message OTHER_VALUE from example-module-folder
+      value: Version 0.1
 
   applications:
     - app_type: apptainer
@@ -22,18 +22,9 @@ module:
           options:
             command_args: Hello
 
-        - name: show-directory
-          command: ls
-          options:
-            command_args: -al /dls_sw_test
-
-      global_options:
-        mounts:
-          - /dls_sw:/dls_sw_test:ro
-
     - app_type: shell
 
-      name: test-echo-module-folder
+      name: test-echo-module-var
       script:
         - echo $OTHER_VALUE
 
