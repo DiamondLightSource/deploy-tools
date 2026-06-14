@@ -57,7 +57,7 @@ name = "Martin Gaughran"
 version_file = "src/deploy_tools/_version.py"
 
 [tool.setuptools.package-data]
-deploy_tools = ['templates', 'models/schema/*']
+deploy_tools = ['templates', 'models/schemas/*']
 
 [tool.pyright]
 exclude = ["src/deploy_tools/_version.py"]
