@@ -83,6 +83,9 @@ data_file = "/tmp/deploy_tools.coverage"
 # Tests are run from installed location, map back to the src directory
 source = ["src", "**/site-packages/"]
 
+[tool.uv]
+exclude-newer = "3 days"
+
 [tool.tox]
 skipsdist = true
 # envs to runs automatically with tox -p
