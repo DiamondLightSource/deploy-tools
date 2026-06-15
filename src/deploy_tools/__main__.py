@@ -13,7 +13,7 @@ from .validate import validate_and_test_configuration
 __all__ = ["main"]
 
 
-def verbose_callback(value: int) -> None:
+def _verbose_callback(value: int) -> None:
     match value:
         case 2:
             level = logging.DEBUG
@@ -103,7 +103,7 @@ VERBOSE_OPTION = Annotated[
         max=2,
         clamp=True,
         show_default="WARNING",
-        callback=verbose_callback,
+        callback=_verbose_callback,
     ),
 ]
 
@@ -181,7 +181,7 @@ def schema(
     generate_schema(output_path)
 
 
-def version_callback(value: bool) -> None:
+def _version_callback(value: bool) -> None:
     if value:
         typer.echo(__version__)
         raise typer.Exit()
@@ -195,7 +195,7 @@ def common(
             "--version",
             "-V",
             help="Show program's version number and exit.",
-            callback=version_callback,
+            callback=_version_callback,
         ),
     ] = None,
 ) -> None:
