@@ -194,4 +194,6 @@ def _get_dict_diff(d1: dict[str, Any], d2: dict[str, Any]) -> str:
 
 def _yaml_dumps(obj: dict[str, Any], indent: int | None = None) -> str:
     ta = TypeAdapter(dict[str, Any])
-    return yaml.safe_dump(ta.dump_python(obj), indent=indent)
+    # Dump in JSON mode so pydantic special types (e.g. AnyUrl) are coerced to YAML-safe
+    # primitives
+    return yaml.safe_dump(ta.dump_python(obj, mode="json"), indent=indent)
