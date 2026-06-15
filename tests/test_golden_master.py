@@ -48,24 +48,40 @@ def test_module_lifecycle(samples: Path, configs: Path):
     _assert_expected_files_match(samples / "01-initial" / DEPLOYMENT_DIRNAME, TEMP_OUT)
 
     # Stage 2: deploy a brand-new module on an incremental (non from-scratch) sync. Its
-    # files and modulefile link should appear, while the modules from stage 1 are left
-    # untouched (verified by the stage-2 golden master, which still contains them).
+    # files and modulefile link should appear, while the modules already deployed are
+    # left untouched (this stage's golden master still contains them unchanged).
     run_cli("sync", TEMP_OUT, configs / "02-added")
     _assert_expected_files_match(samples / "02-added" / DEPLOYMENT_DIRNAME, TEMP_OUT)
 
-    # Stage 3: deprecate example-module-deps/0.2. Its modulefile link should move out of
-    # the live modulefiles area and into the deprecated area, while the built module is
-    # left in place.
-    run_cli("sync", TEMP_OUT, configs / "03-deprecated")
-    _assert_expected_files_match(
-        samples / "03-deprecated" / DEPLOYMENT_DIRNAME, TEMP_OUT
-    )
-    _assert_absent(TEMP_OUT, "modulefiles/example-module-deps")
+    # Stage 3: update example-module-extra/1.0 in place. Its config changed and it was
+    # deployed with allow_updates, so the module is rebuilt and replaced; the golden
+    # master captures the new modulefile contents.
+    run_cli("sync", TEMP_OUT, configs / "03-updated")
+    _assert_expected_files_match(samples / "03-updated" / DEPLOYMENT_DIRNAME, TEMP_OUT)
 
-    # Stage 4: remove the now-deprecated example-module-deps/0.2 entirely. Both its
-    # modulefile link and built module should be gone.
-    run_cli("sync", TEMP_OUT, configs / "04-removed")
-    _assert_expected_files_match(samples / "04-removed" / DEPLOYMENT_DIRNAME, TEMP_OUT)
+    # Stage 4: deprecate example-module-deps/0.2 (en route to removal) and
+    # example-module-extra/1.0 (to set up the restore that follows). Both modulefile
+    # links move out of the live area into the deprecated area; built modules stay put.
+    run_cli("sync", TEMP_OUT, configs / "04-deprecated")
+    _assert_expected_files_match(
+        samples / "04-deprecated" / DEPLOYMENT_DIRNAME, TEMP_OUT
+    )
+    _assert_absent(
+        TEMP_OUT,
+        "modulefiles/example-module-deps",
+        "modulefiles/example-module-extra",
+    )
+
+    # Stage 5: restore example-module-extra/1.0 by un-deprecating it. Its modulefile
+    # link moves back into the live area; example-module-deps/0.2 stays deprecated.
+    run_cli("sync", TEMP_OUT, configs / "05-restored")
+    _assert_expected_files_match(samples / "05-restored" / DEPLOYMENT_DIRNAME, TEMP_OUT)
+    _assert_absent(TEMP_OUT, "deprecated/modulefiles/example-module-extra")
+
+    # Stage 6: remove the now-deprecated example-module-deps/0.2 entirely. Both its
+    # modulefile link and built module should be gone; example-module-extra remains.
+    run_cli("sync", TEMP_OUT, configs / "06-removed")
+    _assert_expected_files_match(samples / "06-removed" / DEPLOYMENT_DIRNAME, TEMP_OUT)
     _assert_absent(
         TEMP_OUT,
         "modules/example-module-deps",

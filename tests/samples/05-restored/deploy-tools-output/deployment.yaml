@@ -44,7 +44,7 @@ releases:
         version: '0.1'
   example-module-deps:
     '0.2':
-      deprecated: false
+      deprecated: true
       module:
         allow_updates: false
         applications: []
@@ -72,7 +72,7 @@ releases:
         description: Demonstration of adding a module in a later sync
         env_vars:
         - name: EXTRA_VALUE
-          value: Added after initial deployment
+          value: Updated in a later sync
         exclude_from_defaults: false
         load_script: []
         name: example-module-extra

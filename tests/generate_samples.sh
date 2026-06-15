@@ -41,10 +41,18 @@ save_sample 01-initial
 deploy-tools sync "${TMP_DIR}" "${CONFIGS_DIR}/02-added"
 save_sample 02-added
 
-# Stage 3: deprecate example-module-deps/0.2 (modulefile link moves to deprecated area).
-deploy-tools sync "${TMP_DIR}" "${CONFIGS_DIR}/03-deprecated"
-save_sample 03-deprecated
+# Stage 3: update example-module-extra/1.0 in place (allowed via allow_updates).
+deploy-tools sync "${TMP_DIR}" "${CONFIGS_DIR}/03-updated"
+save_sample 03-updated
 
-# Stage 4: remove the now-deprecated example-module-deps/0.2 entirely.
-deploy-tools sync "${TMP_DIR}" "${CONFIGS_DIR}/04-removed"
-save_sample 04-removed
+# Stage 4: deprecate example-module-deps/0.2 and example-module-extra/1.0.
+deploy-tools sync "${TMP_DIR}" "${CONFIGS_DIR}/04-deprecated"
+save_sample 04-deprecated
+
+# Stage 5: restore (un-deprecate) example-module-extra/1.0.
+deploy-tools sync "${TMP_DIR}" "${CONFIGS_DIR}/05-restored"
+save_sample 05-restored
+
+# Stage 6: remove the now-deprecated example-module-deps/0.2 entirely.
+deploy-tools sync "${TMP_DIR}" "${CONFIGS_DIR}/06-removed"
+save_sample 06-removed

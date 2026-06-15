@@ -7,7 +7,9 @@ module:
 
   env_vars:
     - name: EXTRA_VALUE
-      value: Added after initial deployment
+      # Changing this value (permitted by allow_updates) triggers an in-place
+      # update of the already-deployed version.
+      value: Updated in a later sync
 
   applications:
     - app_type: shell
@@ -16,6 +18,4 @@ module:
       script:
         - echo $EXTRA_VALUE
 
-  # Allow in-place updates to this version, so a later sync can change its
-  # configuration without bumping the version number.
   allow_updates: true

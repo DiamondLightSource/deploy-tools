@@ -1,0 +1,12 @@
+allow_updates: false
+applications: []
+dependencies:
+- name: example-module-apps
+  version: '0.1'
+description: Demonstration of deploy-tools dependencies
+env_vars: []
+exclude_from_defaults: false
+load_script: []
+name: example-module-deps
+unload_script: []
+version: '0.2'
