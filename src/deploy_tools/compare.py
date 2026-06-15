@@ -87,10 +87,15 @@ def _reconstruct_deployment_config_from_modules(layout: Layout) -> Deployment:
     Note that the default versions will be different to those in initial configuration.
     """
     releases = _collect_releases(layout)
-    default_versions = _collect_default_modulefile_versions(layout, list(releases))
-    settings = DeploymentSettings(default_versions=default_versions)
+    deployment = Deployment(settings=DeploymentSettings(), releases=releases)
 
-    return Deployment(settings=settings, releases=releases)
+    # Only non-deprecated (live) modules are associated with a .version file
+    live_names = list(deployment.get_final_deployed_modules())
+    deployment.settings.default_versions = _collect_default_modulefile_versions(
+        layout, live_names
+    )
+
+    return deployment
 
 
 def _collect_releases(layout: Layout) -> ReleasesByNameAndVersion:
