@@ -28,6 +28,10 @@ class AppBuilder:
         self._build_layout = build_layout
 
     def create_application_files(self, app: Application, module: Module):
+        """Create the entrypoint and supporting files for an application.
+
+        The files produced depend on the application type (Apptainer, shell or binary).
+        """
         match app:
             case ApptainerApp():
                 self._create_apptainer_files(app, module)

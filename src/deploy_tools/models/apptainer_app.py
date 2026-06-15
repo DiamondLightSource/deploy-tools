@@ -93,6 +93,7 @@ class ContainerImage(ParentModel):
 
     @property
     def url(self) -> str:
+        """Full image reference combining the path and version as ``path:version``."""
         return f"{self.path}:{self.version}"
 
 

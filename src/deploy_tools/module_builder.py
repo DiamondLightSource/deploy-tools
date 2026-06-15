@@ -16,6 +16,7 @@ class ModuleBuilder:
         self.app_creator = AppBuilder(templater, self._build_layout)
 
     def create_module(self, module: Module) -> None:
+        """Create the module's modulefile, application files and snapshot."""
         self._create_modulefile(module)
 
         for app in module.applications:
