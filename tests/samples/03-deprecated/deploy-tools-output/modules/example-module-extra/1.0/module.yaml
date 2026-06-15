@@ -1,0 +1,16 @@
+allow_updates: false
+applications:
+- app_type: shell
+  name: test-extra-echo
+  script:
+  - echo $EXTRA_VALUE
+dependencies: []
+description: Demonstration of adding a module in a later sync
+env_vars:
+- name: EXTRA_VALUE
+  value: Added after initial deployment
+exclude_from_defaults: false
+load_script: []
+name: example-module-extra
+unload_script: []
+version: '1.0'

@@ -30,17 +30,21 @@ save_sample () {
 }
 
 # The lifecycle stages share a single deployment area and must run in order, as
-# deprecation and removal build on the previous deployment state. Only the first sync
+# each stage builds on the previous deployment state. Only the first sync
 # uses --from-scratch.
 
 # Stage 1: deploy the initial configuration into an empty area.
 deploy-tools sync --from-scratch "${TMP_DIR}" "${CONFIGS_DIR}/01-initial"
 save_sample 01-initial
 
-# Stage 2: deprecate example-module-deps/0.2 (modulefile link moves to deprecated area).
-deploy-tools sync "${TMP_DIR}" "${CONFIGS_DIR}/02-deprecated"
-save_sample 02-deprecated
+# Stage 2: add a new module (example-module-extra/1.0) on an incremental sync.
+deploy-tools sync "${TMP_DIR}" "${CONFIGS_DIR}/02-added"
+save_sample 02-added
 
-# Stage 3: remove the now-deprecated example-module-deps/0.2 entirely.
-deploy-tools sync "${TMP_DIR}" "${CONFIGS_DIR}/03-removed"
-save_sample 03-removed
+# Stage 3: deprecate example-module-deps/0.2 (modulefile link moves to deprecated area).
+deploy-tools sync "${TMP_DIR}" "${CONFIGS_DIR}/03-deprecated"
+save_sample 03-deprecated
+
+# Stage 4: remove the now-deprecated example-module-deps/0.2 entirely.
+deploy-tools sync "${TMP_DIR}" "${CONFIGS_DIR}/04-removed"
+save_sample 04-removed

@@ -5,7 +5,7 @@ from conftest import run_cli
 
 # Fixed deployment path so that generated modulefiles (which embed absolute paths) match
 # the committed golden master output. The lifecycle stages below all share this single
-# deployment area, as deprecation and removal build on the previous deployment state.
+# deployment area, as each stage builds on the previous deployment state.
 DEPLOYMENT_DIRNAME = "deploy-tools-output"
 TEMP_OUT = Path("/tmp") / DEPLOYMENT_DIRNAME
 
@@ -47,19 +47,25 @@ def test_module_lifecycle(samples: Path, configs: Path):
     run_cli("sync", "--from-scratch", TEMP_OUT, configs / "01-initial")
     _assert_expected_files_match(samples / "01-initial" / DEPLOYMENT_DIRNAME, TEMP_OUT)
 
-    # Stage 2: deprecate example-module-deps/0.2. Its modulefile link should move out of
+    # Stage 2: deploy a brand-new module on an incremental (non from-scratch) sync. Its
+    # files and modulefile link should appear, while the modules from stage 1 are left
+    # untouched (verified by the stage-2 golden master, which still contains them).
+    run_cli("sync", TEMP_OUT, configs / "02-added")
+    _assert_expected_files_match(samples / "02-added" / DEPLOYMENT_DIRNAME, TEMP_OUT)
+
+    # Stage 3: deprecate example-module-deps/0.2. Its modulefile link should move out of
     # the live modulefiles area and into the deprecated area, while the built module is
     # left in place.
-    run_cli("sync", TEMP_OUT, configs / "02-deprecated")
+    run_cli("sync", TEMP_OUT, configs / "03-deprecated")
     _assert_expected_files_match(
-        samples / "02-deprecated" / DEPLOYMENT_DIRNAME, TEMP_OUT
+        samples / "03-deprecated" / DEPLOYMENT_DIRNAME, TEMP_OUT
     )
     _assert_absent(TEMP_OUT, "modulefiles/example-module-deps")
 
-    # Stage 3: remove the now-deprecated example-module-deps/0.2 entirely. Both its
+    # Stage 4: remove the now-deprecated example-module-deps/0.2 entirely. Both its
     # modulefile link and built module should be gone.
-    run_cli("sync", TEMP_OUT, configs / "03-removed")
-    _assert_expected_files_match(samples / "03-removed" / DEPLOYMENT_DIRNAME, TEMP_OUT)
+    run_cli("sync", TEMP_OUT, configs / "04-removed")
+    _assert_expected_files_match(samples / "04-removed" / DEPLOYMENT_DIRNAME, TEMP_OUT)
     _assert_absent(
         TEMP_OUT,
         "modules/example-module-deps",
