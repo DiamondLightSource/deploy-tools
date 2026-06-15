@@ -53,6 +53,8 @@ extensions = [
     "sphinx-jsonschema",
     # Render Pydantic models cleanly (hides internals like model_config / FieldInfo)
     "sphinxcontrib.autodoc_pydantic",
+    # Render the Typer command-line interface
+    "sphinxcontrib.typer",
 ]
 
 # So we can use the ::: syntax
@@ -100,7 +102,8 @@ autodoc_member_order = "bysource"
 # Don't inherit docstrings from baseclasses
 autodoc_inherit_docstrings = False
 
-# Document only what is in __all__
+# Ignore module __all__ so every public member is documented. Internals are kept out
+# of the docs by marking them private with a leading underscore instead.
 autosummary_ignore_module_all = True
 
 # Set global options for sphinx-jsonschema
