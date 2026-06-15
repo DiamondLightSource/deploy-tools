@@ -1,0 +1,16 @@
+# yaml-language-server: $schema=/workspaces/deploy-tools/src/deploy_tools/models/schemas/release.json
+
+module:
+  name: example-module-deps
+  version: "0.2"
+  description: Demonstration of deploy-tools dependencies
+
+  dependencies:
+    - name: example-module-apps
+      version: "0.1"
+
+  applications: []
+
+# Mark this release as deprecated: its modulefile link moves into the deprecated area
+# while the built module remains available, as a precursor to full removal.
+deprecated: true
