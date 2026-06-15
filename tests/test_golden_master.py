@@ -38,30 +38,48 @@ def _assert_absent(root: Path, *relative_paths: str) -> None:
         assert not path.exists(), f"Path {path} should not exist."
 
 
+def _assert_validate_matches(expected_dir: Path, *cli_args: str | Path) -> None:
+    """Assert ``validate``'s printed summary matches the committed golden master.
+
+    ``validate`` is read-only and previews the next sync, so it is run against the
+    deployment area in its pre-sync state.
+    """
+    expected = (expected_dir / "validate.txt").read_text()
+    assert run_cli("validate", *cli_args) == expected
+
+
 def test_module_lifecycle(samples: Path, configs: Path):
     # make sure the output directory is empty and exists
     rmtree(TEMP_OUT, ignore_errors=True)
     TEMP_OUT.mkdir(exist_ok=True)
 
     # Stage 1: deploy the initial configuration into an empty area.
+    _assert_validate_matches(
+        samples / "01-initial", "--from-scratch", TEMP_OUT, configs / "01-initial"
+    )
     run_cli("sync", "--from-scratch", TEMP_OUT, configs / "01-initial")
     _assert_expected_files_match(samples / "01-initial" / DEPLOYMENT_DIRNAME, TEMP_OUT)
 
     # Stage 2: deploy a brand-new module on an incremental (non from-scratch) sync. Its
     # files and modulefile link should appear, while the modules already deployed are
     # left untouched (this stage's golden master still contains them unchanged).
+    _assert_validate_matches(samples / "02-added", TEMP_OUT, configs / "02-added")
     run_cli("sync", TEMP_OUT, configs / "02-added")
     _assert_expected_files_match(samples / "02-added" / DEPLOYMENT_DIRNAME, TEMP_OUT)
 
     # Stage 3: update example-module-extra/1.0 in place. Its config changed and it was
     # deployed with allow_updates, so the module is rebuilt and replaced; the golden
     # master captures the new modulefile contents.
+    _assert_validate_matches(samples / "03-updated", TEMP_OUT, configs / "03-updated")
     run_cli("sync", TEMP_OUT, configs / "03-updated")
     _assert_expected_files_match(samples / "03-updated" / DEPLOYMENT_DIRNAME, TEMP_OUT)
 
     # Stage 4: deprecate example-module-deps/0.2 (en route to removal) and
     # example-module-extra/1.0 (to set up the restore that follows). Both modulefile
     # links move out of the live area into the deprecated area; built modules stay put.
+    _assert_validate_matches(
+        samples / "04-deprecated", TEMP_OUT, configs / "04-deprecated"
+    )
     run_cli("sync", TEMP_OUT, configs / "04-deprecated")
     _assert_expected_files_match(
         samples / "04-deprecated" / DEPLOYMENT_DIRNAME, TEMP_OUT
@@ -74,12 +92,14 @@ def test_module_lifecycle(samples: Path, configs: Path):
 
     # Stage 5: restore example-module-extra/1.0 by un-deprecating it. Its modulefile
     # link moves back into the live area; example-module-deps/0.2 stays deprecated.
+    _assert_validate_matches(samples / "05-restored", TEMP_OUT, configs / "05-restored")
     run_cli("sync", TEMP_OUT, configs / "05-restored")
     _assert_expected_files_match(samples / "05-restored" / DEPLOYMENT_DIRNAME, TEMP_OUT)
     _assert_absent(TEMP_OUT, "deprecated/modulefiles/example-module-extra")
 
     # Stage 6: remove the now-deprecated example-module-deps/0.2 entirely. Both its
     # modulefile link and built module should be gone; example-module-extra remains.
+    _assert_validate_matches(samples / "06-removed", TEMP_OUT, configs / "06-removed")
     run_cli("sync", TEMP_OUT, configs / "06-removed")
     _assert_expected_files_match(samples / "06-removed" / DEPLOYMENT_DIRNAME, TEMP_OUT)
     _assert_absent(

@@ -1,0 +1,4 @@
+Modules to be updated:
+example-module-extra/1.0
+
+No default version changes

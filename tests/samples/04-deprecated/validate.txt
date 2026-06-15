@@ -1,0 +1,7 @@
+Modules to be deprecated:
+example-module-deps/0.2
+example-module-extra/1.0
+
+Updated module defaults:
+example-module-deps 0.2 -> None
+example-module-extra 1.0 -> None

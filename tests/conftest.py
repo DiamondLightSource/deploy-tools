@@ -8,11 +8,12 @@ from deploy_tools.__main__ import app
 runner = CliRunner()
 
 
-def run_cli(*args: str | Path):
+def run_cli(*args: str | Path) -> str:
     result = runner.invoke(app, [str(x) for x in args])
     if result.exception:
         raise result.exception
     assert result.exit_code == 0, result
+    return result.stdout
 
 
 @pytest.fixture

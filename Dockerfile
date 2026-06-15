@@ -4,7 +4,7 @@ FROM ghcr.io/diamondlightsource/ubuntu-devcontainer:noble AS developer
 
 # Add any system dependencies for the developer/build environment here
 RUN apt-get update -y && apt-get install -y --no-install-recommends \
-    graphviz environment-modules wget \
+    graphviz environment-modules wget file \
     && cd /tmp \
     && wget https://github.com/apptainer/apptainer/releases/download/v1.3.3/apptainer_1.3.3_amd64.deb \
     && apt install -y ./apptainer_1.3.3_amd64.deb \

@@ -1,0 +1,5 @@
+Modules to be restored:
+example-module-extra/1.0
+
+Updated module defaults:
+example-module-extra None -> 1.0
