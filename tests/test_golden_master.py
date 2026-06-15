@@ -16,6 +16,10 @@ def _assert_expected_files_match(expected_root: Path, actual_root: Path) -> None
     This is a one-directional check: files present in the deployment area but absent
     from the golden master (e.g. ``.sif`` images, the ``.git`` directory) are ignored.
     Use ``_assert_absent`` to verify that files have actually been removed.
+
+    Args:
+        expected_root: Root of the committed golden master tree.
+        actual_root: Root of the deployment area to check against it.
     """
     for expected in expected_root.glob("**/*"):
         if expected.is_dir():
@@ -32,7 +36,12 @@ def _assert_expected_files_match(expected_root: Path, actual_root: Path) -> None
 
 
 def _assert_absent(root: Path, *relative_paths: str) -> None:
-    """Assert that none of the given paths exist under ``root``."""
+    """Assert that none of the given paths exist under ``root``.
+
+    Args:
+        root: The base directory to resolve paths against.
+        relative_paths: Paths, relative to ``root``, that must not exist.
+    """
     for relative_path in relative_paths:
         path = root / relative_path
         assert not path.exists(), f"Path {path} should not exist."
@@ -43,6 +52,10 @@ def _assert_validate_matches(expected_dir: Path, *cli_args: str | Path) -> None:
 
     ``validate`` is read-only and previews the next sync, so it is run against the
     deployment area in its pre-sync state.
+
+    Args:
+        expected_dir: Stage directory containing the expected ``validate.txt``.
+        cli_args: Arguments passed to the ``validate`` CLI command.
     """
     expected = (expected_dir / "validate.txt").read_text()
     assert run_cli("validate", *cli_args) == expected
