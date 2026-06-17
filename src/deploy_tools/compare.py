@@ -157,7 +157,12 @@ def _collect_default_modulefile_versions(
     default_versions: dict[str, str] = {}
 
     for name in names:
-        default_version = get_default_modulefile_version(name, layout)
+        try:
+            default_version = get_default_modulefile_version(name, layout)
+        except FileNotFoundError as exc:
+            raise ComparisonError(
+                f"Live module '{name}' has no default version file"
+            ) from exc
         if default_version is not None:
             default_versions[name] = default_version
 
