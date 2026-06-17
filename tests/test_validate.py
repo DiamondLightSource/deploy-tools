@@ -41,6 +41,26 @@ def test_validate_rejects_removal_without_deprecation(tmp_path: Path, configs: P
         run_cli("validate", tmp_path, configs / "invalid" / "removed-no-deprecation")
 
 
+def test_validate_rejects_added_deprecated_module(tmp_path: Path, configs: Path):
+    # Deploy a baseline module, then validate a config that introduces a brand-new
+    # release already in a deprecated state. Deprecating a module on initial creation
+    # is only allowed with --allow-all, so a normal validate must reject it.
+    run_cli("sync", "--from-scratch", tmp_path, configs / "minimal")
+    with pytest.raises(ValidationError, match="cannot have deprecated status"):
+        run_cli("validate", tmp_path, configs / "invalid" / "added-deprecated")
+
+
+def test_validate_allows_added_deprecated_module_with_allow_all(
+    tmp_path: Path, configs: Path
+):
+    # The --allow-all flag deliberately permits introducing an already-deprecated
+    # release on initial creation.
+    run_cli("sync", "--from-scratch", tmp_path, configs / "minimal")
+    run_cli(
+        "validate", "--allow-all", tmp_path, configs / "invalid" / "added-deprecated"
+    )
+
+
 def test_validate_test_build(tmp_path: Path, configs: Path):
     # --test-build actually builds the modules into a temporary area and syntax-checks
     # the generated shell entrypoints, so exercise it on a valid shell-only config.

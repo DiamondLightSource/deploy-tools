@@ -157,11 +157,11 @@ def _get_release_changes(
     return release_changes
 
 
-def _validate_added_modules(releases: list[Release], from_scratch: bool) -> None:
+def _validate_added_modules(releases: list[Release], allow_all: bool) -> None:
     for release in releases:
         module = release.module
         if release.deprecated:
-            if not from_scratch:
+            if not allow_all:
                 raise ValidationError(
                     f"Module {module.name}/{module.version} cannot have deprecated "
                     f"status on initial creation."
