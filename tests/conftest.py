@@ -29,3 +29,22 @@ def samples():
 @pytest.fixture
 def configs():
     return Path(__file__).parent / "configs"
+
+
+@pytest.fixture
+def stub_apptainer_pull(monkeypatch: pytest.MonkeyPatch) -> None:
+    """Stub the external ``apptainer pull`` so builds need no binary or network.
+
+    Only the external command is replaced; ``create_sif_file``'s own logic (path
+    validation, parent-directory creation) still runs. The golden-master comparison
+    ignores ``.sif`` files, so a no-op suffices. Without this, building an Apptainer
+    module hard-fails on a runner without apptainer or does a real registry pull.
+
+    Args:
+        monkeypatch: The pytest ``monkeypatch`` fixture.
+    """
+
+    def _no_pull(*args: object, **kwargs: object) -> None:
+        return None
+
+    monkeypatch.setattr("deploy_tools.apptainer.run_command", _no_pull)

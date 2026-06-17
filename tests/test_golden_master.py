@@ -61,7 +61,7 @@ def _assert_validate_matches(expected_dir: Path, *cli_args: str | Path) -> None:
     assert run_cli("validate", *cli_args) == expected
 
 
-def test_module_lifecycle(samples: Path, configs: Path):
+def test_module_lifecycle(samples: Path, configs: Path, stub_apptainer_pull: None):
     # make sure the output directory is empty and exists
     rmtree(TEMP_OUT, ignore_errors=True)
     TEMP_OUT.mkdir(exist_ok=True)
