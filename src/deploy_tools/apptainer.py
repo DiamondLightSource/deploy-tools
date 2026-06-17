@@ -1,8 +1,10 @@
 import subprocess
 from pathlib import Path
 
+from .errors import DeployToolsError
 
-class ApptainerError(Exception):
+
+class ApptainerError(DeployToolsError):
     """Raised when building an Apptainer SIF file fails."""
 
 

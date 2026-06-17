@@ -6,6 +6,7 @@ from typing import BinaryIO, TextIO
 import yaml
 from pydantic import BaseModel
 
+from ..errors import DeployToolsError
 from .deployment import (
     Deployment,
     DeploymentSettings,
@@ -17,7 +18,7 @@ YAML_FILE_SUFFIX = ".yaml"
 DEPLOYMENT_SETTINGS = "settings" + YAML_FILE_SUFFIX
 
 
-class LoadError(Exception):
+class LoadError(DeployToolsError):
     """Raised when configuration files cannot be loaded into the model."""
 
 

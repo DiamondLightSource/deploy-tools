@@ -1,4 +1,5 @@
 import logging
+import sys
 from pathlib import Path
 from typing import Annotated
 
@@ -6,6 +7,7 @@ import typer
 
 from . import __version__
 from .compare import compare_to_snapshot
+from .errors import DeployToolsError
 from .models.schema import generate_schema
 from .sync import synchronise
 from .validate import validate_and_test_configuration
@@ -203,7 +205,14 @@ def common(
 
 
 def main() -> None:
-    app()
+    try:
+        app()
+    except DeployToolsError as exc:
+        # Expected, actionable failures carry a complete user-facing message, so present
+        # just that and exit non-zero. Any other exception propagates to Typer's
+        # excepthook and surfaces as a full traceback, as befits an unexpected bug.
+        typer.secho(f"Error: {exc}", fg=typer.colors.RED, err=True)
+        sys.exit(1)
 
 
 if __name__ == "__main__":

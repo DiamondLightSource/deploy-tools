@@ -7,6 +7,7 @@ from typing import Any
 import yaml
 from pydantic import TypeAdapter
 
+from .errors import DeployToolsError
 from .layout import Layout
 from .models.deployment import (
     DefaultVersionsByName,
@@ -23,7 +24,7 @@ from .validate import validate_default_versions
 logger = logging.getLogger(__name__)
 
 
-class ComparisonError(Exception):
+class ComparisonError(DeployToolsError):
     """Raised when comparing the deployment area to its snapshot fails."""
 
 

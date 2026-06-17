@@ -6,6 +6,7 @@ from tempfile import TemporaryDirectory
 from natsort import natsorted
 
 from .build import build
+from .errors import DeployToolsError
 from .layout import Layout
 from .models.changes import DeploymentChanges, ReleaseChanges
 from .models.deployment import (
@@ -25,7 +26,7 @@ logger = logging.getLogger(__name__)
 SCRIPT_INDICATOR_PHRASE = "shell script"
 
 
-class ValidationError(Exception):
+class ValidationError(DeployToolsError):
     """Raised when the deployment configuration fails validation."""
 
 

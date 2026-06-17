@@ -3,6 +3,7 @@ import logging
 
 from git import Repo
 
+from .errors import DeployToolsError
 from .layout import Layout
 from .models.deployment import Deployment, DeploymentSettings
 from .models.save_and_load import load_from_yaml, save_as_yaml
@@ -10,7 +11,7 @@ from .models.save_and_load import load_from_yaml, save_as_yaml
 logger = logging.getLogger(__name__)
 
 
-class SnapshotError(Exception):
+class SnapshotError(DeployToolsError):
     """Raised when a deployment snapshot is missing or in an unexpected state."""
 
 

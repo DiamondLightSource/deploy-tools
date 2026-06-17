@@ -7,6 +7,7 @@ from urllib.request import urlretrieve
 from deploy_tools.models.binary_app import BinaryApp, HashType
 
 from .apptainer import create_sif_file
+from .errors import DeployToolsError
 from .layout import ModuleBuildLayout
 from .models.apptainer_app import ApptainerApp
 from .models.module import Application, Module
@@ -16,7 +17,7 @@ from .templater import Templater, TemplateType
 ALL_READ_EXECUTE_PERMISSIONS = 0o555
 
 
-class AppBuilderError(Exception):
+class AppBuilderError(DeployToolsError):
     """Raised when building an application's files fails."""
 
 
