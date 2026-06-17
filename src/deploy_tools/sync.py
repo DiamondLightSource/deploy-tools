@@ -5,7 +5,7 @@ from git import Repo
 
 from .build import build, clean_build_area
 from .deploy import deploy_changes
-from .layout import Layout
+from .layout import Layout, ModuleBuildLayout
 from .models.save_and_load import load_deployment
 from .snapshot import create_snapshot, load_snapshot
 from .templater import Templater, TemplateType
@@ -15,7 +15,12 @@ from .validate import (
 
 logger = logging.getLogger(__name__)
 
-IGNORE_DIRS = ["/build", "/modules/*/*/sif_files"]
+# Files not tracked in the deployment area's git repo (kept only as a change reference):
+# the transient build area and the large Apptainer .sif images.
+IGNORE_DIRS = [
+    f"/{Layout.DEFAULT_BUILD_ROOT_NAME}",
+    f"/{Layout.MODULES_ROOT_NAME}/*/*/{ModuleBuildLayout.SIF_FILES_FOLDER}",
+]
 
 
 def synchronise(
