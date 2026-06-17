@@ -1,7 +1,7 @@
-import subprocess
 from pathlib import Path
 
 from .errors import DeployToolsError
+from .external_tools import run_command
 
 
 class ApptainerError(DeployToolsError):
@@ -29,4 +29,4 @@ def create_sif_file(
         )
 
     commands = ["apptainer", "pull", output_path, container_url]
-    subprocess.run(commands, check=True)
+    run_command(commands, check=True)
