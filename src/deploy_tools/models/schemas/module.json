@@ -139,7 +139,8 @@
             "command_args": "",
             "mounts": [],
             "host_binaries": []
-          }
+          },
+          "description": "Options to apply for this entrypoint"
         }
       },
       "required": [

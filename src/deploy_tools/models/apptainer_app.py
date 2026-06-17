@@ -65,7 +65,7 @@ class Entrypoint(ParentModel):
     ] = None
 
     options: Annotated[
-        EntrypointOptions, Field("Options to apply for this entrypoint")
+        EntrypointOptions, Field(description="Options to apply for this entrypoint")
     ] = EntrypointOptions()
 
 
