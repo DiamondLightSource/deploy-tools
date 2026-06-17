@@ -221,118 +221,6 @@
       "title": "HashType",
       "type": "string"
     },
-    "Module": {
-      "additionalProperties": false,
-      "description": "Represents a Module to be deployed.\n\nModules can optionally include a set of applications, environment variables to load,\nand a list of module dependencies.",
-      "properties": {
-        "name": {
-          "description": "Name of module to use when loading. Must start with a letter and contain only letters, digits, hyphens or underscores.",
-          "pattern": "^[a-zA-Z][0-9a-zA-Z_-]*$",
-          "title": "Name",
-          "type": "string"
-        },
-        "version": {
-          "description": "Version of this module. This cannot include spaces, cannot start with a full stop and the filename must match as `[version].yaml`",
-          "pattern": "^[^.].*$",
-          "title": "Version",
-          "type": "string"
-        },
-        "description": {
-          "anyOf": [
-            {
-              "type": "string"
-            },
-            {
-              "type": "null"
-            }
-          ],
-          "default": null,
-          "description": "Description that can be read with the `module whatis [module-name]` command",
-          "title": "Description"
-        },
-        "dependencies": {
-          "default": [],
-          "description": "List of module dependencies",
-          "items": {
-            "$ref": "#/$defs/ModuleDependency"
-          },
-          "title": "Dependencies",
-          "type": "array"
-        },
-        "env_vars": {
-          "default": [],
-          "description": "List of environment variables to set when loading module",
-          "items": {
-            "$ref": "#/$defs/EnvVar"
-          },
-          "title": "Env Vars",
-          "type": "array"
-        },
-        "applications": {
-          "description": "Applications to be included in Module",
-          "items": {
-            "discriminator": {
-              "mapping": {
-                "apptainer": "#/$defs/ApptainerApp",
-                "binary": "#/$defs/BinaryApp",
-                "shell": "#/$defs/ShellApp"
-              },
-              "propertyName": "app_type"
-            },
-            "oneOf": [
-              {
-                "$ref": "#/$defs/ApptainerApp"
-              },
-              {
-                "$ref": "#/$defs/ShellApp"
-              },
-              {
-                "$ref": "#/$defs/BinaryApp"
-              }
-            ]
-          },
-          "title": "Applications",
-          "type": "array"
-        },
-        "allow_updates": {
-          "default": false,
-          "description": "Allow updates to this module version after initial deployment",
-          "title": "Allow Updates",
-          "type": "boolean"
-        },
-        "exclude_from_defaults": {
-          "default": false,
-          "description": "Exclude this module version from being automatically set as default, but you can still manually set it. This is used for e.g. alphas",
-          "title": "Exclude From Defaults",
-          "type": "boolean"
-        },
-        "load_script": {
-          "default": [],
-          "description": "Provide list of commands that are run on module load. You need to add `system` before any bash command (e.g. `system ls /dir`), as Modulefiles otherwise use Tcl. This field should be used carefully; please speak to a deploy-tools admin before use",
-          "items": {
-            "type": "string"
-          },
-          "title": "Load Script",
-          "type": "array"
-        },
-        "unload_script": {
-          "default": [],
-          "description": "Provide list of commands that are run on module unload. You need to add `system` before any bash command (e.g. `system ls /dir`), as Modulefiles otherwise use Tcl. This field should be used carefully; please speak to a deploy-tools admin before use",
-          "items": {
-            "type": "string"
-          },
-          "title": "Unload Script",
-          "type": "array"
-        }
-      },
-      "required": [
-        "name",
-        "version",
-        "applications"
-      ],
-      "title": "Module",
-      "type": "object"
-    },
     "ModuleDependency": {
       "additionalProperties": false,
       "description": "Specify an Environment Module to include as a dependency.\n\nIf the dependent Environment Module is managed by this same Deployment (i.e. is a\nModule), you must specify a specific version in order to pass validation.",
@@ -401,22 +289,113 @@
     }
   },
   "additionalProperties": false,
-  "description": "Represents a Module along with its lifecycle (deprecation) status.",
+  "description": "Represents a Module to be deployed.\n\nModules can optionally include a set of applications, environment variables to load,\nand a list of module dependencies.",
   "properties": {
-    "module": {
-      "$ref": "#/$defs/Module",
-      "description": "Module (name, version & configuration) to release"
+    "name": {
+      "description": "Name of module to use when loading. Must start with a letter and contain only letters, digits, hyphens or underscores.",
+      "pattern": "^[a-zA-Z][0-9a-zA-Z_-]*$",
+      "title": "Name",
+      "type": "string"
     },
-    "deprecated": {
+    "version": {
+      "description": "Version of this module. This cannot include spaces, cannot start with a full stop and the filename must match as `[version].yaml`",
+      "pattern": "^[^.].*$",
+      "title": "Version",
+      "type": "string"
+    },
+    "description": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "description": "Description that can be read with the `module whatis [module-name]` command",
+      "title": "Description"
+    },
+    "dependencies": {
+      "default": [],
+      "description": "List of module dependencies",
+      "items": {
+        "$ref": "#/$defs/ModuleDependency"
+      },
+      "title": "Dependencies",
+      "type": "array"
+    },
+    "env_vars": {
+      "default": [],
+      "description": "List of environment variables to set when loading module",
+      "items": {
+        "$ref": "#/$defs/EnvVar"
+      },
+      "title": "Env Vars",
+      "type": "array"
+    },
+    "applications": {
+      "description": "Applications to be included in Module",
+      "items": {
+        "discriminator": {
+          "mapping": {
+            "apptainer": "#/$defs/ApptainerApp",
+            "binary": "#/$defs/BinaryApp",
+            "shell": "#/$defs/ShellApp"
+          },
+          "propertyName": "app_type"
+        },
+        "oneOf": [
+          {
+            "$ref": "#/$defs/ApptainerApp"
+          },
+          {
+            "$ref": "#/$defs/ShellApp"
+          },
+          {
+            "$ref": "#/$defs/BinaryApp"
+          }
+        ]
+      },
+      "title": "Applications",
+      "type": "array"
+    },
+    "allow_updates": {
       "default": false,
-      "description": "Whether this Module version is deprecated",
-      "title": "Deprecated",
+      "description": "Allow updates to this module version after initial deployment",
+      "title": "Allow Updates",
       "type": "boolean"
+    },
+    "exclude_from_defaults": {
+      "default": false,
+      "description": "Exclude this module version from being automatically set as default, but you can still manually set it. This is used for e.g. alphas",
+      "title": "Exclude From Defaults",
+      "type": "boolean"
+    },
+    "load_script": {
+      "default": [],
+      "description": "Provide list of commands that are run on module load. You need to add `system` before any bash command (e.g. `system ls /dir`), as Modulefiles otherwise use Tcl. This field should be used carefully; please speak to a deploy-tools admin before use",
+      "items": {
+        "type": "string"
+      },
+      "title": "Load Script",
+      "type": "array"
+    },
+    "unload_script": {
+      "default": [],
+      "description": "Provide list of commands that are run on module unload. You need to add `system` before any bash command (e.g. `system ls /dir`), as Modulefiles otherwise use Tcl. This field should be used carefully; please speak to a deploy-tools admin before use",
+      "items": {
+        "type": "string"
+      },
+      "title": "Unload Script",
+      "type": "array"
     }
   },
   "required": [
-    "module"
+    "name",
+    "version",
+    "applications"
   ],
-  "title": "Release",
+  "title": "Module",
   "type": "object"
 }
