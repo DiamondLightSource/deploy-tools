@@ -68,14 +68,13 @@ def load_snapshot(layout: Layout, from_scratch: bool = False) -> Deployment:
 def load_snapshot_from_ref(layout: Layout, ref: str) -> Deployment:
     """Load the deployment snapshot from the given git ref of the deployment area."""
     logger.debug("Loading snapshot from ref: %s", ref)
-    repo = Repo(layout.deployment_root)
+    with Repo(layout.deployment_root) as repo:
+        try:
+            ref_snapshot = repo.commit(ref).tree[layout.DEPLOYMENT_SNAPSHOT_FILENAME]
+        except (BadName, KeyError) as exc:
+            raise SnapshotError(
+                f"Deployment snapshot not found at git ref:\n{ref}"
+            ) from exc
 
-    try:
-        ref_snapshot = repo.commit(ref).tree[layout.DEPLOYMENT_SNAPSHOT_FILENAME]
-    except (BadName, KeyError) as exc:
-        raise SnapshotError(
-            f"Deployment snapshot not found at git ref:\n{ref}"
-        ) from exc
-
-    with io.BytesIO(ref_snapshot.data_stream.read()) as snapshot_f:  # type: ignore
-        return load_from_yaml(Deployment, snapshot_f)
+        with io.BytesIO(ref_snapshot.data_stream.read()) as snapshot_f:  # type: ignore
+            return load_from_yaml(Deployment, snapshot_f)

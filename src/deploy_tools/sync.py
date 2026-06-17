@@ -52,16 +52,17 @@ def synchronise(
     else:
         repo = Repo(layout.deployment_root)
 
-    logger.info("Creating snapshot")
-    create_snapshot(deployment, layout)
+    with repo:
+        logger.info("Creating snapshot")
+        create_snapshot(deployment, layout)
 
-    logger.info("Deploying changes")
-    deploy_changes(deployment_changes, layout)
+        logger.info("Deploying changes")
+        deploy_changes(deployment_changes, layout)
 
-    logger.info("Committing changes to git (for reference)")
-    repo.git.add("--all")
-    commit = repo.index.commit("Performed sync process")
-    logger.info("Commit SHA: %s", commit.hexsha)
+        logger.info("Committing changes to git (for reference)")
+        repo.git.add("--all")
+        commit = repo.index.commit("Performed sync process")
+        logger.info("Commit SHA: %s", commit.hexsha)
 
     logger.info("Sync process finished")
 
