@@ -5,15 +5,11 @@ module:
   version: "1.0"
   description: Shell module excluded from defaults with no eligible fallback
 
-  env_vars:
-    - name: SHELL_VALUE
-      value: hello
-
   applications:
     - app_type: shell
 
       name: test-shell-echo
       script:
-        - echo $SHELL_VALUE
+        - echo hello
 
   exclude_from_defaults: true

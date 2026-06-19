@@ -5,13 +5,11 @@ module:
   version: "1.0"
   description: Minimal shell-only module used by the validate tests
 
-  env_vars:
-    - name: SHELL_VALUE
-      value: changed
-
   applications:
     - app_type: shell
 
       name: test-shell-echo
+      # Differs from the valid/minimal baseline (echo hello) so that deploying this over
+      # it is an in-place modification, rejected without allow_updates / a version bump.
       script:
-        - echo $SHELL_VALUE
+        - echo modified
