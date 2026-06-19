@@ -23,3 +23,19 @@ def test_load_rejects_malformed_config_layout(
         run_cli(
             "validate", "--from-scratch", tmp_path, configs / "invalid" / config_name
         )
+
+
+def test_load_surfaces_invalid_field_in_error(tmp_path: Path, configs: Path) -> None:
+    # A config that fails model validation must raise a clean LoadError that names the
+    # offending field; the top-level handler hides the traceback, so the field detail is
+    # only visible if carried in the message.
+    with pytest.raises(LoadError) as exc_info:
+        run_cli(
+            "validate",
+            "--from-scratch",
+            tmp_path,
+            configs / "invalid" / "invalid-module-field",
+        )
+    message = str(exc_info.value)
+    assert "Module configuration is invalid" in message
+    assert "module.name" in message
