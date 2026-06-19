@@ -34,7 +34,7 @@ def test_load_surfaces_invalid_field_in_error(tmp_path: Path, configs: Path) -> 
             "validate",
             "--from-scratch",
             tmp_path,
-            configs / "invalid" / "invalid-module-field",
+            configs / "invalid" / "invalid-module-name",
         )
     message = str(exc_info.value)
     assert "Module configuration is invalid" in message

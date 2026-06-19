@@ -10,8 +10,8 @@ from deploy_tools.validate import ValidationError
 # resulting ValidationError.
 INVALID_INITIAL_CONFIGS = [
     ("unknown-dependency", "unknown module dependency"),
-    ("missing-default", "Unable to configure"),
-    ("all-excluded-defaults", "exclude_from_defaults"),
+    ("default-version-not-deployed", "Unable to configure"),
+    ("no-eligible-default", "exclude_from_defaults"),
 ]
 
 
@@ -32,7 +32,9 @@ def test_validate_rejects_update_without_allow_updates(
     # config that changes that module in place: this must be rejected.
     run_cli("sync", "--from-scratch", tmp_path, configs / "valid" / "minimal")
     with pytest.raises(ValidationError, match="modified without updating version"):
-        run_cli("validate", tmp_path, configs / "invalid" / "modified-no-allow-updates")
+        run_cli(
+            "validate", tmp_path, configs / "invalid" / "modified-without-allow-updates"
+        )
 
 
 def test_validate_rejects_removal_without_deprecation(
@@ -42,7 +44,9 @@ def test_validate_rejects_removal_without_deprecation(
     # deprecating it (and without --allow-all): this must be rejected.
     run_cli("sync", "--from-scratch", tmp_path, configs / "valid" / "minimal")
     with pytest.raises(ValidationError, match="removed without prior deprecation"):
-        run_cli("validate", tmp_path, configs / "invalid" / "removed-no-deprecation")
+        run_cli(
+            "validate", tmp_path, configs / "invalid" / "removed-without-deprecation"
+        )
 
 
 def test_validate_rejects_added_deprecated_module(
@@ -53,7 +57,7 @@ def test_validate_rejects_added_deprecated_module(
     # is only allowed with --allow-all, so a normal validate must reject it.
     run_cli("sync", "--from-scratch", tmp_path, configs / "valid" / "minimal")
     with pytest.raises(ValidationError, match="cannot have deprecated status"):
-        run_cli("validate", tmp_path, configs / "invalid" / "added-deprecated")
+        run_cli("validate", tmp_path, configs / "invalid" / "deprecated-on-creation")
 
 
 def test_validate_allows_added_deprecated_module_with_allow_all(
@@ -63,7 +67,10 @@ def test_validate_allows_added_deprecated_module_with_allow_all(
     # release on initial creation.
     run_cli("sync", "--from-scratch", tmp_path, configs / "valid" / "minimal")
     run_cli(
-        "validate", "--allow-all", tmp_path, configs / "invalid" / "added-deprecated"
+        "validate",
+        "--allow-all",
+        tmp_path,
+        configs / "invalid" / "deprecated-on-creation",
     )
 
 
