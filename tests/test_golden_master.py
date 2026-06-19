@@ -86,32 +86,41 @@ def test_module_lifecycle(
 
     # Stage 1: deploy the initial configuration into an empty area.
     _assert_validate_matches(
-        samples / "01-initial", "--from-scratch", tmp_path, configs / "01-initial"
+        samples / "01-initial",
+        "--from-scratch",
+        tmp_path,
+        configs / "golden-master" / "01-initial",
     )
-    run_cli("sync", "--from-scratch", tmp_path, configs / "01-initial")
+    run_cli(
+        "sync", "--from-scratch", tmp_path, configs / "golden-master" / "01-initial"
+    )
     _assert_expected_files_match(samples / "01-initial" / DEPLOYMENT_DIRNAME, tmp_path)
 
     # Stage 2: deploy a brand-new module on an incremental (non from-scratch) sync. Its
     # files and modulefile link should appear, while the modules already deployed are
     # left untouched (this stage's golden master still contains them unchanged).
-    _assert_validate_matches(samples / "02-added", tmp_path, configs / "02-added")
-    run_cli("sync", tmp_path, configs / "02-added")
+    _assert_validate_matches(
+        samples / "02-added", tmp_path, configs / "golden-master" / "02-added"
+    )
+    run_cli("sync", tmp_path, configs / "golden-master" / "02-added")
     _assert_expected_files_match(samples / "02-added" / DEPLOYMENT_DIRNAME, tmp_path)
 
     # Stage 3: update example-module-extra/1.0 in place. Its config changed and it was
     # deployed with allow_updates, so the module is rebuilt and replaced; the golden
     # master captures the new modulefile contents.
-    _assert_validate_matches(samples / "03-updated", tmp_path, configs / "03-updated")
-    run_cli("sync", tmp_path, configs / "03-updated")
+    _assert_validate_matches(
+        samples / "03-updated", tmp_path, configs / "golden-master" / "03-updated"
+    )
+    run_cli("sync", tmp_path, configs / "golden-master" / "03-updated")
     _assert_expected_files_match(samples / "03-updated" / DEPLOYMENT_DIRNAME, tmp_path)
 
     # Stage 4: deprecate example-module-deps/0.2 (en route to removal) and
     # example-module-extra/1.0 (to set up the restore that follows). Both modulefile
     # links move out of the live area into the deprecated area; built modules stay put.
     _assert_validate_matches(
-        samples / "04-deprecated", tmp_path, configs / "04-deprecated"
+        samples / "04-deprecated", tmp_path, configs / "golden-master" / "04-deprecated"
     )
-    run_cli("sync", tmp_path, configs / "04-deprecated")
+    run_cli("sync", tmp_path, configs / "golden-master" / "04-deprecated")
     _assert_expected_files_match(
         samples / "04-deprecated" / DEPLOYMENT_DIRNAME, tmp_path
     )
@@ -123,15 +132,19 @@ def test_module_lifecycle(
 
     # Stage 5: restore example-module-extra/1.0 by un-deprecating it. Its modulefile
     # link moves back into the live area; example-module-deps/0.2 stays deprecated.
-    _assert_validate_matches(samples / "05-restored", tmp_path, configs / "05-restored")
-    run_cli("sync", tmp_path, configs / "05-restored")
+    _assert_validate_matches(
+        samples / "05-restored", tmp_path, configs / "golden-master" / "05-restored"
+    )
+    run_cli("sync", tmp_path, configs / "golden-master" / "05-restored")
     _assert_expected_files_match(samples / "05-restored" / DEPLOYMENT_DIRNAME, tmp_path)
     _assert_absent(tmp_path, "deprecated/modulefiles/example-module-extra")
 
     # Stage 6: remove the now-deprecated example-module-deps/0.2 entirely. Both its
     # modulefile link and built module should be gone; example-module-extra remains.
-    _assert_validate_matches(samples / "06-removed", tmp_path, configs / "06-removed")
-    run_cli("sync", tmp_path, configs / "06-removed")
+    _assert_validate_matches(
+        samples / "06-removed", tmp_path, configs / "golden-master" / "06-removed"
+    )
+    run_cli("sync", tmp_path, configs / "golden-master" / "06-removed")
     _assert_expected_files_match(samples / "06-removed" / DEPLOYMENT_DIRNAME, tmp_path)
     _assert_absent(
         tmp_path,

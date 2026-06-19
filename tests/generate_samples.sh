@@ -5,6 +5,7 @@ set -xe
 THIS_DIR=$(realpath $(dirname ${0}))
 SAMPLES_DIR=${THIS_DIR}/samples
 CONFIGS_DIR=${THIS_DIR}/configs
+GM_CONFIGS_DIR=${CONFIGS_DIR}/golden-master
 TMP_DIR=/tmp/deploy-tools-output
 
 rm -rf "${SAMPLES_DIR}"
@@ -37,7 +38,7 @@ capture_validate () {
     local stage=${1}
     shift
     mkdir -p "${SAMPLES_DIR}/${stage}"
-    deploy-tools validate "$@" "${TMP_DIR}" "${CONFIGS_DIR}/${stage}" \
+    deploy-tools validate "$@" "${TMP_DIR}" "${GM_CONFIGS_DIR}/${stage}" \
         > "${SAMPLES_DIR}/${stage}/validate.txt"
 }
 
@@ -47,30 +48,30 @@ capture_validate () {
 
 # Stage 1: deploy the initial configuration into an empty area.
 capture_validate 01-initial --from-scratch
-deploy-tools sync --from-scratch "${TMP_DIR}" "${CONFIGS_DIR}/01-initial"
+deploy-tools sync --from-scratch "${TMP_DIR}" "${GM_CONFIGS_DIR}/01-initial"
 save_sample 01-initial
 
 # Stage 2: add a new module (example-module-extra/1.0) on an incremental sync.
 capture_validate 02-added
-deploy-tools sync "${TMP_DIR}" "${CONFIGS_DIR}/02-added"
+deploy-tools sync "${TMP_DIR}" "${GM_CONFIGS_DIR}/02-added"
 save_sample 02-added
 
 # Stage 3: update example-module-extra/1.0 in place (allowed via allow_updates).
 capture_validate 03-updated
-deploy-tools sync "${TMP_DIR}" "${CONFIGS_DIR}/03-updated"
+deploy-tools sync "${TMP_DIR}" "${GM_CONFIGS_DIR}/03-updated"
 save_sample 03-updated
 
 # Stage 4: deprecate example-module-deps/0.2 and example-module-extra/1.0.
 capture_validate 04-deprecated
-deploy-tools sync "${TMP_DIR}" "${CONFIGS_DIR}/04-deprecated"
+deploy-tools sync "${TMP_DIR}" "${GM_CONFIGS_DIR}/04-deprecated"
 save_sample 04-deprecated
 
 # Stage 5: restore (un-deprecate) example-module-extra/1.0.
 capture_validate 05-restored
-deploy-tools sync "${TMP_DIR}" "${CONFIGS_DIR}/05-restored"
+deploy-tools sync "${TMP_DIR}" "${GM_CONFIGS_DIR}/05-restored"
 save_sample 05-restored
 
 # Stage 6: remove the now-deprecated example-module-deps/0.2 entirely.
 capture_validate 06-removed
-deploy-tools sync "${TMP_DIR}" "${CONFIGS_DIR}/06-removed"
+deploy-tools sync "${TMP_DIR}" "${GM_CONFIGS_DIR}/06-removed"
 save_sample 06-removed
