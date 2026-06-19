@@ -1,8 +1,7 @@
 """Tests for Module/app options that drive otherwise-untested template branches.
 
 These CLI-driven ``sync`` tests build a config from typed models, set each option to a
-representative value, and assert the rendered output. They are kept out of the
-golden master tests to avoid bloat.
+representative value, and assert the rendered output.
 """
 
 from pathlib import Path
@@ -15,7 +14,7 @@ from deploy_tools.models.apptainer_app import (
     EntrypointOptions,
 )
 from deploy_tools.models.deployment import DeploymentSettings
-from deploy_tools.models.module import Module, Release
+from deploy_tools.models.module import EnvVar, Module, ModuleDependency, Release
 from deploy_tools.models.save_and_load import (
     DEPLOYMENT_SETTINGS,
     YAML_FILE_SUFFIX,
@@ -24,24 +23,25 @@ from deploy_tools.models.save_and_load import (
 from deploy_tools.models.shell_app import ShellApp
 
 
-def _sync(tmp_path: Path, release: Release) -> Path:
-    """Serialise a single-module config under ``tmp_path`` and ``sync`` it from scratch.
+def _sync(tmp_path: Path, *releases: Release) -> Path:
+    """Serialise a config of the given releases under ``tmp_path`` and ``sync`` it.
 
     Args:
         tmp_path: The per-test scratch directory.
-        release: The Release to deploy as the sole module.
+        releases: The Releases to deploy from scratch.
 
     Returns:
-        The deployment root the module was synced into.
+        The deployment root the modules were synced into.
     """
-    module = release.module
     config_folder = tmp_path / "config"
     save_as_yaml(DeploymentSettings(), config_folder / DEPLOYMENT_SETTINGS, True)
-    save_as_yaml(
-        release,
-        config_folder / module.name / f"{module.version}{YAML_FILE_SUFFIX}",
-        True,
-    )
+    for release in releases:
+        module = release.module
+        save_as_yaml(
+            release,
+            config_folder / module.name / f"{module.version}{YAML_FILE_SUFFIX}",
+            True,
+        )
 
     deployment_root = tmp_path / "deployment"
     deployment_root.mkdir()
@@ -127,3 +127,59 @@ def test_apptainer_options_merge_global_and_entrypoint(
     assert 'command_args="--global-cmd --local-cmd"' in entrypoint
     assert "for i in globalbin localbin; do" in entrypoint
     assert 'command="realcmd"' in entrypoint
+
+
+def test_dependencies_render_module_load_lines(tmp_path: Path) -> None:
+    # The modulefile dependency block branches on whether a version is given: a managed
+    # dependency pins a version, while a version-less dependency (valid only for modules
+    # not managed by deploy-tools) renders the bare module name.
+    dependency = Release(
+        module=Module(
+            name="example-dependency",
+            version="1.0",
+            description="Managed module used as a versioned dependency target",
+            applications=[],
+        )
+    )
+    dependent = Release(
+        module=Module(
+            name="example-dependent",
+            version="1.0",
+            description="Module with a managed and an external dependency",
+            dependencies=[
+                ModuleDependency(name="example-dependency", version="1.0"),
+                ModuleDependency(name="external-module"),
+            ],
+            applications=[],
+        )
+    )
+    deployment_root = _sync(tmp_path, dependency, dependent)
+
+    modulefile = (
+        deployment_root / "modules/example-dependent/1.0/modulefile"
+    ).read_text()
+
+    # Versioned dependency renders with its version. The version-less external one
+    # renders the bare module name.
+    assert "module load example-dependency/1.0" in modulefile
+    assert "module load external-module\n" in modulefile
+
+
+def test_env_vars_render_setenv(tmp_path: Path) -> None:
+    # env_vars render as setenv lines in the modulefile; assert one is emitted.
+    release = Release(
+        module=Module(
+            name="example-env-vars",
+            version="1.0",
+            description="Module exercising environment variable rendering",
+            env_vars=[EnvVar(name="EXAMPLE_VAR", value="example-value")],
+            applications=[],
+        )
+    )
+    deployment_root = _sync(tmp_path, release)
+
+    modulefile = (
+        deployment_root / "modules/example-env-vars/1.0/modulefile"
+    ).read_text()
+
+    assert 'setenv EXAMPLE_VAR "example-value"' in modulefile
