@@ -14,7 +14,6 @@ properties as tables.
 
 schemas/deployment-settings
 schemas/deployment
-schemas/module
 schemas/release
 ```
 
