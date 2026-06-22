@@ -5,6 +5,7 @@ import pytest
 
 from conftest import run_cli
 from deploy_tools.layout import Layout
+from deploy_tools.snapshot import SnapshotError
 from deploy_tools.sync import SyncError
 
 MODULE_NAME = "example-module-multi"
@@ -45,3 +46,14 @@ def test_sync_rejects_deployment_area_without_git_repo(
 
     with pytest.raises(SyncError, match="not a git repository"):
         run_cli("sync", tmp_path, configs / "valid" / "multi-version-active")
+
+
+def test_sync_from_scratch_rejects_existing_snapshot(
+    tmp_path: Path, configs: Path
+) -> None:
+    # --from-scratch must refuse to run when the area already holds a snapshot.
+    run_cli("sync", "--from-scratch", tmp_path, configs / "valid" / "minimal")
+    with pytest.raises(
+        SnapshotError, match="must not exist when deploying from scratch"
+    ):
+        run_cli("sync", "--from-scratch", tmp_path, configs / "valid" / "minimal")
