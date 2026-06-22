@@ -1,5 +1,7 @@
 Modules to be deployed:
-example-module-extra/1.0
+updatable/1.0
+versions/2.0
 
 Updated module defaults:
-example-module-extra None -> 1.0
+updatable None -> 1.0
+versions 1.0 -> 2.0

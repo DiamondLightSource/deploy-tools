@@ -1,5 +1,5 @@
 releases:
-  example-module-apps:
+  apps:
     '0.1':
       deprecated: false
       module:
@@ -33,30 +33,46 @@ releases:
           - echo and this is the second line.
           - echo Your input is ${1}
         dependencies: []
-        description: Demonstration of a module configuration folder
+        description: Module demonstrating shell and Apptainer applications
         env_vars:
         - name: OTHER_VALUE
           value: Version 0.1
         exclude_from_defaults: false
         load_script: []
-        name: example-module-apps
+        name: apps
         unload_script: []
         version: '0.1'
-  example-module-deps:
+  deps:
     '0.2':
       deprecated: false
       module:
         allow_updates: false
         applications: []
         dependencies:
-        - name: example-module-apps
+        - name: apps
           version: '0.1'
-        description: Demonstration of deploy-tools dependencies
+        - name: external-module
+          version: null
+        description: Module demonstrating dependencies
         env_vars: []
         exclude_from_defaults: false
         load_script: []
-        name: example-module-deps
+        name: deps
         unload_script: []
         version: '0.2'
+  versions:
+    '1.0':
+      deprecated: false
+      module:
+        allow_updates: false
+        applications: []
+        dependencies: []
+        description: Module demonstrating multiple versions and default-version selection
+        env_vars: []
+        exclude_from_defaults: false
+        load_script: []
+        name: versions
+        unload_script: []
+        version: '1.0'
 settings:
   default_versions: {}

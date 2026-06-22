@@ -1,0 +1,13 @@
+#%Module1.0
+##
+## versions - Module demonstrating multiple versions and default-version selection
+##
+module-whatis "Module demonstrating multiple versions and default-version selection"
+
+if { [module-info mode load] } {
+    if { [is-loaded versions] } {
+      module unload versions
+    }
+}
+
+prepend-path PATH "/tmp/deploy-tools-output/modules/versions/1.0/entrypoints"

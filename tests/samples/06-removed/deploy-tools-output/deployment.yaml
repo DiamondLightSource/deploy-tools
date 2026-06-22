@@ -1,5 +1,5 @@
 releases:
-  example-module-apps:
+  apps:
     '0.1':
       deprecated: false
       module:
@@ -33,34 +33,79 @@ releases:
           - echo and this is the second line.
           - echo Your input is ${1}
         dependencies: []
-        description: Demonstration of a module configuration folder
+        description: Module demonstrating shell and Apptainer applications
         env_vars:
         - name: OTHER_VALUE
           value: Version 0.1
         exclude_from_defaults: false
         load_script: []
-        name: example-module-apps
+        name: apps
         unload_script: []
         version: '0.1'
-  example-module-extra:
+  deps:
+    '0.2':
+      deprecated: false
+      module:
+        allow_updates: false
+        applications: []
+        dependencies:
+        - name: apps
+          version: '0.1'
+        - name: external-module
+          version: null
+        description: Module demonstrating dependencies
+        env_vars: []
+        exclude_from_defaults: false
+        load_script: []
+        name: deps
+        unload_script: []
+        version: '0.2'
+  updatable:
     '1.0':
       deprecated: false
       module:
         allow_updates: true
         applications:
         - app_type: shell
-          name: test-extra-echo
+          name: test-updatable-echo
           script:
-          - echo $EXTRA_VALUE
+          - echo $UPDATABLE_VALUE
         dependencies: []
-        description: Demonstration of adding a module in a later sync
+        description: Module demonstrating in-place updates (allow_updates)
         env_vars:
-        - name: EXTRA_VALUE
+        - name: UPDATABLE_VALUE
           value: Updated in a later sync
         exclude_from_defaults: false
         load_script: []
-        name: example-module-extra
+        name: updatable
         unload_script: []
         version: '1.0'
+  versions:
+    '2.0':
+      deprecated: false
+      module:
+        allow_updates: false
+        applications: []
+        dependencies: []
+        description: Module demonstrating multiple versions and default-version selection
+        env_vars: []
+        exclude_from_defaults: false
+        load_script: []
+        name: versions
+        unload_script: []
+        version: '2.0'
+    2.1rc1:
+      deprecated: false
+      module:
+        allow_updates: false
+        applications: []
+        dependencies: []
+        description: Module demonstrating multiple versions and default-version selection
+        env_vars: []
+        exclude_from_defaults: true
+        load_script: []
+        name: versions
+        unload_script: []
+        version: 2.1rc1
 settings:
   default_versions: {}

@@ -1,4 +1,4 @@
 Modules to be removed:
-example-module-deps/0.2
+versions/1.0
 
 No default version changes

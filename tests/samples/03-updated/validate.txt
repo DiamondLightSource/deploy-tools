@@ -1,4 +1,7 @@
+Modules to be deployed:
+versions/2.1rc1
+
 Modules to be updated:
-example-module-extra/1.0
+updatable/1.0
 
 No default version changes

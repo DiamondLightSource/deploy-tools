@@ -1,0 +1,14 @@
+allow_updates: false
+applications: []
+dependencies:
+- name: apps
+  version: '0.1'
+- name: external-module
+  version: null
+description: Module demonstrating dependencies
+env_vars: []
+exclude_from_defaults: false
+load_script: []
+name: deps
+unload_script: []
+version: '0.2'

@@ -1,7 +1,5 @@
 Modules to be deprecated:
-example-module-deps/0.2
-example-module-extra/1.0
+versions/1.0
+versions/2.1rc1
 
-Updated module defaults:
-example-module-deps 0.2 -> None
-example-module-extra 1.0 -> None
+No default version changes

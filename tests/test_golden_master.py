@@ -111,50 +111,50 @@ def test_module_lifecycle(
     # tmp_path is a fresh, empty, per-test directory; the stages below share it as one
     # deployment area, each building on the previous state, with no cross-run leakage.
 
-    # Stage 1: deploy the initial configuration into an empty area.
+    # Stage 1: deploy apps, deps, and versions/1.0 into an empty area.
     _run_stage(samples, configs, tmp_path, "01-initial", from_scratch=True)
 
-    # Stage 2: deploy a brand-new module on an incremental (non from-scratch) sync; the
-    # modules already deployed are left untouched.
+    # Stage 2: on an incremental sync, add the updatable module and a second version
+    # (versions/2.0); the default version migrates from 1.0 to 2.0.
     _run_stage(samples, configs, tmp_path, "02-added")
 
-    # Stage 3: update example-module-extra/1.0 in place (allowed via allow_updates), so
-    # the module is rebuilt and its modulefile contents change.
+    # Stage 3: update updatable/1.0 in place (allowed via allow_updates) and add an
+    # excluded prerelease (versions/2.1rc1); the default stays 2.0.
     _run_stage(samples, configs, tmp_path, "03-updated")
 
-    # Stage 4: deprecate example-module-deps/0.2 (en route to removal) and
-    # example-module-extra/1.0 (to set up the restore that follows). Both modulefile
-    # links move out of the live area into the deprecated area; built modules stay put.
+    # Stage 4: deprecate versions/1.0 (en route to removal) and versions/2.1rc1 (to set
+    # up the restore that follows). Their live modulefile links move into the deprecated
+    # area; the built modules and versions/2.0 (still the default) stay put.
     _run_stage(
         samples,
         configs,
         tmp_path,
         "04-deprecated",
         absent=(
-            "modulefiles/example-module-deps",
-            "modulefiles/example-module-extra",
+            "modulefiles/versions/1.0",
+            "modulefiles/versions/2.1rc1",
         ),
     )
 
-    # Stage 5: restore example-module-extra/1.0 by un-deprecating it. Its modulefile
-    # link moves back into the live area; example-module-deps/0.2 stays deprecated.
+    # Stage 5: restore versions/2.1rc1 by un-deprecating it. Its modulefile link moves
+    # back into the live area; versions/1.0 stays deprecated.
     _run_stage(
         samples,
         configs,
         tmp_path,
         "05-restored",
-        absent=("deprecated/modulefiles/example-module-extra",),
+        absent=("deprecated/modulefiles/versions/2.1rc1",),
     )
 
-    # Stage 6: remove the now-deprecated example-module-deps/0.2 entirely. Both its
-    # modulefile link and built module should be gone; example-module-extra remains.
+    # Stage 6: remove the now-deprecated versions/1.0 entirely. Both its modulefile link
+    # and built module should be gone; versions/2.0 and 2.1rc1 remain.
     _run_stage(
         samples,
         configs,
         tmp_path,
         "06-removed",
         absent=(
-            "modules/example-module-deps",
-            "deprecated/modulefiles/example-module-deps",
+            "modules/versions/1.0",
+            "deprecated/modulefiles/versions/1.0",
         ),
     )

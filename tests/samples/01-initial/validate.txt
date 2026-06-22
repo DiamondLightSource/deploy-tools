@@ -1,7 +1,9 @@
 Modules to be deployed:
-example-module-apps/0.1
-example-module-deps/0.2
+apps/0.1
+deps/0.2
+versions/1.0
 
 Updated module defaults:
-example-module-apps None -> 0.1
-example-module-deps None -> 0.2
+apps None -> 0.1
+deps None -> 0.2
+versions None -> 1.0

@@ -44,34 +44,34 @@ capture_validate () {
 
 # The lifecycle stages share a single deployment area and must run in order, as
 # each stage builds on the previous deployment state. Only the first sync
-# uses --from-scratch.
+# uses --from-scratch. See tests/test_golden_master.py for what each stage demonstrates.
 
-# Stage 1: deploy the initial configuration into an empty area.
+# Stage 1
 capture_validate 01-initial --from-scratch
 deploy-tools sync --from-scratch "${TMP_DIR}" "${GM_CONFIGS_DIR}/01-initial"
 save_sample 01-initial
 
-# Stage 2: add a new module (example-module-extra/1.0) on an incremental sync.
+# Stage 2
 capture_validate 02-added
 deploy-tools sync "${TMP_DIR}" "${GM_CONFIGS_DIR}/02-added"
 save_sample 02-added
 
-# Stage 3: update example-module-extra/1.0 in place (allowed via allow_updates).
+# Stage 3
 capture_validate 03-updated
 deploy-tools sync "${TMP_DIR}" "${GM_CONFIGS_DIR}/03-updated"
 save_sample 03-updated
 
-# Stage 4: deprecate example-module-deps/0.2 and example-module-extra/1.0.
+# Stage 4
 capture_validate 04-deprecated
 deploy-tools sync "${TMP_DIR}" "${GM_CONFIGS_DIR}/04-deprecated"
 save_sample 04-deprecated
 
-# Stage 5: restore (un-deprecate) example-module-extra/1.0.
+# Stage 5
 capture_validate 05-restored
 deploy-tools sync "${TMP_DIR}" "${GM_CONFIGS_DIR}/05-restored"
 save_sample 05-restored
 
-# Stage 6: remove the now-deprecated example-module-deps/0.2 entirely.
+# Stage 6
 capture_validate 06-removed
 deploy-tools sync "${TMP_DIR}" "${GM_CONFIGS_DIR}/06-removed"
 save_sample 06-removed

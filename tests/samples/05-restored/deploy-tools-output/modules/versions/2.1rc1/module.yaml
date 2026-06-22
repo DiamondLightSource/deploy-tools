@@ -1,0 +1,10 @@
+allow_updates: false
+applications: []
+dependencies: []
+description: Module demonstrating multiple versions and default-version selection
+env_vars: []
+exclude_from_defaults: true
+load_script: []
+name: versions
+unload_script: []
+version: 2.1rc1

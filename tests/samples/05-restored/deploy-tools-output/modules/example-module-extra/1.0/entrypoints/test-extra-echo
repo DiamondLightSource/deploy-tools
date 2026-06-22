@@ -1,7 +1,0 @@
-#! /bin/bash
-
-if [[ -n "${DEPLOY_TOOLS_VERBOSE}" ]]; then
-    set -x
-fi
-
-echo $EXTRA_VALUE

@@ -1,0 +1,15 @@
+#%Module1.0
+##
+## apps - Module demonstrating shell and Apptainer applications
+##
+module-whatis "Module demonstrating shell and Apptainer applications"
+
+if { [module-info mode load] } {
+    if { [is-loaded apps] } {
+      module unload apps
+    }
+}
+
+setenv OTHER_VALUE "Version 0.1"
+
+prepend-path PATH "/tmp/deploy-tools-output/modules/apps/0.1/entrypoints"

@@ -1,0 +1,16 @@
+#%Module1.0
+##
+## deps - Module demonstrating dependencies
+##
+module-whatis "Module demonstrating dependencies"
+
+if { [module-info mode load] } {
+    if { [is-loaded deps] } {
+      module unload deps
+    }
+}
+
+module load apps/0.1
+module load external-module
+
+prepend-path PATH "/tmp/deploy-tools-output/modules/deps/0.2/entrypoints"
