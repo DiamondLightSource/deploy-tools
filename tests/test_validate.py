@@ -84,3 +84,27 @@ def test_validate_test_build(tmp_path: Path, configs: Path) -> None:
         tmp_path,
         configs / "valid" / "minimal",
     )
+
+
+def test_validate_test_build_rejects_invalid_script(
+    tmp_path: Path, configs: Path
+) -> None:
+    # --test-build runs `bash -n` over each generated shell entrypoint, so a script that
+    # is not valid bash must be rejected.
+    with pytest.raises(ValidationError, match="is invalid with errors"):
+        run_cli(
+            "validate",
+            "--test-build",
+            "--from-scratch",
+            tmp_path,
+            configs / "invalid" / "invalid-shell-script",
+        )
+
+
+def test_validate_reports_no_actions_when_unchanged(
+    tmp_path: Path, configs: Path
+) -> None:
+    # Validating a config that is already fully deployed previews no changes.
+    run_cli("sync", "--from-scratch", tmp_path, configs / "valid" / "minimal")
+    output = run_cli("validate", tmp_path, configs / "valid" / "minimal")
+    assert "No release actions required" in output
