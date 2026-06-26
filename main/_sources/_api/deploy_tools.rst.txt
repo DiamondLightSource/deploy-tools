@@ -6,6 +6,28 @@
 
     
     
+    .. rubric:: Submodules
+
+    .. autosummary::
+        :toctree:
+        :template: custom-module-template.rst
+        :recursive:
+    
+        app_builder
+        apptainer
+        build
+        compare
+        deploy
+        layout
+        models
+        module_builder
+        modulefile
+        print_updates
+        snapshot
+        sync
+        templater
+        validate
+    
     
 
     

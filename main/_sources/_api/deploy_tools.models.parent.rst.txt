@@ -1,0 +1,21 @@
+``deploy_tools.models.parent``
+==============================
+        
+
+.. automodule:: deploy_tools.models.parent
+    :members:
+
+    
+    
+    
+
+    
+    
+    .. rubric:: Members
+
+    .. autosummary::
+        :nosignatures:
+    
+        ParentModel
+    
+    

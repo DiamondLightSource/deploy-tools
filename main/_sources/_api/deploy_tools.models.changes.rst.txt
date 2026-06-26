@@ -1,0 +1,23 @@
+``deploy_tools.models.changes``
+===============================
+        
+        
+
+.. automodule:: deploy_tools.models.changes
+    :members:
+
+    
+    
+    
+
+    
+    
+    .. rubric:: Members
+
+    .. autosummary::
+        :nosignatures:
+    
+        DeploymentChanges
+        ReleaseChanges
+    
+    

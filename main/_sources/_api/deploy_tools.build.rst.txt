@@ -1,0 +1,23 @@
+``deploy_tools.build``
+======================
+        
+        
+
+.. automodule:: deploy_tools.build
+    :members:
+
+    
+    
+    
+
+    
+    
+    .. rubric:: Members
+
+    .. autosummary::
+        :nosignatures:
+    
+        build
+        clean_build_area
+    
+    

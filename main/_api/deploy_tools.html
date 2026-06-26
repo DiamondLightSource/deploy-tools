@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>deploy_tools &#8212; deploy-tools 0.7.2.dev1+g3c74e897d documentation</title>
+    <title>deploy_tools &#8212; deploy-tools 0.7.2.dev26+g093ffa892 documentation</title>
   
   
   
@@ -33,6 +33,7 @@
     <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=03e43079" />
     <link rel="stylesheet" type="text/css" href="../_static/graphviz.css?v=4ae1632d" />
     <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../_static/autodoc_pydantic.css" />
     <link rel="stylesheet" type="text/css" href="../_static/sphinx-design.min.css?v=95c83b7e" />
   
   <!-- So that users can add custom icons -->
@@ -41,7 +42,7 @@
   <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=a95f357e85573c9b56d5" />
 <link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=a95f357e85573c9b56d5" />
 
-    <script src="../_static/documentation_options.js?v=0b10b7a6"></script>
+    <script src="../_static/documentation_options.js?v=d0788f0c"></script>
     <script src="../_static/doctools.js?v=fd6eb6e6"></script>
     <script src="../_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
@@ -59,8 +60,8 @@
     <link rel="icon" href="../_static/dls-logo.svg"/>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="Index" href="../genindex.html" />
-    <link rel="prev" title="Reference" href="../reference.html" />
+    <link rel="next" title="deploy_tools.app_builder" href="deploy_tools.app_builder.html" />
+    <link rel="prev" title="Command-line interface" href="../cli.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
   <meta name="docsearch:version" content="main" />
@@ -421,7 +422,41 @@
      aria-label="Section Navigation">
   <p class="bd-links__title" role="heading" aria-level="1">Section Navigation</p>
   <div class="bd-toc-item navbar-nav"><ul class="current nav bd-sidenav">
-<li class="toctree-l1 current active"><a class="current reference internal" href="#">API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../cli.html">CLI</a></li>
+<li class="toctree-l1 current active has-children"><a class="current reference internal" href="#">API</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="deploy_tools.app_builder.html"><code class="docutils literal notranslate"><span class="pre">deploy_tools.app_builder</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="deploy_tools.apptainer.html"><code class="docutils literal notranslate"><span class="pre">deploy_tools.apptainer</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="deploy_tools.build.html"><code class="docutils literal notranslate"><span class="pre">deploy_tools.build</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="deploy_tools.compare.html"><code class="docutils literal notranslate"><span class="pre">deploy_tools.compare</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="deploy_tools.deploy.html"><code class="docutils literal notranslate"><span class="pre">deploy_tools.deploy</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="deploy_tools.layout.html"><code class="docutils literal notranslate"><span class="pre">deploy_tools.layout</span></code></a></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="deploy_tools.models.html"><code class="docutils literal notranslate"><span class="pre">deploy_tools.models</span></code></a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="deploy_tools.models.app.html"><code class="docutils literal notranslate"><span class="pre">deploy_tools.models.app</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="deploy_tools.models.apptainer_app.html"><code class="docutils literal notranslate"><span class="pre">deploy_tools.models.apptainer_app</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="deploy_tools.models.binary_app.html"><code class="docutils literal notranslate"><span class="pre">deploy_tools.models.binary_app</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="deploy_tools.models.changes.html"><code class="docutils literal notranslate"><span class="pre">deploy_tools.models.changes</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="deploy_tools.models.deployment.html"><code class="docutils literal notranslate"><span class="pre">deploy_tools.models.deployment</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="deploy_tools.models.module.html"><code class="docutils literal notranslate"><span class="pre">deploy_tools.models.module</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="deploy_tools.models.parent.html"><code class="docutils literal notranslate"><span class="pre">deploy_tools.models.parent</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="deploy_tools.models.save_and_load.html"><code class="docutils literal notranslate"><span class="pre">deploy_tools.models.save_and_load</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="deploy_tools.models.schema.html"><code class="docutils literal notranslate"><span class="pre">deploy_tools.models.schema</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="deploy_tools.models.shell_app.html"><code class="docutils literal notranslate"><span class="pre">deploy_tools.models.shell_app</span></code></a></li>
+</ul>
+</details></li>
+<li class="toctree-l2"><a class="reference internal" href="deploy_tools.module_builder.html"><code class="docutils literal notranslate"><span class="pre">deploy_tools.module_builder</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="deploy_tools.modulefile.html"><code class="docutils literal notranslate"><span class="pre">deploy_tools.modulefile</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="deploy_tools.print_updates.html"><code class="docutils literal notranslate"><span class="pre">deploy_tools.print_updates</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="deploy_tools.snapshot.html"><code class="docutils literal notranslate"><span class="pre">deploy_tools.snapshot</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="deploy_tools.sync.html"><code class="docutils literal notranslate"><span class="pre">deploy_tools.sync</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="deploy_tools.templater.html"><code class="docutils literal notranslate"><span class="pre">deploy_tools.templater</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="deploy_tools.validate.html"><code class="docutils literal notranslate"><span class="pre">deploy_tools.validate</span></code></a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../schemas.html">Schemas</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../schemas/deployment-settings.html">DeploymentSettings</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../schemas/release.html">Release</a></li>
+</ul>
+</details></li>
 <li class="toctree-l1"><a class="reference internal" href="../genindex.html">Index</a></li>
 <li class="toctree-l1"><a class="reference external" href="https://github.com/DiamondLightSource/deploy-tools/releases">Release Notes</a></li>
 </ul>
@@ -493,6 +528,54 @@
 <dd><p>Version number as calculated by <a class="github reference external" href="https://github.com/pypa/setuptools_scm">pypa/setuptools_scm</a></p>
 </dd></dl>
 
+<p class="rubric">Submodules</p>
+<div class="pst-scrollable-table-container"><table class="autosummary longtable table">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="deploy_tools.app_builder.html#module-deploy_tools.app_builder" title="deploy_tools.app_builder"><code class="xref py py-obj docutils literal notranslate"><span class="pre">app_builder</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="deploy_tools.apptainer.html#module-deploy_tools.apptainer" title="deploy_tools.apptainer"><code class="xref py py-obj docutils literal notranslate"><span class="pre">apptainer</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="deploy_tools.build.html#module-deploy_tools.build" title="deploy_tools.build"><code class="xref py py-obj docutils literal notranslate"><span class="pre">build</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="deploy_tools.compare.html#module-deploy_tools.compare" title="deploy_tools.compare"><code class="xref py py-obj docutils literal notranslate"><span class="pre">compare</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="deploy_tools.deploy.html#module-deploy_tools.deploy" title="deploy_tools.deploy"><code class="xref py py-obj docutils literal notranslate"><span class="pre">deploy</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="deploy_tools.layout.html#module-deploy_tools.layout" title="deploy_tools.layout"><code class="xref py py-obj docutils literal notranslate"><span class="pre">layout</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="deploy_tools.models.html#module-deploy_tools.models" title="deploy_tools.models"><code class="xref py py-obj docutils literal notranslate"><span class="pre">models</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="deploy_tools.module_builder.html#module-deploy_tools.module_builder" title="deploy_tools.module_builder"><code class="xref py py-obj docutils literal notranslate"><span class="pre">module_builder</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="deploy_tools.modulefile.html#module-deploy_tools.modulefile" title="deploy_tools.modulefile"><code class="xref py py-obj docutils literal notranslate"><span class="pre">modulefile</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="deploy_tools.print_updates.html#module-deploy_tools.print_updates" title="deploy_tools.print_updates"><code class="xref py py-obj docutils literal notranslate"><span class="pre">print_updates</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="deploy_tools.snapshot.html#module-deploy_tools.snapshot" title="deploy_tools.snapshot"><code class="xref py py-obj docutils literal notranslate"><span class="pre">snapshot</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="deploy_tools.sync.html#module-deploy_tools.sync" title="deploy_tools.sync"><code class="xref py py-obj docutils literal notranslate"><span class="pre">sync</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="deploy_tools.templater.html#module-deploy_tools.templater" title="deploy_tools.templater"><code class="xref py py-obj docutils literal notranslate"><span class="pre">templater</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="deploy_tools.validate.html#module-deploy_tools.validate" title="deploy_tools.validate"><code class="xref py py-obj docutils literal notranslate"><span class="pre">validate</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+</tbody>
+</table>
+</div>
 </section>
 
 
@@ -506,20 +589,20 @@
                   
 <div class="prev-next-area">
     <a class="left-prev"
-       href="../reference.html"
+       href="../cli.html"
        title="previous page">
       <i class="fa-solid fa-angle-left"></i>
       <div class="prev-next-info">
         <p class="prev-next-subtitle">previous</p>
-        <p class="prev-next-title">Reference</p>
+        <p class="prev-next-title">Command-line interface</p>
       </div>
     </a>
     <a class="right-next"
-       href="../genindex.html"
+       href="deploy_tools.app_builder.html"
        title="next page">
       <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title">Index</p>
+        <p class="prev-next-title"><code class="docutils literal notranslate"><span class="pre">deploy_tools.app_builder</span></code></p>
       </div>
       <i class="fa-solid fa-angle-right"></i>
     </a>
