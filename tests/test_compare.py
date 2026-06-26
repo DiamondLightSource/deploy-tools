@@ -31,38 +31,40 @@ def _sync_minimal(area: Path, configs: Path) -> Layout:
     return Layout(area)
 
 
-def test_compare_accepts_clean_deployment(tmp_path: Path, configs: Path):
+def test_compare_accepts_clean_deployment(tmp_path: Path, configs: Path) -> None:
     # A deployment area is self-consistent immediately after a sync, so compare should
     # succeed and print nothing.
     _sync_minimal(tmp_path, configs)
     assert run_cli("compare", tmp_path) == ""
 
 
-def test_compare_accepts_deprecated_modules(tmp_path: Path, configs: Path):
+def test_compare_accepts_deprecated_modules(tmp_path: Path, configs: Path) -> None:
     # Ensure compare runs successfully with deprecated modulefile links.
     run_cli("sync", "--from-scratch", tmp_path, configs / "04-deprecated")
     assert run_cli("compare", tmp_path) == ""
 
 
-def test_compare_from_scratch_accepts_empty_area(tmp_path: Path):
+def test_compare_from_scratch_accepts_empty_area(tmp_path: Path) -> None:
     # --from-scratch only checks that the area is an existing, empty directory.
     assert run_cli("compare", "--from-scratch", tmp_path) == ""
 
 
-def test_compare_from_scratch_rejects_non_empty_area(tmp_path: Path):
+def test_compare_from_scratch_rejects_non_empty_area(tmp_path: Path) -> None:
     # Any pre-existing content means the area is not ready for a from-scratch deploy.
     (tmp_path / "stray-file").touch()
     with pytest.raises(ComparisonError, match="not empty"):
         run_cli("compare", "--from-scratch", tmp_path)
 
 
-def test_compare_rejects_missing_snapshot(tmp_path: Path):
+def test_compare_rejects_missing_snapshot(tmp_path: Path) -> None:
     # An existing area with no deployment.yaml has no snapshot to compare against.
     with pytest.raises(SnapshotError, match="snapshot not found"):
         run_cli("compare", tmp_path)
 
 
-def test_compare_rejects_module_without_modulefile(tmp_path: Path, configs: Path):
+def test_compare_rejects_module_without_modulefile(
+    tmp_path: Path, configs: Path
+) -> None:
     # Removing a module's modulefile link leaves a built module that is not exposed.
     layout = _sync_minimal(tmp_path, configs)
     layout.get_modulefile_link(MODULE_NAME, MODULE_VERSION).unlink()
@@ -70,7 +72,9 @@ def test_compare_rejects_module_without_modulefile(tmp_path: Path, configs: Path
         run_cli("compare", tmp_path)
 
 
-def test_compare_rejects_modulefile_without_module(tmp_path: Path, configs: Path):
+def test_compare_rejects_modulefile_without_module(
+    tmp_path: Path, configs: Path
+) -> None:
     # Removing the built module leaves a dangling modulefile link
     layout = _sync_minimal(tmp_path, configs)
     rmtree(layout.get_module_folder(MODULE_NAME, MODULE_VERSION))
@@ -78,7 +82,7 @@ def test_compare_rejects_modulefile_without_module(tmp_path: Path, configs: Path
         run_cli("compare", tmp_path)
 
 
-def test_compare_rejects_duplicate_modulefiles(tmp_path: Path, configs: Path):
+def test_compare_rejects_duplicate_modulefiles(tmp_path: Path, configs: Path) -> None:
     # The same modulefile must not appear in both the live and deprecated areas.
     layout = _sync_minimal(tmp_path, configs)
     deprecated_link = layout.get_modulefile_link(
@@ -90,7 +94,7 @@ def test_compare_rejects_duplicate_modulefiles(tmp_path: Path, configs: Path):
         run_cli("compare", tmp_path)
 
 
-def test_compare_rejects_release_mismatch(tmp_path: Path, configs: Path):
+def test_compare_rejects_release_mismatch(tmp_path: Path, configs: Path) -> None:
     # Tamper with the snapshot's record of the module so it no longer matches the module
     # configuration reconstructed from the deployment area.
     layout = _sync_minimal(tmp_path, configs)
@@ -104,7 +108,9 @@ def test_compare_rejects_release_mismatch(tmp_path: Path, configs: Path):
         run_cli("compare", tmp_path)
 
 
-def test_compare_rejects_default_version_mismatch(tmp_path: Path, configs: Path):
+def test_compare_rejects_default_version_mismatch(
+    tmp_path: Path, configs: Path
+) -> None:
     # Point the module's .version file at a different version than the snapshot expects.
     layout = _sync_minimal(tmp_path, configs)
     version_file = layout.get_default_version_file(MODULE_NAME)
@@ -113,7 +119,7 @@ def test_compare_rejects_default_version_mismatch(tmp_path: Path, configs: Path)
         run_cli("compare", tmp_path)
 
 
-def test_compare_use_ref_detects_drift(tmp_path: Path, configs: Path):
+def test_compare_use_ref_detects_drift(tmp_path: Path, configs: Path) -> None:
     # sync commits a snapshot to the deployment area's git repo on every run. After two
     # syncs the area matches its own (HEAD) snapshot, but not the previous commit's
     # snapshot, which predates the module added by the second sync.
@@ -127,20 +133,22 @@ def test_compare_use_ref_detects_drift(tmp_path: Path, configs: Path):
         run_cli("compare", "--use-ref", "HEAD~1", tmp_path)
 
 
-def test_compare_from_scratch_rejects_missing_root(tmp_path: Path):
+def test_compare_from_scratch_rejects_missing_root(tmp_path: Path) -> None:
     # The CLI's argument validation rejects a non-existent path before the command runs,
     # so exercise this guard by calling the function directly.
     with pytest.raises(ComparisonError, match="does not exist"):
         compare_to_snapshot(tmp_path / "does-not-exist", from_scratch=True)
 
 
-def test_compare_rejects_missing_root(tmp_path: Path):
+def test_compare_rejects_missing_root(tmp_path: Path) -> None:
     # As above, but for the snapshot-loading path used by a non from-scratch compare.
     with pytest.raises(SnapshotError, match="does not exist"):
         compare_to_snapshot(tmp_path / "does-not-exist")
 
 
-def test_compare_rejects_missing_default_version_file(tmp_path: Path, configs: Path):
+def test_compare_rejects_missing_default_version_file(
+    tmp_path: Path, configs: Path
+) -> None:
     # A live module records its default version in a .version file; a missing one is
     # corruption that compare must report cleanly, not as a raw FileNotFoundError.
     layout = _sync_minimal(tmp_path, configs)
@@ -149,7 +157,7 @@ def test_compare_rejects_missing_default_version_file(tmp_path: Path, configs: P
         run_cli("compare", tmp_path)
 
 
-def test_compare_rejects_unreadable_snapshot(tmp_path: Path, configs: Path):
+def test_compare_rejects_unreadable_snapshot(tmp_path: Path, configs: Path) -> None:
     # A corrupt deployment.yaml (e.g. truncated by a failed write) must surface as a
     # SnapshotError rather than a raw parser error.
     layout = _sync_minimal(tmp_path, configs)
@@ -158,7 +166,7 @@ def test_compare_rejects_unreadable_snapshot(tmp_path: Path, configs: Path):
         run_cli("compare", tmp_path)
 
 
-def test_compare_rejects_unknown_git_ref(tmp_path: Path, configs: Path):
+def test_compare_rejects_unknown_git_ref(tmp_path: Path, configs: Path) -> None:
     # An unresolvable --use-ref should fail with a clear SnapshotError, not a raw
     # GitPython BadName error.
     _sync_minimal(tmp_path, configs)
