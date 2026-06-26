@@ -10,6 +10,8 @@ TEMPLATES_PACKAGE = "deploy_tools"
 
 
 class TemplateType(StrEnum):
+    """Enumerates the template files used to generate deployment output."""
+
     MODULEFILE = "modulefile"
     MODULEFILE_VERSION = "modulefile_version"
     APPTAINER_ENTRYPOINT = "apptainer_entrypoint"

@@ -40,7 +40,10 @@ class EnvVar(ParentModel):
     name: Annotated[
         str,
         StringConstraints(pattern=ENV_VAR_NAME_REGEX),
-        Field(description="Name of environment variable"),
+        Field(
+            description="Name of environment variable. Must start with a letter or "
+            "underscore and contain only letters, digits or underscores."
+        ),
     ]
     value: Annotated[str, Field(description="Value of environment variable")]
 
@@ -55,7 +58,10 @@ class Module(ParentModel):
     name: Annotated[
         str,
         StringConstraints(pattern=MODULE_NAME_REGEX),
-        Field(description="Name of module to use when loading"),
+        Field(
+            description="Name of module to use when loading. Must start with a letter "
+            "and contain only letters, digits, hyphens or underscores."
+        ),
     ]
     version: Annotated[
         str,

@@ -26,7 +26,7 @@ SCRIPT_INDICATOR_PHRASE = "shell script"
 
 
 class ValidationError(Exception):
-    pass
+    """Raised when the deployment configuration fails validation."""
 
 
 def validate_and_test_configuration(
@@ -56,7 +56,7 @@ def validate_and_test_configuration(
         if test_build:
             logger.info("Performing test build")
             build(deployment_changes, layout)
-            check_built_scripts(deployment_changes, layout)
+            _check_built_scripts(deployment_changes, layout)
 
         logger.info("Printing updates")
         print_updates(snapshot_default_versions, deployment_changes)
@@ -68,14 +68,14 @@ def validate_deployment_changes(
     deployment: Deployment, snapshot: Deployment, allow_all: bool
 ) -> DeploymentChanges:
     """Validate configuration to get set of actions that need to be carried out."""
-    release_changes = validate_release_changes(deployment, snapshot, allow_all)
+    release_changes = _validate_release_changes(deployment, snapshot, allow_all)
     default_versions = validate_default_versions(deployment)
     return DeploymentChanges(
         release_changes=release_changes, default_versions=default_versions
     )
 
 
-def validate_release_changes(
+def _validate_release_changes(
     deployment: Deployment, snapshot: Deployment, allow_all: bool
 ) -> ReleaseChanges:
     """Validate configuration to get set of Release changes."""
@@ -236,7 +236,7 @@ def _get_all_default_versions(
     return final_defaults
 
 
-def is_shell_script(file: Path) -> bool:
+def _is_shell_script(file: Path) -> bool:
     """Determine whether specified file is a shell script.
 
     This uses the output of the Linux 'file' command, which is dependent on the
@@ -248,7 +248,7 @@ def is_shell_script(file: Path) -> bool:
     return SCRIPT_INDICATOR_PHRASE in result.stdout
 
 
-def check_bash_syntax(file: Path) -> None:
+def _check_bash_syntax(file: Path) -> None:
     """Check bash syntax is valid for the given file.
 
     Since failing this validation will prevent a deploy-tools job from continuing, we
@@ -268,7 +268,8 @@ def check_bash_syntax(file: Path) -> None:
         )
 
 
-def check_built_scripts(changes: DeploymentChanges, layout: Layout) -> None:
+def _check_built_scripts(changes: DeploymentChanges, layout: Layout) -> None:
+    """Check the syntax of all shell-script entrypoints in the built modules."""
     release_changes = changes.release_changes
     releases = release_changes.to_add + release_changes.to_update
     build_layout = layout.build_layout
@@ -278,5 +279,5 @@ def check_built_scripts(changes: DeploymentChanges, layout: Layout) -> None:
         version = release.module.version
 
         for entrypoint in build_layout.get_entrypoints_folder(name, version).glob("*"):
-            if is_shell_script(entrypoint):
-                check_bash_syntax(entrypoint)
+            if _is_shell_script(entrypoint):
+                _check_bash_syntax(entrypoint)

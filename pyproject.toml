@@ -9,6 +9,7 @@ classifiers = [
     "License :: OSI Approved :: Apache Software License",
     "Programming Language :: Python :: 3.12",
     "Programming Language :: Python :: 3.13",
+    "Programming Language :: Python :: 3.14",
 ]
 description = "A set of tools used for deploying applications to a shared filesystem."
 dependencies = [
@@ -26,6 +27,7 @@ requires-python = ">=3.12"
 
 [dependency-groups]
 dev = [
+    "autodoc-pydantic",
     "copier",
     "myst-parser",
     "pre-commit",
@@ -36,7 +38,9 @@ dev = [
     "ruff",
     "sphinx-autobuild",
     "sphinx-copybutton",
+    "sphinx-jsonschema",
     "sphinx-design",
+    "sphinxcontrib-typer",
     "tox-uv",
     "types-mock",
 ]
@@ -55,7 +59,7 @@ name = "Martin Gaughran"
 version_file = "src/deploy_tools/_version.py"
 
 [tool.setuptools.package-data]
-deploy_tools = ['templates', 'models/schema/*']
+deploy_tools = ['templates', 'models/schemas/*']
 
 [tool.pyright]
 exclude = ["src/deploy_tools/_version.py"]
@@ -80,6 +84,9 @@ data_file = "/tmp/deploy_tools.coverage"
 [tool.coverage.paths]
 # Tests are run from installed location, map back to the src directory
 source = ["src", "**/site-packages/"]
+
+[tool.uv]
+exclude-newer = "3 days"
 
 [tool.tox]
 skipsdist = true

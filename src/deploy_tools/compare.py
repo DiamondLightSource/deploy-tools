@@ -24,7 +24,7 @@ logger = logging.getLogger(__name__)
 
 
 class ComparisonError(Exception):
-    pass
+    """Raised when comparing the deployment area to its snapshot fails."""
 
 
 def compare_to_snapshot(
@@ -35,10 +35,10 @@ def compare_to_snapshot(
     This helps us to identify broken environment modules, or a failed deployment step.
     Note that this does not exclude the possibility of all types of issues.
 
-    The `use_ref` argument can be used to compare against a previous Deployment
+    The ``use_ref`` argument can be used to compare against a previous Deployment
     configuration. It is recommended to use a reference relative to HEAD, e.g. 'HEAD~1'.
 
-    The `from_scratch` argument checks that the deployment area is in a suitable state
+    The ``from_scratch`` argument checks that the deployment area is in a suitable state
     for a clean deployment into an empty directory. No snapshot is expected.
 
     Args:

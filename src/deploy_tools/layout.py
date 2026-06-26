@@ -16,15 +16,19 @@ class ModuleAreaLayout:
         self._root = root
 
     def get_module_folder(self, name: str, version: str) -> Path:
+        """Return the folder holding the given module's files."""
         return self._root / name / version
 
     def get_entrypoints_folder(self, name: str, version: str) -> Path:
+        """Return the folder holding the given module's entrypoint scripts."""
         return self.get_module_folder(name, version) / self.ENTRYPOINTS_FOLDER
 
     def get_modulefile(self, name: str, version: str) -> Path:
+        """Return the path to the given module's modulefile."""
         return self.get_module_folder(name, version) / self.MODULEFILE_FILENAME
 
     def get_module_snapshot_path(self, name: str, version: str) -> Path:
+        """Return the path to the given module's configuration snapshot."""
         return self.get_module_folder(name, version) / self.MODULE_SNAPSHOT_FILENAME
 
 
@@ -39,10 +43,12 @@ class ModuleBuildLayout(ModuleAreaLayout):
     SIF_FILES_FOLDER = "sif_files"
 
     def get_sif_files_folder(self, name: str, version: str) -> Path:
+        """Return the folder holding the given module's Apptainer ``.sif`` images."""
         return self.get_module_folder(name, version) / self.SIF_FILES_FOLDER
 
     @property
     def build_root(self):
+        """Root path of the build area."""
         return self._root
 
 
@@ -68,12 +74,15 @@ class Layout:
             self._build_root = self._root / self.DEFAULT_BUILD_ROOT_NAME
 
     def get_module_folder(self, name: str, version: str) -> Path:
+        """Return the folder holding the given deployed module's files."""
         return self._modules_layout.get_module_folder(name, version)
 
     def get_entrypoints_folder(self, name: str, version: str) -> Path:
+        """Return the folder holding the given deployed module's entrypoint scripts."""
         return self._modules_layout.get_entrypoints_folder(name, version)
 
     def get_modulefiles_root(self, from_deprecated: bool = False) -> Path:
+        """Return the modulefiles root, or the deprecated one if requested."""
         return (
             self.deprecated_modulefiles_root
             if from_deprecated
@@ -83,41 +92,52 @@ class Layout:
     def get_modulefile_link(
         self, name: str, version: str, from_deprecated: bool = False
     ) -> Path:
+        """Return the path to the modulefile link for the given module."""
         return self.get_modulefiles_root(from_deprecated) / name / version
 
     def get_modulefile(self, name: str, version: str) -> Path:
+        """Return the path to the given deployed module's modulefile."""
         return self._modules_layout.get_modulefile(name, version)
 
     def get_module_snapshot_path(self, name: str, version: str) -> Path:
+        """Return the path to the given deployed module's configuration snapshot."""
         return self._modules_layout.get_module_snapshot_path(name, version)
 
     def get_default_version_file(self, name: str) -> Path:
+        """Return the path to the file recording a module's default version."""
         return self.modulefiles_root / name / self.DEFAULT_VERSION_FILENAME
 
     @property
     def deployment_root(self) -> Path:
+        """Root path of the deployment area."""
         return self._root
 
     @property
     def deprecated_root(self) -> Path:
+        """Root path for deprecated files."""
         return self._root / self.DEPRECATED_ROOT_NAME
 
     @property
     def modules_root(self) -> Path:
+        """Root path holding deployed modules."""
         return self._root / self.MODULES_ROOT_NAME
 
     @property
     def modulefiles_root(self) -> Path:
+        """Root path holding modulefile links for deployed modules."""
         return self._root / self.MODULEFILES_ROOT_NAME
 
     @property
     def deprecated_modulefiles_root(self) -> Path:
+        """Root path holding modulefile links for deprecated modules."""
         return self.deprecated_root / self.MODULEFILES_ROOT_NAME
 
     @property
     def deployment_snapshot_path(self) -> Path:
+        """Path to the deployment area's configuration snapshot."""
         return self._root / self.DEPLOYMENT_SNAPSHOT_FILENAME
 
     @property
     def build_layout(self) -> ModuleBuildLayout:
+        """Return the `ModuleBuildLayout` for the associated build area."""
         return ModuleBuildLayout(self._build_root)

@@ -5,12 +5,12 @@ from pathlib import Path
 from pydantic import BaseModel
 
 from .deployment import Deployment, DeploymentSettings
-from .module import Release
+from .module import Module, Release
 
 logger = logging.getLogger(__name__)
 
 SCHEMA_NAMES: dict[str, type[BaseModel]] = {
-    "module.json": Release,
+    "module.json": Module,
     "release.json": Release,
     "deployment.json": Deployment,
     "deployment-settings.json": DeploymentSettings,

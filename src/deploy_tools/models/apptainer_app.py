@@ -9,8 +9,12 @@ MOUNT_PATH_REGEX = r"/[^:]*"  # Colon is excluded in short-form apptainer mounts
 MOUNT_REGEX = rf"^{MOUNT_PATH_REGEX}(:{MOUNT_PATH_REGEX}(:(ro|rw))?)?$"
 IMAGE_VERSION_REGEX = r"^[a-zA-Z0-9_][a-zA-Z0-9._-]{0,127}$"  # OCI specification
 
+type MountPoint = Annotated[str, StringConstraints(pattern=MOUNT_REGEX)]
+
 
 class EntrypointOptions(ParentModel):
+    """Options applied when running an Apptainer entrypoint."""
+
     apptainer_args: Annotated[
         str,
         Field(description="Apptainer arguments to pass when launching the container"),
@@ -21,7 +25,7 @@ class EntrypointOptions(ParentModel):
     ] = ""
 
     mounts: Annotated[
-        list[Annotated[str, StringConstraints(pattern=MOUNT_REGEX)]],
+        list[MountPoint],
         Field(
             description="A list of mount points to add to the container in the form of "
             "'host_path[:container_path[:opts]]' where opts (mount options) can be "
@@ -42,14 +46,18 @@ class EntrypointOptions(ParentModel):
 class Entrypoint(ParentModel):
     """Represents an entrypoint to a command on the Apptainer image.
 
-    If no command is provided, the entrypoint (`name`) is used by default. This
+    If no command is provided, the entrypoint (``name``) is used by default. This
     corresponds to the name of the executable provided by the Module.
     """
 
     name: Annotated[
         str,
         StringConstraints(pattern=ENTRYPOINT_NAME_REGEX),
-        Field(description="Name of executable to use after loading the Module"),
+        Field(
+            description="Name of executable to use after loading the Module. Must "
+            "start with a letter or underscore and contain only letters, digits, "
+            "hyphens or underscores."
+        ),
     ]
     command: Annotated[
         str | None,
@@ -57,11 +65,13 @@ class Entrypoint(ParentModel):
     ] = None
 
     options: Annotated[
-        EntrypointOptions, Field("Options to apply for this entrypoint")
+        EntrypointOptions, Field(description="Options to apply for this entrypoint")
     ] = EntrypointOptions()
 
 
 class ContainerImage(ParentModel):
+    """Reference to a container image, split into a base path and version/tag."""
+
     path: Annotated[
         AnyUrl,
         UrlConstraints(allowed_schemes=["docker", "shub", "oras", "https"]),
@@ -74,11 +84,16 @@ class ContainerImage(ParentModel):
     version: Annotated[
         str,
         StringConstraints(pattern=IMAGE_VERSION_REGEX),
-        Field(description="Version or tag of the docker image"),
+        Field(
+            description="Version or tag of the docker image. Must follow the OCI tag "
+            "format: start with a letter, digit or underscore, followed by up to 127 "
+            "letters, digits, full stops, hyphens or underscores."
+        ),
     ]
 
     @property
     def url(self) -> str:
+        """Full image reference combining the path and version as ``path:version``."""
         return f"{self.path}:{self.version}"
 
 

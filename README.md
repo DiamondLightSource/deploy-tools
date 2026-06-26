@@ -12,8 +12,9 @@ access to a shared filesystem. We use the
 [Environment Modules](https://modules.readthedocs.io/en/latest/) package to make these
 applications available to the end user.
 
-Source          | <https://github.com/DiamondLightSource/deploy-tools>
+What            | Where
 :---:           | :---:
+Source          | <https://github.com/DiamondLightSource/deploy-tools>
 PyPI            | `pip install dls-deploy-tools`
 Docker          | `docker run ghcr.io/diamondlightsource/deploy-tools:latest`
 Documentation   | Work in progress <https://diamondlightsource.github.io/deploy-tools>
@@ -23,21 +24,28 @@ The demo_configuration folder in this repository can be passed as the config_fol
 the deploy-tools commands. The deployment_root needs to be a writeable location for all
 files to get deployed under.
 
+The examples below use the `deploy-tools` console script; `python -m deploy_tools` is
+equivalent if you prefer to invoke the module directly.
+
 ```
 deployment_root = /path/to/deployment/root
 config_folder = /path/to/config/folder
 schema_folder = /path/to/schema/folder
 
 # Generate the schema for configuration yaml files
-python -m deploy_tools schema $schema_folder
+deploy-tools schema $schema_folder
 
 # Validate the deployment configuration files, also ensuring that the required updates
 # are compatible with the previous deployments.
-python -m deploy_tools validate $deployment_root $config_folder
+deploy-tools validate $deployment_root $config_folder
 
 # Synchronise the deployment area with the configuration files. This will first run
 # validation as part of determining the required changes
-python -m deploy_tools sync $deployment_root $config_folder
+deploy-tools sync $deployment_root $config_folder
+
+# Compare the previous deployment snapshot against what is actually deployed in the
+# deployment area. CI/CD should run this before a deploy to confirm a healthy state.
+deploy-tools compare $deployment_root
 
 ```
 
@@ -55,15 +63,15 @@ bit different to the CLI commands; see `deploy-tools --help` for more informatio
 
 ## JSON Schema
 
-A set of JSON schema files are provided under `src/deploy_tools/models/schemas`. These are generated from the Pydantic models in the schemas parent directory.
+A set of JSON schema files are provided under `src/deploy_tools/models/schemas`. These are generated from the Pydantic models in `src/deploy_tools/models/` by the `deploy-tools schema` command (see `models/schema.py`).
 
-We strongly recommend that you provide a schema for configuration file validation. The relevant lines at the top of each release file are:
+We strongly recommend that you provide a schema for configuration file validation, by adding a `yaml-language-server` comment to the top of each configuration file. For production configuration, point this at the schema files hosted on GitHub:
 
-```# yaml-language-server: $schema=/workspaces/deploy-tools/src/deploy_tools/models/schemas/release.json```
+```# yaml-language-server: $schema=https://raw.githubusercontent.com/DiamondLightSource/deploy-tools/main/src/deploy_tools/models/schemas/release.json```
 
-As the demo_configuration is used during development, we set it to use the locally generated schemas. Note that the 'Generate Schema' VSCode task will update the schemas according to any update of the code, but you need to trigger this manually and check the contents in.
+As the demo_configuration is used during development, we instead set it to use the locally generated schemas via an absolute workspace path (e.g. `/workspaces/deploy-tools/src/deploy_tools/models/schemas/release.json`). This dev-container-only path should not be used for production configuration.
 
-For any production configuration, you should set it to use schema files from GitHub.
+Note that the 'Generate Schema' VSCode task will update the schemas according to any update of the code, but you need to trigger this manually and check the contents in.
 
 ## CLI Commands, VSCode Tasks and Debug Configuration
 
@@ -100,7 +108,7 @@ See the Deployment Steps above for an overview of the primary stages of a deploy
 |Deployment         |The sum total of all Releases (deprecated or not) that are to be maintained in the Deployment Area                                                                                                                                                                                                          |
 |Module             |A set of files that can be used to provide applications on your path, provide configuration, and set environment variables. We do this using the Environment Modules system by providing a Modulefile with the relevant configuration                                                                       |
 |Release (noun)     |A Module, including version, alongside its lifecycle (i.e. deprecation) status                                                                                                                                                                                                                              |
-|Application        |Each Module can be configured with multiple Applications, each one providing one or more executables. As of writing, there are 2 types of Application: `Apptainer` and `Shell` (Bash script)                                                                                                                |
+|Application        |Each Module can be configured with multiple Applications, each one providing one or more executables. There are 3 types of Application: `Apptainer` (an executable container image), `Shell` (a Bash script) and `Binary` (an executable downloaded from a URL and verified against a hash)                                                                                                                |
 |Deployment Area    |The top-level location where all Modules are to be deployed. This is typically a shared filesystem location for general use by multiple people. Note that there are several subdirectories which are used by `deploy-tools` for different purposes                                                          |
 |(Area) Root        |Refers to the filesystem path at the root of the given Area.                                                                                                                                                                                                                                                |
 |Deployment Step    |Refers to one of the primary steps that make up the Deployment process. See the section 'Deployment Steps' above for a breakdown                                                                                                                                                                            |

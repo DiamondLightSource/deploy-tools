@@ -18,12 +18,13 @@ DEPLOYMENT_SETTINGS = "settings" + YAML_FILE_SUFFIX
 
 
 class LoadError(Exception):
-    pass
+    """Raised when configuration files cannot be loaded into the model."""
 
 
 def save_as_yaml(
     obj: BaseModel, output_path: Path, create_parents: bool = False
 ) -> None:
+    """Serialise a Pydantic model to YAML and write it to the given path."""
     if create_parents:
         output_path.parent.mkdir(exist_ok=True, parents=True)
 
