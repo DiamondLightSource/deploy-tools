@@ -13,7 +13,6 @@ properties as tables.
 :maxdepth: 1
 
 schemas/deployment-settings
-schemas/deployment
 schemas/release
 ```
 
