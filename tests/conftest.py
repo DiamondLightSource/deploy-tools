@@ -17,17 +17,17 @@ def run_cli(*args: str | Path) -> str:
 
 
 @pytest.fixture
-def schemas():
+def schemas() -> Path:
     return Path(__file__).parent.parent / "src" / "deploy_tools" / "models" / "schemas"
 
 
 @pytest.fixture
-def samples():
+def samples() -> Path:
     return Path(__file__).parent / "samples"
 
 
 @pytest.fixture
-def configs():
+def configs() -> Path:
     return Path(__file__).parent / "configs"
 
 

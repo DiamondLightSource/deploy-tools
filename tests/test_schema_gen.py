@@ -8,7 +8,7 @@ PATH_TO_SCHEMAS = (
 )
 
 
-def test_schema_gen(schemas: Path):
+def test_schema_gen(schemas: Path) -> None:
     with tempfile.TemporaryDirectory() as tmp:
         tmp_path = Path(tmp)
 

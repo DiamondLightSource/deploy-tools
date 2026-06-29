@@ -174,6 +174,7 @@ commands = [
 src = ["src", "tests"]
 line-length = 88
 lint.select = [
+    "ANN", # flake8-annotations - https://docs.astral.sh/ruff/rules/#flake8-annotations-ann
     "B",   # flake8-bugbear - https://docs.astral.sh/ruff/rules/#flake8-bugbear-b
     "C4",  # flake8-comprehensions - https://docs.astral.sh/ruff/rules/#flake8-comprehensions-c4
     "E",   # pycodestyle errors - https://docs.astral.sh/ruff/rules/#error-e
@@ -190,3 +191,5 @@ lint.select = [
 # See https://github.com/DiamondLightSource/python-copier-template/issues/154
 # Remove this line to forbid private member access in tests
 "tests/**/*" = ["SLF001"]
+# Managed by the copier template; left unannotated to avoid divergence
+".github/pages/make_switcher.py" = ["ANN"]

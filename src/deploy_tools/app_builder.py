@@ -28,7 +28,7 @@ class AppBuilder:
         self._templater = templater
         self._build_layout = build_layout
 
-    def create_application_files(self, app: Application, module: Module):
+    def create_application_files(self, app: Application, module: Module) -> None:
         """Create the entrypoint and supporting files for an application.
 
         The files produced depend on the application type (Apptainer, shell or binary).

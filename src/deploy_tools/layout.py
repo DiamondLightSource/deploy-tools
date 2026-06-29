@@ -47,7 +47,7 @@ class ModuleBuildLayout(ModuleAreaLayout):
         return self.get_module_folder(name, version) / self.SIF_FILES_FOLDER
 
     @property
-    def build_root(self):
+    def build_root(self) -> Path:
         """Root path of the build area."""
         return self._root
 
