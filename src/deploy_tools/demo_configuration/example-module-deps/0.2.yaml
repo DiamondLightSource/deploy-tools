@@ -6,6 +6,8 @@ module:
   description: Demonstration of deploy-tools dependencies
 
   dependencies:
+    - name: dls-pmac-control
+      version: "0.1"
     - name: example-module-apps
       version: "0.1"
 

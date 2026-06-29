@@ -1,0 +1,29 @@
+# yaml-language-server: $schema=/workspaces/deploy-tools/src/deploy_tools/models/schemas/release.json
+
+module:
+  name: dls-pmac-control
+  version: "0.2"
+  description: Demonstration of the deploy-tools process
+
+  env_vars:
+    - name: EXAMPLE_VALUE
+      value: Test message EXAMPLE_VALUE from example-module-file version 0.2
+
+  applications:
+    - app_type: apptainer
+
+      container:
+        path: docker://ghcr.io/diamondlightsource/dls-pmac-control
+        version: "3.2.0b1"
+
+      entrypoints:
+        - name: dls-pmac-control
+          command: dls-pmac-control
+          options:
+            apptainer_args: -e
+
+    - app_type: shell
+
+      name: test-echo-module-file
+      script:
+        - echo $EXAMPLE_VALUE
