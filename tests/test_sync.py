@@ -15,17 +15,19 @@ def test_deprecate_then_remove_multiple_versions_of_same_module(
 ) -> None:
     # Regression test for issues with removing name folders for the same module name
     # twice.
-    run_cli("sync", "--from-scratch", tmp_path, configs / "multi-version-active")
+    run_cli(
+        "sync", "--from-scratch", tmp_path, configs / "valid" / "multi-version-active"
+    )
 
     layout = Layout(tmp_path)
     live_name_folder = layout.modulefiles_root / MODULE_NAME
     deprecated_name_folder = layout.deprecated_modulefiles_root / MODULE_NAME
 
-    run_cli("sync", tmp_path, configs / "multi-version-deprecated")
+    run_cli("sync", tmp_path, configs / "valid" / "multi-version-deprecated")
     assert not live_name_folder.exists()
     assert {p.name for p in deprecated_name_folder.iterdir()} == {"1.0", "2.0"}
 
-    run_cli("sync", tmp_path, configs / "empty")
+    run_cli("sync", tmp_path, configs / "valid" / "empty")
     assert not deprecated_name_folder.exists()
     assert not (layout.modules_root / MODULE_NAME).exists()
     assert run_cli("compare", tmp_path) == ""
@@ -36,8 +38,10 @@ def test_sync_rejects_deployment_area_without_git_repo(
 ) -> None:
     # An area whose .git has been lost still has a snapshot but no history to commit
     # against: a corrupt state surfaced as a clean error, not a GitPython traceback.
-    run_cli("sync", "--from-scratch", tmp_path, configs / "multi-version-active")
+    run_cli(
+        "sync", "--from-scratch", tmp_path, configs / "valid" / "multi-version-active"
+    )
     shutil.rmtree(tmp_path / ".git")
 
     with pytest.raises(SyncError, match="not a git repository"):
-        run_cli("sync", tmp_path, configs / "multi-version-active")
+        run_cli("sync", tmp_path, configs / "valid" / "multi-version-active")

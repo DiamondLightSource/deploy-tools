@@ -27,7 +27,7 @@ def _sync_minimal(area: Path, configs: Path) -> Layout:
     Returns:
         A ``Layout`` describing the freshly-deployed ``area``.
     """
-    run_cli("sync", "--from-scratch", area, configs / "minimal")
+    run_cli("sync", "--from-scratch", area, configs / "valid" / "minimal")
     return Layout(area)
 
 
@@ -40,7 +40,9 @@ def test_compare_accepts_clean_deployment(tmp_path: Path, configs: Path) -> None
 
 def test_compare_accepts_deprecated_modules(tmp_path: Path, configs: Path) -> None:
     # Ensure compare runs successfully with deprecated modulefile links.
-    run_cli("sync", "--from-scratch", tmp_path, configs / "04-deprecated")
+    run_cli(
+        "sync", "--from-scratch", tmp_path, configs / "golden-master" / "04-deprecated"
+    )
     assert run_cli("compare", tmp_path) == ""
 
 
@@ -123,8 +125,10 @@ def test_compare_use_ref_detects_drift(tmp_path: Path, configs: Path) -> None:
     # sync commits a snapshot to the deployment area's git repo on every run. After two
     # syncs the area matches its own (HEAD) snapshot, but not the previous commit's
     # snapshot, which predates the module added by the second sync.
-    run_cli("sync", "--from-scratch", tmp_path, configs / "01-initial")
-    run_cli("sync", tmp_path, configs / "02-added")
+    run_cli(
+        "sync", "--from-scratch", tmp_path, configs / "golden-master" / "01-initial"
+    )
+    run_cli("sync", tmp_path, configs / "golden-master" / "02-added")
 
     assert run_cli("compare", tmp_path) == ""
     assert run_cli("compare", "--use-ref", "HEAD", tmp_path) == ""
