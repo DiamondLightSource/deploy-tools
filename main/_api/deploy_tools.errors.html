@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>deploy_tools.sync &#8212; deploy-tools 0.7.2.dev46+gb0eccc697 documentation</title>
+    <title>deploy_tools.errors &#8212; deploy-tools 0.7.2.dev46+gb0eccc697 documentation</title>
   
   
   
@@ -48,7 +48,7 @@
     <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
     <script src="../_static/copybutton.js?v=30646c52"></script>
     <script src="../_static/design-tabs.js?v=f930bc37"></script>
-    <script>DOCUMENTATION_OPTIONS.pagename = '_api/deploy_tools.sync';</script>
+    <script>DOCUMENTATION_OPTIONS.pagename = '_api/deploy_tools.errors';</script>
     <script>
         DOCUMENTATION_OPTIONS.theme_version = '0.19.0';
         DOCUMENTATION_OPTIONS.theme_switcher_json_url = 'https://DiamondLightSource.github.io/deploy-tools/switcher.json';
@@ -60,8 +60,8 @@
     <link rel="icon" href="../_static/dls-logo.svg"/>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="deploy_tools.templater" href="deploy_tools.templater.html" />
-    <link rel="prev" title="deploy_tools.snapshot" href="deploy_tools.snapshot.html" />
+    <link rel="next" title="deploy_tools.external_tools" href="deploy_tools.external_tools.html" />
+    <link rel="prev" title="deploy_tools.deploy" href="deploy_tools.deploy.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
   <meta name="docsearch:version" content="main" />
@@ -429,7 +429,7 @@
 <li class="toctree-l2"><a class="reference internal" href="deploy_tools.build.html"><code class="docutils literal notranslate"><span class="pre">deploy_tools.build</span></code></a></li>
 <li class="toctree-l2"><a class="reference internal" href="deploy_tools.compare.html"><code class="docutils literal notranslate"><span class="pre">deploy_tools.compare</span></code></a></li>
 <li class="toctree-l2"><a class="reference internal" href="deploy_tools.deploy.html"><code class="docutils literal notranslate"><span class="pre">deploy_tools.deploy</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="deploy_tools.errors.html"><code class="docutils literal notranslate"><span class="pre">deploy_tools.errors</span></code></a></li>
+<li class="toctree-l2 current active"><a class="current reference internal" href="#"><code class="docutils literal notranslate"><span class="pre">deploy_tools.errors</span></code></a></li>
 <li class="toctree-l2"><a class="reference internal" href="deploy_tools.external_tools.html"><code class="docutils literal notranslate"><span class="pre">deploy_tools.external_tools</span></code></a></li>
 <li class="toctree-l2"><a class="reference internal" href="deploy_tools.layout.html"><code class="docutils literal notranslate"><span class="pre">deploy_tools.layout</span></code></a></li>
 <li class="toctree-l2 has-children"><a class="reference internal" href="deploy_tools.models.html"><code class="docutils literal notranslate"><span class="pre">deploy_tools.models</span></code></a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
@@ -449,7 +449,7 @@
 <li class="toctree-l2"><a class="reference internal" href="deploy_tools.modulefile.html"><code class="docutils literal notranslate"><span class="pre">deploy_tools.modulefile</span></code></a></li>
 <li class="toctree-l2"><a class="reference internal" href="deploy_tools.print_updates.html"><code class="docutils literal notranslate"><span class="pre">deploy_tools.print_updates</span></code></a></li>
 <li class="toctree-l2"><a class="reference internal" href="deploy_tools.snapshot.html"><code class="docutils literal notranslate"><span class="pre">deploy_tools.snapshot</span></code></a></li>
-<li class="toctree-l2 current active"><a class="current reference internal" href="#"><code class="docutils literal notranslate"><span class="pre">deploy_tools.sync</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="deploy_tools.sync.html"><code class="docutils literal notranslate"><span class="pre">deploy_tools.sync</span></code></a></li>
 <li class="toctree-l2"><a class="reference internal" href="deploy_tools.templater.html"><code class="docutils literal notranslate"><span class="pre">deploy_tools.templater</span></code></a></li>
 <li class="toctree-l2"><a class="reference internal" href="deploy_tools.validate.html"><code class="docutils literal notranslate"><span class="pre">deploy_tools.validate</span></code></a></li>
 </ul>
@@ -507,7 +507,7 @@
     
     <li class="breadcrumb-item"><a href="deploy_tools.html" class="nav-link"><code class="docutils literal notranslate"><span class="pre">deploy_tools</span></code></a></li>
     
-    <li class="breadcrumb-item active" aria-current="page"><span class="ellipsis"><code class="docutils literal notranslate"><span class="pre">deploy_tools.sync</span></code></span></li>
+    <li class="breadcrumb-item active" aria-current="page"><span class="ellipsis"><code class="docutils literal notranslate"><span class="pre">deploy_tools.errors</span></code></span></li>
   </ul>
 </nav>
 </div>
@@ -524,21 +524,27 @@
 <div id="searchbox"></div>
                 <article class="bd-article">
                   
-  <section id="module-deploy_tools.sync">
-<span id="deploy-tools-sync"></span><h1><code class="docutils literal notranslate"><span class="pre">deploy_tools.sync</span></code><a class="headerlink" href="#module-deploy_tools.sync" title="Link to this heading">#</a></h1>
+  <section id="module-deploy_tools.errors">
+<span id="deploy-tools-errors"></span><h1><code class="docutils literal notranslate"><span class="pre">deploy_tools.errors</span></code><a class="headerlink" href="#module-deploy_tools.errors" title="Link to this heading">#</a></h1>
 <p class="rubric">Members</p>
 <div class="pst-scrollable-table-container"><table class="autosummary longtable table">
 <tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="#deploy_tools.sync.synchronise" title="deploy_tools.sync.synchronise"><code class="xref py py-obj docutils literal notranslate"><span class="pre">synchronise</span></code></a></p></td>
-<td><p>Synchronise the deployment folder with the current configuration.</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#deploy_tools.errors.DeployToolsError" title="deploy_tools.errors.DeployToolsError"><code class="xref py py-obj docutils literal notranslate"><span class="pre">DeployToolsError</span></code></a></p></td>
+<td><p>Base class for expected, user-facing deploy-tools errors.</p></td>
 </tr>
 </tbody>
 </table>
 </div>
-<dl class="py function">
-<dt class="sig sig-object py" id="deploy_tools.sync.synchronise">
-<span class="sig-prename descclassname"><span class="pre">deploy_tools.sync.</span></span><span class="sig-name descname"><span class="pre">synchronise</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">deployment_root</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/pathlib.html#pathlib.Path" title="(in Python v3.14)"><span class="pre">Path</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">config_folder</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/pathlib.html#pathlib.Path" title="(in Python v3.14)"><span class="pre">Path</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">allow_all</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.14)"><span class="pre">bool</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">from_scratch</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.14)"><span class="pre">bool</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.14)"><span class="pre">None</span></a></span></span><a class="reference internal" href="../_modules/deploy_tools/sync.html#synchronise"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#deploy_tools.sync.synchronise" title="Link to this definition">#</a></dt>
-<dd><p>Synchronise the deployment folder with the current configuration.</p>
+<dl class="py exception">
+<dt class="sig sig-object py" id="deploy_tools.errors.DeployToolsError">
+<span class="property"><span class="k"><span class="pre">exception</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">deploy_tools.errors.</span></span><span class="sig-name descname"><span class="pre">DeployToolsError</span></span><a class="reference internal" href="../_modules/deploy_tools/errors.html#DeployToolsError"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#deploy_tools.errors.DeployToolsError" title="Link to this definition">#</a></dt>
+<dd><p>Base class for expected, user-facing deploy-tools errors.</p>
+<p>These represent actionable failure conditions, such as invalid configuration or a
+corrupt deployment area, where the exception message is itself the guidance the
+operator needs. The CLI catches this base class at the top level and prints the
+message without a traceback (see <code class="docutils literal notranslate"><span class="pre">deploy_tools.__main__.main</span></code>). Any exception that
+is <em>not</em> a <code class="docutils literal notranslate"><span class="pre">DeployToolsError</span></code> is treated as an unexpected bug and surfaces with a
+full traceback.</p>
 </dd></dl>
 
 </section>
@@ -554,20 +560,20 @@
                   
 <div class="prev-next-area">
     <a class="left-prev"
-       href="deploy_tools.snapshot.html"
+       href="deploy_tools.deploy.html"
        title="previous page">
       <i class="fa-solid fa-angle-left"></i>
       <div class="prev-next-info">
         <p class="prev-next-subtitle">previous</p>
-        <p class="prev-next-title"><code class="docutils literal notranslate"><span class="pre">deploy_tools.snapshot</span></code></p>
+        <p class="prev-next-title"><code class="docutils literal notranslate"><span class="pre">deploy_tools.deploy</span></code></p>
       </div>
     </a>
     <a class="right-next"
-       href="deploy_tools.templater.html"
+       href="deploy_tools.external_tools.html"
        title="next page">
       <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title"><code class="docutils literal notranslate"><span class="pre">deploy_tools.templater</span></code></p>
+        <p class="prev-next-title"><code class="docutils literal notranslate"><span class="pre">deploy_tools.external_tools</span></code></p>
       </div>
       <i class="fa-solid fa-angle-right"></i>
     </a>
@@ -590,7 +596,7 @@
   </div>
   <nav id="pst-page-toc-nav" class="page-toc" aria-labelledby="pst-page-navigation-heading-2">
     <ul class="pst-show_toc_level nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#deploy_tools.sync.synchronise"><code class="docutils literal notranslate"><span class="pre">synchronise()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#deploy_tools.errors.DeployToolsError"><code class="docutils literal notranslate"><span class="pre">DeployToolsError</span></code></a></li>
 </ul>
   </nav></div>
 
@@ -598,7 +604,7 @@
 
   
   <div class="tocsection editthispage">
-    <a href="https://github.com/DiamondLightSource/deploy-tools/edit/main/docs/_api/deploy_tools.sync.rst">
+    <a href="https://github.com/DiamondLightSource/deploy-tools/edit/main/docs/_api/deploy_tools.errors.rst">
       <i class="fa-solid fa-pencil"></i>
       
       
@@ -613,7 +619,7 @@
   <div class="sidebar-secondary-item">
 
   <div class="tocsection sourcelink">
-    <a href="../_sources/_api/deploy_tools.sync.rst.txt">
+    <a href="../_sources/_api/deploy_tools.errors.rst.txt">
       <i class="fa-solid fa-file-lines"></i> Show Source
     </a>
   </div>

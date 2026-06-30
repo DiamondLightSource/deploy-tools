@@ -7,7 +7,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>deploy_tools.app_builder &#8212; deploy-tools 0.7.2.dev26+g093ffa892 documentation</title>
+    <title>deploy_tools.app_builder &#8212; deploy-tools 0.7.2.dev46+gb0eccc697 documentation</title>
   
   
   
@@ -41,7 +41,7 @@
   <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=a95f357e85573c9b56d5" />
 <link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=a95f357e85573c9b56d5" />
 
-    <script src="../../_static/documentation_options.js?v=d0788f0c"></script>
+    <script src="../../_static/documentation_options.js?v=fa3c2659"></script>
     <script src="../../_static/doctools.js?v=fd6eb6e6"></script>
     <script src="../../_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
@@ -469,6 +469,7 @@
 <span class="kn">from</span><span class="w"> </span><span class="nn">deploy_tools.models.binary_app</span><span class="w"> </span><span class="kn">import</span> <span class="n">BinaryApp</span><span class="p">,</span> <span class="n">HashType</span>
 
 <span class="kn">from</span><span class="w"> </span><span class="nn">.apptainer</span><span class="w"> </span><span class="kn">import</span> <span class="n">create_sif_file</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">.errors</span><span class="w"> </span><span class="kn">import</span> <span class="n">DeployToolsError</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">.layout</span><span class="w"> </span><span class="kn">import</span> <span class="n">ModuleBuildLayout</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">.models.apptainer_app</span><span class="w"> </span><span class="kn">import</span> <span class="n">ApptainerApp</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">.models.module</span><span class="w"> </span><span class="kn">import</span> <span class="n">Application</span><span class="p">,</span> <span class="n">Module</span>
@@ -480,7 +481,7 @@
 
 <div class="viewcode-block" id="AppBuilderError">
 <a class="viewcode-back" href="../../_api/deploy_tools.app_builder.html#deploy_tools.app_builder.AppBuilderError">[docs]</a>
-<span class="k">class</span><span class="w"> </span><span class="nc">AppBuilderError</span><span class="p">(</span><span class="ne">Exception</span><span class="p">):</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">AppBuilderError</span><span class="p">(</span><span class="n">DeployToolsError</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Raised when building an application&#39;s files fails.&quot;&quot;&quot;</span></div>
 
 
@@ -496,7 +497,7 @@
 
 <div class="viewcode-block" id="AppBuilder.create_application_files">
 <a class="viewcode-back" href="../../_api/deploy_tools.app_builder.html#deploy_tools.app_builder.AppBuilder.create_application_files">[docs]</a>
-    <span class="k">def</span><span class="w"> </span><span class="nf">create_application_files</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">app</span><span class="p">:</span> <span class="n">Application</span><span class="p">,</span> <span class="n">module</span><span class="p">:</span> <span class="n">Module</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">create_application_files</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">app</span><span class="p">:</span> <span class="n">Application</span><span class="p">,</span> <span class="n">module</span><span class="p">:</span> <span class="n">Module</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Create the entrypoint and supporting files for an application.</span>
 
 <span class="sd">        The files produced depend on the application type (Apptainer, shell or binary).</span>

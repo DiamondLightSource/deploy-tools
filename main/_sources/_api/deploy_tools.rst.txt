@@ -18,6 +18,8 @@
         build
         compare
         deploy
+        errors
+        external_tools
         layout
         models
         module_builder

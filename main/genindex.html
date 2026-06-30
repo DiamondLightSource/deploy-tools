@@ -7,7 +7,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Index &#8212; deploy-tools 0.7.2.dev26+g093ffa892 documentation</title>
+    <title>Index &#8212; deploy-tools 0.7.2.dev46+gb0eccc697 documentation</title>
   
   
   
@@ -41,7 +41,7 @@
   <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=a95f357e85573c9b56d5" />
 <link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=a95f357e85573c9b56d5" />
 
-    <script src="_static/documentation_options.js?v=d0788f0c"></script>
+    <script src="_static/documentation_options.js?v=fa3c2659"></script>
     <script src="_static/doctools.js?v=fd6eb6e6"></script>
     <script src="_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script src="_static/clipboard.min.js?v=a7894cd8"></script>
@@ -422,6 +422,8 @@
 <li class="toctree-l2"><a class="reference internal" href="_api/deploy_tools.build.html"><code class="docutils literal notranslate"><span class="pre">deploy_tools.build</span></code></a></li>
 <li class="toctree-l2"><a class="reference internal" href="_api/deploy_tools.compare.html"><code class="docutils literal notranslate"><span class="pre">deploy_tools.compare</span></code></a></li>
 <li class="toctree-l2"><a class="reference internal" href="_api/deploy_tools.deploy.html"><code class="docutils literal notranslate"><span class="pre">deploy_tools.deploy</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="_api/deploy_tools.errors.html"><code class="docutils literal notranslate"><span class="pre">deploy_tools.errors</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="_api/deploy_tools.external_tools.html"><code class="docutils literal notranslate"><span class="pre">deploy_tools.external_tools</span></code></a></li>
 <li class="toctree-l2"><a class="reference internal" href="_api/deploy_tools.layout.html"><code class="docutils literal notranslate"><span class="pre">deploy_tools.layout</span></code></a></li>
 <li class="toctree-l2 has-children"><a class="reference internal" href="_api/deploy_tools.models.html"><code class="docutils literal notranslate"><span class="pre">deploy_tools.models</span></code></a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
 <li class="toctree-l3"><a class="reference internal" href="_api/deploy_tools.models.app.html"><code class="docutils literal notranslate"><span class="pre">deploy_tools.models.app</span></code></a></li>
@@ -623,6 +625,20 @@
 </li>
       </ul></li>
       <li>
+    deploy_tools.errors
+
+      <ul>
+        <li><a href="_api/deploy_tools.errors.html#module-deploy_tools.errors">module</a>
+</li>
+      </ul></li>
+      <li>
+    deploy_tools.external_tools
+
+      <ul>
+        <li><a href="_api/deploy_tools.external_tools.html#module-deploy_tools.external_tools">module</a>
+</li>
+      </ul></li>
+      <li>
     deploy_tools.layout
 
       <ul>
@@ -767,6 +783,8 @@
 </li>
       <li><a href="_api/deploy_tools.models.deployment.html#deploy_tools.models.deployment.DeploymentSettings">DeploymentSettings (class in deploy_tools.models.deployment)</a>
 </li>
+      <li><a href="_api/deploy_tools.errors.html#deploy_tools.errors.DeployToolsError">DeployToolsError</a>
+</li>
       <li><a href="_api/deploy_tools.modulefile.html#deploy_tools.modulefile.deprecate_modulefile_link">deprecate_modulefile_link() (in module deploy_tools.modulefile)</a>
 </li>
       <li><a href="_api/deploy_tools.layout.html#deploy_tools.layout.Layout.deprecated_modulefiles_root">deprecated_modulefiles_root (deploy_tools.layout.Layout property)</a>
@@ -781,11 +799,13 @@
   <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="_api/deploy_tools.models.apptainer_app.html#deploy_tools.models.apptainer_app.Entrypoint">Entrypoint (class in deploy_tools.models.apptainer_app)</a>
 </li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="_api/deploy_tools.models.apptainer_app.html#deploy_tools.models.apptainer_app.EntrypointOptions">EntrypointOptions (class in deploy_tools.models.apptainer_app)</a>
 </li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="_api/deploy_tools.models.module.html#deploy_tools.models.module.EnvVar">EnvVar (class in deploy_tools.models.module)</a>
+</li>
+      <li><a href="_api/deploy_tools.external_tools.html#deploy_tools.external_tools.ExternalToolError">ExternalToolError</a>
 </li>
   </ul></td>
 </tr></table>
@@ -887,6 +907,10 @@
 </li>
         <li><a href="_api/deploy_tools.deploy.html#module-deploy_tools.deploy">deploy_tools.deploy</a>
 </li>
+        <li><a href="_api/deploy_tools.errors.html#module-deploy_tools.errors">deploy_tools.errors</a>
+</li>
+        <li><a href="_api/deploy_tools.external_tools.html#module-deploy_tools.external_tools">deploy_tools.external_tools</a>
+</li>
         <li><a href="_api/deploy_tools.layout.html#module-deploy_tools.layout">deploy_tools.layout</a>
 </li>
         <li><a href="_api/deploy_tools.models.html#module-deploy_tools.models">deploy_tools.models</a>
@@ -962,11 +986,13 @@
   <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="_api/deploy_tools.models.module.html#deploy_tools.models.module.Release">Release (class in deploy_tools.models.module)</a>
 </li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="_api/deploy_tools.models.changes.html#deploy_tools.models.changes.ReleaseChanges">ReleaseChanges (class in deploy_tools.models.changes)</a>
 </li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="_api/deploy_tools.modulefile.html#deploy_tools.modulefile.restore_modulefile_link">restore_modulefile_link() (in module deploy_tools.modulefile)</a>
+</li>
+      <li><a href="_api/deploy_tools.external_tools.html#deploy_tools.external_tools.run_command">run_command() (in module deploy_tools.external_tools)</a>
 </li>
   </ul></td>
 </tr></table>
