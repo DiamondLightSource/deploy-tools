@@ -1,8 +1,10 @@
-import subprocess
 from pathlib import Path
 
+from .errors import DeployToolsError
+from .external_tools import run_command
 
-class ApptainerError(Exception):
+
+class ApptainerError(DeployToolsError):
     """Raised when building an Apptainer SIF file fails."""
 
 
@@ -27,4 +29,4 @@ def create_sif_file(
         )
 
     commands = ["apptainer", "pull", output_path, container_url]
-    subprocess.run(commands, check=True)
+    run_command(commands, check=True)

@@ -1,0 +1,21 @@
+# yaml-language-server: $schema=/workspaces/deploy-tools/src/deploy_tools/models/schemas/release.json
+
+module:
+  name: updatable
+  version: "1.0"
+  description: Module demonstrating in-place updates (allow_updates)
+
+  env_vars:
+    - name: UPDATABLE_VALUE
+      value: Set at initial deployment
+
+  applications:
+    - app_type: shell
+
+      name: test-updatable-echo
+      script:
+        - echo $UPDATABLE_VALUE
+
+  # allow_updates lets a later sync change this version's configuration in place,
+  # without bumping the version number.
+  allow_updates: true

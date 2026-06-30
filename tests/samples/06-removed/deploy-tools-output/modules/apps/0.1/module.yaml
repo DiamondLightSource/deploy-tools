@@ -1,0 +1,39 @@
+allow_updates: false
+applications:
+- app_type: apptainer
+  container:
+    path: docker://ghcr.io/apptainer/lolcow
+    version: latest
+  entrypoints:
+  - command: cowsay
+    name: cowsay-hello
+    options:
+      apptainer_args: ''
+      command_args: Hello
+      host_binaries: []
+      mounts: []
+  global_options:
+    apptainer_args: ''
+    command_args: ''
+    host_binaries: []
+    mounts: []
+- app_type: shell
+  name: test-echo-module-var
+  script:
+  - echo $OTHER_VALUE
+- app_type: shell
+  name: test-shell-script
+  script:
+  - echo This is the first line of a shell script
+  - echo and this is the second line.
+  - echo Your input is ${1}
+dependencies: []
+description: Module demonstrating shell and Apptainer applications
+env_vars:
+- name: OTHER_VALUE
+  value: Version 0.1
+exclude_from_defaults: false
+load_script: []
+name: apps
+unload_script: []
+version: '0.1'

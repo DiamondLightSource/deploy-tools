@@ -1,11 +1,12 @@
 import logging
-import subprocess
 from pathlib import Path
 from tempfile import TemporaryDirectory
 
 from natsort import natsorted
 
 from .build import build
+from .errors import DeployToolsError
+from .external_tools import run_command
 from .layout import Layout
 from .models.changes import DeploymentChanges, ReleaseChanges
 from .models.deployment import (
@@ -25,7 +26,7 @@ logger = logging.getLogger(__name__)
 SCRIPT_INDICATOR_PHRASE = "shell script"
 
 
-class ValidationError(Exception):
+class ValidationError(DeployToolsError):
     """Raised when the deployment configuration fails validation."""
 
 
@@ -242,9 +243,7 @@ def _is_shell_script(file: Path) -> bool:
     This uses the output of the Linux 'file' command, which is dependent on the
     shebang line as well as the OS. Both are controlled in our deployment.
     """
-    result = subprocess.run(
-        ["file", f"{file.absolute()}"], capture_output=True, text=True
-    )
+    result = run_command(["file", str(file.absolute())], capture_output=True, text=True)
     return SCRIPT_INDICATOR_PHRASE in result.stdout
 
 
@@ -257,12 +256,12 @@ def _check_bash_syntax(file: Path) -> None:
     This is also unable to check that all required functions and tools are available, so
     some typos are likely to pass.
     """
-    result = subprocess.run(
-        ["bash", "-n", f"{file.absolute()}"],
+    result = run_command(
+        ["bash", "-n", str(file.absolute())],
         capture_output=True,
         text=True,
     )
-    if result.stderr:
+    if result.returncode != 0:
         raise ValidationError(
             f"Output script {file.absolute()} is invalid with errors:\n{result.stderr}"
         )

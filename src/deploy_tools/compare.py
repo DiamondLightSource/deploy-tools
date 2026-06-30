@@ -7,6 +7,7 @@ from typing import Any
 import yaml
 from pydantic import TypeAdapter
 
+from .errors import DeployToolsError
 from .layout import Layout
 from .models.deployment import (
     DefaultVersionsByName,
@@ -23,7 +24,7 @@ from .validate import validate_default_versions
 logger = logging.getLogger(__name__)
 
 
-class ComparisonError(Exception):
+class ComparisonError(DeployToolsError):
     """Raised when comparing the deployment area to its snapshot fails."""
 
 
@@ -182,7 +183,7 @@ def _compare_default_versions(snapshot: Deployment, actual: Deployment) -> None:
         )
 
 
-def _get_dict_diff(d1: dict[str, Any], d2: dict[str, Any]):
+def _get_dict_diff(d1: dict[str, Any], d2: dict[str, Any]) -> str:
     return "\n" + "\n".join(
         difflib.ndiff(
             _yaml_dumps(d1).splitlines(),

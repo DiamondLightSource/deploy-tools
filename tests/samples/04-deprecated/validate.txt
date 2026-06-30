@@ -1,0 +1,5 @@
+Modules to be deprecated:
+versions/1.0
+versions/2.1rc1
+
+No default version changes

@@ -1,0 +1,15 @@
+#%Module1.0
+##
+## updatable - Module demonstrating in-place updates (allow_updates)
+##
+module-whatis "Module demonstrating in-place updates (allow_updates)"
+
+if { [module-info mode load] } {
+    if { [is-loaded updatable] } {
+      module unload updatable
+    }
+}
+
+setenv UPDATABLE_VALUE "Set at initial deployment"
+
+prepend-path PATH "/tmp/deploy-tools-output/modules/updatable/1.0/entrypoints"

@@ -1,0 +1,12 @@
+# yaml-language-server: $schema=/workspaces/deploy-tools/src/deploy_tools/models/schemas/release.json
+
+module:
+  name: versions
+  version: "2.1rc1"
+  description: Module demonstrating multiple versions and default-version selection
+
+  # Excluded from automatic default selection, so the default stays at the latest
+  # stable version even though this prerelease sorts higher.
+  exclude_from_defaults: true
+
+  applications: []

@@ -1,0 +1,124 @@
+releases:
+  apps:
+    '0.1':
+      deprecated: false
+      module:
+        allow_updates: false
+        applications:
+        - app_type: apptainer
+          container:
+            path: docker://ghcr.io/apptainer/lolcow
+            version: latest
+          entrypoints:
+          - command: cowsay
+            name: cowsay-hello
+            options:
+              apptainer_args: ''
+              command_args: Hello
+              host_binaries: []
+              mounts: []
+          global_options:
+            apptainer_args: ''
+            command_args: ''
+            host_binaries: []
+            mounts: []
+        - app_type: shell
+          name: test-echo-module-var
+          script:
+          - echo $OTHER_VALUE
+        - app_type: shell
+          name: test-shell-script
+          script:
+          - echo This is the first line of a shell script
+          - echo and this is the second line.
+          - echo Your input is ${1}
+        dependencies: []
+        description: Module demonstrating shell and Apptainer applications
+        env_vars:
+        - name: OTHER_VALUE
+          value: Version 0.1
+        exclude_from_defaults: false
+        load_script: []
+        name: apps
+        unload_script: []
+        version: '0.1'
+  deps:
+    '0.2':
+      deprecated: false
+      module:
+        allow_updates: false
+        applications: []
+        dependencies:
+        - name: apps
+          version: '0.1'
+        - name: external-module
+          version: null
+        description: Module demonstrating dependencies
+        env_vars: []
+        exclude_from_defaults: false
+        load_script: []
+        name: deps
+        unload_script: []
+        version: '0.2'
+  updatable:
+    '1.0':
+      deprecated: false
+      module:
+        allow_updates: true
+        applications:
+        - app_type: shell
+          name: test-updatable-echo
+          script:
+          - echo $UPDATABLE_VALUE
+        dependencies: []
+        description: Module demonstrating in-place updates (allow_updates)
+        env_vars:
+        - name: UPDATABLE_VALUE
+          value: Set at initial deployment
+        exclude_from_defaults: false
+        load_script: []
+        name: updatable
+        unload_script: []
+        version: '1.0'
+  versions:
+    '1.0':
+      deprecated: false
+      module:
+        allow_updates: false
+        applications: []
+        dependencies: []
+        description: Module demonstrating multiple versions and default-version selection
+        env_vars: []
+        exclude_from_defaults: false
+        load_script: []
+        name: versions
+        unload_script: []
+        version: '1.0'
+    '2.0':
+      deprecated: false
+      module:
+        allow_updates: false
+        applications: []
+        dependencies: []
+        description: Module demonstrating multiple versions and default-version selection
+        env_vars: []
+        exclude_from_defaults: false
+        load_script: []
+        name: versions
+        unload_script: []
+        version: '2.0'
+    2.1rc1:
+      deprecated: false
+      module:
+        allow_updates: false
+        applications: []
+        dependencies: []
+        description: Module demonstrating multiple versions and default-version selection
+        env_vars: []
+        exclude_from_defaults: true
+        load_script: []
+        name: versions
+        unload_script: []
+        version: 2.1rc1
+settings:
+  default_versions: {}

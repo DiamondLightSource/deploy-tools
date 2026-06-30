@@ -1,8 +1,0 @@
-#! /bin/bash
-
-if [[ -n "${DEPLOY_TOOLS_VERBOSE}" ]]; then
-    set -x
-fi
-
-argocd login argocd.diamond.ac.uk --grpc-web --sso
-kubectl version

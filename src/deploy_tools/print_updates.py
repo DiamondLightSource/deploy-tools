@@ -25,7 +25,10 @@ def _print_module_updates(release_changes: ReleaseChanges) -> None:
         if releases:
             print(f"Modules to be {action}:")
 
-            for release in releases:
+            # Sort for stable output: release lists follow config load (glob) order.
+            for release in sorted(
+                releases, key=lambda r: (r.module.name, r.module.version)
+            ):
                 print(f"{release.module.name}/{release.module.version}")
             print()
 
@@ -36,10 +39,10 @@ def _print_module_updates(release_changes: ReleaseChanges) -> None:
 def _print_version_updates(
     old_defaults: DefaultVersionsByName, new_defaults: DefaultVersionsByName
 ) -> None:
-    module_names = old_defaults.keys() | new_defaults.keys()
+    module_names: set[str] = old_defaults.keys() | new_defaults.keys()
 
     update_messages: list[str] = []
-    for name in module_names:
+    for name in sorted(module_names):
         old = old_defaults.get(name, "None")
         new = new_defaults.get(name, "None")
         if not old == new:
