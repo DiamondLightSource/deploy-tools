@@ -39,11 +39,9 @@ def _print_module_updates(release_changes: ReleaseChanges) -> None:
 def _print_version_updates(
     old_defaults: DefaultVersionsByName, new_defaults: DefaultVersionsByName
 ) -> None:
-    module_names = old_defaults.keys() | new_defaults.keys()
+    module_names: set[str] = old_defaults.keys() | new_defaults.keys()
 
     update_messages: list[str] = []
-    # Sort for stable output: module_names is a set, whose iteration order depends on
-    # PYTHONHASHSEED.
     for name in sorted(module_names):
         old = old_defaults.get(name, "None")
         new = new_defaults.get(name, "None")
