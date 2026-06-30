@@ -34,6 +34,22 @@ def test_deprecate_then_remove_multiple_versions_of_same_module(
     assert run_cli("compare", tmp_path) == ""
 
 
+def test_sync_applies_explicit_default_version_over_auto_selection(
+    tmp_path: Path, configs: Path
+) -> None:
+    # settings.yaml pins the default to 1.0 even though 2.0 is deployed and would be
+    # auto-selected. Confirm the explicit pin is set in the on-disk .version file.
+    run_cli(
+        "sync",
+        "--from-scratch",
+        tmp_path,
+        configs / "valid" / "multi-version-explicit-default",
+    )
+
+    default_version_file = Layout(tmp_path).get_default_version_file(MODULE_NAME)
+    assert "set ModulesVersion 1.0" in default_version_file.read_text()
+
+
 def test_sync_rejects_deployment_area_without_git_repo(
     tmp_path: Path, configs: Path
 ) -> None:
