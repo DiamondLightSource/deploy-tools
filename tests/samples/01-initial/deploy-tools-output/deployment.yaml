@@ -60,6 +60,26 @@ releases:
         name: deps
         unload_script: []
         version: '0.2'
+  updatable:
+    '1.0':
+      deprecated: false
+      module:
+        allow_updates: true
+        applications:
+        - app_type: shell
+          name: test-updatable-echo
+          script:
+          - echo $UPDATABLE_VALUE
+        dependencies: []
+        description: Module demonstrating in-place updates (allow_updates)
+        env_vars:
+        - name: UPDATABLE_VALUE
+          value: Set at initial deployment
+        exclude_from_defaults: false
+        load_script: []
+        name: updatable
+        unload_script: []
+        version: '1.0'
   versions:
     '1.0':
       deprecated: false

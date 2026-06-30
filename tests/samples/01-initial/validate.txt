@@ -1,9 +1,11 @@
 Modules to be deployed:
 apps/0.1
 deps/0.2
+updatable/1.0
 versions/1.0
 
 Updated module defaults:
 apps None -> 0.1
 deps None -> 0.2
+updatable None -> 1.0
 versions None -> 1.0

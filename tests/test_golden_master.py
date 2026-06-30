@@ -111,15 +111,15 @@ def test_module_lifecycle(
     # tmp_path is a fresh, empty, per-test directory; the stages below share it as one
     # deployment area, each building on the previous state, with no cross-run leakage.
 
-    # Stage 1: deploy apps, deps, and versions/1.0 into an empty area.
+    # Stage 1: deploy apps, deps, updatable/1.0, and versions/1.0 into an empty area.
     _run_stage(samples, configs, tmp_path, "01-initial", from_scratch=True)
 
-    # Stage 2: on an incremental sync, add the updatable module and a second version
-    # (versions/2.0); the default version migrates from 1.0 to 2.0.
+    # Stage 2: on an incremental sync, add a second version (versions/2.0) and an
+    # excluded prerelease (versions/2.1rc1). The versions default moves from 1.0 to 2.0.
     _run_stage(samples, configs, tmp_path, "02-added")
 
-    # Stage 3: update updatable/1.0 in place (allowed via allow_updates) and add an
-    # excluded prerelease (versions/2.1rc1); the default stays 2.0.
+    # Stage 3: update updatable/1.0 in place (allowed via allow_updates) without bumping
+    # its version.
     _run_stage(samples, configs, tmp_path, "03-updated")
 
     # Stage 4: deprecate versions/1.0 (en route to removal) and versions/2.1rc1 (to set
