@@ -3,10 +3,6 @@ from pathlib import Path
 
 from conftest import run_cli
 
-PATH_TO_SCHEMAS = (
-    Path(__file__).parent.parent / "src" / "deploy_tools" / "models" / "schemas"
-)
-
 
 def test_schema_gen(schemas: Path) -> None:
     with tempfile.TemporaryDirectory() as tmp:
