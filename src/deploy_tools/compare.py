@@ -87,10 +87,15 @@ def _reconstruct_deployment_config_from_modules(layout: Layout) -> Deployment:
     Note that the default versions will be different to those in initial configuration.
     """
     releases = _collect_releases(layout)
-    default_versions = _collect_default_modulefile_versions(layout, list(releases))
-    settings = DeploymentSettings(default_versions=default_versions)
+    deployment = Deployment(settings=DeploymentSettings(), releases=releases)
 
-    return Deployment(settings=settings, releases=releases)
+    # Only non-deprecated (live) modules are associated with a .version file
+    live_names = list(deployment.get_final_deployed_modules())
+    deployment.settings.default_versions = _collect_default_modulefile_versions(
+        layout, live_names
+    )
+
+    return deployment
 
 
 def _collect_releases(layout: Layout) -> ReleasesByNameAndVersion:
@@ -152,7 +157,12 @@ def _collect_default_modulefile_versions(
     default_versions: dict[str, str] = {}
 
     for name in names:
-        default_version = get_default_modulefile_version(name, layout)
+        try:
+            default_version = get_default_modulefile_version(name, layout)
+        except FileNotFoundError as exc:
+            raise ComparisonError(
+                f"Live module '{name}' has no default version file"
+            ) from exc
         if default_version is not None:
             default_versions[name] = default_version
 
@@ -194,4 +204,6 @@ def _get_dict_diff(d1: dict[str, Any], d2: dict[str, Any]) -> str:
 
 def _yaml_dumps(obj: dict[str, Any], indent: int | None = None) -> str:
     ta = TypeAdapter(dict[str, Any])
-    return yaml.safe_dump(ta.dump_python(obj), indent=indent)
+    # Dump in JSON mode so pydantic special types (e.g. AnyUrl) are coerced to YAML-safe
+    # primitives
+    return yaml.safe_dump(ta.dump_python(obj, mode="json"), indent=indent)

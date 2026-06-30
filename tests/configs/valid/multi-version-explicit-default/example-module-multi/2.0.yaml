@@ -1,0 +1,8 @@
+# yaml-language-server: $schema=/workspaces/deploy-tools/src/deploy_tools/models/schemas/release.json
+
+module:
+  name: example-module-multi
+  version: "2.0"
+  description: Module with two versions, used to exercise explicit default selection
+
+  applications: []

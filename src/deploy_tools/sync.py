@@ -1,11 +1,12 @@
 import logging
 from pathlib import Path
 
-from git import Repo
+from git import InvalidGitRepositoryError, Repo
 
 from .build import build, clean_build_area
 from .deploy import deploy_changes
-from .layout import Layout
+from .errors import DeployToolsError
+from .layout import Layout, ModuleBuildLayout
 from .models.save_and_load import load_deployment
 from .snapshot import create_snapshot, load_snapshot
 from .templater import Templater, TemplateType
@@ -15,7 +16,17 @@ from .validate import (
 
 logger = logging.getLogger(__name__)
 
-IGNORE_DIRS = ["/build", "/modules/*/*/sif_files"]
+
+class SyncError(DeployToolsError):
+    """Raised when the deployment area is not in a state the sync process can use."""
+
+
+# Files not tracked in the deployment area's git repo (kept only as a change reference):
+# the transient build area and the large Apptainer .sif images.
+IGNORE_DIRS = [
+    f"/{Layout.DEFAULT_BUILD_ROOT_NAME}",
+    f"/{Layout.MODULES_ROOT_NAME}/*/*/{ModuleBuildLayout.SIF_FILES_FOLDER}",
+]
 
 
 def synchronise(
@@ -45,18 +56,25 @@ def synchronise(
         logger.info("Creating git repository in deployment area")
         repo = _initialise_git_repo(layout.deployment_root, IGNORE_DIRS)
     else:
-        repo = Repo(layout.deployment_root)
+        try:
+            repo = Repo(layout.deployment_root)
+        except InvalidGitRepositoryError as exc:
+            raise SyncError(
+                f"Deployment area has a snapshot but is not a git repository "
+                f"(git metadata missing or corrupt):\n{layout.deployment_root}"
+            ) from exc
 
-    logger.info("Creating snapshot")
-    create_snapshot(deployment, layout)
+    with repo:
+        logger.info("Creating snapshot")
+        create_snapshot(deployment, layout)
 
-    logger.info("Deploying changes")
-    deploy_changes(deployment_changes, layout)
+        logger.info("Deploying changes")
+        deploy_changes(deployment_changes, layout)
 
-    logger.info("Committing changes to git (for reference)")
-    repo.git.add("--all")
-    commit = repo.index.commit("Performed sync process")
-    logger.info("Commit SHA: %s", commit.hexsha)
+        logger.info("Committing changes to git (for reference)")
+        repo.git.add("--all")
+        commit = repo.index.commit("Performed sync process")
+        logger.info("Commit SHA: %s", commit.hexsha)
 
     logger.info("Sync process finished")
 
