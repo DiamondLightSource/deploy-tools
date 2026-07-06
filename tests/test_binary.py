@@ -96,5 +96,8 @@ def test_sync_rejects_binary_with_wrong_hash(tmp_path: Path) -> None:
     deployment_root, config_folder = _write_binary_deployment(
         tmp_path, "sha256", "0" * 64
     )
-    with pytest.raises(AppBuilderError, match="hash check failed"):
+    with pytest.raises(
+        AppBuilderError,
+        match="Downloaded Binary .*/downloads/example-tool hash check failed",
+    ):
         run_cli("sync", "--from-scratch", deployment_root, config_folder)

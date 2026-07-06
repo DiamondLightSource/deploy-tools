@@ -13,5 +13,7 @@ def test_run_command_reports_missing_tool() -> None:
 def test_run_command_reports_failed_tool() -> None:
     # With check=True, a non-zero exit is reported as an ExternalToolError rather than a
     # raw CalledProcessError.
-    with pytest.raises(ExternalToolError, match="exit status"):
+    with pytest.raises(
+        ExternalToolError, match="External tool 'bash' failed with exit status 3"
+    ):
         run_command(["bash", "-c", "exit 3"], check=True)
