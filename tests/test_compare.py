@@ -56,7 +56,7 @@ def test_compare_from_scratch_accepts_empty_area(tmp_path: Path) -> None:
 def test_compare_from_scratch_rejects_non_empty_area(tmp_path: Path) -> None:
     # Any pre-existing content means the area is not ready for a from-scratch deploy.
     (tmp_path / "stray-file").touch()
-    with pytest.raises(ComparisonError, match="not empty"):
+    with pytest.raises(ComparisonError, match="root folder is not empty"):
         run_cli("compare", "--from-scratch", tmp_path)
 
 
@@ -72,7 +72,9 @@ def test_compare_rejects_module_without_modulefile(
     # Removing a module's modulefile link leaves a built module that is not exposed.
     layout = _sync_minimal(tmp_path, configs)
     layout.get_modulefile_link(MODULE_NAME, MODULE_VERSION).unlink()
-    with pytest.raises(ComparisonError, match="No modulefile found"):
+    with pytest.raises(
+        ComparisonError, match=f"No modulefile found for {MODULE_NAME}/{MODULE_VERSION}"
+    ):
         run_cli("compare", tmp_path)
 
 
@@ -82,7 +84,10 @@ def test_compare_rejects_modulefile_without_module(
     # Removing the built module leaves a dangling modulefile link
     layout = _sync_minimal(tmp_path, configs)
     rmtree(layout.get_module_folder(MODULE_NAME, MODULE_VERSION))
-    with pytest.raises(ComparisonError, match="without corresponding built module"):
+    with pytest.raises(
+        ComparisonError,
+        match=f"without corresponding built module for {MODULE_NAME}/{MODULE_VERSION}",
+    ):
         run_cli("compare", tmp_path)
 
 
@@ -94,7 +99,10 @@ def test_compare_rejects_duplicate_modulefiles(tmp_path: Path, configs: Path) ->
     )
     deprecated_link.parent.mkdir(parents=True, exist_ok=True)
     deprecated_link.touch()
-    with pytest.raises(ComparisonError, match="Duplicate modulefiles"):
+    with pytest.raises(
+        ComparisonError,
+        match=f"Duplicate modulefiles for {MODULE_NAME}/{MODULE_VERSION}",
+    ):
         run_cli("compare", tmp_path)
 
 
@@ -142,13 +150,17 @@ def test_compare_use_ref_detects_drift(tmp_path: Path, configs: Path) -> None:
 def test_compare_from_scratch_rejects_missing_root(tmp_path: Path) -> None:
     # The CLI's argument validation rejects a non-existent path before the command runs,
     # so exercise this guard by calling the function directly.
-    with pytest.raises(ComparisonError, match="root folder does not exist"):
+    with pytest.raises(
+        ComparisonError, match="root folder does not exist:\n.*/does-not-exist"
+    ):
         compare_to_snapshot(tmp_path / "does-not-exist", from_scratch=True)
 
 
 def test_compare_rejects_missing_root(tmp_path: Path) -> None:
     # As above, but for the snapshot-loading path used by a non from-scratch compare.
-    with pytest.raises(SnapshotError, match="root folder does not exist"):
+    with pytest.raises(
+        SnapshotError, match="root folder does not exist:\n.*/does-not-exist"
+    ):
         compare_to_snapshot(tmp_path / "does-not-exist")
 
 
@@ -159,7 +171,10 @@ def test_compare_rejects_missing_default_version_file(
     # corruption that compare must report cleanly, not as a raw FileNotFoundError.
     layout = _sync_minimal(tmp_path, configs)
     layout.get_default_version_file(MODULE_NAME).unlink()
-    with pytest.raises(ComparisonError, match="default version file"):
+    with pytest.raises(
+        ComparisonError,
+        match=f"Live module '{MODULE_NAME}' has no default version file",
+    ):
         run_cli("compare", tmp_path)
 
 
@@ -176,5 +191,5 @@ def test_compare_rejects_unknown_git_ref(tmp_path: Path, configs: Path) -> None:
     # An unresolvable --use-ref should fail with a clear SnapshotError, not a raw
     # GitPython BadName error.
     _sync_minimal(tmp_path, configs)
-    with pytest.raises(SnapshotError, match="git ref"):
+    with pytest.raises(SnapshotError, match="not found at git ref:\nno-such-ref"):
         run_cli("compare", "--use-ref", "no-such-ref", tmp_path)
