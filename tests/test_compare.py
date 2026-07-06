@@ -140,13 +140,13 @@ def test_compare_use_ref_detects_drift(tmp_path: Path, configs: Path) -> None:
 def test_compare_from_scratch_rejects_missing_root(tmp_path: Path) -> None:
     # The CLI's argument validation rejects a non-existent path before the command runs,
     # so exercise this guard by calling the function directly.
-    with pytest.raises(ComparisonError, match="does not exist"):
+    with pytest.raises(ComparisonError, match="root folder does not exist"):
         compare_to_snapshot(tmp_path / "does-not-exist", from_scratch=True)
 
 
 def test_compare_rejects_missing_root(tmp_path: Path) -> None:
     # As above, but for the snapshot-loading path used by a non from-scratch compare.
-    with pytest.raises(SnapshotError, match="does not exist"):
+    with pytest.raises(SnapshotError, match="root folder does not exist"):
         compare_to_snapshot(tmp_path / "does-not-exist")
 
 
