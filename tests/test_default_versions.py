@@ -103,7 +103,7 @@ def test_explicit_default_for_nonexistent_version_raises() -> None:
         _release("mod", "1.0"),
         default_versions={"mod": "9.9"},
     )
-    with pytest.raises(ValidationError, match="Unable to configure"):
+    with pytest.raises(ValidationError, match="Unable to configure mod/9.9 as default"):
         validate_default_versions(deployment)
 
 
@@ -114,7 +114,7 @@ def test_explicit_default_for_deprecated_version_raises() -> None:
         _release("mod", "1.0", deprecated=True),
         default_versions={"mod": "1.0"},
     )
-    with pytest.raises(ValidationError, match="Unable to configure"):
+    with pytest.raises(ValidationError, match="Unable to configure mod/1.0 as default"):
         validate_default_versions(deployment)
 
 
@@ -122,5 +122,8 @@ def test_all_versions_excluded_raises() -> None:
     # With every version opting out and no explicit default, there is no eligible
     # version to make default.
     deployment = _deployment(_release("mod", "1.0", excluded=True))
-    with pytest.raises(ValidationError, match="exclude_from_defaults"):
+    with pytest.raises(
+        ValidationError,
+        match="every version for name: mod has set exclude_from_defaults",
+    ):
         validate_default_versions(deployment)
