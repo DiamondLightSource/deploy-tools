@@ -9,9 +9,9 @@ from deploy_tools.models.save_and_load import LoadError
 # before any validation logic runs. Each maps a folder under configs/invalid to a
 # substring expected in the error.
 MALFORMED_CONFIGS = [
-    ("stray-file", "Unexpected file in configuration directory"),
-    ("name-mismatch", "Module name .* does not match path"),
-    ("version-mismatch", "Module version .* does not match path"),
+    ("stray-file", "Unexpected file in configuration directory:\n.*/README.txt"),
+    ("name-mismatch", "Module name example-module-shell does not match path"),
+    ("version-mismatch", "Module version 1.0 does not match path"),
 ]
 
 
