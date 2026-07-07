@@ -60,6 +60,8 @@ def apply_default_versions(
                 overwrite=True,
             )
         else:
+            # Defensive: remove a stale default file for a deployed module that has no
+            # entry in the default map. This ought to be unreachable via the CLI
             default_version_file.unlink(missing_ok=True)
 
 
