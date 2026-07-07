@@ -155,6 +155,10 @@ def _delete_modulefiles_name_folder(
 ) -> None:
     modulefiles_name_path = layout.get_modulefiles_root(from_deprecated) / name
 
+    # Handle several versions of the same module being processed together
+    if not modulefiles_name_path.exists():
+        return
+
     # Ignore the default version file when checking for existing modulefile links
     if next(modulefiles_name_path.glob(MODULE_VERSIONS_GLOB), None) is None:
         shutil.rmtree(modulefiles_name_path)
