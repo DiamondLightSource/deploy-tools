@@ -1,10 +1,11 @@
 import logging
 from pathlib import Path
 
-from git import Repo
+from git import InvalidGitRepositoryError, Repo
 
 from .build import build, clean_build_area
 from .deploy import deploy_changes
+from .errors import DeployToolsError
 from .layout import Layout, ModuleBuildLayout
 from .models.save_and_load import load_deployment
 from .snapshot import create_snapshot, load_snapshot
@@ -14,6 +15,11 @@ from .validate import (
 )
 
 logger = logging.getLogger(__name__)
+
+
+class SyncError(DeployToolsError):
+    """Raised when the deployment area is not in a state the sync process can use."""
+
 
 # Files not tracked in the deployment area's git repo (kept only as a change reference):
 # the transient build area and the large Apptainer .sif images.
@@ -50,7 +56,13 @@ def synchronise(
         logger.info("Creating git repository in deployment area")
         repo = _initialise_git_repo(layout.deployment_root, IGNORE_DIRS)
     else:
-        repo = Repo(layout.deployment_root)
+        try:
+            repo = Repo(layout.deployment_root)
+        except InvalidGitRepositoryError as exc:
+            raise SyncError(
+                f"Deployment area has a snapshot but is not a git repository "
+                f"(git metadata missing or corrupt):\n{layout.deployment_root}"
+            ) from exc
 
     with repo:
         logger.info("Creating snapshot")
