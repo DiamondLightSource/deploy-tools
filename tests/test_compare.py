@@ -39,10 +39,12 @@ def test_compare_accepts_clean_deployment(tmp_path: Path, configs: Path) -> None
 
 
 def test_compare_accepts_deprecated_modules(tmp_path: Path, configs: Path) -> None:
-    # Ensure compare runs successfully with deprecated modulefile links.
+    # Deploy a module then deprecate it, so the area holds deprecated modulefile links;
+    # compare must accept them.
     run_cli(
-        "sync", "--from-scratch", tmp_path, configs / "golden-master" / "04-deprecated"
+        "sync", "--from-scratch", tmp_path, configs / "valid" / "multi-version-active"
     )
+    run_cli("sync", tmp_path, configs / "valid" / "multi-version-deprecated")
     assert run_cli("compare", tmp_path) == ""
 
 
@@ -124,11 +126,11 @@ def test_compare_rejects_default_version_mismatch(
 def test_compare_use_ref_detects_drift(tmp_path: Path, configs: Path) -> None:
     # sync commits a snapshot to the deployment area's git repo on every run. After two
     # syncs the area matches its own (HEAD) snapshot, but not the previous commit's
-    # snapshot, which predates the module added by the second sync.
+    # snapshot, taken before the second sync deprecated the module.
     run_cli(
-        "sync", "--from-scratch", tmp_path, configs / "golden-master" / "01-initial"
+        "sync", "--from-scratch", tmp_path, configs / "valid" / "multi-version-active"
     )
-    run_cli("sync", tmp_path, configs / "golden-master" / "02-added")
+    run_cli("sync", tmp_path, configs / "valid" / "multi-version-deprecated")
 
     assert run_cli("compare", tmp_path) == ""
     assert run_cli("compare", "--use-ref", "HEAD", tmp_path) == ""
