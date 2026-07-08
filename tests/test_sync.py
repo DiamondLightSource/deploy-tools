@@ -1,7 +1,11 @@
+import shutil
 from pathlib import Path
+
+import pytest
 
 from conftest import run_cli
 from deploy_tools.layout import Layout
+from deploy_tools.sync import SyncError
 
 MODULE_NAME = "example-module-multi"
 
@@ -25,3 +29,15 @@ def test_deprecate_then_remove_multiple_versions_of_same_module(
     assert not deprecated_name_folder.exists()
     assert not (layout.modules_root / MODULE_NAME).exists()
     assert run_cli("compare", tmp_path) == ""
+
+
+def test_sync_rejects_deployment_area_without_git_repo(
+    tmp_path: Path, configs: Path
+) -> None:
+    # An area whose .git has been lost still has a snapshot but no history to commit
+    # against: a corrupt state surfaced as a clean error, not a GitPython traceback.
+    run_cli("sync", "--from-scratch", tmp_path, configs / "multi-version-active")
+    shutil.rmtree(tmp_path / ".git")
+
+    with pytest.raises(SyncError, match="not a git repository"):
+        run_cli("sync", tmp_path, configs / "multi-version-active")
