@@ -1,5 +1,6 @@
 import io
 import logging
+from typing import cast
 
 import yaml
 from git import BadName, Repo
@@ -76,5 +77,6 @@ def load_snapshot_from_ref(layout: Layout, ref: str) -> Deployment:
                 f"Deployment snapshot not found at git ref:\n{ref}"
             ) from exc
 
-        with io.BytesIO(ref_snapshot.data_stream.read()) as snapshot_f:  # type: ignore
+        snapshot_bytes = cast(bytes, ref_snapshot.data_stream.read())
+        with io.BytesIO(snapshot_bytes) as snapshot_f:
             return load_from_yaml(Deployment, snapshot_f)
