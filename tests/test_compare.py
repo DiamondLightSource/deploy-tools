@@ -142,3 +142,29 @@ def test_compare_rejects_missing_root(tmp_path: Path):
     # As above, but for the snapshot-loading path used by a non from-scratch compare.
     with pytest.raises(SnapshotError, match="does not exist"):
         compare_to_snapshot(tmp_path / "does-not-exist")
+
+
+def test_compare_rejects_missing_default_version_file(tmp_path: Path, configs: Path):
+    # A live module records its default version in a .version file; a missing one is
+    # corruption that compare must report cleanly, not as a raw FileNotFoundError.
+    layout = _sync_minimal(tmp_path, configs)
+    layout.get_default_version_file(MODULE_NAME).unlink()
+    with pytest.raises(ComparisonError, match="default version file"):
+        run_cli("compare", tmp_path)
+
+
+def test_compare_rejects_unreadable_snapshot(tmp_path: Path, configs: Path):
+    # A corrupt deployment.yaml (e.g. truncated by a failed write) must surface as a
+    # SnapshotError rather than a raw parser error.
+    layout = _sync_minimal(tmp_path, configs)
+    layout.deployment_snapshot_path.write_text("")
+    with pytest.raises(SnapshotError, match="could not be read"):
+        run_cli("compare", tmp_path)
+
+
+def test_compare_rejects_unknown_git_ref(tmp_path: Path, configs: Path):
+    # An unresolvable --use-ref should fail with a clear SnapshotError, not a raw
+    # GitPython BadName error.
+    _sync_minimal(tmp_path, configs)
+    with pytest.raises(SnapshotError, match="git ref"):
+        run_cli("compare", "--use-ref", "no-such-ref", tmp_path)
