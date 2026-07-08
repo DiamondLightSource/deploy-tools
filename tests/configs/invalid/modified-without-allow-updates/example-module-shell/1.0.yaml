@@ -3,7 +3,7 @@
 module:
   name: example-module-shell
   version: "1.0"
-  description: Minimal shell-only module used by the validate tests
+  description: Minimal shell-only module with a single shell application
 
   applications:
     - app_type: shell
