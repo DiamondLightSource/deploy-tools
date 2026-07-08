@@ -3,6 +3,6 @@
 module:
   name: example-module-multi
   version: "2.0"
-  description: Module with two versions, used to exercise name-folder cleanup
+  description: Module with two versions
 
   applications: []
