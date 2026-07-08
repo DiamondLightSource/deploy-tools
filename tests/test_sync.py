@@ -8,7 +8,7 @@ MODULE_NAME = "example-module-multi"
 
 def test_deprecate_then_remove_multiple_versions_of_same_module(
     tmp_path: Path, configs: Path
-):
+) -> None:
     # Regression test for issues with removing name folders for the same module name
     # twice.
     run_cli("sync", "--from-scratch", tmp_path, configs / "multi-version-active")
