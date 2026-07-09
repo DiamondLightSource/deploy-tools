@@ -93,9 +93,10 @@ def test_validate_allows_added_deprecated_module_with_allow_all(
     )
 
 
-def test_validate_test_build(tmp_path: Path, configs: Path) -> None:
-    # --test-build actually builds the modules into a temporary area and syntax-checks
-    # the generated shell entrypoints, so exercise it on a valid shell-only config.
+def test_validate_test_build_accepts_valid_config(
+    tmp_path: Path, configs: Path
+) -> None:
+    # A valid shell-only config survives the build and `bash -n` check unchanged.
     run_cli(
         "validate",
         "--test-build",
@@ -105,21 +106,20 @@ def test_validate_test_build(tmp_path: Path, configs: Path) -> None:
     )
 
 
-def test_validate_test_build_rejects_invalid_script(
+def test_validate_test_build_catches_invalid_script(
     tmp_path: Path, configs: Path
 ) -> None:
-    # --test-build runs `bash -n` over each generated shell entrypoint, so a script that
-    # is not valid bash must be rejected.
+    # This config's entrypoint is not valid bash ('fi' with no 'if'). Only the build
+    # and `bash -n` check can catch it, so it passes without the --test-build flag and
+    # fails with it. This is proof the flag actually carries out the build.
+    config = configs / "invalid" / "invalid-shell-script"
+
+    run_cli("validate", "--from-scratch", tmp_path, config)
+
     with pytest.raises(
         ValidationError, match="Output script .*/test-shell-echo is invalid with errors"
     ):
-        run_cli(
-            "validate",
-            "--test-build",
-            "--from-scratch",
-            tmp_path,
-            configs / "invalid" / "invalid-shell-script",
-        )
+        run_cli("validate", "--test-build", "--from-scratch", tmp_path, config)
 
 
 def test_validate_reports_no_actions_when_unchanged(
