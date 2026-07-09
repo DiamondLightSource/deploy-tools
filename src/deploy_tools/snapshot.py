@@ -1,7 +1,10 @@
 import io
 import logging
+from typing import cast
 
-from git import Repo
+import yaml
+from git import BadName, Repo
+from pydantic import ValidationError as PydanticValidationError
 
 from .errors import DeployToolsError
 from .layout import Layout
@@ -54,14 +57,26 @@ def load_snapshot(layout: Layout, from_scratch: bool = False) -> Deployment:
         )
 
     logger.debug("Loading snapshot: %s", layout.deployment_snapshot_path)
-    with open(layout.deployment_snapshot_path) as f:
-        return load_from_yaml(Deployment, f)
+    try:
+        with open(layout.deployment_snapshot_path) as f:
+            return load_from_yaml(Deployment, f)
+    except (OSError, yaml.YAMLError, PydanticValidationError, TypeError) as exc:
+        raise SnapshotError(
+            f"Deployment snapshot could not be read:\n{layout.deployment_snapshot_path}"
+        ) from exc
 
 
 def load_snapshot_from_ref(layout: Layout, ref: str) -> Deployment:
     """Load the deployment snapshot from the given git ref of the deployment area."""
     logger.debug("Loading snapshot from ref: %s", ref)
-    repo = Repo(layout.deployment_root)
-    ref_snapshot = repo.commit(ref).tree[layout.DEPLOYMENT_SNAPSHOT_FILENAME]
-    with io.BytesIO(ref_snapshot.data_stream.read()) as snapshot_f:  # type: ignore
-        return load_from_yaml(Deployment, snapshot_f)
+    with Repo(layout.deployment_root) as repo:
+        try:
+            ref_snapshot = repo.commit(ref).tree[layout.DEPLOYMENT_SNAPSHOT_FILENAME]
+        except (BadName, KeyError) as exc:
+            raise SnapshotError(
+                f"Deployment snapshot not found at git ref:\n{ref}"
+            ) from exc
+
+        snapshot_bytes = cast(bytes, ref_snapshot.data_stream.read())
+        with io.BytesIO(snapshot_bytes) as snapshot_f:
+            return load_from_yaml(Deployment, snapshot_f)

@@ -1,5 +1,4 @@
 import logging
-import os
 import shutil
 from pathlib import Path
 
@@ -69,7 +68,7 @@ def _deploy_new_releases(to_add: list[Release], layout: Layout) -> None:
         mf_link = layout.get_modulefile_link(name, version, from_deprecated=deprecated)
 
         mf_link.parent.mkdir(parents=True, exist_ok=True)
-        os.symlink(modulefile, mf_link)
+        mf_link.symlink_to(modulefile)
 
 
 def _deploy_releases(
@@ -154,6 +153,10 @@ def _delete_modulefiles_name_folder(
     layout: Layout, name: str, from_deprecated: bool = False
 ) -> None:
     modulefiles_name_path = layout.get_modulefiles_root(from_deprecated) / name
+
+    # Handle several versions of the same module being processed together
+    if not modulefiles_name_path.exists():
+        return
 
     # Ignore the default version file when checking for existing modulefile links
     if next(modulefiles_name_path.glob(MODULE_VERSIONS_GLOB), None) is None:

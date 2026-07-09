@@ -5,6 +5,7 @@ from typing import BinaryIO, TextIO
 
 import yaml
 from pydantic import BaseModel
+from pydantic import ValidationError as PydanticValidationError
 
 from ..errors import DeployToolsError
 from .deployment import (
@@ -67,8 +68,13 @@ def _load_release(path: Path) -> Release:
     if path.is_dir() or not path.suffix == YAML_FILE_SUFFIX:
         raise LoadError(f"Unexpected file in configuration directory:\n{path}")
 
-    with open(path) as f:
-        return load_from_yaml(Release, f)
+    try:
+        with open(path) as f:
+            return load_from_yaml(Release, f)
+    except (OSError, yaml.YAMLError, PydanticValidationError, TypeError) as exc:
+        # Include exc: under the top-level handler the traceback (and chained cause) is
+        # suppressed, so the failing field is only visible if surfaced in the message.
+        raise LoadError(f"Module configuration is invalid:\n{path}\n{exc}") from exc
 
 
 def _check_filepath_matches(version_path: Path, module: Module) -> None:
@@ -76,9 +82,6 @@ def _check_filepath_matches(version_path: Path, module: Module) -> None:
 
     It should be the Module's name and version as /<config_folder>/<name>/<version>.yaml
     """
-    if version_path.is_dir() and version_path.suffix == YAML_FILE_SUFFIX:
-        raise LoadError(f"Module directory has incorrect suffix:\n{version_path}")
-
     if not module.name == version_path.parent.name:
         raise LoadError(
             f"Module name {module.name} does not match path:\n{version_path}"
