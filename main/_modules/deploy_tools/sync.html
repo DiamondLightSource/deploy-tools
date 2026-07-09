@@ -7,7 +7,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>deploy_tools.sync &#8212; deploy-tools 0.7.2.dev47+g61d486435 documentation</title>
+    <title>deploy_tools.sync &#8212; deploy-tools 0.7.2.dev61+g5c86a9cea documentation</title>
   
   
   
@@ -41,7 +41,7 @@
   <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=a95f357e85573c9b56d5" />
 <link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=a95f357e85573c9b56d5" />
 
-    <script src="../../_static/documentation_options.js?v=aa9338cb"></script>
+    <script src="../../_static/documentation_options.js?v=b2201272"></script>
     <script src="../../_static/doctools.js?v=fd6eb6e6"></script>
     <script src="../../_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
@@ -463,11 +463,12 @@
 <span></span><span class="kn">import</span><span class="w"> </span><span class="nn">logging</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">pathlib</span><span class="w"> </span><span class="kn">import</span> <span class="n">Path</span>
 
-<span class="kn">from</span><span class="w"> </span><span class="nn">git</span><span class="w"> </span><span class="kn">import</span> <span class="n">Repo</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">git</span><span class="w"> </span><span class="kn">import</span> <span class="n">InvalidGitRepositoryError</span><span class="p">,</span> <span class="n">Repo</span>
 
 <span class="kn">from</span><span class="w"> </span><span class="nn">.build</span><span class="w"> </span><span class="kn">import</span> <span class="n">build</span><span class="p">,</span> <span class="n">clean_build_area</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">.deploy</span><span class="w"> </span><span class="kn">import</span> <span class="n">deploy_changes</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">.layout</span><span class="w"> </span><span class="kn">import</span> <span class="n">Layout</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">.errors</span><span class="w"> </span><span class="kn">import</span> <span class="n">DeployToolsError</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">.layout</span><span class="w"> </span><span class="kn">import</span> <span class="n">Layout</span><span class="p">,</span> <span class="n">ModuleBuildLayout</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">.models.save_and_load</span><span class="w"> </span><span class="kn">import</span> <span class="n">load_deployment</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">.snapshot</span><span class="w"> </span><span class="kn">import</span> <span class="n">create_snapshot</span><span class="p">,</span> <span class="n">load_snapshot</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">.templater</span><span class="w"> </span><span class="kn">import</span> <span class="n">Templater</span><span class="p">,</span> <span class="n">TemplateType</span>
@@ -477,7 +478,20 @@
 
 <span class="n">logger</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
 
-<span class="n">IGNORE_DIRS</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;/build&quot;</span><span class="p">,</span> <span class="s2">&quot;/modules/*/*/sif_files&quot;</span><span class="p">]</span>
+
+<div class="viewcode-block" id="SyncError">
+<a class="viewcode-back" href="../../_api/deploy_tools.sync.html#deploy_tools.sync.SyncError">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">SyncError</span><span class="p">(</span><span class="n">DeployToolsError</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Raised when the deployment area is not in a state the sync process can use.&quot;&quot;&quot;</span></div>
+
+
+
+<span class="c1"># Files not tracked in the deployment area&#39;s git repo (kept only as a change reference):</span>
+<span class="c1"># the transient build area and the large Apptainer .sif images.</span>
+<span class="n">IGNORE_DIRS</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="sa">f</span><span class="s2">&quot;/</span><span class="si">{</span><span class="n">Layout</span><span class="o">.</span><span class="n">DEFAULT_BUILD_ROOT_NAME</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span>
+    <span class="sa">f</span><span class="s2">&quot;/</span><span class="si">{</span><span class="n">Layout</span><span class="o">.</span><span class="n">MODULES_ROOT_NAME</span><span class="si">}</span><span class="s2">/*/*/</span><span class="si">{</span><span class="n">ModuleBuildLayout</span><span class="o">.</span><span class="n">SIF_FILES_FOLDER</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span>
+<span class="p">]</span>
 
 
 <div class="viewcode-block" id="synchronise">
@@ -509,18 +523,25 @@
         <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Creating git repository in deployment area&quot;</span><span class="p">)</span>
         <span class="n">repo</span> <span class="o">=</span> <span class="n">_initialise_git_repo</span><span class="p">(</span><span class="n">layout</span><span class="o">.</span><span class="n">deployment_root</span><span class="p">,</span> <span class="n">IGNORE_DIRS</span><span class="p">)</span>
     <span class="k">else</span><span class="p">:</span>
-        <span class="n">repo</span> <span class="o">=</span> <span class="n">Repo</span><span class="p">(</span><span class="n">layout</span><span class="o">.</span><span class="n">deployment_root</span><span class="p">)</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">repo</span> <span class="o">=</span> <span class="n">Repo</span><span class="p">(</span><span class="n">layout</span><span class="o">.</span><span class="n">deployment_root</span><span class="p">)</span>
+        <span class="k">except</span> <span class="n">InvalidGitRepositoryError</span> <span class="k">as</span> <span class="n">exc</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">SyncError</span><span class="p">(</span>
+                <span class="sa">f</span><span class="s2">&quot;Deployment area has a snapshot but is not a git repository &quot;</span>
+                <span class="sa">f</span><span class="s2">&quot;(git metadata missing or corrupt):</span><span class="se">\n</span><span class="si">{</span><span class="n">layout</span><span class="o">.</span><span class="n">deployment_root</span><span class="si">}</span><span class="s2">&quot;</span>
+            <span class="p">)</span> <span class="kn">from</span><span class="w"> </span><span class="nn">exc</span>
 
-    <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Creating snapshot&quot;</span><span class="p">)</span>
-    <span class="n">create_snapshot</span><span class="p">(</span><span class="n">deployment</span><span class="p">,</span> <span class="n">layout</span><span class="p">)</span>
+    <span class="k">with</span> <span class="n">repo</span><span class="p">:</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Creating snapshot&quot;</span><span class="p">)</span>
+        <span class="n">create_snapshot</span><span class="p">(</span><span class="n">deployment</span><span class="p">,</span> <span class="n">layout</span><span class="p">)</span>
 
-    <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Deploying changes&quot;</span><span class="p">)</span>
-    <span class="n">deploy_changes</span><span class="p">(</span><span class="n">deployment_changes</span><span class="p">,</span> <span class="n">layout</span><span class="p">)</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Deploying changes&quot;</span><span class="p">)</span>
+        <span class="n">deploy_changes</span><span class="p">(</span><span class="n">deployment_changes</span><span class="p">,</span> <span class="n">layout</span><span class="p">)</span>
 
-    <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Committing changes to git (for reference)&quot;</span><span class="p">)</span>
-    <span class="n">repo</span><span class="o">.</span><span class="n">git</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="s2">&quot;--all&quot;</span><span class="p">)</span>
-    <span class="n">commit</span> <span class="o">=</span> <span class="n">repo</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">commit</span><span class="p">(</span><span class="s2">&quot;Performed sync process&quot;</span><span class="p">)</span>
-    <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Commit SHA: </span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">commit</span><span class="o">.</span><span class="n">hexsha</span><span class="p">)</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Committing changes to git (for reference)&quot;</span><span class="p">)</span>
+        <span class="n">repo</span><span class="o">.</span><span class="n">git</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="s2">&quot;--all&quot;</span><span class="p">)</span>
+        <span class="n">commit</span> <span class="o">=</span> <span class="n">repo</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">commit</span><span class="p">(</span><span class="s2">&quot;Performed sync process&quot;</span><span class="p">)</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Commit SHA: </span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">commit</span><span class="o">.</span><span class="n">hexsha</span><span class="p">)</span>
 
     <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Sync process finished&quot;</span><span class="p">)</span></div>
 

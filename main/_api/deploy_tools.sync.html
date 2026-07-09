@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>deploy_tools.sync &#8212; deploy-tools 0.7.2.dev47+g61d486435 documentation</title>
+    <title>deploy_tools.sync &#8212; deploy-tools 0.7.2.dev61+g5c86a9cea documentation</title>
   
   
   
@@ -42,7 +42,7 @@
   <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=a95f357e85573c9b56d5" />
 <link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=a95f357e85573c9b56d5" />
 
-    <script src="../_static/documentation_options.js?v=aa9338cb"></script>
+    <script src="../_static/documentation_options.js?v=b2201272"></script>
     <script src="../_static/doctools.js?v=fd6eb6e6"></script>
     <script src="../_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
@@ -529,12 +529,21 @@
 <p class="rubric">Members</p>
 <div class="pst-scrollable-table-container"><table class="autosummary longtable table">
 <tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="#deploy_tools.sync.synchronise" title="deploy_tools.sync.synchronise"><code class="xref py py-obj docutils literal notranslate"><span class="pre">synchronise</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#deploy_tools.sync.SyncError" title="deploy_tools.sync.SyncError"><code class="xref py py-obj docutils literal notranslate"><span class="pre">SyncError</span></code></a></p></td>
+<td><p>Raised when the deployment area is not in a state the sync process can use.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#deploy_tools.sync.synchronise" title="deploy_tools.sync.synchronise"><code class="xref py py-obj docutils literal notranslate"><span class="pre">synchronise</span></code></a></p></td>
 <td><p>Synchronise the deployment folder with the current configuration.</p></td>
 </tr>
 </tbody>
 </table>
 </div>
+<dl class="py exception">
+<dt class="sig sig-object py" id="deploy_tools.sync.SyncError">
+<span class="property"><span class="k"><span class="pre">exception</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">deploy_tools.sync.</span></span><span class="sig-name descname"><span class="pre">SyncError</span></span><a class="reference internal" href="../_modules/deploy_tools/sync.html#SyncError"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#deploy_tools.sync.SyncError" title="Link to this definition">#</a></dt>
+<dd><p>Raised when the deployment area is not in a state the sync process can use.</p>
+</dd></dl>
+
 <dl class="py function">
 <dt class="sig sig-object py" id="deploy_tools.sync.synchronise">
 <span class="sig-prename descclassname"><span class="pre">deploy_tools.sync.</span></span><span class="sig-name descname"><span class="pre">synchronise</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">deployment_root</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/pathlib.html#pathlib.Path" title="(in Python v3.14)"><span class="pre">Path</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">config_folder</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/pathlib.html#pathlib.Path" title="(in Python v3.14)"><span class="pre">Path</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">allow_all</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.14)"><span class="pre">bool</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">from_scratch</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.14)"><span class="pre">bool</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.14)"><span class="pre">None</span></a></span></span><a class="reference internal" href="../_modules/deploy_tools/sync.html#synchronise"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#deploy_tools.sync.synchronise" title="Link to this definition">#</a></dt>
@@ -590,6 +599,7 @@
   </div>
   <nav id="pst-page-toc-nav" class="page-toc" aria-labelledby="pst-page-navigation-heading-2">
     <ul class="pst-show_toc_level nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#deploy_tools.sync.SyncError"><code class="docutils literal notranslate"><span class="pre">SyncError</span></code></a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#deploy_tools.sync.synchronise"><code class="docutils literal notranslate"><span class="pre">synchronise()</span></code></a></li>
 </ul>
   </nav></div>

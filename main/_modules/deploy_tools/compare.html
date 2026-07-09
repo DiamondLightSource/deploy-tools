@@ -7,7 +7,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>deploy_tools.compare &#8212; deploy-tools 0.7.2.dev47+g61d486435 documentation</title>
+    <title>deploy_tools.compare &#8212; deploy-tools 0.7.2.dev61+g5c86a9cea documentation</title>
   
   
   
@@ -41,7 +41,7 @@
   <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=a95f357e85573c9b56d5" />
 <link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=a95f357e85573c9b56d5" />
 
-    <script src="../../_static/documentation_options.js?v=aa9338cb"></script>
+    <script src="../../_static/documentation_options.js?v=b2201272"></script>
     <script src="../../_static/doctools.js?v=fd6eb6e6"></script>
     <script src="../../_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
@@ -555,10 +555,15 @@
 <span class="sd">    Note that the default versions will be different to those in initial configuration.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">releases</span> <span class="o">=</span> <span class="n">_collect_releases</span><span class="p">(</span><span class="n">layout</span><span class="p">)</span>
-    <span class="n">default_versions</span> <span class="o">=</span> <span class="n">_collect_default_modulefile_versions</span><span class="p">(</span><span class="n">layout</span><span class="p">,</span> <span class="nb">list</span><span class="p">(</span><span class="n">releases</span><span class="p">))</span>
-    <span class="n">settings</span> <span class="o">=</span> <span class="n">DeploymentSettings</span><span class="p">(</span><span class="n">default_versions</span><span class="o">=</span><span class="n">default_versions</span><span class="p">)</span>
+    <span class="n">deployment</span> <span class="o">=</span> <span class="n">Deployment</span><span class="p">(</span><span class="n">settings</span><span class="o">=</span><span class="n">DeploymentSettings</span><span class="p">(),</span> <span class="n">releases</span><span class="o">=</span><span class="n">releases</span><span class="p">)</span>
 
-    <span class="k">return</span> <span class="n">Deployment</span><span class="p">(</span><span class="n">settings</span><span class="o">=</span><span class="n">settings</span><span class="p">,</span> <span class="n">releases</span><span class="o">=</span><span class="n">releases</span><span class="p">)</span>
+    <span class="c1"># Only non-deprecated (live) modules are associated with a .version file</span>
+    <span class="n">live_names</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">deployment</span><span class="o">.</span><span class="n">get_final_deployed_modules</span><span class="p">())</span>
+    <span class="n">deployment</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">default_versions</span> <span class="o">=</span> <span class="n">_collect_default_modulefile_versions</span><span class="p">(</span>
+        <span class="n">layout</span><span class="p">,</span> <span class="n">live_names</span>
+    <span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">deployment</span>
 
 
 <span class="k">def</span><span class="w"> </span><span class="nf">_collect_releases</span><span class="p">(</span><span class="n">layout</span><span class="p">:</span> <span class="n">Layout</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ReleasesByNameAndVersion</span><span class="p">:</span>
@@ -620,7 +625,12 @@
     <span class="n">default_versions</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>
 
     <span class="k">for</span> <span class="n">name</span> <span class="ow">in</span> <span class="n">names</span><span class="p">:</span>
-        <span class="n">default_version</span> <span class="o">=</span> <span class="n">get_default_modulefile_version</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">layout</span><span class="p">)</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">default_version</span> <span class="o">=</span> <span class="n">get_default_modulefile_version</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">layout</span><span class="p">)</span>
+        <span class="k">except</span> <span class="ne">FileNotFoundError</span> <span class="k">as</span> <span class="n">exc</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">ComparisonError</span><span class="p">(</span>
+                <span class="sa">f</span><span class="s2">&quot;Live module &#39;</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2">&#39; has no default version file&quot;</span>
+            <span class="p">)</span> <span class="kn">from</span><span class="w"> </span><span class="nn">exc</span>
         <span class="k">if</span> <span class="n">default_version</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">default_versions</span><span class="p">[</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="n">default_version</span>
 
@@ -662,7 +672,9 @@
 
 <span class="k">def</span><span class="w"> </span><span class="nf">_yaml_dumps</span><span class="p">(</span><span class="n">obj</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">],</span> <span class="n">indent</span><span class="p">:</span> <span class="nb">int</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
     <span class="n">ta</span> <span class="o">=</span> <span class="n">TypeAdapter</span><span class="p">(</span><span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">])</span>
-    <span class="k">return</span> <span class="n">yaml</span><span class="o">.</span><span class="n">safe_dump</span><span class="p">(</span><span class="n">ta</span><span class="o">.</span><span class="n">dump_python</span><span class="p">(</span><span class="n">obj</span><span class="p">),</span> <span class="n">indent</span><span class="o">=</span><span class="n">indent</span><span class="p">)</span>
+    <span class="c1"># Dump in JSON mode so pydantic special types (e.g. AnyUrl) are coerced to YAML-safe</span>
+    <span class="c1"># primitives</span>
+    <span class="k">return</span> <span class="n">yaml</span><span class="o">.</span><span class="n">safe_dump</span><span class="p">(</span><span class="n">ta</span><span class="o">.</span><span class="n">dump_python</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s2">&quot;json&quot;</span><span class="p">),</span> <span class="n">indent</span><span class="o">=</span><span class="n">indent</span><span class="p">)</span>
 </pre></div>
 
                 </article>

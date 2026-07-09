@@ -1,6 +1,7 @@
 ``deploy_tools.sync``
 =====================
         
+        
 
 .. automodule:: deploy_tools.sync
     :members:
@@ -16,6 +17,7 @@
     .. autosummary::
         :nosignatures:
     
+        SyncError
         synchronise
     
     

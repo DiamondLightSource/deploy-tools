@@ -7,7 +7,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>deploy_tools.validate &#8212; deploy-tools 0.7.2.dev47+g61d486435 documentation</title>
+    <title>deploy_tools.validate &#8212; deploy-tools 0.7.2.dev61+g5c86a9cea documentation</title>
   
   
   
@@ -41,7 +41,7 @@
   <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=a95f357e85573c9b56d5" />
 <link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=a95f357e85573c9b56d5" />
 
-    <script src="../../_static/documentation_options.js?v=aa9338cb"></script>
+    <script src="../../_static/documentation_options.js?v=b2201272"></script>
     <script src="../../_static/doctools.js?v=fd6eb6e6"></script>
     <script src="../../_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
@@ -628,11 +628,11 @@
     <span class="k">return</span> <span class="n">release_changes</span>
 
 
-<span class="k">def</span><span class="w"> </span><span class="nf">_validate_added_modules</span><span class="p">(</span><span class="n">releases</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">Release</span><span class="p">],</span> <span class="n">from_scratch</span><span class="p">:</span> <span class="nb">bool</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">_validate_added_modules</span><span class="p">(</span><span class="n">releases</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">Release</span><span class="p">],</span> <span class="n">allow_all</span><span class="p">:</span> <span class="nb">bool</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
     <span class="k">for</span> <span class="n">release</span> <span class="ow">in</span> <span class="n">releases</span><span class="p">:</span>
         <span class="n">module</span> <span class="o">=</span> <span class="n">release</span><span class="o">.</span><span class="n">module</span>
         <span class="k">if</span> <span class="n">release</span><span class="o">.</span><span class="n">deprecated</span><span class="p">:</span>
-            <span class="k">if</span> <span class="ow">not</span> <span class="n">from_scratch</span><span class="p">:</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">allow_all</span><span class="p">:</span>
                 <span class="k">raise</span> <span class="n">ValidationError</span><span class="p">(</span>
                     <span class="sa">f</span><span class="s2">&quot;Module </span><span class="si">{</span><span class="n">module</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2">/</span><span class="si">{</span><span class="n">module</span><span class="o">.</span><span class="n">version</span><span class="si">}</span><span class="s2"> cannot have deprecated &quot;</span>
                     <span class="sa">f</span><span class="s2">&quot;status on initial creation.&quot;</span>
