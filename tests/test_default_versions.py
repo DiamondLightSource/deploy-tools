@@ -1,9 +1,7 @@
 """Unit tests for default-version selection.
 
 These call the function directly rather than through the CLI. Here that is to isolate
-pure, non-trivial logic (e.g. natsort ordering of non-SemVer versions): a targeted unit
-test states the outcome precisely and pins any regression to a line, rather than
-surfacing it as an opaque golden-master diff.
+pure, non-trivial logic (e.g. natsort ordering of non-SemVer versions).
 """
 
 from collections import defaultdict
