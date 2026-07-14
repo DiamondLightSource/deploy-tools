@@ -20,16 +20,19 @@ ENV_VAR_NAME_REGEX = "^[a-zA-Z_][a-zA-Z0-9_]*$"  # Environment Modules & shell s
 class ModuleDependency(ParentModel):
     """Specify an Environment Module to include as a dependency.
 
-    If the dependent Environment Module is managed by this same Deployment (i.e. is a
-    Module), you must specify a specific version in order to pass validation.
+    The version is optional. If a version is given and the dependency is a Module
+    managed by this same Deployment, that version must exist among the deployed
+    (non-deprecated) versions to pass validation. If no version is given, the
+    dependency's default version is resolved at load time and is not validated.
     """
 
     name: Annotated[str, Field(description="Name of module dependency")]
     version: Annotated[
         str | None,
         Field(
-            description="Version of dependency. Will use default if none specified, "
-            "but this is only valid for modules not managed using deploy-tools"
+            description="Version of dependency. If omitted, the default version is "
+            "resolved at load time. If given for a deploy-tools-managed module, the "
+            "version must exist in the deployment."
         ),
     ] = None
 

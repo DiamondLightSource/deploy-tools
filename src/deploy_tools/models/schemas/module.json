@@ -223,7 +223,7 @@
     },
     "ModuleDependency": {
       "additionalProperties": false,
-      "description": "Specify an Environment Module to include as a dependency.\n\nIf the dependent Environment Module is managed by this same Deployment (i.e. is a\nModule), you must specify a specific version in order to pass validation.",
+      "description": "Specify an Environment Module to include as a dependency.\n\nThe version is optional. If a version is given and the dependency is a Module\nmanaged by this same Deployment, that version must exist among the deployed\n(non-deprecated) versions to pass validation. If no version is given, the\ndependency's default version is resolved at load time and is not validated.",
       "properties": {
         "name": {
           "description": "Name of module dependency",
@@ -240,7 +240,7 @@
             }
           ],
           "default": null,
-          "description": "Version of dependency. Will use default if none specified, but this is only valid for modules not managed using deploy-tools",
+          "description": "Version of dependency. If omitted, the default version is resolved at load time. If given for a deploy-tools-managed module, the version must exist in the deployment.",
           "title": "Version"
         }
       },
