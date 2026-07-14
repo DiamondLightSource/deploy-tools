@@ -130,14 +130,21 @@ def test_apptainer_options_merge_global_and_entrypoint(
 
 
 def test_dependencies_render_module_load_lines(tmp_path: Path) -> None:
-    # The modulefile dependency block branches on whether a version is given: a managed
-    # dependency pins a version, while a version-less dependency (valid only for modules
-    # not managed by deploy-tools) renders the bare module name.
-    dependency = Release(
+    # The modulefile dependency block branches on whether a version is given: a pinned
+    # dependency renders `name/version`, while a version-less one renders the bare name.
+    pinned = Release(
         module=Module(
-            name="example-dependency",
+            name="example-pinned-dep",
             version="1.0",
-            description="Managed module used as a versioned dependency target",
+            description="Managed module referenced with a pinned version",
+            applications=[],
+        )
+    )
+    default = Release(
+        module=Module(
+            name="example-default-dep",
+            version="1.0",
+            description="Managed module referenced without a version",
             applications=[],
         )
     )
@@ -145,24 +152,24 @@ def test_dependencies_render_module_load_lines(tmp_path: Path) -> None:
         module=Module(
             name="example-dependent",
             version="1.0",
-            description="Module with a managed and an external dependency",
+            description="Module with a pinned and a version-less managed dependency",
             dependencies=[
-                ModuleDependency(name="example-dependency", version="1.0"),
-                ModuleDependency(name="external-module"),
+                ModuleDependency(name="example-pinned-dep", version="1.0"),
+                ModuleDependency(name="example-default-dep"),
             ],
             applications=[],
         )
     )
-    deployment_root = _sync(tmp_path, dependency, dependent)
+    deployment_root = _sync(tmp_path, pinned, default, dependent)
 
     modulefile = (
         deployment_root / "modules/example-dependent/1.0/modulefile"
     ).read_text()
 
-    # Versioned dependency renders with its version. The version-less external one
-    # renders the bare module name.
-    assert "module load example-dependency/1.0" in modulefile
-    assert "module load external-module\n" in modulefile
+    # Pinned dependency renders with its version; the version-less one renders the bare
+    # module name (and loads the default).
+    assert "module load example-pinned-dep/1.0" in modulefile
+    assert "module load example-default-dep\n" in modulefile
 
 
 def test_env_vars_render_setenv(tmp_path: Path) -> None:
