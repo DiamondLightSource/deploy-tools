@@ -8,8 +8,8 @@ from deploy_tools.compare import ComparisonError, compare_to_snapshot
 from deploy_tools.layout import Layout
 from deploy_tools.snapshot import SnapshotError
 
-# The minimal config deploys a single shell-only module. Tests that start from a clean
-# deployment and then corrupt it in one specific way share these coordinates.
+# The minimal config deploys a single shell-only module. Tests that deploy it and then
+# corrupt it in one specific way use this name and version to find it.
 MODULE_NAME = "example-module-shell"
 MODULE_VERSION = "1.0"
 
@@ -17,8 +17,8 @@ MODULE_VERSION = "1.0"
 def _sync_minimal(area: Path, configs: Path) -> Layout:
     """Deploy the minimal shell-only config into ``area`` and return its ``Layout``.
 
-    Several tests below need a single, cleanly-deployed module that they then corrupt in
-    one specific way, so this captures the shared from-scratch sync.
+    Many tests need a single, cleanly-deployed module that they then corrupt in one
+    specific way. This performs the shared setup they start from.
 
     Args:
         area: Empty deployment area to deploy into.
@@ -69,7 +69,8 @@ def test_compare_rejects_missing_snapshot(tmp_path: Path) -> None:
 def test_compare_rejects_module_without_modulefile(
     tmp_path: Path, configs: Path
 ) -> None:
-    # Removing a module's modulefile link leaves a built module that is not exposed.
+    # Removing a module's modulefile link leaves a built module that is unavailable
+    # for use.
     layout = _sync_minimal(tmp_path, configs)
     layout.get_modulefile_link(MODULE_NAME, MODULE_VERSION).unlink()
     with pytest.raises(
@@ -81,7 +82,7 @@ def test_compare_rejects_module_without_modulefile(
 def test_compare_rejects_modulefile_without_module(
     tmp_path: Path, configs: Path
 ) -> None:
-    # Removing the built module leaves a dangling modulefile link
+    # Removing the built module leaves a dangling modulefile link.
     layout = _sync_minimal(tmp_path, configs)
     rmtree(layout.get_module_folder(MODULE_NAME, MODULE_VERSION))
     with pytest.raises(
@@ -132,9 +133,9 @@ def test_compare_rejects_default_version_mismatch(
 
 
 def test_compare_use_ref_detects_drift(tmp_path: Path, configs: Path) -> None:
-    # sync commits a snapshot to the deployment area's git repo on every run. After two
-    # syncs the area matches its own (HEAD) snapshot, but not the previous commit's
-    # snapshot, taken before the second sync deprecated the module.
+    # sync commits a snapshot to the deployment area's git repo on every run. After the
+    # two syncs the area matches its own (HEAD) snapshot. The previous commit's
+    # snapshot, taken before the second sync deprecated a module version, doesn't match.
     run_cli(
         "sync", "--from-scratch", tmp_path, configs / "valid" / "multi-version-active"
     )
