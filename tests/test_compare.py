@@ -1,0 +1,196 @@
+from pathlib import Path
+from shutil import rmtree
+
+import pytest
+
+from conftest import run_cli
+from deploy_tools.compare import ComparisonError, compare_to_snapshot
+from deploy_tools.layout import Layout
+from deploy_tools.snapshot import SnapshotError
+
+# The minimal config deploys a single shell-only module. Tests that deploy it and then
+# corrupt it in one specific way use this name and version to find it.
+MODULE_NAME = "example-module-shell"
+MODULE_VERSION = "1.0"
+
+
+def _sync_minimal(area: Path, configs: Path) -> Layout:
+    """Deploy the minimal shell-only config into ``area`` and return its ``Layout``.
+
+    Many tests need a single, cleanly-deployed module that they then corrupt in one
+    specific way. This performs the shared setup they start from.
+
+    Args:
+        area: Empty deployment area to deploy into.
+        configs: The ``configs`` fixture: the directory holding sample configurations.
+
+    Returns:
+        A ``Layout`` describing the freshly-deployed ``area``.
+    """
+    run_cli("sync", "--from-scratch", area, configs / "valid" / "minimal")
+    return Layout(area)
+
+
+def test_compare_accepts_clean_deployment(tmp_path: Path, configs: Path) -> None:
+    # A deployment area is self-consistent immediately after a sync, so compare should
+    # succeed and print nothing.
+    _sync_minimal(tmp_path, configs)
+    assert run_cli("compare", tmp_path) == ""
+
+
+def test_compare_accepts_deprecated_modules(tmp_path: Path, configs: Path) -> None:
+    # Deploy a module then deprecate it, so the area holds deprecated modulefile links;
+    # compare must accept them.
+    run_cli(
+        "sync", "--from-scratch", tmp_path, configs / "valid" / "multi-version-active"
+    )
+    run_cli("sync", tmp_path, configs / "valid" / "multi-version-deprecated")
+    assert run_cli("compare", tmp_path) == ""
+
+
+def test_compare_from_scratch_accepts_empty_area(tmp_path: Path) -> None:
+    # --from-scratch only checks that the area is an existing, empty directory.
+    assert run_cli("compare", "--from-scratch", tmp_path) == ""
+
+
+def test_compare_from_scratch_rejects_non_empty_area(tmp_path: Path) -> None:
+    # Any pre-existing content means the area is not ready for a from-scratch deploy.
+    (tmp_path / "stray-file").touch()
+    with pytest.raises(ComparisonError, match="root folder is not empty"):
+        run_cli("compare", "--from-scratch", tmp_path)
+
+
+def test_compare_rejects_missing_snapshot(tmp_path: Path) -> None:
+    # An existing area with no deployment.yaml has no snapshot to compare against.
+    with pytest.raises(SnapshotError, match="snapshot not found"):
+        run_cli("compare", tmp_path)
+
+
+def test_compare_rejects_module_without_modulefile(
+    tmp_path: Path, configs: Path
+) -> None:
+    # Removing a module's modulefile link leaves a built module that is unavailable
+    # for use.
+    layout = _sync_minimal(tmp_path, configs)
+    layout.get_modulefile_link(MODULE_NAME, MODULE_VERSION).unlink()
+    with pytest.raises(
+        ComparisonError, match=f"No modulefile found for {MODULE_NAME}/{MODULE_VERSION}"
+    ):
+        run_cli("compare", tmp_path)
+
+
+def test_compare_rejects_modulefile_without_module(
+    tmp_path: Path, configs: Path
+) -> None:
+    # Removing the built module leaves a dangling modulefile link.
+    layout = _sync_minimal(tmp_path, configs)
+    rmtree(layout.get_module_folder(MODULE_NAME, MODULE_VERSION))
+    with pytest.raises(
+        ComparisonError,
+        match=f"without corresponding built module for {MODULE_NAME}/{MODULE_VERSION}",
+    ):
+        run_cli("compare", tmp_path)
+
+
+def test_compare_rejects_duplicate_modulefiles(tmp_path: Path, configs: Path) -> None:
+    # The same modulefile must not appear in both the live and deprecated areas.
+    layout = _sync_minimal(tmp_path, configs)
+    deprecated_link = layout.get_modulefile_link(
+        MODULE_NAME, MODULE_VERSION, from_deprecated=True
+    )
+    deprecated_link.parent.mkdir(parents=True, exist_ok=True)
+    deprecated_link.touch()
+    with pytest.raises(
+        ComparisonError,
+        match=f"Duplicate modulefiles for {MODULE_NAME}/{MODULE_VERSION}",
+    ):
+        run_cli("compare", tmp_path)
+
+
+def test_compare_rejects_release_mismatch(tmp_path: Path, configs: Path) -> None:
+    # Tamper with the snapshot's record of the module so it no longer matches the module
+    # configuration reconstructed from the deployment area.
+    layout = _sync_minimal(tmp_path, configs)
+    snapshot = layout.deployment_snapshot_path
+    contents = snapshot.read_text()
+    assert "Minimal shell-only module" in contents
+    snapshot.write_text(
+        contents.replace("Minimal shell-only module", "Tampered module")
+    )
+    with pytest.raises(ComparisonError, match="release configuration do not match"):
+        run_cli("compare", tmp_path)
+
+
+def test_compare_rejects_default_version_mismatch(
+    tmp_path: Path, configs: Path
+) -> None:
+    # Point the module's .version file at a different version than the snapshot expects.
+    layout = _sync_minimal(tmp_path, configs)
+    version_file = layout.get_default_version_file(MODULE_NAME)
+    version_file.write_text("#%Module1.0\nset ModulesVersion 9.9\n")
+    with pytest.raises(ComparisonError, match="default versions do not match"):
+        run_cli("compare", tmp_path)
+
+
+def test_compare_use_ref_detects_drift(tmp_path: Path, configs: Path) -> None:
+    # sync commits a snapshot to the deployment area's git repo on every run. After the
+    # two syncs the area matches its own (HEAD) snapshot. The previous commit's
+    # snapshot, taken before the second sync deprecated a module version, doesn't match.
+    run_cli(
+        "sync", "--from-scratch", tmp_path, configs / "valid" / "multi-version-active"
+    )
+    run_cli("sync", tmp_path, configs / "valid" / "multi-version-deprecated")
+
+    assert run_cli("compare", tmp_path) == ""
+    assert run_cli("compare", "--use-ref", "HEAD", tmp_path) == ""
+
+    with pytest.raises(ComparisonError, match="release configuration do not match"):
+        run_cli("compare", "--use-ref", "HEAD~1", tmp_path)
+
+
+def test_compare_from_scratch_rejects_missing_root(tmp_path: Path) -> None:
+    # The CLI's argument validation rejects a non-existent path before the command runs,
+    # so exercise this guard by calling the function directly.
+    with pytest.raises(
+        ComparisonError, match="root folder does not exist:\n.*/does-not-exist"
+    ):
+        compare_to_snapshot(tmp_path / "does-not-exist", from_scratch=True)
+
+
+def test_compare_rejects_missing_root(tmp_path: Path) -> None:
+    # As above, but for the snapshot-loading path used by a non from-scratch compare.
+    with pytest.raises(
+        SnapshotError, match="root folder does not exist:\n.*/does-not-exist"
+    ):
+        compare_to_snapshot(tmp_path / "does-not-exist")
+
+
+def test_compare_rejects_missing_default_version_file(
+    tmp_path: Path, configs: Path
+) -> None:
+    # A live module records its default version in a .version file; a missing one is
+    # corruption that compare must report cleanly, not as a raw FileNotFoundError.
+    layout = _sync_minimal(tmp_path, configs)
+    layout.get_default_version_file(MODULE_NAME).unlink()
+    with pytest.raises(
+        ComparisonError,
+        match=f"Live module '{MODULE_NAME}' has no default version file",
+    ):
+        run_cli("compare", tmp_path)
+
+
+def test_compare_rejects_unreadable_snapshot(tmp_path: Path, configs: Path) -> None:
+    # A corrupt deployment.yaml (e.g. truncated by a failed write) must surface as a
+    # SnapshotError rather than a raw parser error.
+    layout = _sync_minimal(tmp_path, configs)
+    layout.deployment_snapshot_path.write_text("")
+    with pytest.raises(SnapshotError, match="could not be read"):
+        run_cli("compare", tmp_path)
+
+
+def test_compare_rejects_unknown_git_ref(tmp_path: Path, configs: Path) -> None:
+    # An unresolvable --use-ref should fail with a clear SnapshotError, not a raw
+    # GitPython BadName error.
+    _sync_minimal(tmp_path, configs)
+    with pytest.raises(SnapshotError, match="not found at git ref:\nno-such-ref"):
+        run_cli("compare", "--use-ref", "no-such-ref", tmp_path)
