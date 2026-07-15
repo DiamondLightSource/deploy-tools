@@ -88,12 +88,11 @@ def _validate_release_changes(
 
 
 def _validate_module_dependencies(deployment: Deployment) -> None:
-    """Ensure that all module dependencies are set appropriately.
+    """Ensure that all module dependencies reference versions that will exist.
 
-    This checks any module dependency names that come from current configuration to
-    ensure they exist and are not deprecated. Not specifying a particular version is
-    only valid for dependencies that are managed outside of the current deployment
-    configuration.
+    Only dependencies that pin a version are checked: if the dependency is a Module
+    managed by this deployment, the pinned version must be present among the final
+    deployed (non-deprecated) versions.
     """
     final_deployed_versions = deployment.get_final_deployed_versions()
 
