@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>deploy_tools.models.module &#8212; deploy-tools 0.7.2.dev75+g26c026f95 documentation</title>
+    <title>deploy_tools.models.module &#8212; deploy-tools 0.7.2.dev92+gb5e0754b4 documentation</title>
   
   
   
@@ -42,7 +42,7 @@
   <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=90905a2f556bf617f1a9" />
 <link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=90905a2f556bf617f1a9" />
 
-    <script src="../_static/documentation_options.js?v=9c368137"></script>
+    <script src="../_static/documentation_options.js?v=50654087"></script>
     <script src="../_static/doctools.js?v=fd6eb6e6"></script>
     <script src="../_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
@@ -552,8 +552,10 @@
 <dt class="sig sig-object py" id="deploy_tools.models.module.ModuleDependency">
 <span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">deploy_tools.models.module.</span></span><span class="sig-name descname"><span class="pre">ModuleDependency</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="keyword-only-separator o"><abbr title="Keyword-only parameters separator (PEP 3102)"><span class="pre">*</span></abbr></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">version</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.14)"><span class="pre">None</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/deploy_tools/models/module.html#ModuleDependency"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#deploy_tools.models.module.ModuleDependency" title="Link to this definition">#</a></dt>
 <dd><p>Specify an Environment Module to include as a dependency.</p>
-<p>If the dependent Environment Module is managed by this same Deployment (i.e. is a
-Module), you must specify a specific version in order to pass validation.</p>
+<p>The version is optional. If a version is given and the dependency is a Module
+managed by this same Deployment, that version must exist among the deployed
+(non-deprecated) versions to pass validation. If no version is given, the
+dependency’s default version is resolved at load time and is not validated.</p>
 </dd></dl>
 
 <dl class="py class">

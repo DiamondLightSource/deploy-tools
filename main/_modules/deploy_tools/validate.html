@@ -7,7 +7,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>deploy_tools.validate &#8212; deploy-tools 0.7.2.dev75+g26c026f95 documentation</title>
+    <title>deploy_tools.validate &#8212; deploy-tools 0.7.2.dev92+gb5e0754b4 documentation</title>
   
   
   
@@ -41,7 +41,7 @@
   <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=90905a2f556bf617f1a9" />
 <link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=90905a2f556bf617f1a9" />
 
-    <script src="../../_static/documentation_options.js?v=9c368137"></script>
+    <script src="../../_static/documentation_options.js?v=50654087"></script>
     <script src="../../_static/doctools.js?v=fd6eb6e6"></script>
     <script src="../../_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
@@ -559,12 +559,11 @@
 
 
 <span class="k">def</span><span class="w"> </span><span class="nf">_validate_module_dependencies</span><span class="p">(</span><span class="n">deployment</span><span class="p">:</span> <span class="n">Deployment</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Ensure that all module dependencies are set appropriately.</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Ensure that all module dependencies reference versions that will exist.</span>
 
-<span class="sd">    This checks any module dependency names that come from current configuration to</span>
-<span class="sd">    ensure they exist and are not deprecated. Not specifying a particular version is</span>
-<span class="sd">    only valid for dependencies that are managed outside of the current deployment</span>
-<span class="sd">    configuration.</span>
+<span class="sd">    Only dependencies that pin a version are checked: if the dependency is a Module</span>
+<span class="sd">    managed by this deployment, the pinned version must be present among the final</span>
+<span class="sd">    deployed (non-deprecated) versions.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">final_deployed_versions</span> <span class="o">=</span> <span class="n">deployment</span><span class="o">.</span><span class="n">get_final_deployed_versions</span><span class="p">()</span>
 
