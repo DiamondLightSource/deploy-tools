@@ -83,8 +83,14 @@ available as Tasks and Debug configurations for VSCode. These tasks (plus their 
 inputs) should create a separate `demo-output` folder at the top-level of the workspace
 folder.
 
-You will need to use the `--from-scratch` argument if starting from a clean Deployment
-Area, as there is no snapshot from a prior Deploy step.
+You will need to use the `--from-scratch` argument when starting from a clean Deployment
+Area, as there is no snapshot from a prior Deploy step:
+
+- `sync`/`validate --from-scratch` work against an empty area without expecting a
+  snapshot, and imply `--allow-all` (there is no prior state to enforce lifecycle rules
+  against).
+- `compare --from-scratch` just checks the Deployment Area exists and is **empty**. Run
+  this in CI before the first deploy, where a normal `compare` has no snapshot to use.
 
 It is recommended that you use `--help` to explore the commands, arguments and options
 in greater detail.
