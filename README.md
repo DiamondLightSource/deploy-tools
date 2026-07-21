@@ -51,15 +51,19 @@ deploy-tools compare $deployment_root
 
 ## Deployment Steps
 
-There are several key steps that make up the deployment process. Note that these are a
-bit different to the CLI commands; see `deploy-tools --help` for more information.
+There are several key conceptual steps that make up the deployment process. These are
+**not** one-to-one with the CLI commands; the "Run by" column shows which command runs
+each step. See `deploy-tools --help` for more detail.
 
-|**Step**|**Description**                                                                                                                                                                                                                                  |
-|--------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-|Compare |Compare the snapshot taken of the previous deployment with the modulefiles and built modules that already exist. This ensures that the Deployment Area is in a healthy state                                                                     |
-|Validate|Process the updated configuration. By comparing the new configuration files with a snapshot from the previous deployment, we determine the set of actions that need to be taken                                                                  |
-|Build   |Generate entrypoint scripts, configuration files and environment variables for a given Module. These are output to the Build Area                                                                                                                |
-|Deploy  |Move all built Modules from the Build Area into the Modules Area. A link to the built modulefile is moved to either the Modulefiles Folder or Deprecated Folder, depending on its deprecation status. Update default versions for the modulefiles|
+|**Step**|**Description**                                                                                                                                                                                                                                  |**Run by**|
+|--------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|----------|
+|Compare |Compare the snapshot taken of the previous deployment with the modulefiles and built modules that already exist. This ensures that the Deployment Area is in a healthy state                                                                     |`compare` |
+|Validate|Process the updated configuration. By comparing the new configuration files with a snapshot from the previous deployment, we determine the set of actions that need to be taken                                                                  |`validate`, `sync`|
+|Build   |Generate entrypoint scripts, configuration files and environment variables for a given Module. These are output to the Build Area                                                                                                                |`sync` (`validate --test-build`)|
+|Deploy  |Move all built Modules from the Build Area into the Modules Area. A link to the built modulefile is moved to either the Modulefiles Folder or Deprecated Folder, depending on its deprecation status. Update default versions for the modulefiles|`sync`    |
+
+There is no standalone `build` or `deploy` command: `sync` always runs them together, so
+a half-built Module is never exposed to users.
 
 ## JSON Schema
 
