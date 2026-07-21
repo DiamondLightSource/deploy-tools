@@ -4,27 +4,6 @@
     "version": "2.0.0",
     "tasks": [
         {
-            "type": "shell",
-            "label": "Tests, lint and docs",
-            "command": "tox -p",
-            "options": {
-                "cwd": "${workspaceRoot}"
-            },
-            "problemMatcher": [],
-        },
-        {
-            "label": "Generate schema",
-            "type": "shell",
-            "command": "deploy-tools schema ${input:schema-folder}",
-            "problemMatcher": []
-        },
-        {
-            "label": "Sync modules",
-            "type": "shell",
-            "command": "deploy-tools sync ${input:allow-all} ${input:from-scratch} ${input:deploy-folder} ${input:config-folder}",
-            "problemMatcher": []
-        },
-        {
             "label": "Clean deployment",
             "type": "shell",
             "command": "rm -rf ${workspaceFolder}/demo-output/ && mkdir ${workspaceFolder}/demo-output/",
@@ -37,15 +16,36 @@
             "problemMatcher": []
         },
         {
+            "label": "Sync modules",
+            "type": "shell",
+            "command": "deploy-tools sync ${input:allow-all} ${input:from-scratch} ${input:deploy-folder} ${input:config-folder}",
+            "problemMatcher": []
+        },
+        {
             "label": "Compare deployment to snapshot",
             "type": "shell",
             "command": "deploy-tools compare ${input:compare-mode} ${input:deploy-folder}",
             "problemMatcher": []
         },
         {
+            "label": "Generate schema",
+            "type": "shell",
+            "command": "deploy-tools schema ${input:schema-folder}",
+            "problemMatcher": []
+        },
+        {
             "type": "shell",
             "label": "Recreate tests sample output from demo_configuration",
             "command": "tests/generate_samples.sh",
+            "options": {
+                "cwd": "${workspaceRoot}"
+            },
+            "problemMatcher": [],
+        },
+        {
+            "type": "shell",
+            "label": "Tests, lint and docs",
+            "command": "tox -p",
             "options": {
                 "cwd": "${workspaceRoot}"
             },

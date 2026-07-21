@@ -17,21 +17,21 @@ inspect without needing a real configuration repository.
 
 Open the command palette and choose **Tasks: Run Task**, then pick one of:
 
-- **Tests, lint and docs** — run `tox -p` (type checking, tests, and the docs build).
-- **Generate schema** — regenerate the JSON schemas under `models/schemas/`.
-- **Sync modules** — build and deploy the demo configuration into `demo-output/`.
 - **Clean deployment** — empty and recreate `demo-output/`.
 - **Validate deployment** — preview the changes a sync would make (read-only).
+- **Sync modules** — build and deploy the demo configuration into `demo-output/`.
 - **Compare deployment to snapshot** — diff the deployment against a previous snapshot.
+- **Generate schema** — regenerate the JSON schemas under `models/schemas/`.
 - **Recreate tests sample output from demo_configuration** — regenerate the golden-master
   test samples via `tests/generate_samples.sh`.
+- **Tests, lint and docs** — run `tox -p` (type checking, tests, and the docs build).
 
 Tasks that take flags (such as `--allow-all`, `--from-scratch`, or the compare mode)
 prompt for those options when run, defaulting to the most common choice.
 
 ## Debugging a command
 
-The **Run and Debug** panel offers equivalent launch configurations (Debug Schema
-Generation, Debug Validation, Debug Compare, Debug Sync, and Debug Unit Test). These
+The **Run and Debug** panel offers equivalent launch configurations (Debug Validation,
+Debug Sync, Debug Compare, Debug Schema Generation, and Debug Unit Test). These
 invoke the same commands under `debugpy` so you can set breakpoints and step through the
 CLI while it processes the demo configuration.
