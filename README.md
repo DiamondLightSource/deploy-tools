@@ -73,6 +73,9 @@ We strongly recommend that you provide a schema for configuration file validatio
 
 ```# yaml-language-server: $schema=https://raw.githubusercontent.com/DiamondLightSource/deploy-tools/main/src/deploy_tools/models/schemas/release.json```
 
+Use `release.json` for the per-version Module files (`<name>/<version>.yaml`) and
+`deployment-settings.json` for the top-level `settings.yaml`.
+
 As the demo_configuration is used during development, we instead set it to use the locally generated schemas via an absolute workspace path (e.g. `/workspaces/deploy-tools/src/deploy_tools/models/schemas/release.json`). This dev-container-only path should not be used for production configuration.
 
 Note that the 'Generate Schema' VSCode task will update the schemas according to any update of the code, but you need to trigger this manually and check the contents in.
