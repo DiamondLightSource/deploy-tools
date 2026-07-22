@@ -16,8 +16,17 @@ You author two kinds of configuration file, each validated against a different s
 
 Per-version files sit in a folder named after the Module, so the path is
 `<config folder>/<name>/<version>.yaml` (folder = Module `name`, filename = `version`).
-Add a `yaml-language-server` comment pointing at the matching schema so your editor
-validates each file as you type.
+Add a `yaml-language-server` comment as the first line of each file, pointing at the
+matching schema, so your editor validates it as you type:
+
+```yaml
+# yaml-language-server: $schema=https://raw.githubusercontent.com/DiamondLightSource/deploy-tools/main/src/deploy_tools/models/schemas/release.json
+```
+
+This requires an editor with a YAML language server — e.g. VS Code with the
+[Red Hat YAML extension](https://marketplace.visualstudio.com/items?itemName=redhat.vscode-yaml),
+or any [LSP](https://microsoft.github.io/language-server-protocol/)-capable editor
+running [`yaml-language-server`](https://github.com/redhat-developer/yaml-language-server).
 
 The other two generated schemas cover files you don't normally author by hand:
 `deployment.json` (the `deployment.yaml` snapshot written by `sync`) and `module.json`

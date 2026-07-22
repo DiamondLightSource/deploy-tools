@@ -7,10 +7,10 @@ an explicit choice, and otherwise uses the `natsort` library for a more reasonab
 
 ## Every Module has a specific default configured
 
-For every live module name, `deploy-tools` writes a `.version` file next to its modulefile
-links (`modulefiles/<name>/.version`) with a single `set ModulesVersion <version>` line.
-It is written whether or not the configuration names a default, so Environment Modules never
-guesses.
+For every live module name, `deploy-tools` writes a `.version` file in its modulefiles
+folder (`modulefiles/<name>/.version`) with a single `set ModulesVersion <version>` line.
+It is written even if the configuration does not have an explicit default, so Environment
+Modules never guesses.
 
 The version it records is resolved as follows:
 

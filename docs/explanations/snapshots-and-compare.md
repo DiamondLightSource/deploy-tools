@@ -31,11 +31,11 @@ missing modulefile, a built module with no link, a wrong default version, a corr
 metadata file) is raised as a clear error showing the differing lines.
 
 `compare` checks the area's *structure* — the modulefiles, links and metadata whose
-breakage would disable many Modules at once. It does not inspect the contents of built
-payloads such as Apptainer `.sif` images, so a `.sif` that is corrupt but present at the
-expected path is not detected. That risk is avoided at build time instead: a Module is
-built on the same filesystem as the deployment area and published by a single atomic
-rename, so a partial or failed build is never moved into place.
+breakage would disable many Modules at once. It does not inspect the contents of large
+built files such as Apptainer `.sif` images, so a corrupted `.sif` in the correct location
+will not be detected. The risk of corruption is avoided at build time instead: a Module
+is built on the same filesystem as the deployment area and published by a single atomic
+rename, so a partial or failed build (including `.sif` files) is never moved into place.
 
 This is why CI should run `compare` *before* every `sync`: it confirms the area is in the
 healthy state the last `sync` claimed to leave it in.
@@ -51,10 +51,11 @@ Two facilities help here:
 
 - `compare --use-ref <ref>` compares the area against the snapshot stored at a previous
   git commit of the deployment area (e.g. `HEAD~1`), since each `sync` commits the
-  snapshot. This answers "does the area still match the configuration from before the
-  last `sync`?"
+  snapshot. This is helpful when attempting to fix a broken deployment area, as it is
+  often easier to rollback the configuration to a previous state rather than fix the
+  latest deployment.
 - `compare --from-scratch` asserts only that the deployment root exists and is *empty* —
-  the check to run in CI before the very first `sync`, when no snapshot exists yet.
+  this is the check to run in CI before the very first `sync`, when no snapshot exists yet.
 
 The git repository in the deployment area exists only to give `compare --use-ref` this
 reference point. It deliberately excludes the build area and Apptainer images, and is
