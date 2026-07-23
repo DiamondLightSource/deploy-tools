@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>JSON Schema files &#8212; deploy-tools 0.7.2.dev109+g328d1fde9 documentation</title>
+    <title>JSON Schema files &#8212; deploy-tools 0.7.2.dev119+g9f29f4363 documentation</title>
   
   
   
@@ -42,7 +42,7 @@
   <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=90905a2f556bf617f1a9" />
 <link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=90905a2f556bf617f1a9" />
 
-    <script src="_static/documentation_options.js?v=e34868b0"></script>
+    <script src="_static/documentation_options.js?v=f4c07ac9"></script>
     <script src="_static/doctools.js?v=fd6eb6e6"></script>
     <script src="_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script src="_static/clipboard.min.js?v=a7894cd8"></script>
@@ -524,10 +524,47 @@
                   
   <section id="json-schema-files">
 <h1>JSON Schema files<a class="headerlink" href="#json-schema-files" title="Link to this heading">#</a></h1>
-<p>These JSON schema files are generated from the Pydantic models in <code class="docutils literal notranslate"><span class="pre">src/deploy_tools/models</span></code>.</p>
-<p>They are used by the YAML language server and other tooling to validate deployment configuration files.</p>
-<p>This section links to per-schema reference pages which render the schema and list the individual
-properties as tables.</p>
+<p>These JSON schema files are generated from the Pydantic models in
+<code class="docutils literal notranslate"><span class="pre">src/deploy_tools/models</span></code>. The YAML language server and other tooling use them to validate
+deployment configuration files. This section links to per-schema reference pages that
+render each schema and list its properties.</p>
+<section id="which-file-uses-which-schema">
+<h2>Which file uses which schema<a class="headerlink" href="#which-file-uses-which-schema" title="Link to this heading">#</a></h2>
+<p>You author two kinds of configuration file, each validated against a different schema:</p>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Configuration file</p></th>
+<th class="head"><p>Schema</p></th>
+<th class="head"><p>Pydantic model</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">settings.yaml</span></code> (one per config folder)</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">deployment-settings.json</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">DeploymentSettings</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">&lt;name&gt;/&lt;version&gt;.yaml</span></code> (one per Module version)</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">release.json</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">Release</span></code></p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>Per-version files sit in a folder named after the Module, so the path is
+<code class="docutils literal notranslate"><span class="pre">&lt;config</span> <span class="pre">folder&gt;/&lt;name&gt;/&lt;version&gt;.yaml</span></code> (folder = Module <code class="docutils literal notranslate"><span class="pre">name</span></code>, filename = <code class="docutils literal notranslate"><span class="pre">version</span></code>).
+Add a <code class="docutils literal notranslate"><span class="pre">yaml-language-server</span></code> comment as the first line of each file, pointing at the
+matching schema, so your editor validates it as you type:</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="c1"># yaml-language-server: $schema=https://raw.githubusercontent.com/DiamondLightSource/deploy-tools/main/src/deploy_tools/models/schemas/release.json</span>
+</pre></div>
+</div>
+<p>This requires an editor with a YAML language server — e.g. VS Code with the
+<a class="reference external" href="https://marketplace.visualstudio.com/items?itemName=redhat.vscode-yaml">Red Hat YAML extension</a>,
+or any <a class="reference external" href="https://microsoft.github.io/language-server-protocol/">LSP</a>-capable editor
+running <a class="reference external" href="https://github.com/redhat-developer/yaml-language-server"><code class="docutils literal notranslate"><span class="pre">yaml-language-server</span></code></a>.</p>
+<p>The other two generated schemas cover files you don’t normally author by hand:
+<code class="docutils literal notranslate"><span class="pre">deployment.json</span></code> (the <code class="docutils literal notranslate"><span class="pre">deployment.yaml</span></code> snapshot written by <code class="docutils literal notranslate"><span class="pre">sync</span></code>) and <code class="docutils literal notranslate"><span class="pre">module.json</span></code>
+(the <code class="docutils literal notranslate"><span class="pre">Module</span></code> that a <code class="docutils literal notranslate"><span class="pre">Release</span></code> wraps).</p>
+</section>
 <section id="schema-pages">
 <h2>Schema pages<a class="headerlink" href="#schema-pages" title="Link to this heading">#</a></h2>
 <div class="toctree-wrapper compound">
@@ -539,8 +576,8 @@ properties as tables.</p>
 </section>
 <section id="how-the-schemas-are-generated">
 <h2>How the schemas are generated<a class="headerlink" href="#how-the-schemas-are-generated" title="Link to this heading">#</a></h2>
-<p>The <code class="docutils literal notranslate"><span class="pre">deploy_tools.models.schema.generate_schema</span></code> function writes these files from the corresponding Pydantic models.</p>
-<p>To regenerate them manually:</p>
+<p><code class="docutils literal notranslate"><span class="pre">deploy_tools.models.schema.generate_schema</span></code> writes these files from the corresponding
+Pydantic models. To regenerate them manually:</p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>deploy-tools<span class="w"> </span>schema<span class="w"> </span>path/to/output/folder
 </pre></div>
 </div>
@@ -594,6 +631,7 @@ properties as tables.</p>
   </div>
   <nav id="pst-page-toc-nav" class="page-toc" aria-labelledby="pst-page-navigation-heading-2">
     <ul class="pst-show_toc_level nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#which-file-uses-which-schema">Which file uses which schema</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#schema-pages">Schema pages</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#how-the-schemas-are-generated">How the schemas are generated</a></li>
 </ul>

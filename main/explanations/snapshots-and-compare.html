@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>Architectural Decision Records &#8212; deploy-tools 0.7.2.dev119+g9f29f4363 documentation</title>
+    <title>Snapshots and the compare safety net &#8212; deploy-tools 0.7.2.dev119+g9f29f4363 documentation</title>
   
   
   
@@ -48,7 +48,7 @@
     <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
     <script src="../_static/copybutton.js?v=30646c52"></script>
     <script src="../_static/design-tabs.js?v=f930bc37"></script>
-    <script>DOCUMENTATION_OPTIONS.pagename = 'explanations/decisions';</script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'explanations/snapshots-and-compare';</script>
     <script>
         DOCUMENTATION_OPTIONS.theme_version = '0.20.0';
         DOCUMENTATION_OPTIONS.theme_switcher_json_url = 'https://DiamondLightSource.github.io/deploy-tools/switcher.json';
@@ -60,8 +60,8 @@
     <link rel="icon" href="../_static/dls-logo.svg"/>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="1. Record architecture decisions" href="decisions/0001-record-architecture-decisions.html" />
-    <link rel="prev" title="Default version resolution" href="default-versions.html" />
+    <link rel="next" title="The release lifecycle" href="deprecation-lifecycle.html" />
+    <link rel="prev" title="The deployment area" href="deployment-area.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
   <meta name="docsearch:version" content="main" />
@@ -424,10 +424,10 @@
   <p class="bd-links__title" role="heading" aria-level="1">Section Navigation</p>
   <div class="bd-toc-item navbar-nav"><ul class="current nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="deployment-area.html">The deployment area</a></li>
-<li class="toctree-l1"><a class="reference internal" href="snapshots-and-compare.html">Snapshots and the compare safety net</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">Snapshots and the compare safety net</a></li>
 <li class="toctree-l1"><a class="reference internal" href="deprecation-lifecycle.html">The release lifecycle</a></li>
 <li class="toctree-l1"><a class="reference internal" href="default-versions.html">Default version resolution</a></li>
-<li class="toctree-l1 current active has-children"><a class="current reference internal" href="#">Architectural Decision Records</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l1 has-children"><a class="reference internal" href="decisions.html">Architectural Decision Records</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
 <li class="toctree-l2"><a class="reference internal" href="decisions/0001-record-architecture-decisions.html">1. Record architecture decisions</a></li>
 <li class="toctree-l2"><a class="reference internal" href="decisions/0002-switched-to-python-copier-template.html">2. Adopt python-copier-template for project structure</a></li>
 </ul>
@@ -475,7 +475,7 @@
     
     <li class="breadcrumb-item"><a href="../explanations.html" class="nav-link">Explanations</a></li>
     
-    <li class="breadcrumb-item active" aria-current="page"><span class="ellipsis">Architectural Decision Records</span></li>
+    <li class="breadcrumb-item active" aria-current="page"><span class="ellipsis">Snapshots and the compare safety net</span></li>
   </ul>
 </nav>
 </div>
@@ -492,16 +492,66 @@
 <div id="searchbox"></div>
                 <article class="bd-article">
                   
-  <section id="architectural-decision-records">
-<h1>Architectural Decision Records<a class="headerlink" href="#architectural-decision-records" title="Link to this heading">#</a></h1>
-<p>Architectural decisions are made throughout a project’s lifetime. As a way of keeping track of these decisions, we record these decisions in Architecture Decision Records (ADRs) listed below.</p>
-<div class="toctree-wrapper compound">
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="decisions/0001-record-architecture-decisions.html">1. Record architecture decisions</a></li>
-<li class="toctree-l1"><a class="reference internal" href="decisions/0002-switched-to-python-copier-template.html">2. Adopt python-copier-template for project structure</a></li>
+  <section id="snapshots-and-the-compare-safety-net">
+<h1>Snapshots and the compare safety net<a class="headerlink" href="#snapshots-and-the-compare-safety-net" title="Link to this heading">#</a></h1>
+<p><code class="docutils literal notranslate"><span class="pre">deploy-tools</span></code> has no transactional rollback. Instead it relies on a <em>snapshot</em> of the
+intended configuration plus a <code class="docutils literal notranslate"><span class="pre">compare</span></code> command that detects when reality has drifted from
+it. This page explains how the two fit together.</p>
+<section id="what-the-snapshot-is">
+<h2>What the snapshot is<a class="headerlink" href="#what-the-snapshot-is" title="Link to this heading">#</a></h2>
+<p>The snapshot is a single file, <code class="docutils literal notranslate"><span class="pre">deployment.yaml</span></code>, at the root of the deployment area.
+It is a serialised <a class="reference internal" href="../schemas.html"><span class="std std-doc"><code class="docutils literal notranslate"><span class="pre">Deployment</span></code></span></a> — the complete set of Releases
+(live and deprecated) plus the settings, including each Module’s default version. It
+records what the deployment area is supposed to contain.</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">sync</span></code> command writes it; <code class="docutils literal notranslate"><span class="pre">sync</span></code>, <code class="docutils literal notranslate"><span class="pre">validate</span></code> and <code class="docutils literal notranslate"><span class="pre">compare</span></code> read it back to work out
+what has changed since the last <code class="docutils literal notranslate"><span class="pre">sync</span></code>.</p>
+</section>
+<section id="why-it-is-written-before-the-deploy">
+<h2>Why it is written <em>before</em> the deploy<a class="headerlink" href="#why-it-is-written-before-the-deploy" title="Link to this heading">#</a></h2>
+<p>During a <code class="docutils literal notranslate"><span class="pre">sync</span></code>, the snapshot is written <strong>before</strong> the files are moved into place. This
+means the snapshot always describes the <em>target</em> state. If the deploy step then fails part
+way through, the snapshot and the actual files no longer agree, and the next <code class="docutils literal notranslate"><span class="pre">compare</span></code>
+reports that discrepancy. Were the snapshot written last, a deploy that died before making
+any changes could result in <code class="docutils literal notranslate"><span class="pre">compare</span></code> identifying a broken area as healthy.</p>
+</section>
+<section id="how-compare-works">
+<h2>How compare works<a class="headerlink" href="#how-compare-works" title="Link to this heading">#</a></h2>
+<p>It reconstructs the de-facto <code class="docutils literal notranslate"><span class="pre">Deployment</span></code> by walking the deployment area — reading every
+<code class="docutils literal notranslate"><span class="pre">module.yaml</span></code>, checking which versions have a live versus a deprecated modulefile link,
+and reading each <code class="docutils literal notranslate"><span class="pre">.version</span></code> file — then diffs that against the snapshot. Any mismatch (a
+missing modulefile, a built module with no link, a wrong default version, a corrupt
+metadata file) is raised as a clear error showing the differing lines.</p>
+<p><code class="docutils literal notranslate"><span class="pre">compare</span></code> checks the area’s <em>structure</em> — the modulefiles, links and metadata whose
+breakage would disable many Modules at once. It does not inspect the contents of large
+built files such as Apptainer <code class="docutils literal notranslate"><span class="pre">.sif</span></code> images, so a corrupted <code class="docutils literal notranslate"><span class="pre">.sif</span></code> in the correct location
+will not be detected. The risk of corruption is avoided at build time instead: a Module
+is built on the same filesystem as the deployment area and published by a single atomic
+rename, so a partial or failed build (including <code class="docutils literal notranslate"><span class="pre">.sif</span></code> files) is never moved into place.</p>
+<p>This is why CI should run <code class="docutils literal notranslate"><span class="pre">compare</span></code> <em>before</em> every <code class="docutils literal notranslate"><span class="pre">sync</span></code>: it confirms the area is in the
+healthy state the last <code class="docutils literal notranslate"><span class="pre">sync</span></code> claimed to leave it in.</p>
+</section>
+<section id="recovery-is-manual">
+<h2>Recovery is manual<a class="headerlink" href="#recovery-is-manual" title="Link to this heading">#</a></h2>
+<p>With no automatic rollback, recovering from a failed <code class="docutils literal notranslate"><span class="pre">sync</span></code> is an administrator task: use
+<code class="docutils literal notranslate"><span class="pre">compare</span></code> to see what differs, repair the area by hand (or restore the previous snapshot),
+and re-run <code class="docutils literal notranslate"><span class="pre">compare</span></code> before another <code class="docutils literal notranslate"><span class="pre">sync</span></code>. Automatic self-healing was rejected to keep
+the tool simple for a small development team.</p>
+<p>Two facilities help here:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">compare</span> <span class="pre">--use-ref</span> <span class="pre">&lt;ref&gt;</span></code> compares the area against the snapshot stored at a previous
+git commit of the deployment area (e.g. <code class="docutils literal notranslate"><span class="pre">HEAD~1</span></code>); each <code class="docutils literal notranslate"><span class="pre">sync</span></code> commits its snapshot.
+This is helpful when attempting to fix a broken deployment area, as it is
+often easier to rollback the configuration to a previous state rather than fix the
+latest deployment.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">compare</span> <span class="pre">--from-scratch</span></code> asserts only that the deployment root exists and is <em>empty</em> —
+this is the check to run in CI before the very first <code class="docutils literal notranslate"><span class="pre">sync</span></code>, when no snapshot exists yet.</p></li>
 </ul>
-</div>
-<p>For more information on ADRs see this <a class="reference external" href="http://thinkrelevance.com/blog/2011/11/15/documenting-architecture-decisions">blog by Michael Nygard</a>.</p>
+<p>The git repository in the deployment area exists only to give <code class="docutils literal notranslate"><span class="pre">compare</span> <span class="pre">--use-ref</span></code> this
+reference point. It deliberately excludes the build area and Apptainer images, and is
+<strong>not</strong> intended for reverting the area’s state.</p>
+<p>Otherwise, it is expected that the deployment area is properly backed up, preferably with
+some kind of filesystem-level snapshot system.</p>
+</section>
 </section>
 
 
@@ -515,20 +565,20 @@
                   
 <div class="prev-next-area">
     <a class="left-prev"
-       href="default-versions.html"
+       href="deployment-area.html"
        title="previous page">
       <i class="fa-solid fa-angle-left"></i>
       <div class="prev-next-info">
         <p class="prev-next-subtitle">previous</p>
-        <p class="prev-next-title">Default version resolution</p>
+        <p class="prev-next-title">The deployment area</p>
       </div>
     </a>
     <a class="right-next"
-       href="decisions/0001-record-architecture-decisions.html"
+       href="deprecation-lifecycle.html"
        title="next page">
       <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title">1. Record architecture decisions</p>
+        <p class="prev-next-title">The release lifecycle</p>
       </div>
       <i class="fa-solid fa-angle-right"></i>
     </a>
@@ -544,10 +594,25 @@
 
 
   <div class="sidebar-secondary-item">
+<div
+    id="pst-page-navigation-heading-2"
+    class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> On this page
+  </div>
+  <nav id="pst-page-toc-nav" class="page-toc" aria-labelledby="pst-page-navigation-heading-2">
+    <ul class="pst-show_toc_level nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#what-the-snapshot-is">What the snapshot is</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#why-it-is-written-before-the-deploy">Why it is written <em>before</em> the deploy</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#how-compare-works">How compare works</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#recovery-is-manual">Recovery is manual</a></li>
+</ul>
+  </nav></div>
+
+  <div class="sidebar-secondary-item">
 
   
   <div class="tocsection editthispage">
-    <a href="https://github.com/DiamondLightSource/deploy-tools/edit/main/docs/explanations/decisions.md">
+    <a href="https://github.com/DiamondLightSource/deploy-tools/edit/main/docs/explanations/snapshots-and-compare.md">
       <i class="fa-solid fa-pencil"></i>
       
       
@@ -562,7 +627,7 @@
   <div class="sidebar-secondary-item">
 
   <div class="tocsection sourcelink">
-    <a href="../_sources/explanations/decisions.md.txt">
+    <a href="../_sources/explanations/snapshots-and-compare.md.txt">
       <i class="fa-solid fa-file-lines"></i> Show Source
     </a>
   </div>

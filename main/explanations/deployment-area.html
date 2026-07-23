@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>Architectural Decision Records &#8212; deploy-tools 0.7.2.dev119+g9f29f4363 documentation</title>
+    <title>The deployment area &#8212; deploy-tools 0.7.2.dev119+g9f29f4363 documentation</title>
   
   
   
@@ -48,7 +48,7 @@
     <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
     <script src="../_static/copybutton.js?v=30646c52"></script>
     <script src="../_static/design-tabs.js?v=f930bc37"></script>
-    <script>DOCUMENTATION_OPTIONS.pagename = 'explanations/decisions';</script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'explanations/deployment-area';</script>
     <script>
         DOCUMENTATION_OPTIONS.theme_version = '0.20.0';
         DOCUMENTATION_OPTIONS.theme_switcher_json_url = 'https://DiamondLightSource.github.io/deploy-tools/switcher.json';
@@ -60,8 +60,8 @@
     <link rel="icon" href="../_static/dls-logo.svg"/>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="1. Record architecture decisions" href="decisions/0001-record-architecture-decisions.html" />
-    <link rel="prev" title="Default version resolution" href="default-versions.html" />
+    <link rel="next" title="Snapshots and the compare safety net" href="snapshots-and-compare.html" />
+    <link rel="prev" title="Explanations" href="../explanations.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
   <meta name="docsearch:version" content="main" />
@@ -423,11 +423,11 @@
      aria-label="Section Navigation">
   <p class="bd-links__title" role="heading" aria-level="1">Section Navigation</p>
   <div class="bd-toc-item navbar-nav"><ul class="current nav bd-sidenav">
-<li class="toctree-l1"><a class="reference internal" href="deployment-area.html">The deployment area</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">The deployment area</a></li>
 <li class="toctree-l1"><a class="reference internal" href="snapshots-and-compare.html">Snapshots and the compare safety net</a></li>
 <li class="toctree-l1"><a class="reference internal" href="deprecation-lifecycle.html">The release lifecycle</a></li>
 <li class="toctree-l1"><a class="reference internal" href="default-versions.html">Default version resolution</a></li>
-<li class="toctree-l1 current active has-children"><a class="current reference internal" href="#">Architectural Decision Records</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l1 has-children"><a class="reference internal" href="decisions.html">Architectural Decision Records</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
 <li class="toctree-l2"><a class="reference internal" href="decisions/0001-record-architecture-decisions.html">1. Record architecture decisions</a></li>
 <li class="toctree-l2"><a class="reference internal" href="decisions/0002-switched-to-python-copier-template.html">2. Adopt python-copier-template for project structure</a></li>
 </ul>
@@ -475,7 +475,7 @@
     
     <li class="breadcrumb-item"><a href="../explanations.html" class="nav-link">Explanations</a></li>
     
-    <li class="breadcrumb-item active" aria-current="page"><span class="ellipsis">Architectural Decision Records</span></li>
+    <li class="breadcrumb-item active" aria-current="page"><span class="ellipsis">The deployment area</span></li>
   </ul>
 </nav>
 </div>
@@ -492,16 +492,71 @@
 <div id="searchbox"></div>
                 <article class="bd-article">
                   
-  <section id="architectural-decision-records">
-<h1>Architectural Decision Records<a class="headerlink" href="#architectural-decision-records" title="Link to this heading">#</a></h1>
-<p>Architectural decisions are made throughout a project’s lifetime. As a way of keeping track of these decisions, we record these decisions in Architecture Decision Records (ADRs) listed below.</p>
-<div class="toctree-wrapper compound">
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="decisions/0001-record-architecture-decisions.html">1. Record architecture decisions</a></li>
-<li class="toctree-l1"><a class="reference internal" href="decisions/0002-switched-to-python-copier-template.html">2. Adopt python-copier-template for project structure</a></li>
-</ul>
+  <section id="the-deployment-area">
+<h1>The deployment area<a class="headerlink" href="#the-deployment-area" title="Link to this heading">#</a></h1>
+<p>The <em>deployment area</em> is the directory tree that <code class="docutils literal notranslate"><span class="pre">deploy-tools</span></code> writes into. It is normally
+a shared filesystem location that end users put on their <code class="docutils literal notranslate"><span class="pre">MODULEPATH</span></code>, so its layout is
+important to the end user. This page explains what lives where, and why.</p>
+<section id="layout">
+<h2>Layout<a class="headerlink" href="#layout" title="Link to this heading">#</a></h2>
+<p>Everything below is created and maintained by <code class="docutils literal notranslate"><span class="pre">deploy-tools</span></code>; nothing in the area is meant
+to be edited by hand.</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>&lt;deployment root&gt;/
+├── deployment.yaml          # snapshot of the deployed configuration
+├── modules/                 # Modules Area — the built files for every Module
+│   └── &lt;name&gt;/&lt;version&gt;/
+│       ├── modulefile        # the Environment Modules (Tcl) file
+│       ├── entrypoints/      # the executables added to PATH on module load
+│       ├── module.yaml       # this Module&#39;s configuration snapshot
+│       └── sif_files/        # Apptainer images, when the Module uses any
+├── modulefiles/             # Modulefiles Folder — placed on MODULEPATH
+│   └── &lt;name&gt;/
+│       ├── &lt;version&gt;         # absolute symlink into modules/&lt;name&gt;/&lt;version&gt;/modulefile
+│       └── .version          # records the default version (see below)
+├── deprecated/
+│   └── modulefiles/         # Deprecated Folder — optionally on MODULEPATH
+│       └── &lt;name&gt;/&lt;version&gt;  # symlink for a deprecated Module version
+└── build/                   # transient build area (default location)
+</pre></div>
 </div>
-<p>For more information on ADRs see this <a class="reference external" href="http://thinkrelevance.com/blog/2011/11/15/documenting-architecture-decisions">blog by Michael Nygard</a>.</p>
+<p>The split between the <strong>Modules Area</strong> (<code class="docutils literal notranslate"><span class="pre">modules/</span></code>) and the <strong>Modulefiles Folder</strong>
+(<code class="docutils literal notranslate"><span class="pre">modulefiles/</span></code>) is the central design choice. The Modules Area holds the real files for
+<em>every</em> version that has been deployed and not removed, both live and deprecated. The
+Modulefiles Folder holds only a thin tree of symlinks, one per version, pointing at the
+corresponding <code class="docutils literal notranslate"><span class="pre">modulefile</span></code>. Users put only the <em>modulefiles</em> directories on their
+<code class="docutils literal notranslate"><span class="pre">MODULEPATH</span></code>, making each Module visible to <code class="docutils literal notranslate"><span class="pre">module</span> <span class="pre">avail</span></code> and <code class="docutils literal notranslate"><span class="pre">module</span> <span class="pre">load</span></code>.</p>
+<p>Deprecation is therefore cheap and reversible: the built files never move, only the symlink
+moves between <code class="docutils literal notranslate"><span class="pre">modulefiles/</span></code> and <code class="docutils literal notranslate"><span class="pre">deprecated/modulefiles/</span></code>. See
+<a class="reference internal" href="deprecation-lifecycle.html"><span class="std std-doc">the release lifecycle</span></a> for the full set of transitions.</p>
+</section>
+<section id="the-build-area">
+<h2>The build area<a class="headerlink" href="#the-build-area" title="Link to this heading">#</a></h2>
+<p>Modules are first assembled under the <strong>build area</strong> (<code class="docutils literal notranslate"><span class="pre">build/</span></code> by default), then moved into
+the Modules Area. The move is a filesystem <code class="docutils literal notranslate"><span class="pre">rename</span></code>, which is atomic <em>only when source and
+destination are on the same filesystem</em> — hence the default build area sits inside the
+deployment root. Building and deploying separately means a half-built Module is never
+visible: either the rename succeeds and the whole version appears, or nothing changes.</p>
+<p>The transient <code class="docutils literal notranslate"><span class="pre">build/</span></code> directory and the large Apptainer <code class="docutils literal notranslate"><span class="pre">sif_files/</span></code> images are
+deliberately kept out of the deployment area’s git history (see
+<a class="reference internal" href="snapshots-and-compare.html"><span class="std std-doc">snapshots and the compare safety net</span></a>). They are reference-only
+data used by the <code class="docutils literal notranslate"><span class="pre">compare</span></code> command, not something to revert to.</p>
+</section>
+<section id="why-modulefiles-embed-absolute-paths">
+<h2>Why modulefiles embed absolute paths<a class="headerlink" href="#why-modulefiles-embed-absolute-paths" title="Link to this heading">#</a></h2>
+<p>A generated <code class="docutils literal notranslate"><span class="pre">modulefile</span></code> adds its Module’s executables to the user’s path with one line:</p>
+<div class="highlight-tcl notranslate"><div class="highlight"><pre><span></span><span class="nv">prepend-path</span><span class="w"> </span>PATH<span class="w"> </span><span class="s2">&quot;&lt;deployment root&gt;/modules/&lt;name&gt;/&lt;version&gt;/entrypoints&quot;</span>
+</pre></div>
+</div>
+<p>That path is <strong>absolute</strong>, so a deployment area cannot be relocated after the fact.
+This is a deliberate trade-off.</p>
+<p>A path relative to the modulefile does not work. Environment Modules sources the file
+<em>through the symlink</em> under <code class="docutils literal notranslate"><span class="pre">modulefiles/</span></code> without resolving it first (<code class="docutils literal notranslate"><span class="pre">[info</span> <span class="pre">script]</span></code>
+/ <code class="docutils literal notranslate"><span class="pre">ModulesCurrentModulefile</span></code> report the link path). A relative path would be interpreted
+relative to the <em>link’s</em> location — which changes when a Module is deprecated and the link
+moves to a different location in the tree, silently breaking it.</p>
+<p>This allows us to use two separate <code class="docutils literal notranslate"><span class="pre">modulefiles/</span></code> folders, corresponding to live and
+deprecated modules, without needing to edit modulefiles after initial creation.</p>
+</section>
 </section>
 
 
@@ -515,20 +570,20 @@
                   
 <div class="prev-next-area">
     <a class="left-prev"
-       href="default-versions.html"
+       href="../explanations.html"
        title="previous page">
       <i class="fa-solid fa-angle-left"></i>
       <div class="prev-next-info">
         <p class="prev-next-subtitle">previous</p>
-        <p class="prev-next-title">Default version resolution</p>
+        <p class="prev-next-title">Explanations</p>
       </div>
     </a>
     <a class="right-next"
-       href="decisions/0001-record-architecture-decisions.html"
+       href="snapshots-and-compare.html"
        title="next page">
       <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title">1. Record architecture decisions</p>
+        <p class="prev-next-title">Snapshots and the compare safety net</p>
       </div>
       <i class="fa-solid fa-angle-right"></i>
     </a>
@@ -544,10 +599,24 @@
 
 
   <div class="sidebar-secondary-item">
+<div
+    id="pst-page-navigation-heading-2"
+    class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> On this page
+  </div>
+  <nav id="pst-page-toc-nav" class="page-toc" aria-labelledby="pst-page-navigation-heading-2">
+    <ul class="pst-show_toc_level nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#layout">Layout</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#the-build-area">The build area</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#why-modulefiles-embed-absolute-paths">Why modulefiles embed absolute paths</a></li>
+</ul>
+  </nav></div>
+
+  <div class="sidebar-secondary-item">
 
   
   <div class="tocsection editthispage">
-    <a href="https://github.com/DiamondLightSource/deploy-tools/edit/main/docs/explanations/decisions.md">
+    <a href="https://github.com/DiamondLightSource/deploy-tools/edit/main/docs/explanations/deployment-area.md">
       <i class="fa-solid fa-pencil"></i>
       
       
@@ -562,7 +631,7 @@
   <div class="sidebar-secondary-item">
 
   <div class="tocsection sourcelink">
-    <a href="../_sources/explanations/decisions.md.txt">
+    <a href="../_sources/explanations/deployment-area.md.txt">
       <i class="fa-solid fa-file-lines"></i> Show Source
     </a>
   </div>
