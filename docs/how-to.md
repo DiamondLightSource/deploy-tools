@@ -4,7 +4,9 @@ Practical step-by-step guides for the more experienced user.
 
 ```{toctree}
 :maxdepth: 1
-:glob:
 
-how-to/*
+how-to/ci-pipeline
+how-to/run-container
+how-to/vscode-tasks
+how-to/contribute
 ```
