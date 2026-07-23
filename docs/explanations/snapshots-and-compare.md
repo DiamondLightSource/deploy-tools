@@ -50,8 +50,8 @@ the tool simple for a small development team.
 Two facilities help here:
 
 - `compare --use-ref <ref>` compares the area against the snapshot stored at a previous
-  git commit of the deployment area (e.g. `HEAD~1`), since each `sync` commits the
-  snapshot. This is helpful when attempting to fix a broken deployment area, as it is
+  git commit of the deployment area (e.g. `HEAD~1`); each `sync` commits its snapshot.
+  This is helpful when attempting to fix a broken deployment area, as it is
   often easier to rollback the configuration to a previous state rather than fix the
   latest deployment.
 - `compare --from-scratch` asserts only that the deployment root exists and is *empty* —
