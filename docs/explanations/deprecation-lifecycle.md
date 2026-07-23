@@ -34,9 +34,8 @@ Some transitions are blocked by default so mistakes aren't applied silently:
 - **An existing version may not change without a new version.** If its configuration differs
   from the last snapshot, validation fails unless the Module sets `allow_updates: true`.
 - **A live version may not be deleted directly.** Deprecate it in one `sync`, then
-  remove it in a later one.
+  remove it in a later one — unless the Module sets `allow_updates: true`.
 
-`--allow-all` lifts the first and third guards, so you can force those transitions. It does
-*not* affect updates: changing a version always requires `allow_updates: true`.
+`--allow-all` lifts the first and third guards, so you can force those transitions.
 `--from-scratch` implies `--allow-all`. Neither relaxes the integrity checks — the area
 must still be healthy.
