@@ -43,7 +43,7 @@ deploy-tools validate $deployment_root $config_folder
 # validation as part of determining the required changes
 deploy-tools sync $deployment_root $config_folder
 
-# Compare the previous deployment snapshot against what is actually deployed in the
+# Compare the current deployment snapshot against what is actually deployed in the
 # deployment area. CI/CD should run this before a deploy to confirm a healthy state.
 deploy-tools compare $deployment_root
 
@@ -51,15 +51,19 @@ deploy-tools compare $deployment_root
 
 ## Deployment Steps
 
-There are several key steps that make up the deployment process. Note that these are a
-bit different to the CLI commands; see `deploy-tools --help` for more information.
+There are several key conceptual steps that make up the deployment process. These are
+**not** one-to-one with the CLI commands; the "Run by" column shows which command runs
+each step. See `deploy-tools --help` for more detail.
 
-|**Step**|**Description**                                                                                                                                                                                                                                  |
-|--------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-|Compare |Compare the snapshot taken of the previous deployment with the modulefiles and built modules that already exist. This ensures that the Deployment Area is in a healthy state                                                                     |
-|Validate|Process the updated configuration. By comparing the new configuration files with a snapshot from the previous deployment, we determine the set of actions that need to be taken                                                                  |
-|Build   |Generate entrypoint scripts, configuration files and environment variables for a given Module. These are output to the Build Area                                                                                                                |
-|Deploy  |Move all built Modules from the Build Area into the Modules Area. A link to the built modulefile is moved to either the Modulefiles Folder or Deprecated Folder, depending on its deprecation status. Update default versions for the modulefiles|
+|**Step**|**Description**                                                                                                                                                                                                                                  |**Run by**|
+|--------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|----------|
+|Compare |Compare the current deployment snapshot file with the modulefiles and built modules that currently exist. This ensures that the Deployment Area is in a healthy state                                                                     |`compare` |
+|Validate|Process the updated configuration. By comparing the new configuration files with the current deployment snapshot from the last sync, we determine the set of actions that need to be taken                                                                  |`validate`, `sync`|
+|Build   |Generate entrypoint scripts, configuration files and environment variables for a given Module. These are output to the Build Area                                                                                                                |`sync` (`validate --test-build`)|
+|Deploy  |Move all built Modules from the Build Area into the Modules Area. A link to the built modulefile is moved to either the Modulefiles Folder or Deprecated Folder, depending on its deprecation status. Update default versions for the modulefiles|`sync`    |
+
+There is no standalone `build` or `deploy` command: `sync` always runs them together, so
+a half-built Module is never exposed to users.
 
 ## JSON Schema
 
@@ -68,6 +72,9 @@ A set of JSON schema files are provided under `src/deploy_tools/models/schemas`.
 We strongly recommend that you provide a schema for configuration file validation, by adding a `yaml-language-server` comment to the top of each configuration file. For production configuration, point this at the schema files hosted on GitHub:
 
 ```# yaml-language-server: $schema=https://raw.githubusercontent.com/DiamondLightSource/deploy-tools/main/src/deploy_tools/models/schemas/release.json```
+
+Use `release.json` for the per-version Module files (`<name>/<version>.yaml`) and
+`deployment-settings.json` for the top-level `settings.yaml`.
 
 As the demo_configuration is used during development, we instead set it to use the locally generated schemas via an absolute workspace path (e.g. `/workspaces/deploy-tools/src/deploy_tools/models/schemas/release.json`). This dev-container-only path should not be used for production configuration.
 
@@ -83,8 +90,14 @@ available as Tasks and Debug configurations for VSCode. These tasks (plus their 
 inputs) should create a separate `demo-output` folder at the top-level of the workspace
 folder.
 
-You will need to use the `--from-scratch` argument if starting from a clean Deployment
-Area, as there is no snapshot from a prior Deploy step.
+You will need to use the `--from-scratch` argument when starting from a clean Deployment
+Area, as there is no snapshot from a prior Deploy step:
+
+- `sync`/`validate --from-scratch` work against an empty area without expecting a
+  snapshot, and imply `--allow-all` (there is no prior state to enforce lifecycle rules
+  against).
+- `compare --from-scratch` just checks the Deployment Area exists and is **empty**. Run
+  this in CI before the first deploy, where a normal `compare` has no snapshot to use.
 
 It is recommended that you use `--help` to explore the commands, arguments and options
 in greater detail.
