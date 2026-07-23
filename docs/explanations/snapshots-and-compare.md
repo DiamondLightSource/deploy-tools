@@ -7,7 +7,7 @@ it. This page explains how the two fit together.
 ## What the snapshot is
 
 The snapshot is a single file, `deployment.yaml`, at the root of the deployment area.
-It is a serialised [`Deployment`](../schemas/release.rst) — the complete set of Releases
+It is a serialised [`Deployment`](../schemas.md) — the complete set of Releases
 (live and deprecated) plus the settings, including each Module's default version. It
 records what the deployment area is supposed to contain.
 

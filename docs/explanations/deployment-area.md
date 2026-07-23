@@ -20,7 +20,7 @@ to be edited by hand.
 │       └── sif_files/        # Apptainer images, when the Module uses any
 ├── modulefiles/             # Modulefiles Folder — placed on MODULEPATH
 │   └── <name>/
-│       ├── <version>         # symlink → ../../modules/<name>/<version>/modulefile
+│       ├── <version>         # absolute symlink into modules/<name>/<version>/modulefile
 │       └── .version          # records the default version (see below)
 ├── deprecated/
 │   └── modulefiles/         # Deprecated Folder — optionally on MODULEPATH
