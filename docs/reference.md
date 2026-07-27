@@ -9,6 +9,7 @@ Technical reference material including APIs and release notes.
 CLI <cli>
 API <_api/deploy_tools>
 Schemas <schemas>
+Glossary <glossary>
 genindex
 Release Notes <https://github.com/DiamondLightSource/deploy-tools/releases>
 ```
