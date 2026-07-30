@@ -30,10 +30,6 @@ equivalent if you prefer to invoke the module directly.
 ```
 deployment_root = /path/to/deployment/root
 config_folder = /path/to/config/folder
-schema_folder = /path/to/schema/folder
-
-# Generate the schema for configuration yaml files
-deploy-tools schema $schema_folder
 
 # Validate the deployment configuration files, also ensuring that the required updates
 # are compatible with the previous deployments.
@@ -48,6 +44,10 @@ deploy-tools sync $deployment_root $config_folder
 deploy-tools compare $deployment_root
 
 ```
+
+Generating the JSON schema files with `deploy-tools schema <folder>` is a separate,
+occasional task: it produces the schemas that editors use to validate configuration files,
+and is not part of a deployment. See the schema reference in the documentation.
 
 <!-- README only content. Anything below this line won't be included in index.md -->
 
