@@ -24,6 +24,12 @@ The demo_configuration folder in this repository can be passed as the config_fol
 the deploy-tools commands. The deployment_root needs to be a writeable location for all
 files to get deployed under.
 
+In normal use these commands are not run by hand: they act on a shared deployment area and
+belong in a CI pipeline, gated by change review. Running them manually against the demo
+configuration, as below, is just the quickest way to see what each does — the
+[documentation](https://diamondlightsource.github.io/deploy-tools) has a hands-on tutorial
+and a guide to driving them from CI.
+
 The examples below use the `deploy-tools` console script; `python -m deploy_tools` is
 equivalent if you prefer to invoke the module directly.
 
