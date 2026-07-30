@@ -49,17 +49,8 @@ schemas/deployment-settings
 schemas/release
 ```
 
-## How the schemas are generated
+## Regenerating the schemas
 
-`deploy_tools.models.schema.generate_schema` writes these files from the corresponding
-Pydantic models. The checked-in schemas under `src/deploy_tools/models/schemas` do not
-update automatically when the models change, so after any model change you must regenerate
-and commit them.
-
-The simplest way is the **Generate Schema** VSCode task (see
-[the VSCode tasks guide](how-to/vscode-tasks.md)), which writes to the correct location.
-Equivalently, run the CLI, pointing it at that folder:
-
-```bash
-deploy-tools schema src/deploy_tools/models/schemas
-```
+These files are checked in and do not update automatically when the models change.
+Contributors who change the models must regenerate them — see
+[regenerate the JSON schemas](how-to/regenerate-schemas.md).
