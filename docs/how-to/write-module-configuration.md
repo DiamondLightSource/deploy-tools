@@ -12,7 +12,8 @@ mechanics. For the shape of the files see
    `0.1` of `phoebus`. The `name` and `version` inside the file must match the path.
 
 2. Add the schema line as the first line so your editor validates as you type (see the
-   [schema reference](../schemas.md) for details):
+   [schema reference](../schemas.md) for details, including how to associate schemas
+   repository-wide instead of per file):
 
    ```yaml
    # yaml-language-server: $schema=https://raw.githubusercontent.com/DiamondLightSource/deploy-tools/main/src/deploy_tools/models/schemas/release.json

@@ -28,6 +28,12 @@ This requires an editor with a YAML language server — e.g. VS Code with the
 or any [LSP](https://microsoft.github.io/language-server-protocol/)-capable editor
 running [`yaml-language-server`](https://github.com/redhat-developer/yaml-language-server).
 
+Alternatively, VS Code's [`yaml.schemas`](https://github.com/redhat-developer/vscode-yaml#associating-schemas)
+setting (committed to `.vscode/settings.json`) maps schemas to file paths once for the
+whole repository, avoiding the per-file comment. This documentation uses the comment
+because it is self-contained and editor-agnostic, but a real configuration repository may
+reasonably prefer the repository-level setting.
+
 ```{note}
 The bundled `demo_configuration` instead points at the locally generated schemas via an
 absolute workspace path (e.g.
