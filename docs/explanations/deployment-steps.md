@@ -7,7 +7,7 @@ a command of their own. For the commands themselves see the [CLI reference](../c
 | Step | Description | Run by |
 |------|-------------|--------|
 | Compare | Compare the current deployment snapshot against the modulefiles and built modules that actually exist, confirming the [deployment area](deployment-area.md) is healthy. | `compare` |
-| Validate | Diff the new configuration against the current snapshot to determine the set of actions to take, and check those actions are permitted by the [release lifecycle](deprecation-lifecycle.md). | `validate`, `sync` |
+| Validate | Diff the new configuration against the current snapshot to determine the set of actions to take, and check those actions are permitted by the [lifecycle guard rails](deprecation-lifecycle.md#the-guard-rails). | `validate`, `sync` |
 | Build | Generate entrypoint scripts, configuration files and environment variables for each changed Module, writing them to the build area. | `sync` (`validate --test-build`) |
 | Deploy | Move the built Modules from the build area into the Modules Area, link each modulefile into the live or deprecated tree according to its status, and update default versions. | `sync` |
 

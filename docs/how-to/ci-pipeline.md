@@ -15,9 +15,9 @@ When someone opens a change (before it is merged), run, without altering the are
 - `deploy-tools compare <area>` — confirm the area still matches its last snapshot, so
   the change is being checked against a known-healthy baseline.
 - `deploy-tools validate <area> <config>` — confirm the new configuration is valid and its
-  [lifecycle transitions](../explanations/deprecation-lifecycle.md) are permitted. Add
-  `--test-build` to build every changed Module in a temporary directory, catching build
-  failures before merge.
+  [lifecycle transitions](../explanations/deprecation-lifecycle.md#the-guard-rails) are
+  permitted. Add `--test-build` to build every changed Module in a temporary directory,
+  catching build failures before merge.
 
 This gives reviewers a green light that the change is deployable without changing anything
 on the filesystem.

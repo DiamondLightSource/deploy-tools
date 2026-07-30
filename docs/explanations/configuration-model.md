@@ -39,8 +39,8 @@ A Module is the unit an end user loads. Alongside its `name` and `version` it ca
 | `env_vars` | Environment variables set when the Module is loaded. |
 | `dependencies` | Other Modules loaded first, optionally version-pinned. |
 | `applications` | One or more applications providing the executables (below). |
-| `allow_updates` | Permit in-place changes to this version — see [the release lifecycle](deprecation-lifecycle.md). |
-| `exclude_from_defaults` | Keep this version out of automatic default selection — see [default versions](default-versions.md). |
+| `allow_updates` | Permit in-place changes to this version — see [the guard rails](deprecation-lifecycle.md#the-guard-rails). |
+| `exclude_from_defaults` | Keep this version out of automatic default selection — see [default versions](default-versions.md#excluding-a-version-from-the-automatic-default). |
 
 `load_script` and `unload_script` run extra commands when the Module is loaded and
 unloaded respectively, injected raw into the generated Modulefile. They are an advanced

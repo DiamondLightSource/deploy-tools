@@ -71,8 +71,8 @@ catches structural mistakes in your editor as you type, before you open the requ
 
 - **Update an existing version in place.** Rejected by default so published versions stay
   stable; prefer publishing a new version. If you must, set `allow_updates: true` on the
-  Module — see [the release lifecycle](../explanations/deprecation-lifecycle.md).
+  Module — see [the guard rails](../explanations/deprecation-lifecycle.md#the-guard-rails).
 - **Retire a version.** Set `deprecated: true` to steer users away from it. Deleting it
   outright has to wait until after it is deprecated (unless the Module has
   `allow_updates: true`). See
-  [the release lifecycle](../explanations/deprecation-lifecycle.md).
+  [the guard rails](../explanations/deprecation-lifecycle.md#the-guard-rails).
