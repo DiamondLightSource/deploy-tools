@@ -65,21 +65,6 @@ each step. See `deploy-tools --help` for more detail.
 There is no standalone `build` or `deploy` command: `sync` always runs them together, so
 a half-built Module is never exposed to users.
 
-## JSON Schema
-
-A set of JSON schema files are provided under `src/deploy_tools/models/schemas`. These are generated from the Pydantic models in `src/deploy_tools/models/` by the `deploy-tools schema` command (see `models/schema.py`).
-
-We strongly recommend that you provide a schema for configuration file validation, by adding a `yaml-language-server` comment to the top of each configuration file. For production configuration, point this at the schema files hosted on GitHub:
-
-```# yaml-language-server: $schema=https://raw.githubusercontent.com/DiamondLightSource/deploy-tools/main/src/deploy_tools/models/schemas/release.json```
-
-Use `release.json` for the per-version Module files (`<name>/<version>.yaml`) and
-`deployment-settings.json` for the top-level `settings.yaml`.
-
-As the demo_configuration is used during development, we instead set it to use the locally generated schemas via an absolute workspace path (e.g. `/workspaces/deploy-tools/src/deploy_tools/models/schemas/release.json`). This dev-container-only path should not be used for production configuration.
-
-Note that the 'Generate Schema' VSCode task will update the schemas according to any update of the code, but you need to trigger this manually and check the contents in.
-
 ## CLI Commands, VSCode Tasks and Debug Configuration
 
 The following CLI commands are used in our CI/CD process to update the Deployment Area
