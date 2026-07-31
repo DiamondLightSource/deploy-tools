@@ -28,8 +28,8 @@ $ export CONFIG=$PWD/deploy-tools/src/deploy_tools/demo_configuration
 ```
 
 That folder contains a `settings.yaml` and one folder per Module, each holding a
-`<version>.yaml` file. Have a look — `dls-pmac-control/0.1.yaml`, for example, defines a
-Module with a containerised app and a small shell entrypoint.
+`<version>.yaml` file. Have a look — `example-module-apps/0.1.yaml`, for example, defines
+a Module with a containerised app and a couple of small shell entrypoints.
 
 ```{note}
 The `# yaml-language-server: $schema=…` line at the top of each file only drives editor
@@ -108,35 +108,37 @@ The demo Modules now appear alongside any others on your system.
 
 ## 8. Load a Module and run it
 
-Load `dls-pmac-control` without naming a version:
+Load the demo Module `example-module-apps`:
 
 ```
-$ module load dls-pmac-control
+$ module load example-module-apps
 ```
-
-Even though both `0.1` and `0.2` were deployed, you get `0.1`, because the demo
-`settings.yaml` pins it as the default. (How that choice is made is covered in
-[default version resolution](../explanations/default-versions.md).)
 
 Loading the Module sets its environment variables and adds its entrypoints to your path.
 Run the shell entrypoint, which echoes one of those variables — no container involved:
 
 ```
-$ test-echo-module-file
-Test message EXAMPLE_VALUE from example-module-file version 0.1
+$ test-echo-module-folder
+Test message OTHER_VALUE from example-module-folder
 ```
 
-If Apptainer is available, try a containerised entrypoint from another demo Module:
+If Apptainer is available, run one of the Module's containerised entrypoints:
 
 ```
-$ module load example-module-apps
 $ cowsay-hello
 ```
 
 When you are done, unload it:
 
 ```
-$ module unload dls-pmac-control
+$ module unload example-module-apps
+```
+
+```{note}
+Some names ship more than one version. The demo deploys `dls-pmac-control` as both `0.1`
+and `0.2`, and its `settings.yaml` pins `0.1` as the default, so `module load
+dls-pmac-control` loads `0.1` unless you ask for `dls-pmac-control/0.2` explicitly. See
+[default version resolution](../explanations/default-versions.md).
 ```
 
 ## What you have learned
