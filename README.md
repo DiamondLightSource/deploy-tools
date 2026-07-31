@@ -65,36 +65,6 @@ each step. See `deploy-tools --help` for more detail.
 There is no standalone `build` or `deploy` command: `sync` always runs them together, so
 a half-built Module is never exposed to users.
 
-## CLI Commands, VSCode Tasks and Debug Configuration
-
-The following CLI commands are used in our CI/CD process to update the Deployment Area
-using new configuration.
-
-In order to help with development and testing, these commands (plus useful defaults) are
-available as Tasks and Debug configurations for VSCode. These tasks (plus their default
-inputs) should create a separate `demo-output` folder at the top-level of the workspace
-folder.
-
-You will need to use the `--from-scratch` argument when starting from a clean Deployment
-Area, as there is no snapshot from a prior Deploy step:
-
-- `sync`/`validate --from-scratch` work against an empty area without expecting a
-  snapshot, and imply `--allow-all` (there is no prior state to enforce lifecycle rules
-  against).
-- `compare --from-scratch` just checks the Deployment Area exists and is **empty**. Run
-  this in CI before the first deploy, where a normal `compare` has no snapshot to use.
-
-It is recommended that you use `--help` to explore the commands, arguments and options
-in greater detail.
-
-|**Name**                      |**CLI command**           |**Description**                                                                                                                                                                                                     |
-|------------------------------|--------------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-|Generate Schema               |`deploy-tools schema`     |Generate the yaml schema (in .json format) for the top-level configuration files                                                                                                                                    |
-|Clean deployment              |`rm -rf <Deployment Root>`|Wipe the deployment area local to your own checkout of deploy-tools, enabling you to test a deployment from scratch                                                                                                 |
-|Sync Modules                  |`deploy-tools sync`       |Synchronise the Deployment configuration with the Deployment Area                                                                                                                                                   |
-|Validate deployment           |`deploy-tools validate`   |Compare the new configuration with that previously used when deploying modules, and test the build process if requested                                                                                             |
-|Compare deployment to snapshot|`deploy-tools compare`    |Compare the configuration stored from the last `deploy-tools sync` run, with the state of any deployed Modules. This should always be run by CI/CD before attempting to Deploy, and any differences will be reported|
-
 ## Glossary
 
 See the Deployment Steps above for an overview of the primary stages of a deployment.
