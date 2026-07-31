@@ -142,8 +142,8 @@ $ module unload dls-pmac-control
 ## What you have learned
 
 You took a configuration folder, checked the area was clean, previewed the changes, and
-deployed Modules you could load and run — the `compare`, `validate` and `sync` commands
-that a real pipeline runs (split across its stages — see
+deployed Modules you could load and run. Those are the same `compare`, `validate` and
+`sync` commands a real pipeline runs, though it spreads them across separate stages (see
 [drive deploy-tools from CI](../how-to/ci-pipeline.md)).
 
 From here:
