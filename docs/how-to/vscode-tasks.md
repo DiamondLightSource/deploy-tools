@@ -22,8 +22,8 @@ Open the command palette and choose **Tasks: Run Task**, then pick one of:
 - **Sync modules** — build and deploy the demo configuration into `demo-output/`.
 - **Compare deployment to snapshot** — diff the deployment against a previous snapshot.
 - **Generate schema** — regenerate the JSON schemas under `models/schemas/`.
-- **Recreate tests sample output from demo_configuration** — regenerate the golden-master
-  test samples via `tests/generate_samples.sh`.
+- **Recreate tests sample output from golden-master configuration** — regenerate the
+  golden-master test samples via `tests/generate_samples.sh`.
 - **Tests, lint and docs** — run `tox -p` (type checking, tests, and the docs build).
 
 Tasks that take flags (such as `--allow-all`, `--from-scratch`, or the compare mode)

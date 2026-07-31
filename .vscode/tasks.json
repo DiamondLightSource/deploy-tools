@@ -35,7 +35,7 @@
         },
         {
             "type": "shell",
-            "label": "Recreate tests sample output from demo_configuration",
+            "label": "Recreate tests sample output from golden-master configuration",
             "command": "tests/generate_samples.sh",
             "options": {
                 "cwd": "${workspaceRoot}"
