@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>deploy_tools.models.shell_app &#8212; deploy-tools 0.7.2.dev130+gf202a7979 documentation</title>
+    <title>Run the VSCode tasks and debug configurations &#8212; deploy-tools 0.7.2.dev130+gf202a7979 documentation</title>
   
   
   
@@ -48,7 +48,7 @@
     <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
     <script src="../_static/copybutton.js?v=30646c52"></script>
     <script src="../_static/design-tabs.js?v=f930bc37"></script>
-    <script>DOCUMENTATION_OPTIONS.pagename = '_api/deploy_tools.models.shell_app';</script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'how-to/vscode-tasks';</script>
     <script>
         DOCUMENTATION_OPTIONS.theme_version = '0.20.0';
         DOCUMENTATION_OPTIONS.theme_switcher_json_url = 'https://DiamondLightSource.github.io/deploy-tools/switcher.json';
@@ -60,8 +60,8 @@
     <link rel="icon" href="../_static/dls-logo.svg"/>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="deploy_tools.module_builder" href="deploy_tools.module_builder.html" />
-    <link rel="prev" title="deploy_tools.models.schema" href="deploy_tools.models.schema.html" />
+    <link rel="next" title="Contribute to the project" href="contribute.html" />
+    <link rel="prev" title="Run in a container" href="run-container.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
   <meta name="docsearch:version" content="main" />
@@ -161,7 +161,7 @@
 </li>
 
 
-<li class="nav-item ">
+<li class="nav-item current active">
   <a class="nav-link nav-internal" href="../how-to.html">
     How-to Guides
   </a>
@@ -175,7 +175,7 @@
 </li>
 
 
-<li class="nav-item current active">
+<li class="nav-item ">
   <a class="nav-link nav-internal" href="../reference.html">
     Reference
   </a>
@@ -314,7 +314,7 @@
 </li>
 
 
-<li class="nav-item ">
+<li class="nav-item current active">
   <a class="nav-link nav-internal" href="../how-to.html">
     How-to Guides
   </a>
@@ -328,7 +328,7 @@
 </li>
 
 
-<li class="nav-item current active">
+<li class="nav-item ">
   <a class="nav-link nav-internal" href="../reference.html">
     Reference
   </a>
@@ -423,45 +423,10 @@
      aria-label="Section Navigation">
   <p class="bd-links__title" role="heading" aria-level="1">Section Navigation</p>
   <div class="bd-toc-item navbar-nav"><ul class="current nav bd-sidenav">
-<li class="toctree-l1"><a class="reference internal" href="../cli.html">CLI</a></li>
-<li class="toctree-l1 current active has-children"><a class="reference internal" href="deploy_tools.html">API</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="current">
-<li class="toctree-l2"><a class="reference internal" href="deploy_tools.app_builder.html"><code class="docutils literal notranslate"><span class="pre">deploy_tools.app_builder</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="deploy_tools.apptainer.html"><code class="docutils literal notranslate"><span class="pre">deploy_tools.apptainer</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="deploy_tools.build.html"><code class="docutils literal notranslate"><span class="pre">deploy_tools.build</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="deploy_tools.compare.html"><code class="docutils literal notranslate"><span class="pre">deploy_tools.compare</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="deploy_tools.deploy.html"><code class="docutils literal notranslate"><span class="pre">deploy_tools.deploy</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="deploy_tools.errors.html"><code class="docutils literal notranslate"><span class="pre">deploy_tools.errors</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="deploy_tools.external_tools.html"><code class="docutils literal notranslate"><span class="pre">deploy_tools.external_tools</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="deploy_tools.layout.html"><code class="docutils literal notranslate"><span class="pre">deploy_tools.layout</span></code></a></li>
-<li class="toctree-l2 current active has-children"><a class="reference internal" href="deploy_tools.models.html"><code class="docutils literal notranslate"><span class="pre">deploy_tools.models</span></code></a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="current">
-<li class="toctree-l3"><a class="reference internal" href="deploy_tools.models.app.html"><code class="docutils literal notranslate"><span class="pre">deploy_tools.models.app</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="deploy_tools.models.apptainer_app.html"><code class="docutils literal notranslate"><span class="pre">deploy_tools.models.apptainer_app</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="deploy_tools.models.binary_app.html"><code class="docutils literal notranslate"><span class="pre">deploy_tools.models.binary_app</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="deploy_tools.models.changes.html"><code class="docutils literal notranslate"><span class="pre">deploy_tools.models.changes</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="deploy_tools.models.deployment.html"><code class="docutils literal notranslate"><span class="pre">deploy_tools.models.deployment</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="deploy_tools.models.module.html"><code class="docutils literal notranslate"><span class="pre">deploy_tools.models.module</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="deploy_tools.models.parent.html"><code class="docutils literal notranslate"><span class="pre">deploy_tools.models.parent</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="deploy_tools.models.save_and_load.html"><code class="docutils literal notranslate"><span class="pre">deploy_tools.models.save_and_load</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="deploy_tools.models.schema.html"><code class="docutils literal notranslate"><span class="pre">deploy_tools.models.schema</span></code></a></li>
-<li class="toctree-l3 current active"><a class="current reference internal" href="#"><code class="docutils literal notranslate"><span class="pre">deploy_tools.models.shell_app</span></code></a></li>
-</ul>
-</details></li>
-<li class="toctree-l2"><a class="reference internal" href="deploy_tools.module_builder.html"><code class="docutils literal notranslate"><span class="pre">deploy_tools.module_builder</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="deploy_tools.modulefile.html"><code class="docutils literal notranslate"><span class="pre">deploy_tools.modulefile</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="deploy_tools.print_updates.html"><code class="docutils literal notranslate"><span class="pre">deploy_tools.print_updates</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="deploy_tools.snapshot.html"><code class="docutils literal notranslate"><span class="pre">deploy_tools.snapshot</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="deploy_tools.sync.html"><code class="docutils literal notranslate"><span class="pre">deploy_tools.sync</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="deploy_tools.templater.html"><code class="docutils literal notranslate"><span class="pre">deploy_tools.templater</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="deploy_tools.validate.html"><code class="docutils literal notranslate"><span class="pre">deploy_tools.validate</span></code></a></li>
-</ul>
-</details></li>
-<li class="toctree-l1 has-children"><a class="reference internal" href="../schemas.html">Schemas</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
-<li class="toctree-l2"><a class="reference internal" href="../schemas/deployment-settings.html">DeploymentSettings</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../schemas/release.html">Release</a></li>
-</ul>
-</details></li>
-<li class="toctree-l1"><a class="reference internal" href="../genindex.html">Index</a></li>
-<li class="toctree-l1"><a class="reference external" href="https://github.com/DiamondLightSource/deploy-tools/releases">Release Notes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ci-pipeline.html">Drive deploy-tools from CI</a></li>
+<li class="toctree-l1"><a class="reference internal" href="run-container.html">Run in a container</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">Run the VSCode tasks and debug configurations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="contribute.html">Contribute to the project</a></li>
 </ul>
 </div>
 </nav></div>
@@ -503,15 +468,9 @@
       </a>
     </li>
     
-    <li class="breadcrumb-item"><a href="../reference.html" class="nav-link">Reference</a></li>
+    <li class="breadcrumb-item"><a href="../how-to.html" class="nav-link">How-to Guides</a></li>
     
-    
-    <li class="breadcrumb-item"><a href="deploy_tools.html" class="nav-link"><code class="docutils literal notranslate"><span class="pre">deploy_tools</span></code></a></li>
-    
-    
-    <li class="breadcrumb-item"><a href="deploy_tools.models.html" class="nav-link"><code class="docutils literal notranslate"><span class="pre">deploy_tools.models</span></code></a></li>
-    
-    <li class="breadcrumb-item active" aria-current="page"><span class="ellipsis"><code class="docutils literal notranslate"><span class="pre">deploy_tools.models.shell_app</span></code></span></li>
+    <li class="breadcrumb-item active" aria-current="page"><span class="ellipsis">Run the VSCode tasks and debug configurations</span></li>
   </ul>
 </nav>
 </div>
@@ -528,26 +487,43 @@
 <div id="searchbox"></div>
                 <article class="bd-article">
                   
-  <section id="module-deploy_tools.models.shell_app">
-<span id="deploy-tools-models-shell-app"></span><h1><code class="docutils literal notranslate"><span class="pre">deploy_tools.models.shell_app</span></code><a class="headerlink" href="#module-deploy_tools.models.shell_app" title="Link to this heading">#</a></h1>
-<p class="rubric">Members</p>
-<div class="pst-scrollable-table-container"><table class="autosummary longtable table">
-<tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="#deploy_tools.models.shell_app.ShellApp" title="deploy_tools.models.shell_app.ShellApp"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ShellApp</span></code></a></p></td>
-<td><p>Represents a Shell application.</p></td>
-</tr>
-</tbody>
-</table>
-</div>
-<dl class="py class">
-<dt class="sig sig-object py" id="deploy_tools.models.shell_app.ShellApp">
-<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">deploy_tools.models.shell_app.</span></span><span class="sig-name descname"><span class="pre">ShellApp</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">*,</span> <span class="pre">app_type:</span> <span class="pre">~typing.Literal['shell'],</span> <span class="pre">name:</span> <span class="pre">~typing.Annotated[str,</span> <span class="pre">~pydantic.types.StringConstraints(strip_whitespace=None,</span> <span class="pre">to_upper=None,</span> <span class="pre">to_lower=None,</span> <span class="pre">strict=None,</span> <span class="pre">min_length=None,</span> <span class="pre">max_length=None,</span> <span class="pre">pattern=^[a-zA-Z_][0-9a-zA-Z_-]*$,</span> <span class="pre">ascii_only=None)],</span> <span class="pre">script:</span> <span class="pre">list[str]</span> <span class="pre">=</span> <span class="pre">[]</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/deploy_tools/models/shell_app.html#ShellApp"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#deploy_tools.models.shell_app.ShellApp" title="Link to this definition">#</a></dt>
-<dd><p>Represents a Shell application.</p>
-<p>This will run the code specified as a shell script. This currently uses Bash for
-improved functionality while retaining high compatibility with various Linux
-distributions.</p>
-</dd></dl>
-
+  <section id="run-the-vscode-tasks-and-debug-configurations">
+<h1>Run the VSCode tasks and debug configurations<a class="headerlink" href="#run-the-vscode-tasks-and-debug-configurations" title="Link to this heading">#</a></h1>
+<p>The repository ships with <a class="reference external" href="https://code.visualstudio.com/docs/editor/tasks">VSCode tasks</a>
+and <a class="reference external" href="https://code.visualstudio.com/docs/editor/debugging">debug launch configurations</a>
+so that contributors can exercise the <code class="docutils literal notranslate"><span class="pre">deploy-tools</span></code> CLI without typing out full
+commands. They run the same subcommands documented in the <a class="reference internal" href="../cli.html"><span class="std std-doc">CLI reference</span></a>,
+pre-filled to operate on the bundled <code class="docutils literal notranslate"><span class="pre">demo_configuration</span></code>.</p>
+<section id="the-demo-configuration">
+<h2>The demo configuration<a class="headerlink" href="#the-demo-configuration" title="Link to this heading">#</a></h2>
+<p><code class="docutils literal notranslate"><span class="pre">src/deploy_tools/demo_configuration/</span></code> holds a small, self-contained set of module
+definitions used as sample input. The tasks default to reading this configuration and
+writing the generated deployment to <code class="docutils literal notranslate"><span class="pre">demo-output/</span></code>, giving you a realistic deployment to
+inspect without needing a real configuration repository.</p>
+</section>
+<section id="running-a-task">
+<h2>Running a task<a class="headerlink" href="#running-a-task" title="Link to this heading">#</a></h2>
+<p>Open the command palette and choose <strong>Tasks: Run Task</strong>, then pick one of:</p>
+<ul class="simple">
+<li><p><strong>Clean deployment</strong> — empty and recreate <code class="docutils literal notranslate"><span class="pre">demo-output/</span></code>.</p></li>
+<li><p><strong>Validate deployment</strong> — preview the changes a sync would make (read-only).</p></li>
+<li><p><strong>Sync modules</strong> — build and deploy the demo configuration into <code class="docutils literal notranslate"><span class="pre">demo-output/</span></code>.</p></li>
+<li><p><strong>Compare deployment to snapshot</strong> — diff the deployment against a previous snapshot.</p></li>
+<li><p><strong>Generate schema</strong> — regenerate the JSON schemas under <code class="docutils literal notranslate"><span class="pre">models/schemas/</span></code>.</p></li>
+<li><p><strong>Recreate tests sample output from golden-master configuration</strong> — regenerate the
+golden-master test samples via <code class="docutils literal notranslate"><span class="pre">tests/generate_samples.sh</span></code>.</p></li>
+<li><p><strong>Tests, lint and docs</strong> — run <code class="docutils literal notranslate"><span class="pre">tox</span> <span class="pre">-p</span></code> (type checking, tests, and the docs build).</p></li>
+</ul>
+<p>Tasks that take flags (such as <code class="docutils literal notranslate"><span class="pre">--allow-all</span></code>, <code class="docutils literal notranslate"><span class="pre">--from-scratch</span></code>, or the compare mode)
+prompt for those options when run, defaulting to the most common choice.</p>
+</section>
+<section id="debugging-a-command">
+<h2>Debugging a command<a class="headerlink" href="#debugging-a-command" title="Link to this heading">#</a></h2>
+<p>The <strong>Run and Debug</strong> panel offers equivalent launch configurations (Debug Validation,
+Debug Sync, Debug Compare, Debug Schema Generation, and Debug Unit Test). These
+invoke the same commands under <code class="docutils literal notranslate"><span class="pre">debugpy</span></code> so you can set breakpoints and step through the
+CLI while it processes the demo configuration.</p>
+</section>
 </section>
 
 
@@ -561,20 +537,20 @@ distributions.</p>
                   
 <div class="prev-next-area">
     <a class="left-prev"
-       href="deploy_tools.models.schema.html"
+       href="run-container.html"
        title="previous page">
       <i class="fa-solid fa-angle-left"></i>
       <div class="prev-next-info">
         <p class="prev-next-subtitle">previous</p>
-        <p class="prev-next-title"><code class="docutils literal notranslate"><span class="pre">deploy_tools.models.schema</span></code></p>
+        <p class="prev-next-title">Run in a container</p>
       </div>
     </a>
     <a class="right-next"
-       href="deploy_tools.module_builder.html"
+       href="contribute.html"
        title="next page">
       <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title"><code class="docutils literal notranslate"><span class="pre">deploy_tools.module_builder</span></code></p>
+        <p class="prev-next-title">Contribute to the project</p>
       </div>
       <i class="fa-solid fa-angle-right"></i>
     </a>
@@ -597,7 +573,9 @@ distributions.</p>
   </div>
   <nav id="pst-page-toc-nav" class="page-toc" aria-labelledby="pst-page-navigation-heading-2">
     <ul class="pst-show_toc_level nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#deploy_tools.models.shell_app.ShellApp"><code class="docutils literal notranslate"><span class="pre">ShellApp</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#the-demo-configuration">The demo configuration</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#running-a-task">Running a task</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#debugging-a-command">Debugging a command</a></li>
 </ul>
   </nav></div>
 
@@ -605,7 +583,7 @@ distributions.</p>
 
   
   <div class="tocsection editthispage">
-    <a href="https://github.com/DiamondLightSource/deploy-tools/edit/main/docs/_api/deploy_tools.models.shell_app.rst">
+    <a href="https://github.com/DiamondLightSource/deploy-tools/edit/main/docs/how-to/vscode-tasks.md">
       <i class="fa-solid fa-pencil"></i>
       
       
@@ -620,7 +598,7 @@ distributions.</p>
   <div class="sidebar-secondary-item">
 
   <div class="tocsection sourcelink">
-    <a href="../_sources/_api/deploy_tools.models.shell_app.rst.txt">
+    <a href="../_sources/how-to/vscode-tasks.md.txt">
       <i class="fa-solid fa-file-lines"></i> Show Source
     </a>
   </div>
