@@ -11,8 +11,8 @@ for the on-disk layout these terms refer to.
 | Module | A set of files that can be used to provide applications on your path, provide configuration, and set environment variables. We do this using the Environment Modules system by providing a Modulefile with the relevant configuration. |
 | Application | Each Module can be configured with multiple Applications, each one providing one or more executables. There are 3 types of Application: `Apptainer` (an executable container image), `Shell` (a Bash script) and `Binary` (an executable downloaded from a URL and verified against a hash). |
 | Release (noun) | A Module, including version, alongside its [lifecycle](explanations/deprecation-lifecycle.md) (i.e. deprecation) status. |
-| Deployment | The sum total of all Releases (deprecated or not) that are to be maintained in the Deployment Area. |
-| Deployment Step | Refers to one of the primary steps that make up the Deployment process. See [the deployment process](explanations/deployment-steps.md) for a breakdown. |
+| Deployment | The declared configuration for a Deployment Area: all Releases (deprecated or not) to be maintained there, plus global settings. Written to the `deployment.yaml` snapshot by `sync`. The act of deploying is written lowercase. |
+| Deployment Step | Refers to one of the primary steps that make up the deployment process. See [the deployment process](explanations/deployment-steps.md) for a breakdown. |
 | End User | Refers to anybody who is intending to make use of a deployed Module. This can include the people modifying configuration themselves. |
 | Area | One of the filesystem locations that `deploy-tools` manages for a distinct purpose: the Deployment, Build, Modules, Modulefiles and Deprecated Areas. Lowercase "folder" is used in its plain sense for any other directory, such as the config folder or a Module's entrypoints folder. |
 | (Area) Root | Refers to the filesystem path at the root of the given Area; e.g. the Deployment Root is the root of the Deployment Area. |
