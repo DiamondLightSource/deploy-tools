@@ -18,20 +18,20 @@ to be edited by hand.
 │       ├── entrypoints/      # the executables added to PATH on module load
 │       ├── module.yaml       # this Module's configuration snapshot
 │       └── sif_files/        # Apptainer images, when the Module uses any
-├── modulefiles/             # Modulefiles Folder — placed on MODULEPATH
+├── modulefiles/             # Modulefiles Area — placed on MODULEPATH
 │   └── <name>/
 │       ├── <version>         # absolute symlink into modules/<name>/<version>/modulefile
 │       └── .version          # records the default version (see below)
-├── deprecated/
-│   └── modulefiles/         # Deprecated Folder — optionally on MODULEPATH
+├── deprecated/              # Deprecated Area
+│   └── modulefiles/         # mirrors the Modulefiles Area — optionally on MODULEPATH
 │       └── <name>/<version>  # symlink for a deprecated Module version
 └── build/                   # transient build area (default location)
 ```
 
-The split between the **Modules Area** (`modules/`) and the **Modulefiles Folder**
+The split between the **Modules Area** (`modules/`) and the **Modulefiles Area**
 (`modulefiles/`) is the central design choice. The Modules Area holds the real files for
 *every* version that has been deployed and not removed, both live and deprecated. The
-Modulefiles Folder holds only a thin tree of symlinks, one per version, pointing at the
+Modulefiles Area holds only a thin tree of symlinks, one per version, pointing at the
 corresponding `modulefile`. Users put only the *modulefiles* directories on their
 `MODULEPATH`, making each Module visible to `module avail` and `module load`.
 

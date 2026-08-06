@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>The deployment area &#8212; deploy-tools 0.7.2.dev131+g7529c1f68 documentation</title>
+    <title>The deployment area &#8212; deploy-tools 0.7.2.dev142+g9832cdea2 documentation</title>
   
   
   
@@ -42,7 +42,7 @@
   <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=90905a2f556bf617f1a9" />
 <link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=90905a2f556bf617f1a9" />
 
-    <script src="../_static/documentation_options.js?v=c7b7c087"></script>
+    <script src="../_static/documentation_options.js?v=715596d3"></script>
     <script src="../_static/doctools.js?v=fd6eb6e6"></script>
     <script src="../_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
@@ -61,7 +61,7 @@
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
     <link rel="next" title="Snapshots and the compare safety net" href="snapshots-and-compare.html" />
-    <link rel="prev" title="Explanations" href="../explanations.html" />
+    <link rel="prev" title="The deployment process" href="deployment-steps.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
   <meta name="docsearch:version" content="main" />
@@ -423,6 +423,7 @@
      aria-label="Section Navigation">
   <p class="bd-links__title" role="heading" aria-level="1">Section Navigation</p>
   <div class="bd-toc-item navbar-nav"><ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="deployment-steps.html">The deployment process</a></li>
 <li class="toctree-l1 current active"><a class="current reference internal" href="#">The deployment area</a></li>
 <li class="toctree-l1"><a class="reference internal" href="snapshots-and-compare.html">Snapshots and the compare safety net</a></li>
 <li class="toctree-l1"><a class="reference internal" href="deprecation-lifecycle.html">The release lifecycle</a></li>
@@ -509,20 +510,20 @@ to be edited by hand.</p>
 │       ├── entrypoints/      # the executables added to PATH on module load
 │       ├── module.yaml       # this Module&#39;s configuration snapshot
 │       └── sif_files/        # Apptainer images, when the Module uses any
-├── modulefiles/             # Modulefiles Folder — placed on MODULEPATH
+├── modulefiles/             # Modulefiles Area — placed on MODULEPATH
 │   └── &lt;name&gt;/
 │       ├── &lt;version&gt;         # absolute symlink into modules/&lt;name&gt;/&lt;version&gt;/modulefile
 │       └── .version          # records the default version (see below)
-├── deprecated/
-│   └── modulefiles/         # Deprecated Folder — optionally on MODULEPATH
+├── deprecated/              # Deprecated Area
+│   └── modulefiles/         # mirrors the Modulefiles Area — optionally on MODULEPATH
 │       └── &lt;name&gt;/&lt;version&gt;  # symlink for a deprecated Module version
 └── build/                   # transient build area (default location)
 </pre></div>
 </div>
-<p>The split between the <strong>Modules Area</strong> (<code class="docutils literal notranslate"><span class="pre">modules/</span></code>) and the <strong>Modulefiles Folder</strong>
+<p>The split between the <strong>Modules Area</strong> (<code class="docutils literal notranslate"><span class="pre">modules/</span></code>) and the <strong>Modulefiles Area</strong>
 (<code class="docutils literal notranslate"><span class="pre">modulefiles/</span></code>) is the central design choice. The Modules Area holds the real files for
 <em>every</em> version that has been deployed and not removed, both live and deprecated. The
-Modulefiles Folder holds only a thin tree of symlinks, one per version, pointing at the
+Modulefiles Area holds only a thin tree of symlinks, one per version, pointing at the
 corresponding <code class="docutils literal notranslate"><span class="pre">modulefile</span></code>. Users put only the <em>modulefiles</em> directories on their
 <code class="docutils literal notranslate"><span class="pre">MODULEPATH</span></code>, making each Module visible to <code class="docutils literal notranslate"><span class="pre">module</span> <span class="pre">avail</span></code> and <code class="docutils literal notranslate"><span class="pre">module</span> <span class="pre">load</span></code>.</p>
 <p>Deprecation is therefore cheap and reversible: the built files never move, only the symlink
@@ -570,12 +571,12 @@ deprecated modules, without needing to edit modulefiles after initial creation.<
                   
 <div class="prev-next-area">
     <a class="left-prev"
-       href="../explanations.html"
+       href="deployment-steps.html"
        title="previous page">
       <i class="fa-solid fa-angle-left"></i>
       <div class="prev-next-info">
         <p class="prev-next-subtitle">previous</p>
-        <p class="prev-next-title">Explanations</p>
+        <p class="prev-next-title">The deployment process</p>
       </div>
     </a>
     <a class="right-next"
