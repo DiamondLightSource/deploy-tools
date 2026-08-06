@@ -17,12 +17,18 @@ What            | Where
 Source          | <https://github.com/DiamondLightSource/deploy-tools>
 PyPI            | `pip install dls-deploy-tools`
 Docker          | `docker run ghcr.io/diamondlightsource/deploy-tools:latest`
-Documentation   | Work in progress <https://diamondlightsource.github.io/deploy-tools>
+Documentation   | <https://diamondlightsource.github.io/deploy-tools>
 Releases        | <https://github.com/DiamondLightSource/deploy-tools/releases>
 
 The demo_configuration folder in this repository can be passed as the config_folder to
 the deploy-tools commands. The deployment_root needs to be a writeable location for all
 files to get deployed under.
+
+In normal use these commands are not run by hand: they act on a shared deployment area and
+belong in a CI pipeline, gated by change review. Running them manually against the demo
+configuration, as below, is just the quickest way to see what each does — the
+[documentation](https://diamondlightsource.github.io/deploy-tools) has a hands-on tutorial
+and a guide to driving them from CI.
 
 The examples below use the `deploy-tools` console script; `python -m deploy_tools` is
 equivalent if you prefer to invoke the module directly.
@@ -30,10 +36,6 @@ equivalent if you prefer to invoke the module directly.
 ```
 deployment_root = /path/to/deployment/root
 config_folder = /path/to/config/folder
-schema_folder = /path/to/schema/folder
-
-# Generate the schema for configuration yaml files
-deploy-tools schema $schema_folder
 
 # Validate the deployment configuration files, also ensuring that the required updates
 # are compatible with the previous deployments.
@@ -49,88 +51,9 @@ deploy-tools compare $deployment_root
 
 ```
 
-## Deployment Steps
-
-There are several key conceptual steps that make up the deployment process. These are
-**not** one-to-one with the CLI commands; the "Run by" column shows which command runs
-each step. See `deploy-tools --help` for more detail.
-
-|**Step**|**Description**                                                                                                                                                                                                                                  |**Run by**|
-|--------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|----------|
-|Compare |Compare the current deployment snapshot file with the modulefiles and built modules that currently exist. This ensures that the Deployment Area is in a healthy state                                                                     |`compare` |
-|Validate|Process the updated configuration. By comparing the new configuration files with the current deployment snapshot from the last sync, we determine the set of actions that need to be taken                                                                  |`validate`, `sync`|
-|Build   |Generate entrypoint scripts, configuration files and environment variables for a given Module. These are output to the Build Area                                                                                                                |`sync` (`validate --test-build`)|
-|Deploy  |Move all built Modules from the Build Area into the Modules Area. A link to the built modulefile is moved to either the Modulefiles Folder or Deprecated Folder, depending on its deprecation status. Update default versions for the modulefiles|`sync`    |
-
-There is no standalone `build` or `deploy` command: `sync` always runs them together, so
-a half-built Module is never exposed to users.
-
-## JSON Schema
-
-A set of JSON schema files are provided under `src/deploy_tools/models/schemas`. These are generated from the Pydantic models in `src/deploy_tools/models/` by the `deploy-tools schema` command (see `models/schema.py`).
-
-We strongly recommend that you provide a schema for configuration file validation, by adding a `yaml-language-server` comment to the top of each configuration file. For production configuration, point this at the schema files hosted on GitHub:
-
-```# yaml-language-server: $schema=https://raw.githubusercontent.com/DiamondLightSource/deploy-tools/main/src/deploy_tools/models/schemas/release.json```
-
-Use `release.json` for the per-version Module files (`<name>/<version>.yaml`) and
-`deployment-settings.json` for the top-level `settings.yaml`.
-
-As the demo_configuration is used during development, we instead set it to use the locally generated schemas via an absolute workspace path (e.g. `/workspaces/deploy-tools/src/deploy_tools/models/schemas/release.json`). This dev-container-only path should not be used for production configuration.
-
-Note that the 'Generate Schema' VSCode task will update the schemas according to any update of the code, but you need to trigger this manually and check the contents in.
-
-## CLI Commands, VSCode Tasks and Debug Configuration
-
-The following CLI commands are used in our CI/CD process to update the Deployment Area
-using new configuration.
-
-In order to help with development and testing, these commands (plus useful defaults) are
-available as Tasks and Debug configurations for VSCode. These tasks (plus their default
-inputs) should create a separate `demo-output` folder at the top-level of the workspace
-folder.
-
-You will need to use the `--from-scratch` argument when starting from a clean Deployment
-Area, as there is no snapshot from a prior Deploy step:
-
-- `sync`/`validate --from-scratch` work against an empty area without expecting a
-  snapshot, and imply `--allow-all` (there is no prior state to enforce lifecycle rules
-  against).
-- `compare --from-scratch` just checks the Deployment Area exists and is **empty**. Run
-  this in CI before the first deploy, where a normal `compare` has no snapshot to use.
-
-It is recommended that you use `--help` to explore the commands, arguments and options
-in greater detail.
-
-|**Name**                      |**CLI command**           |**Description**                                                                                                                                                                                                     |
-|------------------------------|--------------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-|Generate Schema               |`deploy-tools schema`     |Generate the yaml schema (in .json format) for the top-level configuration files                                                                                                                                    |
-|Clean deployment              |`rm -rf <Deployment Root>`|Wipe the deployment area local to your own checkout of deploy-tools, enabling you to test a deployment from scratch                                                                                                 |
-|Sync Modules                  |`deploy-tools sync`       |Synchronise the Deployment configuration with the Deployment Area                                                                                                                                                   |
-|Validate deployment           |`deploy-tools validate`   |Compare the new configuration with that previously used when deploying modules, and test the build process if requested                                                                                             |
-|Compare deployment to snapshot|`deploy-tools compare`    |Compare the configuration stored from the last `deploy-tools sync` run, with the state of any deployed Modules. This should always be run by CI/CD before attempting to Deploy, and any differences will be reported|
-
-## Glossary
-
-See the Deployment Steps above for an overview of the primary stages of a deployment.
-
-|**Term**           |**Definition**                                                                                                                                                                                                                                                                                              |
-|-------------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-|Environment Modules|A [standard package for Linux](https://modules.readthedocs.io/en/latest/) that provides definitions for loading and unloading 'Environment Modules'. Note that while we are using this system, our definition of Module is separate. If we are referring to an Environment Module, we will use the full name|
-|Modulefile         |Used by the Environment Modules package to specify all details of an Environment Module. This can include executables to add to the path, environment variables to set, etc.                                                                                                                                |
-|Deployment         |The sum total of all Releases (deprecated or not) that are to be maintained in the Deployment Area                                                                                                                                                                                                          |
-|Module             |A set of files that can be used to provide applications on your path, provide configuration, and set environment variables. We do this using the Environment Modules system by providing a Modulefile with the relevant configuration                                                                       |
-|Release (noun)     |A Module, including version, alongside its lifecycle (i.e. deprecation) status                                                                                                                                                                                                                              |
-|Application        |Each Module can be configured with multiple Applications, each one providing one or more executables. There are 3 types of Application: `Apptainer` (an executable container image), `Shell` (a Bash script) and `Binary` (an executable downloaded from a URL and verified against a hash)                                                                                                                |
-|Deployment Area    |The top-level location where all Modules are to be deployed. This is typically a shared filesystem location for general use by multiple people. Note that there are several subdirectories which are used by `deploy-tools` for different purposes                                                          |
-|(Area) Root        |Refers to the filesystem path at the root of the given Area.                                                                                                                                                                                                                                                |
-|Deployment Step    |Refers to one of the primary steps that make up the Deployment process. See the section 'Deployment Steps' above for a breakdown                                                                                                                                                                            |
-|Build Area         |The filesystem location used for building modules. This should ideally be on the same filesystem as the Deployment area to ensure that later move operations are atomic, so by default it is the `build` subdirectory of the Deployment Root. We use a different location when testing builds               |
-|Modules Area       |Refers to the `modules` folder under the Deployment Root. The final location for files built for a particular Module configuration                                                                                                                                                                          |
-|Modulefiles Folder |Refers to the `modulefiles` folder under the Deployment Root. When this path is added to the MODULEPATH environment variable, all modulefiles can then be accessed by the End User using the standard Environment Modules interface (`module avail`, etc.)                                                  |
-|Deprecate          |Moving a modulefile to the separate Deprecated Folder, to indicate that its use should be discouraged                                                                                                                                                                                                       |
-|Deprecated Folder  |The folder used to contain Modulefiles for Modules that have been deprecated. By adding the modulefiles subdirectory to your MODULEPATH environment variable, you then have the ability to use any deprecated Module as normal.                                                                             |
-|End User           |Refers to anybody who is intending to make use of a deployed Module. This can include the people modifying configuration themselves                                                                                                                                                                         |
+Generating the JSON schema files with `deploy-tools schema <folder>` is a separate,
+occasional task: it produces the schemas that editors use to validate configuration files,
+and is not part of a deployment. See the schema reference in the documentation.
 
 <!-- README only content. Anything below this line won't be included in index.md -->
 
