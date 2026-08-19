@@ -28,6 +28,14 @@ This requires an editor with a YAML language server — e.g. VS Code with the
 or any [LSP](https://microsoft.github.io/language-server-protocol/)-capable editor
 running [`yaml-language-server`](https://github.com/redhat-developer/yaml-language-server).
 
+```{note}
+The bundled `demo_configuration` instead points at the locally generated schemas via an
+absolute workspace path (e.g.
+`/workspaces/deploy-tools/src/deploy_tools/models/schemas/release.json`), so it validates
+against uncommitted schema changes during development. This dev-container-only path is not
+suitable for production configuration.
+```
+
 The other two generated schemas cover files you don't normally author by hand:
 `deployment.json` (the `deployment.yaml` snapshot written by `sync`) and `module.json`
 (the `Module` that a `Release` wraps).
@@ -41,11 +49,8 @@ schemas/deployment-settings
 schemas/release
 ```
 
-## How the schemas are generated
+## Regenerating the schemas
 
-`deploy_tools.models.schema.generate_schema` writes these files from the corresponding
-Pydantic models. To regenerate them manually:
-
-```bash
-deploy-tools schema path/to/output/folder
-```
+These files are checked in and do not update automatically when the models change.
+Contributors who change the models must regenerate them — see
+[regenerate the JSON schemas](how-to/regenerate-schemas.md).

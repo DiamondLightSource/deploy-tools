@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>JSON Schema files &#8212; deploy-tools 0.7.2.dev144+gcd61d8db5 documentation</title>
+    <title>JSON Schema files &#8212; deploy-tools 0.7.2.dev148+ga30100b23 documentation</title>
   
   
   
@@ -42,7 +42,7 @@
   <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=90905a2f556bf617f1a9" />
 <link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=90905a2f556bf617f1a9" />
 
-    <script src="_static/documentation_options.js?v=22e19112"></script>
+    <script src="_static/documentation_options.js?v=b1263fd4"></script>
     <script src="_static/doctools.js?v=fd6eb6e6"></script>
     <script src="_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script src="_static/clipboard.min.js?v=a7894cd8"></script>
@@ -562,6 +562,14 @@ matching schema, so your editor validates it as you type:</p>
 <a class="reference external" href="https://marketplace.visualstudio.com/items?itemName=redhat.vscode-yaml">Red Hat YAML extension</a>,
 or any <a class="reference external" href="https://microsoft.github.io/language-server-protocol/">LSP</a>-capable editor
 running <a class="reference external" href="https://github.com/redhat-developer/yaml-language-server"><code class="docutils literal notranslate"><span class="pre">yaml-language-server</span></code></a>.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The bundled <code class="docutils literal notranslate"><span class="pre">demo_configuration</span></code> instead points at the locally generated schemas via an
+absolute workspace path (e.g.
+<code class="docutils literal notranslate"><span class="pre">/workspaces/deploy-tools/src/deploy_tools/models/schemas/release.json</span></code>), so it validates
+against uncommitted schema changes during development. This dev-container-only path is not
+suitable for production configuration.</p>
+</div>
 <p>The other two generated schemas cover files you don’t normally author by hand:
 <code class="docutils literal notranslate"><span class="pre">deployment.json</span></code> (the <code class="docutils literal notranslate"><span class="pre">deployment.yaml</span></code> snapshot written by <code class="docutils literal notranslate"><span class="pre">sync</span></code>) and <code class="docutils literal notranslate"><span class="pre">module.json</span></code>
 (the <code class="docutils literal notranslate"><span class="pre">Module</span></code> that a <code class="docutils literal notranslate"><span class="pre">Release</span></code> wraps).</p>
@@ -575,13 +583,11 @@ running <a class="reference external" href="https://github.com/redhat-developer/
 </ul>
 </div>
 </section>
-<section id="how-the-schemas-are-generated">
-<h2>How the schemas are generated<a class="headerlink" href="#how-the-schemas-are-generated" title="Link to this heading">#</a></h2>
-<p><code class="docutils literal notranslate"><span class="pre">deploy_tools.models.schema.generate_schema</span></code> writes these files from the corresponding
-Pydantic models. To regenerate them manually:</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>deploy-tools<span class="w"> </span>schema<span class="w"> </span>path/to/output/folder
-</pre></div>
-</div>
+<section id="regenerating-the-schemas">
+<h2>Regenerating the schemas<a class="headerlink" href="#regenerating-the-schemas" title="Link to this heading">#</a></h2>
+<p>These files are checked in and do not update automatically when the models change.
+Contributors who change the models must regenerate them — see
+<a class="reference internal" href="how-to/regenerate-schemas.html"><span class="std std-doc">regenerate the JSON schemas</span></a>.</p>
 </section>
 </section>
 
@@ -634,7 +640,7 @@ Pydantic models. To regenerate them manually:</p>
     <ul class="pst-show_toc_level nav section-nav flex-column">
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#which-file-uses-which-schema">Which file uses which schema</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#schema-pages">Schema pages</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#how-the-schemas-are-generated">How the schemas are generated</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#regenerating-the-schemas">Regenerating the schemas</a></li>
 </ul>
   </nav></div>
 
