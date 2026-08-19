@@ -60,6 +60,9 @@ extensions = [
 # So we can use the ::: syntax
 myst_enable_extensions = ["colon_fence"]
 
+# Generate anchors for headings (levels 1-3) so pages can link to sections.
+myst_heading_anchors = 3
+
 # If true, Sphinx will warn about all references where the target cannot
 # be found.
 nitpicky = True

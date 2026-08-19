@@ -37,7 +37,8 @@ corresponding `modulefile`. Users put only the *modulefiles* directories on thei
 
 Deprecation is therefore cheap and reversible: the built files never move, only the symlink
 moves between `modulefiles/` and `deprecated/modulefiles/`. See
-[the release lifecycle](deprecation-lifecycle.md) for the full set of transitions.
+[the release lifecycle](deprecation-lifecycle.md#configuration-is-declarative) for
+the full set of transitions.
 
 ## The build area
 

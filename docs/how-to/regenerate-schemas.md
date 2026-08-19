@@ -12,7 +12,7 @@ schemas and commit again.
 
 If you bypass the hooks (for example with `git commit --no-verify`), regenerate the
 schemas manually. The simplest way is the **Generate Schema** VSCode task (see
-[the VSCode tasks guide](vscode-tasks.md)), which writes to the correct location.
+[the VSCode tasks guide](vscode-tasks.md#running-a-task)), which writes to the correct location.
 Equivalently, run the CLI, pointing it at that folder:
 
 ```bash
