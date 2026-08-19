@@ -31,6 +31,13 @@ repos:
         entry: uv sync
         files: ^(uv\.lock|pyproject\.toml)$
 
+      - id: generate-schema
+        name: regenerate JSON schemas from models
+        pass_filenames: false
+        language: system
+        entry: deploy-tools schema src/deploy_tools/models/schemas
+        files: ^src/deploy_tools/models/.*\.py$
+
   - repo: https://github.com/DavidAnson/markdownlint-cli2
     rev: v0.23.1
     hooks:

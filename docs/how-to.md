@@ -8,5 +8,6 @@ Practical step-by-step guides for the more experienced user.
 how-to/ci-pipeline
 how-to/run-container
 how-to/vscode-tasks
+how-to/regenerate-schemas
 how-to/contribute
 ```
