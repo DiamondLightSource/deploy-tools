@@ -1,9 +1,11 @@
 # The configuration model
 
-This page is for anyone writing or editing deployment configuration. It explains how the
-files you author are structured — the objects they map to and how they nest. For every
-field in exhaustive detail see the [schema reference](../schemas.md); for the meaning of
-individual terms, the [glossary](../glossary.md).
+This page is for anyone writing or editing deployment configuration. It documents every
+field of the files you author and how they nest. The field tables are curated by hand
+from the Pydantic models in `src/deploy_tools/models`, so a change to those models needs
+a change here too; the [schema reference](../schemas.md) renders the same fields
+mechanically from the generated JSON schemas. For the meaning of individual terms, see
+the [glossary](../glossary.md).
 
 ## What you author
 
@@ -48,8 +50,8 @@ A Module is the unit an end user loads. It carries:
 | `applications` | One or more applications providing the executables (below). |
 | `load_script` | Extra commands run when the Module is loaded — see below. |
 | `unload_script` | Extra commands run when the Module is unloaded — see below. |
-| `allow_updates` | Permit in-place changes to this version — see [the guard rails](deprecation-lifecycle.md#the-guard-rails). |
-| `exclude_from_defaults` | Keep this version out of automatic default selection — see [default versions](default-versions.md#excluding-a-version-from-the-automatic-default). |
+| `allow_updates` | Permit in-place changes to this version — see [the guard rails](../explanations/deprecation-lifecycle.md#the-guard-rails). |
+| `exclude_from_defaults` | Keep this version out of automatic default selection — see [default versions](../explanations/default-versions.md#excluding-a-version-from-the-automatic-default). |
 
 Each entry under `env_vars` is a name/value pair:
 
@@ -70,7 +72,7 @@ are for advanced cases the other fields cannot cover — check with a `deploy-to
 before using them.
 
 Each per-version file also carries a `deprecated` flag; see
-[the release lifecycle](deprecation-lifecycle.md).
+[the release lifecycle](../explanations/deprecation-lifecycle.md).
 
 ## The three application types
 
@@ -164,4 +166,4 @@ when no version is given:
 ```
 
 How that choice is resolved — and how to keep a version out of automatic selection — is
-covered in [default version resolution](default-versions.md).
+covered in [default version resolution](../explanations/default-versions.md).

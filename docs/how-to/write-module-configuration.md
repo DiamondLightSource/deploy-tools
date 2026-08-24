@@ -1,9 +1,9 @@
 # Write a Module configuration
 
-To add or change a Module you edit YAML in the configuration folder. This guide covers the
-mechanics. For the shape of the files see
-[the configuration model](../explanations/configuration-model.md); for every field, the
-[schema reference](../schemas.md).
+To add or change a Module, you edit YAML in the configuration folder. This guide covers
+the mechanics. For the shape of the files and every field they take, see
+[the configuration model](../reference/configuration-model.md); to point your editor at
+the matching schema, the [schema reference](../schemas.md).
 
 ## Add a new Module version
 
@@ -35,11 +35,11 @@ mechanics. For the shape of the files see
    ```
 
    Swap the application for an `apptainer` or `binary` one as needed — see
-   [the three application types](../explanations/configuration-model.md#the-three-application-types).
+   [the three application types](../reference/configuration-model.md#the-three-application-types).
 
    A Module doesn't have to provide an application: it can instead just set environment
    variables or pull in other Modules as
-   [dependencies](../explanations/configuration-model.md#a-module). Give such a Module an
+   [dependencies](../reference/configuration-model.md#a-module). Give such a Module an
    empty `applications: []`.
 
 ## Set the default version

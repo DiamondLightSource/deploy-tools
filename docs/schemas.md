@@ -2,8 +2,13 @@
 
 These JSON schema files are generated from the Pydantic models in
 `src/deploy_tools/models`. The YAML language server and other tooling use them to validate
-deployment configuration files. This section links to per-schema reference pages that
-render each schema and list its properties.
+deployment configuration files. This page covers which file each schema validates and how
+to point your editor at it.
+
+To look a field up, use [the configuration model](reference/configuration-model.md) — it
+documents the same fields in a form meant for reading. The
+[schema pages](#schema-pages) below render each schema mechanically, so they are the
+exhaustive detail rather than the place to start.
 
 ## Which file uses which schema
 
