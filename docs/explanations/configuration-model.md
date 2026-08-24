@@ -20,14 +20,19 @@ settings.yaml
 <name>/<version>.yaml               one file per Module version
   ├── deprecated: false             lifecycle flag
   └── module
-      ├── name / version / description
+      ├── name                      Module name
+      ├── version                   Module version
+      ├── description               shown by `module whatis`
       ├── env_vars                  variables set on load
       ├── dependencies              other Modules to load first
-      └── applications              one or more, each of:
-          ├── apptainer  container image + entrypoints
-          ├── shell      a bash script
-          └── binary     a downloaded, hash-checked executable
+      └── applications              one or more, each with an app_type of:
+          ├── apptainer             container image + entrypoints
+          ├── shell                 a bash script
+          └── binary                a downloaded, hash-checked executable
 ```
+
+Those last three are the values `app_type` can take rather than fields of their own —
+see [the three application types](#the-three-application-types) below.
 
 ## A Module
 
