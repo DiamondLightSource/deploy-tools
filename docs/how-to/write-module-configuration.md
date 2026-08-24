@@ -11,13 +11,16 @@ the matching schema, the [schema reference](../schemas.md).
    Module `name` and the filename is the `version`, so `phoebus/0.1.yaml` defines version
    `0.1` of `phoebus`. The `name` and `version` inside the file must match the path.
 
-2. Add the schema line as the first line so your editor validates as you type (see the
-   [schema reference](../schemas.md) for details, including how to associate schemas
-   repository-wide instead of per file):
+2. Add the schema line as the first line so your editor validates as you type:
 
    ```yaml
    # yaml-language-server: $schema=https://raw.githubusercontent.com/DiamondLightSource/deploy-tools/main/src/deploy_tools/models/schemas/release.json
    ```
+
+   The line is read by [`yaml-language-server`](https://github.com/redhat-developer/yaml-language-server),
+   so it takes effect in VS Code with the Red Hat YAML extension or any other editor
+   running that language server; elsewhere it is an inert comment. See the
+   [schema reference](../schemas.md) for details.
 
 3. Define the Module. Most Modules provide one or more applications; the smallest useful
    one is a single shell script:
