@@ -7,7 +7,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>deploy_tools.models.parent &#8212; deploy-tools 0.7.2.dev148+ga30100b23 documentation</title>
+    <title>deploy_tools.models.parent &#8212; deploy-tools 0.7.2.dev149+g59a84d3e8 documentation</title>
   
   
   
@@ -41,7 +41,7 @@
   <link rel="preload" as="script" href="../../../_static/scripts/bootstrap.js?digest=90905a2f556bf617f1a9" />
 <link rel="preload" as="script" href="../../../_static/scripts/pydata-sphinx-theme.js?digest=90905a2f556bf617f1a9" />
 
-    <script src="../../../_static/documentation_options.js?v=b1263fd4"></script>
+    <script src="../../../_static/documentation_options.js?v=35dce433"></script>
     <script src="../../../_static/doctools.js?v=fd6eb6e6"></script>
     <script src="../../../_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script src="../../../_static/clipboard.min.js?v=a7894cd8"></script>
@@ -466,15 +466,15 @@
 <div class="viewcode-block" id="ParentModel">
 <a class="viewcode-back" href="../../../_api/deploy_tools.models.parent.html#deploy_tools.models.parent.ParentModel">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">ParentModel</span><span class="p">(</span><span class="n">BaseModel</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Provide model config for all Pydantic models in this project.</span>
+<span class="w">    </span><span class="sd">"""Provide model config for all Pydantic models in this project.</span>
 
-<span class="sd">    - ``extra=&quot;forbid&quot;``: forbid any extra parameters being provided in any subclass.</span>
+<span class="sd">    - ``extra="forbid"``: forbid any extra parameters being provided in any subclass.</span>
 <span class="sd">    - ``use_enum_values=True``: use the enum value only when serializing the model, so</span>
 <span class="sd">      the YAML serializer can work with enums.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
 
     <span class="n">model_config</span> <span class="o">=</span> <span class="n">ConfigDict</span><span class="p">(</span>
-        <span class="n">extra</span><span class="o">=</span><span class="s2">&quot;forbid&quot;</span><span class="p">,</span>
+        <span class="n">extra</span><span class="o">=</span><span class="s2">"forbid"</span><span class="p">,</span>
         <span class="n">use_enum_values</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
     <span class="p">)</span></div>
 

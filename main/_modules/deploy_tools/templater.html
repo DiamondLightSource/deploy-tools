@@ -7,7 +7,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>deploy_tools.templater &#8212; deploy-tools 0.7.2.dev148+ga30100b23 documentation</title>
+    <title>deploy_tools.templater &#8212; deploy-tools 0.7.2.dev149+g59a84d3e8 documentation</title>
   
   
   
@@ -41,7 +41,7 @@
   <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=90905a2f556bf617f1a9" />
 <link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=90905a2f556bf617f1a9" />
 
-    <script src="../../_static/documentation_options.js?v=b1263fd4"></script>
+    <script src="../../_static/documentation_options.js?v=35dce433"></script>
     <script src="../../_static/doctools.js?v=fd6eb6e6"></script>
     <script src="../../_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
@@ -466,21 +466,21 @@
 
 <span class="kn">import</span><span class="w"> </span><span class="nn">jinja2</span>
 
-<span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;TemplateType&quot;</span><span class="p">,</span> <span class="s2">&quot;Templater&quot;</span><span class="p">]</span>
+<span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span><span class="s2">"TemplateType"</span><span class="p">,</span> <span class="s2">"Templater"</span><span class="p">]</span>
 
-<span class="n">TEMPLATES_PACKAGE</span> <span class="o">=</span> <span class="s2">&quot;deploy_tools&quot;</span>
+<span class="n">TEMPLATES_PACKAGE</span> <span class="o">=</span> <span class="s2">"deploy_tools"</span>
 
 
 <div class="viewcode-block" id="TemplateType">
 <a class="viewcode-back" href="../../_api/deploy_tools.templater.html#deploy_tools.templater.TemplateType">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">TemplateType</span><span class="p">(</span><span class="n">StrEnum</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Enumerates the template files used to generate deployment output.&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""Enumerates the template files used to generate deployment output."""</span>
 
-    <span class="n">MODULEFILE</span> <span class="o">=</span> <span class="s2">&quot;modulefile&quot;</span>
-    <span class="n">MODULEFILE_VERSION</span> <span class="o">=</span> <span class="s2">&quot;modulefile_version&quot;</span>
-    <span class="n">APPTAINER_ENTRYPOINT</span> <span class="o">=</span> <span class="s2">&quot;apptainer_entrypoint&quot;</span>
-    <span class="n">SHELL_ENTRYPOINT</span> <span class="o">=</span> <span class="s2">&quot;shell_entrypoint&quot;</span>
-    <span class="n">GITIGNORE</span> <span class="o">=</span> <span class="s2">&quot;gitignore&quot;</span></div>
+    <span class="n">MODULEFILE</span> <span class="o">=</span> <span class="s2">"modulefile"</span>
+    <span class="n">MODULEFILE_VERSION</span> <span class="o">=</span> <span class="s2">"modulefile_version"</span>
+    <span class="n">APPTAINER_ENTRYPOINT</span> <span class="o">=</span> <span class="s2">"apptainer_entrypoint"</span>
+    <span class="n">SHELL_ENTRYPOINT</span> <span class="o">=</span> <span class="s2">"shell_entrypoint"</span>
+    <span class="n">GITIGNORE</span> <span class="o">=</span> <span class="s2">"gitignore"</span></div>
 
 
 
@@ -491,11 +491,11 @@
 <div class="viewcode-block" id="Templater">
 <a class="viewcode-back" href="../../_api/deploy_tools.templater.html#deploy_tools.templater.Templater">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">Templater</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Abstracts the specifics of jinja2 templating and our particular template files.</span>
+<span class="w">    </span><span class="sd">"""Abstracts the specifics of jinja2 templating and our particular template files.</span>
 
 <span class="sd">    File permissions are also managed here to ensure consistency of output between</span>
 <span class="sd">    different Application types.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
 
     <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_env</span> <span class="o">=</span> <span class="n">jinja2</span><span class="o">.</span><span class="n">Environment</span><span class="p">(</span>
@@ -515,15 +515,15 @@
         <span class="n">overwrite</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
         <span class="n">create_parents</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Create an output file, using the given template and template parameters.&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">"""Create an output file, using the given template and template parameters."""</span>
         <span class="k">if</span> <span class="n">create_parents</span><span class="p">:</span>
             <span class="n">output_file</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">mkdir</span><span class="p">(</span><span class="n">exist_ok</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">parents</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 
-        <span class="n">open_mode</span> <span class="o">=</span> <span class="s2">&quot;w&quot;</span> <span class="k">if</span> <span class="n">overwrite</span> <span class="k">else</span> <span class="s2">&quot;x&quot;</span>
+        <span class="n">open_mode</span> <span class="o">=</span> <span class="s2">"w"</span> <span class="k">if</span> <span class="n">overwrite</span> <span class="k">else</span> <span class="s2">"x"</span>
         <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">output_file</span><span class="p">,</span> <span class="n">open_mode</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
             <span class="n">rendered</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_templates</span><span class="p">[</span><span class="n">template</span><span class="p">]</span><span class="o">.</span><span class="n">render</span><span class="p">(</span><span class="o">**</span><span class="n">parameters</span><span class="p">)</span>
             <span class="c1"># enforce single trailing newline for pre-commit goodness</span>
-            <span class="n">rendered</span> <span class="o">=</span> <span class="n">rendered</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span> <span class="o">+</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span>
+            <span class="n">rendered</span> <span class="o">=</span> <span class="n">rendered</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span> <span class="o">+</span> <span class="s2">"</span><span class="se">\n</span><span class="s2">"</span>
             <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">rendered</span><span class="p">)</span>
 
         <span class="n">permissions</span> <span class="o">=</span> <span class="n">EXECUTABLE_PERMISSIONS</span> <span class="k">if</span> <span class="n">executable</span> <span class="k">else</span> <span class="n">DEFAULT_PERMISSIONS</span>

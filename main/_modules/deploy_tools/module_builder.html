@@ -7,7 +7,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>deploy_tools.module_builder &#8212; deploy-tools 0.7.2.dev148+ga30100b23 documentation</title>
+    <title>deploy_tools.module_builder &#8212; deploy-tools 0.7.2.dev149+g59a84d3e8 documentation</title>
   
   
   
@@ -41,7 +41,7 @@
   <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=90905a2f556bf617f1a9" />
 <link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=90905a2f556bf617f1a9" />
 
-    <script src="../../_static/documentation_options.js?v=b1263fd4"></script>
+    <script src="../../_static/documentation_options.js?v=35dce433"></script>
     <script src="../../_static/doctools.js?v=fd6eb6e6"></script>
     <script src="../../_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
@@ -470,7 +470,7 @@
 <div class="viewcode-block" id="ModuleBuilder">
 <a class="viewcode-back" href="../../_api/deploy_tools.module_builder.html#deploy_tools.module_builder.ModuleBuilder">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">ModuleBuilder</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Class for creating modules, including modulefiles and all application files.&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""Class for creating modules, including modulefiles and all application files."""</span>
 
     <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">templater</span><span class="p">:</span> <span class="n">Templater</span><span class="p">,</span> <span class="n">layout</span><span class="p">:</span> <span class="n">Layout</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_templater</span> <span class="o">=</span> <span class="n">templater</span>
@@ -482,7 +482,7 @@
 <div class="viewcode-block" id="ModuleBuilder.create_module">
 <a class="viewcode-back" href="../../_api/deploy_tools.module_builder.html#deploy_tools.module_builder.ModuleBuilder.create_module">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">create_module</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">module</span><span class="p">:</span> <span class="n">Module</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Create the module&#39;s modulefile, application files and snapshot.&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">"""Create the module's modulefile, application files and snapshot."""</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_create_modulefile</span><span class="p">(</span><span class="n">module</span><span class="p">)</span>
 
         <span class="k">for</span> <span class="n">app</span> <span class="ow">in</span> <span class="n">module</span><span class="o">.</span><span class="n">applications</span><span class="p">:</span>
@@ -498,16 +498,16 @@
 
         <span class="n">description</span> <span class="o">=</span> <span class="n">module</span><span class="o">.</span><span class="n">description</span>
         <span class="k">if</span> <span class="n">description</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="n">description</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;Scripts for </span><span class="si">{</span><span class="n">module</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2">&quot;</span>
+            <span class="n">description</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">"Scripts for </span><span class="si">{</span><span class="n">module</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2">"</span>
 
         <span class="n">params</span> <span class="o">=</span> <span class="p">{</span>
-            <span class="s2">&quot;module_name&quot;</span><span class="p">:</span> <span class="n">module</span><span class="o">.</span><span class="n">name</span><span class="p">,</span>
-            <span class="s2">&quot;module_description&quot;</span><span class="p">:</span> <span class="n">description</span><span class="p">,</span>
-            <span class="s2">&quot;env_vars&quot;</span><span class="p">:</span> <span class="n">module</span><span class="o">.</span><span class="n">env_vars</span><span class="p">,</span>
-            <span class="s2">&quot;dependencies&quot;</span><span class="p">:</span> <span class="n">module</span><span class="o">.</span><span class="n">dependencies</span><span class="p">,</span>
-            <span class="s2">&quot;entrypoint_folder&quot;</span><span class="p">:</span> <span class="n">entrypoints_folder</span><span class="p">,</span>
-            <span class="s2">&quot;load_script&quot;</span><span class="p">:</span> <span class="n">module</span><span class="o">.</span><span class="n">load_script</span><span class="p">,</span>
-            <span class="s2">&quot;unload_script&quot;</span><span class="p">:</span> <span class="n">module</span><span class="o">.</span><span class="n">unload_script</span><span class="p">,</span>
+            <span class="s2">"module_name"</span><span class="p">:</span> <span class="n">module</span><span class="o">.</span><span class="n">name</span><span class="p">,</span>
+            <span class="s2">"module_description"</span><span class="p">:</span> <span class="n">description</span><span class="p">,</span>
+            <span class="s2">"env_vars"</span><span class="p">:</span> <span class="n">module</span><span class="o">.</span><span class="n">env_vars</span><span class="p">,</span>
+            <span class="s2">"dependencies"</span><span class="p">:</span> <span class="n">module</span><span class="o">.</span><span class="n">dependencies</span><span class="p">,</span>
+            <span class="s2">"entrypoint_folder"</span><span class="p">:</span> <span class="n">entrypoints_folder</span><span class="p">,</span>
+            <span class="s2">"load_script"</span><span class="p">:</span> <span class="n">module</span><span class="o">.</span><span class="n">load_script</span><span class="p">,</span>
+            <span class="s2">"unload_script"</span><span class="p">:</span> <span class="n">module</span><span class="o">.</span><span class="n">unload_script</span><span class="p">,</span>
         <span class="p">}</span>
 
         <span class="n">built_modulefile</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_build_layout</span><span class="o">.</span><span class="n">get_modulefile</span><span class="p">(</span>

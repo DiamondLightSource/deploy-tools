@@ -7,7 +7,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>deploy_tools.models.schema &#8212; deploy-tools 0.7.2.dev148+ga30100b23 documentation</title>
+    <title>deploy_tools.models.schema &#8212; deploy-tools 0.7.2.dev149+g59a84d3e8 documentation</title>
   
   
   
@@ -41,7 +41,7 @@
   <link rel="preload" as="script" href="../../../_static/scripts/bootstrap.js?digest=90905a2f556bf617f1a9" />
 <link rel="preload" as="script" href="../../../_static/scripts/pydata-sphinx-theme.js?digest=90905a2f556bf617f1a9" />
 
-    <script src="../../../_static/documentation_options.js?v=b1263fd4"></script>
+    <script src="../../../_static/documentation_options.js?v=35dce433"></script>
     <script src="../../../_static/doctools.js?v=fd6eb6e6"></script>
     <script src="../../../_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script src="../../../_static/clipboard.min.js?v=a7894cd8"></script>
@@ -472,30 +472,30 @@
 <span class="n">logger</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
 
 <span class="n">SCHEMA_NAMES</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">type</span><span class="p">[</span><span class="n">BaseModel</span><span class="p">]]</span> <span class="o">=</span> <span class="p">{</span>
-    <span class="s2">&quot;module.json&quot;</span><span class="p">:</span> <span class="n">Module</span><span class="p">,</span>
-    <span class="s2">&quot;release.json&quot;</span><span class="p">:</span> <span class="n">Release</span><span class="p">,</span>
-    <span class="s2">&quot;deployment.json&quot;</span><span class="p">:</span> <span class="n">Deployment</span><span class="p">,</span>
-    <span class="s2">&quot;deployment-settings.json&quot;</span><span class="p">:</span> <span class="n">DeploymentSettings</span><span class="p">,</span>
+    <span class="s2">"module.json"</span><span class="p">:</span> <span class="n">Module</span><span class="p">,</span>
+    <span class="s2">"release.json"</span><span class="p">:</span> <span class="n">Release</span><span class="p">,</span>
+    <span class="s2">"deployment.json"</span><span class="p">:</span> <span class="n">Deployment</span><span class="p">,</span>
+    <span class="s2">"deployment-settings.json"</span><span class="p">:</span> <span class="n">DeploymentSettings</span><span class="p">,</span>
 <span class="p">}</span>
 
 
 <div class="viewcode-block" id="generate_schema">
 <a class="viewcode-back" href="../../../_api/deploy_tools.models.schema.html#deploy_tools.models.schema.generate_schema">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">generate_schema</span><span class="p">(</span><span class="n">output_path</span><span class="p">:</span> <span class="n">Path</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Generate JSON schemas for yaml configuration files.</span>
+<span class="w">    </span><span class="sd">"""Generate JSON schemas for yaml configuration files.</span>
 
 <span class="sd">    While the ``Deployment`` object is not intended to be created by hand, it may need</span>
 <span class="sd">    to be fixed manually in certain circumstances so a schema is considered useful.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
     <span class="k">for</span> <span class="n">filename</span><span class="p">,</span> <span class="n">model</span> <span class="ow">in</span> <span class="n">SCHEMA_NAMES</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
         <span class="n">out_path</span> <span class="o">=</span> <span class="n">output_path</span> <span class="o">/</span> <span class="n">filename</span>
-        <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Creating schema file for </span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">model</span><span class="o">.</span><span class="vm">__name__</span><span class="p">)</span>
-        <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;Output path: </span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">out_path</span><span class="p">)</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">"Creating schema file for </span><span class="si">%s</span><span class="s2">"</span><span class="p">,</span> <span class="n">model</span><span class="o">.</span><span class="vm">__name__</span><span class="p">)</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">"Output path: </span><span class="si">%s</span><span class="s2">"</span><span class="p">,</span> <span class="n">out_path</span><span class="p">)</span>
 
         <span class="n">schema</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">model_json_schema</span><span class="p">()</span>
-        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">out_path</span><span class="p">,</span> <span class="s2">&quot;w&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">out_path</span><span class="p">,</span> <span class="s2">"w"</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
             <span class="n">json</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="n">schema</span><span class="p">,</span> <span class="n">f</span><span class="p">,</span> <span class="n">indent</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
-            <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>  <span class="c1"># json.dump does not add final newline</span></div>
+            <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">"</span><span class="se">\n</span><span class="s2">"</span><span class="p">)</span>  <span class="c1"># json.dump does not add final newline</span></div>
 
 </pre></div>
 

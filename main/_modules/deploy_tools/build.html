@@ -7,7 +7,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>deploy_tools.build &#8212; deploy-tools 0.7.2.dev148+ga30100b23 documentation</title>
+    <title>deploy_tools.build &#8212; deploy-tools 0.7.2.dev149+g59a84d3e8 documentation</title>
   
   
   
@@ -41,7 +41,7 @@
   <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=90905a2f556bf617f1a9" />
 <link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=90905a2f556bf617f1a9" />
 
-    <script src="../../_static/documentation_options.js?v=b1263fd4"></script>
+    <script src="../../_static/documentation_options.js?v=35dce433"></script>
     <script src="../../_static/doctools.js?v=fd6eb6e6"></script>
     <script src="../../_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
@@ -471,7 +471,7 @@
 <div class="viewcode-block" id="clean_build_area">
 <a class="viewcode-back" href="../../_api/deploy_tools.build.html#deploy_tools.build.clean_build_area">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">clean_build_area</span><span class="p">(</span><span class="n">layout</span><span class="p">:</span> <span class="n">Layout</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Remove the build area directory if it exists.&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""Remove the build area directory if it exists."""</span>
     <span class="n">build_path</span> <span class="o">=</span> <span class="n">layout</span><span class="o">.</span><span class="n">build_layout</span><span class="o">.</span><span class="n">build_root</span>
 
     <span class="k">if</span> <span class="n">build_path</span><span class="o">.</span><span class="n">exists</span><span class="p">():</span>
@@ -482,7 +482,7 @@
 <div class="viewcode-block" id="build">
 <a class="viewcode-back" href="../../_api/deploy_tools.build.html#deploy_tools.build.build">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">build</span><span class="p">(</span><span class="n">changes</span><span class="p">:</span> <span class="n">DeploymentChanges</span><span class="p">,</span> <span class="n">layout</span><span class="p">:</span> <span class="n">Layout</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Build all modules that are to be added or updated.&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""Build all modules that are to be added or updated."""</span>
     <span class="n">release_changes</span> <span class="o">=</span> <span class="n">changes</span><span class="o">.</span><span class="n">release_changes</span>
     <span class="n">releases</span> <span class="o">=</span> <span class="n">release_changes</span><span class="o">.</span><span class="n">to_add</span> <span class="o">+</span> <span class="n">release_changes</span><span class="o">.</span><span class="n">to_update</span>
 

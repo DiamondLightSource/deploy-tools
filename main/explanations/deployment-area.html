@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>The deployment area &#8212; deploy-tools 0.7.2.dev148+ga30100b23 documentation</title>
+    <title>The deployment area &#8212; deploy-tools 0.7.2.dev149+g59a84d3e8 documentation</title>
   
   
   
@@ -42,7 +42,7 @@
   <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=90905a2f556bf617f1a9" />
 <link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=90905a2f556bf617f1a9" />
 
-    <script src="../_static/documentation_options.js?v=b1263fd4"></script>
+    <script src="../_static/documentation_options.js?v=35dce433"></script>
     <script src="../_static/doctools.js?v=fd6eb6e6"></script>
     <script src="../_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
@@ -508,7 +508,7 @@ to be edited by hand.</p>
 │   └── &lt;name&gt;/&lt;version&gt;/
 │       ├── modulefile        # the Environment Modules (Tcl) file
 │       ├── entrypoints/      # the executables added to PATH on module load
-│       ├── module.yaml       # this Module&#39;s configuration snapshot
+│       ├── module.yaml       # this Module's configuration snapshot
 │       └── sif_files/        # Apptainer images, when the Module uses any
 ├── modulefiles/             # Modulefiles Area — placed on MODULEPATH
 │   └── &lt;name&gt;/
@@ -545,7 +545,7 @@ data used by the <code class="docutils literal notranslate"><span class="pre">co
 <section id="why-modulefiles-embed-absolute-paths">
 <h2>Why modulefiles embed absolute paths<a class="headerlink" href="#why-modulefiles-embed-absolute-paths" title="Link to this heading">#</a></h2>
 <p>A generated <code class="docutils literal notranslate"><span class="pre">modulefile</span></code> adds its Module’s executables to the user’s path with one line:</p>
-<div class="highlight-tcl notranslate"><div class="highlight"><pre><span></span><span class="nv">prepend-path</span><span class="w"> </span>PATH<span class="w"> </span><span class="s2">&quot;&lt;deployment root&gt;/modules/&lt;name&gt;/&lt;version&gt;/entrypoints&quot;</span>
+<div class="highlight-tcl notranslate"><div class="highlight"><pre><span></span><span class="nv">prepend-path</span><span class="w"> </span>PATH<span class="w"> </span><span class="s2">"&lt;deployment root&gt;/modules/&lt;name&gt;/&lt;version&gt;/entrypoints"</span>
 </pre></div>
 </div>
 <p>That path is <strong>absolute</strong>, so a deployment area cannot be relocated after the fact.

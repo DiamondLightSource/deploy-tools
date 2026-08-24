@@ -7,7 +7,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>deploy_tools.models.changes &#8212; deploy-tools 0.7.2.dev148+ga30100b23 documentation</title>
+    <title>deploy_tools.models.changes &#8212; deploy-tools 0.7.2.dev149+g59a84d3e8 documentation</title>
   
   
   
@@ -41,7 +41,7 @@
   <link rel="preload" as="script" href="../../../_static/scripts/bootstrap.js?digest=90905a2f556bf617f1a9" />
 <link rel="preload" as="script" href="../../../_static/scripts/pydata-sphinx-theme.js?digest=90905a2f556bf617f1a9" />
 
-    <script src="../../../_static/documentation_options.js?v=b1263fd4"></script>
+    <script src="../../../_static/documentation_options.js?v=35dce433"></script>
     <script src="../../../_static/doctools.js?v=fd6eb6e6"></script>
     <script src="../../../_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script src="../../../_static/clipboard.min.js?v=a7894cd8"></script>
@@ -468,7 +468,7 @@
 <div class="viewcode-block" id="ReleaseChanges">
 <a class="viewcode-back" href="../../../_api/deploy_tools.models.changes.html#deploy_tools.models.changes.ReleaseChanges">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">ReleaseChanges</span><span class="p">(</span><span class="n">ParentModel</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;List of Release changes required to update the Deployment.&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""List of Release changes required to update the Deployment."""</span>
 
     <span class="n">to_add</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">Release</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
     <span class="n">to_update</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">Release</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
@@ -481,7 +481,7 @@
 <div class="viewcode-block" id="DeploymentChanges">
 <a class="viewcode-back" href="../../../_api/deploy_tools.models.changes.html#deploy_tools.models.changes.DeploymentChanges">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">DeploymentChanges</span><span class="p">(</span><span class="n">ParentModel</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Corresponds to changes between two ``Deployment`` instances.&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""Corresponds to changes between two ``Deployment`` instances."""</span>
 
     <span class="n">release_changes</span><span class="p">:</span> <span class="n">ReleaseChanges</span> <span class="o">=</span> <span class="n">ReleaseChanges</span><span class="p">()</span>
     <span class="n">default_versions</span><span class="p">:</span> <span class="n">DefaultVersionsByName</span> <span class="o">=</span> <span class="p">{}</span></div>

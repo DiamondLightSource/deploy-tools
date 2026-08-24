@@ -7,7 +7,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>deploy_tools.layout &#8212; deploy-tools 0.7.2.dev148+ga30100b23 documentation</title>
+    <title>deploy_tools.layout &#8212; deploy-tools 0.7.2.dev149+g59a84d3e8 documentation</title>
   
   
   
@@ -41,7 +41,7 @@
   <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=90905a2f556bf617f1a9" />
 <link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=90905a2f556bf617f1a9" />
 
-    <script src="../../_static/documentation_options.js?v=b1263fd4"></script>
+    <script src="../../_static/documentation_options.js?v=35dce433"></script>
     <script src="../../_static/doctools.js?v=fd6eb6e6"></script>
     <script src="../../_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
@@ -466,15 +466,15 @@
 <div class="viewcode-block" id="ModuleAreaLayout">
 <a class="viewcode-back" href="../../_api/deploy_tools.layout.html#deploy_tools.layout.ModuleAreaLayout">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">ModuleAreaLayout</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Represents the layout of Modules with the given root path.</span>
+<span class="w">    </span><span class="sd">"""Represents the layout of Modules with the given root path.</span>
 
 <span class="sd">    This is generic to both built and deployed modules.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
 
-    <span class="n">ENTRYPOINTS_FOLDER</span> <span class="o">=</span> <span class="s2">&quot;entrypoints&quot;</span>
+    <span class="n">ENTRYPOINTS_FOLDER</span> <span class="o">=</span> <span class="s2">"entrypoints"</span>
 
-    <span class="n">MODULE_SNAPSHOT_FILENAME</span> <span class="o">=</span> <span class="s2">&quot;module.yaml&quot;</span>
-    <span class="n">MODULEFILE_FILENAME</span> <span class="o">=</span> <span class="s2">&quot;modulefile&quot;</span>
+    <span class="n">MODULE_SNAPSHOT_FILENAME</span> <span class="o">=</span> <span class="s2">"module.yaml"</span>
+    <span class="n">MODULEFILE_FILENAME</span> <span class="o">=</span> <span class="s2">"modulefile"</span>
 
     <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">root</span><span class="p">:</span> <span class="n">Path</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_root</span> <span class="o">=</span> <span class="n">root</span>
@@ -482,28 +482,28 @@
 <div class="viewcode-block" id="ModuleAreaLayout.get_module_folder">
 <a class="viewcode-back" href="../../_api/deploy_tools.layout.html#deploy_tools.layout.ModuleAreaLayout.get_module_folder">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">get_module_folder</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">version</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Path</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Return the folder holding the given module&#39;s files.&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">"""Return the folder holding the given module's files."""</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_root</span> <span class="o">/</span> <span class="n">name</span> <span class="o">/</span> <span class="n">version</span></div>
 
 
 <div class="viewcode-block" id="ModuleAreaLayout.get_entrypoints_folder">
 <a class="viewcode-back" href="../../_api/deploy_tools.layout.html#deploy_tools.layout.ModuleAreaLayout.get_entrypoints_folder">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">get_entrypoints_folder</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">version</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Path</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Return the folder holding the given module&#39;s entrypoint scripts.&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">"""Return the folder holding the given module's entrypoint scripts."""</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_module_folder</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">version</span><span class="p">)</span> <span class="o">/</span> <span class="bp">self</span><span class="o">.</span><span class="n">ENTRYPOINTS_FOLDER</span></div>
 
 
 <div class="viewcode-block" id="ModuleAreaLayout.get_modulefile">
 <a class="viewcode-back" href="../../_api/deploy_tools.layout.html#deploy_tools.layout.ModuleAreaLayout.get_modulefile">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">get_modulefile</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">version</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Path</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Return the path to the given module&#39;s modulefile.&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">"""Return the path to the given module's modulefile."""</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_module_folder</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">version</span><span class="p">)</span> <span class="o">/</span> <span class="bp">self</span><span class="o">.</span><span class="n">MODULEFILE_FILENAME</span></div>
 
 
 <div class="viewcode-block" id="ModuleAreaLayout.get_module_snapshot_path">
 <a class="viewcode-back" href="../../_api/deploy_tools.layout.html#deploy_tools.layout.ModuleAreaLayout.get_module_snapshot_path">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">get_module_snapshot_path</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">version</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Path</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Return the path to the given module&#39;s configuration snapshot.&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">"""Return the path to the given module's configuration snapshot."""</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_module_folder</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">version</span><span class="p">)</span> <span class="o">/</span> <span class="bp">self</span><span class="o">.</span><span class="n">MODULE_SNAPSHOT_FILENAME</span></div>
 </div>
 
@@ -512,25 +512,25 @@
 <div class="viewcode-block" id="ModuleBuildLayout">
 <a class="viewcode-back" href="../../_api/deploy_tools.layout.html#deploy_tools.layout.ModuleBuildLayout">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">ModuleBuildLayout</span><span class="p">(</span><span class="n">ModuleAreaLayout</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Represents the layout used for Modules during the build process.</span>
+<span class="w">    </span><span class="sd">"""Represents the layout used for Modules during the build process.</span>
 
 <span class="sd">    When intended to be used before the Deploy step, this should be done on the same</span>
 <span class="sd">    filesystem as the Deployment Area, in order to ensure that all filesystem moves are</span>
 <span class="sd">    atomic.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
 
-    <span class="n">SIF_FILES_FOLDER</span> <span class="o">=</span> <span class="s2">&quot;sif_files&quot;</span>
+    <span class="n">SIF_FILES_FOLDER</span> <span class="o">=</span> <span class="s2">"sif_files"</span>
 
 <div class="viewcode-block" id="ModuleBuildLayout.get_sif_files_folder">
 <a class="viewcode-back" href="../../_api/deploy_tools.layout.html#deploy_tools.layout.ModuleBuildLayout.get_sif_files_folder">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">get_sif_files_folder</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">version</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Path</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Return the folder holding the given module&#39;s Apptainer ``.sif`` images.&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">"""Return the folder holding the given module's Apptainer ``.sif`` images."""</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_module_folder</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">version</span><span class="p">)</span> <span class="o">/</span> <span class="bp">self</span><span class="o">.</span><span class="n">SIF_FILES_FOLDER</span></div>
 
 
     <span class="nd">@property</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">build_root</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Path</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Root path of the build area.&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">"""Root path of the build area."""</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_root</span></div>
 
 
@@ -538,15 +538,15 @@
 <div class="viewcode-block" id="Layout">
 <a class="viewcode-back" href="../../_api/deploy_tools.layout.html#deploy_tools.layout.Layout">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">Layout</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Represents the layout of the deployment area.&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""Represents the layout of the deployment area."""</span>
 
-    <span class="n">MODULES_ROOT_NAME</span> <span class="o">=</span> <span class="s2">&quot;modules&quot;</span>
-    <span class="n">MODULEFILES_ROOT_NAME</span> <span class="o">=</span> <span class="s2">&quot;modulefiles&quot;</span>
-    <span class="n">DEPRECATED_ROOT_NAME</span> <span class="o">=</span> <span class="s2">&quot;deprecated&quot;</span>
-    <span class="n">DEFAULT_BUILD_ROOT_NAME</span> <span class="o">=</span> <span class="s2">&quot;build&quot;</span>
-    <span class="n">DEFAULT_VERSION_FILENAME</span> <span class="o">=</span> <span class="s2">&quot;.version&quot;</span>
+    <span class="n">MODULES_ROOT_NAME</span> <span class="o">=</span> <span class="s2">"modules"</span>
+    <span class="n">MODULEFILES_ROOT_NAME</span> <span class="o">=</span> <span class="s2">"modulefiles"</span>
+    <span class="n">DEPRECATED_ROOT_NAME</span> <span class="o">=</span> <span class="s2">"deprecated"</span>
+    <span class="n">DEFAULT_BUILD_ROOT_NAME</span> <span class="o">=</span> <span class="s2">"build"</span>
+    <span class="n">DEFAULT_VERSION_FILENAME</span> <span class="o">=</span> <span class="s2">".version"</span>
 
-    <span class="n">DEPLOYMENT_SNAPSHOT_FILENAME</span> <span class="o">=</span> <span class="s2">&quot;deployment.yaml&quot;</span>
+    <span class="n">DEPLOYMENT_SNAPSHOT_FILENAME</span> <span class="o">=</span> <span class="s2">"deployment.yaml"</span>
 
     <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">deployment_root</span><span class="p">:</span> <span class="n">Path</span><span class="p">,</span> <span class="n">build_root</span><span class="p">:</span> <span class="n">Path</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_root</span> <span class="o">=</span> <span class="n">deployment_root</span>
@@ -560,21 +560,21 @@
 <div class="viewcode-block" id="Layout.get_module_folder">
 <a class="viewcode-back" href="../../_api/deploy_tools.layout.html#deploy_tools.layout.Layout.get_module_folder">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">get_module_folder</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">version</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Path</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Return the folder holding the given deployed module&#39;s files.&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">"""Return the folder holding the given deployed module's files."""</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_modules_layout</span><span class="o">.</span><span class="n">get_module_folder</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">version</span><span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="Layout.get_entrypoints_folder">
 <a class="viewcode-back" href="../../_api/deploy_tools.layout.html#deploy_tools.layout.Layout.get_entrypoints_folder">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">get_entrypoints_folder</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">version</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Path</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Return the folder holding the given deployed module&#39;s entrypoint scripts.&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">"""Return the folder holding the given deployed module's entrypoint scripts."""</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_modules_layout</span><span class="o">.</span><span class="n">get_entrypoints_folder</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">version</span><span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="Layout.get_modulefiles_root">
 <a class="viewcode-back" href="../../_api/deploy_tools.layout.html#deploy_tools.layout.Layout.get_modulefiles_root">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">get_modulefiles_root</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">from_deprecated</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Path</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Return the modulefiles root, or the deprecated one if requested.&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">"""Return the modulefiles root, or the deprecated one if requested."""</span>
         <span class="k">return</span> <span class="p">(</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">deprecated_modulefiles_root</span>
             <span class="k">if</span> <span class="n">from_deprecated</span>
@@ -587,64 +587,64 @@
     <span class="k">def</span><span class="w"> </span><span class="nf">get_modulefile_link</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">version</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">from_deprecated</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Path</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Return the path to the modulefile link for the given module.&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">"""Return the path to the modulefile link for the given module."""</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_modulefiles_root</span><span class="p">(</span><span class="n">from_deprecated</span><span class="p">)</span> <span class="o">/</span> <span class="n">name</span> <span class="o">/</span> <span class="n">version</span></div>
 
 
 <div class="viewcode-block" id="Layout.get_modulefile">
 <a class="viewcode-back" href="../../_api/deploy_tools.layout.html#deploy_tools.layout.Layout.get_modulefile">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">get_modulefile</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">version</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Path</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Return the path to the given deployed module&#39;s modulefile.&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">"""Return the path to the given deployed module's modulefile."""</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_modules_layout</span><span class="o">.</span><span class="n">get_modulefile</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">version</span><span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="Layout.get_module_snapshot_path">
 <a class="viewcode-back" href="../../_api/deploy_tools.layout.html#deploy_tools.layout.Layout.get_module_snapshot_path">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">get_module_snapshot_path</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">version</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Path</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Return the path to the given deployed module&#39;s configuration snapshot.&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">"""Return the path to the given deployed module's configuration snapshot."""</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_modules_layout</span><span class="o">.</span><span class="n">get_module_snapshot_path</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">version</span><span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="Layout.get_default_version_file">
 <a class="viewcode-back" href="../../_api/deploy_tools.layout.html#deploy_tools.layout.Layout.get_default_version_file">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">get_default_version_file</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Path</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Return the path to the file recording a module&#39;s default version.&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">"""Return the path to the file recording a module's default version."""</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">modulefiles_root</span> <span class="o">/</span> <span class="n">name</span> <span class="o">/</span> <span class="bp">self</span><span class="o">.</span><span class="n">DEFAULT_VERSION_FILENAME</span></div>
 
 
     <span class="nd">@property</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">deployment_root</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Path</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Root path of the deployment area.&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">"""Root path of the deployment area."""</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_root</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">deprecated_root</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Path</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Root path for deprecated files.&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">"""Root path for deprecated files."""</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_root</span> <span class="o">/</span> <span class="bp">self</span><span class="o">.</span><span class="n">DEPRECATED_ROOT_NAME</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">modules_root</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Path</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Root path holding deployed modules.&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">"""Root path holding deployed modules."""</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_root</span> <span class="o">/</span> <span class="bp">self</span><span class="o">.</span><span class="n">MODULES_ROOT_NAME</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">modulefiles_root</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Path</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Root path holding modulefile links for deployed modules.&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">"""Root path holding modulefile links for deployed modules."""</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_root</span> <span class="o">/</span> <span class="bp">self</span><span class="o">.</span><span class="n">MODULEFILES_ROOT_NAME</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">deprecated_modulefiles_root</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Path</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Root path holding modulefile links for deprecated modules.&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">"""Root path holding modulefile links for deprecated modules."""</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">deprecated_root</span> <span class="o">/</span> <span class="bp">self</span><span class="o">.</span><span class="n">MODULEFILES_ROOT_NAME</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">deployment_snapshot_path</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Path</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Path to the deployment area&#39;s configuration snapshot.&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">"""Path to the deployment area's configuration snapshot."""</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_root</span> <span class="o">/</span> <span class="bp">self</span><span class="o">.</span><span class="n">DEPLOYMENT_SNAPSHOT_FILENAME</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">build_layout</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ModuleBuildLayout</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Return the `ModuleBuildLayout` for the associated build area.&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">"""Return the `ModuleBuildLayout` for the associated build area."""</span>
         <span class="k">return</span> <span class="n">ModuleBuildLayout</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_build_root</span><span class="p">)</span></div>
 
 </pre></div>

@@ -7,7 +7,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>deploy_tools.apptainer &#8212; deploy-tools 0.7.2.dev148+ga30100b23 documentation</title>
+    <title>deploy_tools.apptainer &#8212; deploy-tools 0.7.2.dev149+g59a84d3e8 documentation</title>
   
   
   
@@ -41,7 +41,7 @@
   <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=90905a2f556bf617f1a9" />
 <link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=90905a2f556bf617f1a9" />
 
-    <script src="../../_static/documentation_options.js?v=b1263fd4"></script>
+    <script src="../../_static/documentation_options.js?v=35dce433"></script>
     <script src="../../_static/doctools.js?v=fd6eb6e6"></script>
     <script src="../../_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
@@ -469,7 +469,7 @@
 <div class="viewcode-block" id="ApptainerError">
 <a class="viewcode-back" href="../../_api/deploy_tools.apptainer.html#deploy_tools.apptainer.ApptainerError">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">ApptainerError</span><span class="p">(</span><span class="n">DeployToolsError</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Raised when building an Apptainer SIF file fails.&quot;&quot;&quot;</span></div>
+<span class="w">    </span><span class="sd">"""Raised when building an Apptainer SIF file fails."""</span></div>
 
 
 
@@ -480,22 +480,22 @@
     <span class="n">container_url</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
     <span class="n">create_parents</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Build an Apptainer SIF file at the given path from a container image URL.&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""Build an Apptainer SIF file at the given path from a container image URL."""</span>
     <span class="k">if</span> <span class="n">create_parents</span><span class="p">:</span>
         <span class="n">output_path</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">mkdir</span><span class="p">(</span><span class="n">parents</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">exist_ok</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 
     <span class="k">if</span> <span class="ow">not</span> <span class="n">output_path</span><span class="o">.</span><span class="n">is_absolute</span><span class="p">():</span>
         <span class="k">raise</span> <span class="n">ApptainerError</span><span class="p">(</span>
-            <span class="sa">f</span><span class="s2">&quot;Building Apptainer file: &quot;</span>
-            <span class="sa">f</span><span class="s2">&quot;Sif file output path must be absolute:</span><span class="se">\n</span><span class="si">{</span><span class="n">output_path</span><span class="si">}</span><span class="s2">&quot;</span>
+            <span class="sa">f</span><span class="s2">"Building Apptainer file: "</span>
+            <span class="sa">f</span><span class="s2">"Sif file output path must be absolute:</span><span class="se">\n</span><span class="si">{</span><span class="n">output_path</span><span class="si">}</span><span class="s2">"</span>
         <span class="p">)</span>
 
     <span class="k">if</span> <span class="n">output_path</span><span class="o">.</span><span class="n">exists</span><span class="p">():</span>
         <span class="k">raise</span> <span class="n">ApptainerError</span><span class="p">(</span>
-            <span class="sa">f</span><span class="s2">&quot;Building Apptainer file: Sif file output already exists:</span><span class="se">\n</span><span class="si">{</span><span class="n">output_path</span><span class="si">}</span><span class="s2">&quot;</span>
+            <span class="sa">f</span><span class="s2">"Building Apptainer file: Sif file output already exists:</span><span class="se">\n</span><span class="si">{</span><span class="n">output_path</span><span class="si">}</span><span class="s2">"</span>
         <span class="p">)</span>
 
-    <span class="n">commands</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;apptainer&quot;</span><span class="p">,</span> <span class="s2">&quot;pull&quot;</span><span class="p">,</span> <span class="n">output_path</span><span class="p">,</span> <span class="n">container_url</span><span class="p">]</span>
+    <span class="n">commands</span> <span class="o">=</span> <span class="p">[</span><span class="s2">"apptainer"</span><span class="p">,</span> <span class="s2">"pull"</span><span class="p">,</span> <span class="n">output_path</span><span class="p">,</span> <span class="n">container_url</span><span class="p">]</span>
     <span class="n">run_command</span><span class="p">(</span><span class="n">commands</span><span class="p">,</span> <span class="n">check</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span></div>
 
 </pre></div>

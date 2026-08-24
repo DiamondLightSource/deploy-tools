@@ -7,7 +7,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>deploy_tools.compare &#8212; deploy-tools 0.7.2.dev148+ga30100b23 documentation</title>
+    <title>deploy_tools.compare &#8212; deploy-tools 0.7.2.dev149+g59a84d3e8 documentation</title>
   
   
   
@@ -41,7 +41,7 @@
   <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=90905a2f556bf617f1a9" />
 <link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=90905a2f556bf617f1a9" />
 
-    <script src="../../_static/documentation_options.js?v=b1263fd4"></script>
+    <script src="../../_static/documentation_options.js?v=35dce433"></script>
     <script src="../../_static/doctools.js?v=fd6eb6e6"></script>
     <script src="../../_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
@@ -489,7 +489,7 @@
 <div class="viewcode-block" id="ComparisonError">
 <a class="viewcode-back" href="../../_api/deploy_tools.compare.html#deploy_tools.compare.ComparisonError">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">ComparisonError</span><span class="p">(</span><span class="n">DeployToolsError</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Raised when comparing the deployment area to its snapshot fails.&quot;&quot;&quot;</span></div>
+<span class="w">    </span><span class="sd">"""Raised when comparing the deployment area to its snapshot fails."""</span></div>
 
 
 
@@ -498,13 +498,13 @@
 <span class="k">def</span><span class="w"> </span><span class="nf">compare_to_snapshot</span><span class="p">(</span>
     <span class="n">deployment_root</span><span class="p">:</span> <span class="n">Path</span><span class="p">,</span> <span class="n">use_ref</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">from_scratch</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Compare deployment area to deployment configuration snapshot.</span>
+<span class="w">    </span><span class="sd">"""Compare deployment area to deployment configuration snapshot.</span>
 
 <span class="sd">    This helps us to identify broken environment modules, or a failed deployment step.</span>
 <span class="sd">    Note that this does not exclude the possibility of all types of issues.</span>
 
 <span class="sd">    The ``use_ref`` argument can be used to compare against a previous Deployment</span>
-<span class="sd">    configuration. It is recommended to use a reference relative to HEAD, e.g. &#39;HEAD~1&#39;.</span>
+<span class="sd">    configuration. It is recommended to use a reference relative to HEAD, e.g. 'HEAD~1'.</span>
 
 <span class="sd">    The ``from_scratch`` argument checks that the deployment area is in a suitable state</span>
 <span class="sd">    for a clean deployment into an empty directory. No snapshot is expected.</span>
@@ -515,45 +515,45 @@
 <span class="sd">            git ref</span>
 <span class="sd">        from_scratch: If True, check that the deployment area is empty and ignore other</span>
 <span class="sd">            requirements.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
     <span class="n">layout</span> <span class="o">=</span> <span class="n">Layout</span><span class="p">(</span><span class="n">deployment_root</span><span class="p">)</span>
 
     <span class="k">if</span> <span class="n">from_scratch</span><span class="p">:</span>
-        <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Checking deployment area is empty for a from-scratch deployment&quot;</span><span class="p">)</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">"Checking deployment area is empty for a from-scratch deployment"</span><span class="p">)</span>
 
         <span class="k">if</span> <span class="ow">not</span> <span class="n">layout</span><span class="o">.</span><span class="n">deployment_root</span><span class="o">.</span><span class="n">exists</span><span class="p">()</span> <span class="ow">or</span> <span class="ow">not</span> <span class="n">layout</span><span class="o">.</span><span class="n">deployment_root</span><span class="o">.</span><span class="n">is_dir</span><span class="p">():</span>
             <span class="k">raise</span> <span class="n">ComparisonError</span><span class="p">(</span>
-                <span class="sa">f</span><span class="s2">&quot;Deployment root folder does not exist:</span><span class="se">\n</span><span class="si">{</span><span class="n">layout</span><span class="o">.</span><span class="n">deployment_root</span><span class="si">}</span><span class="s2">&quot;</span>
+                <span class="sa">f</span><span class="s2">"Deployment root folder does not exist:</span><span class="se">\n</span><span class="si">{</span><span class="n">layout</span><span class="o">.</span><span class="n">deployment_root</span><span class="si">}</span><span class="s2">"</span>
             <span class="p">)</span>
 
         <span class="k">if</span> <span class="nb">next</span><span class="p">(</span><span class="n">layout</span><span class="o">.</span><span class="n">deployment_root</span><span class="o">.</span><span class="n">iterdir</span><span class="p">(),</span> <span class="kc">None</span><span class="p">):</span>
             <span class="k">raise</span> <span class="n">ComparisonError</span><span class="p">(</span>
-                <span class="sa">f</span><span class="s2">&quot;Deployment root folder is not empty:</span><span class="se">\n</span><span class="si">{</span><span class="n">layout</span><span class="o">.</span><span class="n">deployment_root</span><span class="si">}</span><span class="s2">&quot;</span>
+                <span class="sa">f</span><span class="s2">"Deployment root folder is not empty:</span><span class="se">\n</span><span class="si">{</span><span class="n">layout</span><span class="o">.</span><span class="n">deployment_root</span><span class="si">}</span><span class="s2">"</span>
             <span class="p">)</span>
         <span class="k">return</span>
 
     <span class="k">if</span> <span class="n">use_ref</span><span class="p">:</span>
-        <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Loading deployment snapshot from </span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">use_ref</span><span class="p">)</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">"Loading deployment snapshot from </span><span class="si">%s</span><span class="s2">"</span><span class="p">,</span> <span class="n">use_ref</span><span class="p">)</span>
         <span class="n">deployment_snapshot</span> <span class="o">=</span> <span class="n">load_snapshot_from_ref</span><span class="p">(</span><span class="n">layout</span><span class="p">,</span> <span class="n">use_ref</span><span class="p">)</span>
     <span class="k">else</span><span class="p">:</span>
-        <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Loading deployment snapshot&quot;</span><span class="p">)</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">"Loading deployment snapshot"</span><span class="p">)</span>
         <span class="n">deployment_snapshot</span> <span class="o">=</span> <span class="n">load_snapshot</span><span class="p">(</span><span class="n">layout</span><span class="p">)</span>
 
-    <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Reconstructing deployment configuration from deployment area&quot;</span><span class="p">)</span>
+    <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">"Reconstructing deployment configuration from deployment area"</span><span class="p">)</span>
     <span class="n">actual_deployment</span> <span class="o">=</span> <span class="n">_reconstruct_deployment_config_from_modules</span><span class="p">(</span><span class="n">layout</span><span class="p">)</span>
 
-    <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Comparing reconstructed configuration with snapshot&quot;</span><span class="p">)</span>
+    <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">"Comparing reconstructed configuration with snapshot"</span><span class="p">)</span>
     <span class="n">_compare_snapshot_to_actual</span><span class="p">(</span><span class="n">snapshot</span><span class="o">=</span><span class="n">deployment_snapshot</span><span class="p">,</span> <span class="n">actual</span><span class="o">=</span><span class="n">actual_deployment</span><span class="p">)</span>
 
-    <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Comparison finished&quot;</span><span class="p">)</span></div>
+    <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">"Comparison finished"</span><span class="p">)</span></div>
 
 
 
 <span class="k">def</span><span class="w"> </span><span class="nf">_reconstruct_deployment_config_from_modules</span><span class="p">(</span><span class="n">layout</span><span class="p">:</span> <span class="n">Layout</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Deployment</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Use the deployment area to reconstruct a Deployment configuration object.</span>
+<span class="w">    </span><span class="sd">"""Use the deployment area to reconstruct a Deployment configuration object.</span>
 
 <span class="sd">    Note that the default versions will be different to those in initial configuration.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
     <span class="n">releases</span> <span class="o">=</span> <span class="n">_collect_releases</span><span class="p">(</span><span class="n">layout</span><span class="p">)</span>
     <span class="n">deployment</span> <span class="o">=</span> <span class="n">Deployment</span><span class="p">(</span><span class="n">settings</span><span class="o">=</span><span class="n">DeploymentSettings</span><span class="p">(),</span> <span class="n">releases</span><span class="o">=</span><span class="n">releases</span><span class="p">)</span>
 
@@ -580,11 +580,11 @@
 
         <span class="k">if</span> <span class="n">has_modulefile</span> <span class="ow">and</span> <span class="n">has_deprecated_modulefile</span><span class="p">:</span>
             <span class="k">raise</span> <span class="n">ComparisonError</span><span class="p">(</span>
-                <span class="sa">f</span><span class="s2">&quot;Duplicate modulefiles for </span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2">/</span><span class="si">{</span><span class="n">version</span><span class="si">}</span><span class="s2"> found in default and &quot;</span>
-                <span class="sa">f</span><span class="s2">&quot;deprecated areas.&quot;</span>
+                <span class="sa">f</span><span class="s2">"Duplicate modulefiles for </span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2">/</span><span class="si">{</span><span class="n">version</span><span class="si">}</span><span class="s2"> found in default and "</span>
+                <span class="sa">f</span><span class="s2">"deprecated areas."</span>
             <span class="p">)</span>
         <span class="k">elif</span> <span class="ow">not</span> <span class="n">has_modulefile</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">has_deprecated_modulefile</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="n">ComparisonError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;No modulefile found for </span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2">/</span><span class="si">{</span><span class="n">version</span><span class="si">}</span><span class="s2">.&quot;</span><span class="p">)</span>
+            <span class="k">raise</span> <span class="n">ComparisonError</span><span class="p">(</span><span class="sa">f</span><span class="s2">"No modulefile found for </span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2">/</span><span class="si">{</span><span class="n">version</span><span class="si">}</span><span class="s2">."</span><span class="p">)</span>
 
         <span class="n">release</span> <span class="o">=</span> <span class="n">Release</span><span class="p">(</span><span class="n">deprecated</span><span class="o">=</span><span class="n">has_deprecated_modulefile</span><span class="p">,</span> <span class="n">module</span><span class="o">=</span><span class="n">module</span><span class="p">)</span>
         <span class="n">releases</span><span class="p">[</span><span class="n">name</span><span class="p">][</span><span class="n">version</span><span class="p">]</span> <span class="o">=</span> <span class="n">release</span>
@@ -593,24 +593,24 @@
         <span class="k">for</span> <span class="n">version</span> <span class="ow">in</span> <span class="n">versions</span><span class="p">:</span>
             <span class="k">if</span> <span class="n">version</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">releases</span><span class="p">[</span><span class="n">name</span><span class="p">]:</span>
                 <span class="k">raise</span> <span class="n">ComparisonError</span><span class="p">(</span>
-                    <span class="sa">f</span><span class="s2">&quot;Modulefile exists without corresponding built module for &quot;</span>
-                    <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2">/</span><span class="si">{</span><span class="n">version</span><span class="si">}</span><span class="s2">&quot;</span>
+                    <span class="sa">f</span><span class="s2">"Modulefile exists without corresponding built module for "</span>
+                    <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2">/</span><span class="si">{</span><span class="n">version</span><span class="si">}</span><span class="s2">"</span>
                 <span class="p">)</span>
 
     <span class="k">return</span> <span class="n">releases</span>
 
 
 <span class="k">def</span><span class="w"> </span><span class="nf">_collect_modules</span><span class="p">(</span><span class="n">layout</span><span class="p">:</span> <span class="n">Layout</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="n">Module</span><span class="p">]:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Accumulate deployed modules and their configuration snapshot.</span>
+<span class="w">    </span><span class="sd">"""Accumulate deployed modules and their configuration snapshot.</span>
 
 <span class="sd">    This searches for module application files since creation of the modulefiles happens</span>
 <span class="sd">    after the module.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
 
     <span class="n">modules</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">Module</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
 
-    <span class="k">for</span> <span class="n">name_path</span> <span class="ow">in</span> <span class="n">layout</span><span class="o">.</span><span class="n">modules_root</span><span class="o">.</span><span class="n">glob</span><span class="p">(</span><span class="s2">&quot;*&quot;</span><span class="p">):</span>
-        <span class="k">for</span> <span class="n">version_path</span> <span class="ow">in</span> <span class="n">name_path</span><span class="o">.</span><span class="n">glob</span><span class="p">(</span><span class="s2">&quot;*&quot;</span><span class="p">):</span>
+    <span class="k">for</span> <span class="n">name_path</span> <span class="ow">in</span> <span class="n">layout</span><span class="o">.</span><span class="n">modules_root</span><span class="o">.</span><span class="n">glob</span><span class="p">(</span><span class="s2">"*"</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">version_path</span> <span class="ow">in</span> <span class="n">name_path</span><span class="o">.</span><span class="n">glob</span><span class="p">(</span><span class="s2">"*"</span><span class="p">):</span>
             <span class="n">name</span> <span class="o">=</span> <span class="n">name_path</span><span class="o">.</span><span class="n">name</span>
             <span class="n">version</span> <span class="o">=</span> <span class="n">version_path</span><span class="o">.</span><span class="n">name</span>
             <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">layout</span><span class="o">.</span><span class="n">get_module_snapshot_path</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">version</span><span class="p">))</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
@@ -629,7 +629,7 @@
             <span class="n">default_version</span> <span class="o">=</span> <span class="n">get_default_modulefile_version</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">layout</span><span class="p">)</span>
         <span class="k">except</span> <span class="ne">FileNotFoundError</span> <span class="k">as</span> <span class="n">exc</span><span class="p">:</span>
             <span class="k">raise</span> <span class="n">ComparisonError</span><span class="p">(</span>
-                <span class="sa">f</span><span class="s2">&quot;Live module &#39;</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2">&#39; has no default version file&quot;</span>
+                <span class="sa">f</span><span class="s2">"Live module '</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2">' has no default version file"</span>
             <span class="p">)</span> <span class="kn">from</span><span class="w"> </span><span class="nn">exc</span>
         <span class="k">if</span> <span class="n">default_version</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">default_versions</span><span class="p">[</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="n">default_version</span>
@@ -645,7 +645,7 @@
 <span class="k">def</span><span class="w"> </span><span class="nf">_compare_releases</span><span class="p">(</span><span class="n">snapshot</span><span class="p">:</span> <span class="n">Deployment</span><span class="p">,</span> <span class="n">actual</span><span class="p">:</span> <span class="n">Deployment</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
     <span class="k">if</span> <span class="n">snapshot</span><span class="o">.</span><span class="n">releases</span> <span class="o">!=</span> <span class="n">actual</span><span class="o">.</span><span class="n">releases</span><span class="p">:</span>
         <span class="k">raise</span> <span class="n">ComparisonError</span><span class="p">(</span>
-            <span class="s2">&quot;Snapshot and actual release configuration do not match, see:</span><span class="se">\n</span><span class="s2">&quot;</span>
+            <span class="s2">"Snapshot and actual release configuration do not match, see:</span><span class="se">\n</span><span class="s2">"</span>
             <span class="o">+</span> <span class="n">_get_dict_diff</span><span class="p">(</span><span class="n">snapshot</span><span class="o">.</span><span class="n">releases</span><span class="p">,</span> <span class="n">actual</span><span class="o">.</span><span class="n">releases</span><span class="p">)</span>
         <span class="p">)</span>
 
@@ -656,13 +656,13 @@
 
     <span class="k">if</span> <span class="n">snapshot_defaults</span> <span class="o">!=</span> <span class="n">actual_defaults</span><span class="p">:</span>
         <span class="k">raise</span> <span class="n">ComparisonError</span><span class="p">(</span>
-            <span class="s2">&quot;Snapshot and actual module default versions do not match, see:</span><span class="se">\n</span><span class="s2">&quot;</span>
+            <span class="s2">"Snapshot and actual module default versions do not match, see:</span><span class="se">\n</span><span class="s2">"</span>
             <span class="o">+</span> <span class="n">_get_dict_diff</span><span class="p">(</span><span class="n">snapshot_defaults</span><span class="p">,</span> <span class="n">actual_defaults</span><span class="p">)</span>
         <span class="p">)</span>
 
 
 <span class="k">def</span><span class="w"> </span><span class="nf">_get_dict_diff</span><span class="p">(</span><span class="n">d1</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">],</span> <span class="n">d2</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
-    <span class="k">return</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span> <span class="o">+</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span>
+    <span class="k">return</span> <span class="s2">"</span><span class="se">\n</span><span class="s2">"</span> <span class="o">+</span> <span class="s2">"</span><span class="se">\n</span><span class="s2">"</span><span class="o">.</span><span class="n">join</span><span class="p">(</span>
         <span class="n">difflib</span><span class="o">.</span><span class="n">ndiff</span><span class="p">(</span>
             <span class="n">_yaml_dumps</span><span class="p">(</span><span class="n">d1</span><span class="p">)</span><span class="o">.</span><span class="n">splitlines</span><span class="p">(),</span>
             <span class="n">_yaml_dumps</span><span class="p">(</span><span class="n">d2</span><span class="p">)</span><span class="o">.</span><span class="n">splitlines</span><span class="p">(),</span>
@@ -674,7 +674,7 @@
     <span class="n">ta</span> <span class="o">=</span> <span class="n">TypeAdapter</span><span class="p">(</span><span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">])</span>
     <span class="c1"># Dump in JSON mode so pydantic special types (e.g. AnyUrl) are coerced to YAML-safe</span>
     <span class="c1"># primitives</span>
-    <span class="k">return</span> <span class="n">yaml</span><span class="o">.</span><span class="n">safe_dump</span><span class="p">(</span><span class="n">ta</span><span class="o">.</span><span class="n">dump_python</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s2">&quot;json&quot;</span><span class="p">),</span> <span class="n">indent</span><span class="o">=</span><span class="n">indent</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">yaml</span><span class="o">.</span><span class="n">safe_dump</span><span class="p">(</span><span class="n">ta</span><span class="o">.</span><span class="n">dump_python</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s2">"json"</span><span class="p">),</span> <span class="n">indent</span><span class="o">=</span><span class="n">indent</span><span class="p">)</span>
 </pre></div>
 
                 </article>

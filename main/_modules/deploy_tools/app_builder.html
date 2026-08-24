@@ -7,7 +7,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>deploy_tools.app_builder &#8212; deploy-tools 0.7.2.dev148+ga30100b23 documentation</title>
+    <title>deploy_tools.app_builder &#8212; deploy-tools 0.7.2.dev149+g59a84d3e8 documentation</title>
   
   
   
@@ -41,7 +41,7 @@
   <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=90905a2f556bf617f1a9" />
 <link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=90905a2f556bf617f1a9" />
 
-    <script src="../../_static/documentation_options.js?v=b1263fd4"></script>
+    <script src="../../_static/documentation_options.js?v=35dce433"></script>
     <script src="../../_static/doctools.js?v=fd6eb6e6"></script>
     <script src="../../_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
@@ -482,14 +482,14 @@
 <div class="viewcode-block" id="AppBuilderError">
 <a class="viewcode-back" href="../../_api/deploy_tools.app_builder.html#deploy_tools.app_builder.AppBuilderError">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">AppBuilderError</span><span class="p">(</span><span class="n">DeployToolsError</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Raised when building an application&#39;s files fails.&quot;&quot;&quot;</span></div>
+<span class="w">    </span><span class="sd">"""Raised when building an application's files fails."""</span></div>
 
 
 
 <div class="viewcode-block" id="AppBuilder">
 <a class="viewcode-back" href="../../_api/deploy_tools.app_builder.html#deploy_tools.app_builder.AppBuilder">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">AppBuilder</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Class for creating application entrypoints and associated files.&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""Class for creating application entrypoints and associated files."""</span>
 
     <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">templater</span><span class="p">:</span> <span class="n">Templater</span><span class="p">,</span> <span class="n">build_layout</span><span class="p">:</span> <span class="n">ModuleBuildLayout</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_templater</span> <span class="o">=</span> <span class="n">templater</span>
@@ -498,10 +498,10 @@
 <div class="viewcode-block" id="AppBuilder.create_application_files">
 <a class="viewcode-back" href="../../_api/deploy_tools.app_builder.html#deploy_tools.app_builder.AppBuilder.create_application_files">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">create_application_files</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">app</span><span class="p">:</span> <span class="n">Application</span><span class="p">,</span> <span class="n">module</span><span class="p">:</span> <span class="n">Module</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Create the entrypoint and supporting files for an application.</span>
+<span class="w">        </span><span class="sd">"""Create the entrypoint and supporting files for an application.</span>
 
 <span class="sd">        The files produced depend on the application type (Apptainer, shell or binary).</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="k">match</span> <span class="n">app</span><span class="p">:</span>
             <span class="k">case</span> <span class="n">ApptainerApp</span><span class="p">():</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">_create_apptainer_files</span><span class="p">(</span><span class="n">app</span><span class="p">,</span> <span class="n">module</span><span class="p">)</span>
@@ -512,7 +512,7 @@
 
 
     <span class="k">def</span><span class="w"> </span><span class="nf">_create_apptainer_files</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">app</span><span class="p">:</span> <span class="n">ApptainerApp</span><span class="p">,</span> <span class="n">module</span><span class="p">:</span> <span class="n">Module</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Create apptainer entrypoints using a specified image and commands.&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">"""Create apptainer entrypoints using a specified image and commands."""</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_generate_sif_file</span><span class="p">(</span><span class="n">app</span><span class="p">,</span> <span class="n">module</span><span class="p">)</span>
         <span class="n">entrypoints_folder</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_build_layout</span><span class="o">.</span><span class="n">get_entrypoints_folder</span><span class="p">(</span>
             <span class="n">module</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">module</span><span class="o">.</span><span class="n">version</span>
@@ -526,26 +526,26 @@
             <span class="n">options</span> <span class="o">=</span> <span class="n">entrypoint</span><span class="o">.</span><span class="n">options</span>
             <span class="n">entrypoint_file</span> <span class="o">=</span> <span class="n">entrypoints_folder</span> <span class="o">/</span> <span class="n">entrypoint</span><span class="o">.</span><span class="n">name</span>
 
-            <span class="n">mounts</span> <span class="o">=</span> <span class="s2">&quot;,&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">chain</span><span class="p">(</span><span class="n">global_options</span><span class="o">.</span><span class="n">mounts</span><span class="p">,</span> <span class="n">options</span><span class="o">.</span><span class="n">mounts</span><span class="p">))</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
-            <span class="n">host_binaries</span> <span class="o">=</span> <span class="s2">&quot; &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span>
+            <span class="n">mounts</span> <span class="o">=</span> <span class="s2">","</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">chain</span><span class="p">(</span><span class="n">global_options</span><span class="o">.</span><span class="n">mounts</span><span class="p">,</span> <span class="n">options</span><span class="o">.</span><span class="n">mounts</span><span class="p">))</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+            <span class="n">host_binaries</span> <span class="o">=</span> <span class="s2">" "</span><span class="o">.</span><span class="n">join</span><span class="p">(</span>
                 <span class="n">chain</span><span class="p">(</span><span class="n">global_options</span><span class="o">.</span><span class="n">host_binaries</span><span class="p">,</span> <span class="n">options</span><span class="o">.</span><span class="n">host_binaries</span><span class="p">)</span>
             <span class="p">)</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
 
-            <span class="n">apptainer_args</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">global_options</span><span class="o">.</span><span class="n">apptainer_args</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="n">options</span><span class="o">.</span><span class="n">apptainer_args</span><span class="si">}</span><span class="s2">&quot;</span>
+            <span class="n">apptainer_args</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">global_options</span><span class="o">.</span><span class="n">apptainer_args</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="n">options</span><span class="o">.</span><span class="n">apptainer_args</span><span class="si">}</span><span class="s2">"</span>
             <span class="n">apptainer_args</span> <span class="o">=</span> <span class="n">apptainer_args</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
 
             <span class="n">command</span> <span class="o">=</span> <span class="n">entrypoint</span><span class="o">.</span><span class="n">command</span> <span class="k">if</span> <span class="n">entrypoint</span><span class="o">.</span><span class="n">command</span> <span class="k">else</span> <span class="n">entrypoint</span><span class="o">.</span><span class="n">name</span>
 
-            <span class="n">command_args</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">global_options</span><span class="o">.</span><span class="n">command_args</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="n">options</span><span class="o">.</span><span class="n">command_args</span><span class="si">}</span><span class="s2">&quot;</span>
+            <span class="n">command_args</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">global_options</span><span class="o">.</span><span class="n">command_args</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="n">options</span><span class="o">.</span><span class="n">command_args</span><span class="si">}</span><span class="s2">"</span>
             <span class="n">command_args</span> <span class="o">=</span> <span class="n">command_args</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
 
             <span class="n">params</span> <span class="o">=</span> <span class="p">{</span>
-                <span class="s2">&quot;mounts&quot;</span><span class="p">:</span> <span class="n">mounts</span><span class="p">,</span>
-                <span class="s2">&quot;host_binaries&quot;</span><span class="p">:</span> <span class="n">host_binaries</span><span class="p">,</span>
-                <span class="s2">&quot;apptainer_args&quot;</span><span class="p">:</span> <span class="n">apptainer_args</span><span class="p">,</span>
-                <span class="s2">&quot;relative_sif_file&quot;</span><span class="p">:</span> <span class="n">relative_sif_file</span><span class="p">,</span>
-                <span class="s2">&quot;command&quot;</span><span class="p">:</span> <span class="n">command</span><span class="p">,</span>
-                <span class="s2">&quot;command_args&quot;</span><span class="p">:</span> <span class="n">command_args</span><span class="p">,</span>
+                <span class="s2">"mounts"</span><span class="p">:</span> <span class="n">mounts</span><span class="p">,</span>
+                <span class="s2">"host_binaries"</span><span class="p">:</span> <span class="n">host_binaries</span><span class="p">,</span>
+                <span class="s2">"apptainer_args"</span><span class="p">:</span> <span class="n">apptainer_args</span><span class="p">,</span>
+                <span class="s2">"relative_sif_file"</span><span class="p">:</span> <span class="n">relative_sif_file</span><span class="p">,</span>
+                <span class="s2">"command"</span><span class="p">:</span> <span class="n">command</span><span class="p">,</span>
+                <span class="s2">"command_args"</span><span class="p">:</span> <span class="n">command_args</span><span class="p">,</span>
             <span class="p">}</span>
 
             <span class="bp">self</span><span class="o">.</span><span class="n">_templater</span><span class="o">.</span><span class="n">create</span><span class="p">(</span>
@@ -565,16 +565,16 @@
             <span class="n">module</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">module</span><span class="o">.</span><span class="n">version</span>
         <span class="p">)</span>
         <span class="n">file_name</span> <span class="o">=</span> <span class="n">uuid</span><span class="o">.</span><span class="n">uuid3</span><span class="p">(</span><span class="n">uuid</span><span class="o">.</span><span class="n">NAMESPACE_URL</span><span class="p">,</span> <span class="n">app</span><span class="o">.</span><span class="n">container</span><span class="o">.</span><span class="n">url</span><span class="p">)</span><span class="o">.</span><span class="n">hex</span>
-        <span class="k">return</span> <span class="n">sif_folder</span> <span class="o">/</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">file_name</span><span class="si">}</span><span class="s2">.sif&quot;</span>
+        <span class="k">return</span> <span class="n">sif_folder</span> <span class="o">/</span> <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">file_name</span><span class="si">}</span><span class="s2">.sif"</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">_create_shell_file</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">app</span><span class="p">:</span> <span class="n">ShellApp</span><span class="p">,</span> <span class="n">module</span><span class="p">:</span> <span class="n">Module</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Create shell script using Bash for improved functionality.&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">"""Create shell script using Bash for improved functionality."""</span>
         <span class="n">entrypoint_file</span> <span class="o">=</span> <span class="p">(</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_build_layout</span><span class="o">.</span><span class="n">get_entrypoints_folder</span><span class="p">(</span><span class="n">module</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">module</span><span class="o">.</span><span class="n">version</span><span class="p">)</span>
             <span class="o">/</span> <span class="n">app</span><span class="o">.</span><span class="n">name</span>
         <span class="p">)</span>
 
-        <span class="n">parameters</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;script&quot;</span><span class="p">:</span> <span class="n">app</span><span class="o">.</span><span class="n">script</span><span class="p">}</span>
+        <span class="n">parameters</span> <span class="o">=</span> <span class="p">{</span><span class="s2">"script"</span><span class="p">:</span> <span class="n">app</span><span class="o">.</span><span class="n">script</span><span class="p">}</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">_templater</span><span class="o">.</span><span class="n">create</span><span class="p">(</span>
             <span class="n">entrypoint_file</span><span class="p">,</span>
@@ -585,11 +585,11 @@
         <span class="p">)</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">_create_binary_file</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">app</span><span class="p">:</span> <span class="n">BinaryApp</span><span class="p">,</span> <span class="n">module</span><span class="p">:</span> <span class="n">Module</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Create executable binary from the given URL.</span>
+<span class="w">        </span><span class="sd">"""Create executable binary from the given URL.</span>
 
 <span class="sd">        This will download the binary from the provided URL, validate it against its</span>
 <span class="sd">        hash, make it executable and add it to the PATH.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="n">binary_folder</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_build_layout</span><span class="o">.</span><span class="n">get_entrypoints_folder</span><span class="p">(</span>
             <span class="n">module</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">module</span><span class="o">.</span><span class="n">version</span>
         <span class="p">)</span>
@@ -608,14 +608,14 @@
                 <span class="n">h</span> <span class="o">=</span> <span class="kc">None</span>
 
         <span class="k">if</span> <span class="n">h</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">binary_path</span><span class="p">,</span> <span class="s2">&quot;rb&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">fh</span><span class="p">:</span>
+            <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">binary_path</span><span class="p">,</span> <span class="s2">"rb"</span><span class="p">)</span> <span class="k">as</span> <span class="n">fh</span><span class="p">:</span>
                 <span class="k">while</span> <span class="kc">True</span><span class="p">:</span>
                     <span class="n">data</span> <span class="o">=</span> <span class="n">fh</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="mi">4096</span><span class="p">)</span>
                     <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">data</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
                         <span class="k">break</span>
                     <span class="n">h</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
             <span class="k">if</span> <span class="n">h</span><span class="o">.</span><span class="n">hexdigest</span><span class="p">()</span> <span class="o">!=</span> <span class="n">app</span><span class="o">.</span><span class="n">hash</span><span class="p">:</span>
-                <span class="k">raise</span> <span class="n">AppBuilderError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Downloaded Binary </span><span class="si">{</span><span class="n">app</span><span class="o">.</span><span class="n">url</span><span class="si">}</span><span class="s2"> hash check failed&quot;</span><span class="p">)</span>
+                <span class="k">raise</span> <span class="n">AppBuilderError</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Downloaded Binary </span><span class="si">{</span><span class="n">app</span><span class="o">.</span><span class="n">url</span><span class="si">}</span><span class="s2"> hash check failed"</span><span class="p">)</span>
 
         <span class="n">binary_path</span><span class="o">.</span><span class="n">chmod</span><span class="p">(</span><span class="n">ALL_READ_EXECUTE_PERMISSIONS</span><span class="p">)</span></div>
 

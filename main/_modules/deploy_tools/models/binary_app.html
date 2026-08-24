@@ -7,7 +7,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>deploy_tools.models.binary_app &#8212; deploy-tools 0.7.2.dev148+ga30100b23 documentation</title>
+    <title>deploy_tools.models.binary_app &#8212; deploy-tools 0.7.2.dev149+g59a84d3e8 documentation</title>
   
   
   
@@ -41,7 +41,7 @@
   <link rel="preload" as="script" href="../../../_static/scripts/bootstrap.js?digest=90905a2f556bf617f1a9" />
 <link rel="preload" as="script" href="../../../_static/scripts/pydata-sphinx-theme.js?digest=90905a2f556bf617f1a9" />
 
-    <script src="../../../_static/documentation_options.js?v=b1263fd4"></script>
+    <script src="../../../_static/documentation_options.js?v=35dce433"></script>
     <script src="../../../_static/doctools.js?v=fd6eb6e6"></script>
     <script src="../../../_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script src="../../../_static/clipboard.min.js?v=a7894cd8"></script>
@@ -472,41 +472,41 @@
 <div class="viewcode-block" id="HashType">
 <a class="viewcode-back" href="../../../_api/deploy_tools.models.binary_app.html#deploy_tools.models.binary_app.HashType">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">HashType</span><span class="p">(</span><span class="n">StrEnum</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Type of hash to use for the binary.&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""Type of hash to use for the binary."""</span>
 
-    <span class="n">SHA256</span> <span class="o">=</span> <span class="s2">&quot;sha256&quot;</span>
-    <span class="n">SHA512</span> <span class="o">=</span> <span class="s2">&quot;sha512&quot;</span>
-    <span class="n">MD5</span> <span class="o">=</span> <span class="s2">&quot;md5&quot;</span>
-    <span class="n">NONE</span> <span class="o">=</span> <span class="s2">&quot;none&quot;</span></div>
+    <span class="n">SHA256</span> <span class="o">=</span> <span class="s2">"sha256"</span>
+    <span class="n">SHA512</span> <span class="o">=</span> <span class="s2">"sha512"</span>
+    <span class="n">MD5</span> <span class="o">=</span> <span class="s2">"md5"</span>
+    <span class="n">NONE</span> <span class="o">=</span> <span class="s2">"none"</span></div>
 
 
 
 <div class="viewcode-block" id="BinaryApp">
 <a class="viewcode-back" href="../../../_api/deploy_tools.models.binary_app.html#deploy_tools.models.binary_app.BinaryApp">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">BinaryApp</span><span class="p">(</span><span class="n">ParentModel</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Represents a standalone Binary application.</span>
+<span class="w">    </span><span class="sd">"""Represents a standalone Binary application.</span>
 
 <span class="sd">    This will fetch a standalone binary, validate its hash and add its</span>
 <span class="sd">    location to the path.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
 
     <span class="n">app_type</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span>
-        <span class="n">Literal</span><span class="p">[</span><span class="s2">&quot;binary&quot;</span><span class="p">],</span>
-        <span class="n">Field</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s2">&quot;A standalone binary to be downloaded and added to the path&quot;</span><span class="p">),</span>
+        <span class="n">Literal</span><span class="p">[</span><span class="s2">"binary"</span><span class="p">],</span>
+        <span class="n">Field</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s2">"A standalone binary to be downloaded and added to the path"</span><span class="p">),</span>
     <span class="p">]</span>
     <span class="n">name</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span>
         <span class="nb">str</span><span class="p">,</span>
         <span class="n">StringConstraints</span><span class="p">(</span><span class="n">pattern</span><span class="o">=</span><span class="n">ENTRYPOINT_NAME_REGEX</span><span class="p">),</span>
         <span class="n">Field</span><span class="p">(</span>
-            <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Name of executable to use after loading the Module. Must &quot;</span>
-            <span class="s2">&quot;start with a letter or underscore and contain only letters, digits, &quot;</span>
-            <span class="s2">&quot;hyphens or underscores.&quot;</span>
+            <span class="n">description</span><span class="o">=</span><span class="s2">"Name of executable to use after loading the Module. Must "</span>
+            <span class="s2">"start with a letter or underscore and contain only letters, digits, "</span>
+            <span class="s2">"hyphens or underscores."</span>
         <span class="p">),</span>
     <span class="p">]</span>
-    <span class="n">url</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span><span class="n">AnyUrl</span><span class="p">,</span> <span class="n">Field</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s2">&quot;URL to download the binary from&quot;</span><span class="p">)]</span>
-    <span class="nb">hash</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Field</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s2">&quot;Hash to verify binary integrity&quot;</span><span class="p">)]</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+    <span class="n">url</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span><span class="n">AnyUrl</span><span class="p">,</span> <span class="n">Field</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s2">"URL to download the binary from"</span><span class="p">)]</span>
+    <span class="nb">hash</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Field</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s2">"Hash to verify binary integrity"</span><span class="p">)]</span> <span class="o">=</span> <span class="s2">""</span>
     <span class="n">hash_type</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span>
-        <span class="n">HashType</span><span class="p">,</span> <span class="n">Field</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s2">&quot;Type of hash used to check the binary&quot;</span><span class="p">)</span>
+        <span class="n">HashType</span><span class="p">,</span> <span class="n">Field</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s2">"Type of hash used to check the binary"</span><span class="p">)</span>
     <span class="p">]</span></div>
 
 </pre></div>

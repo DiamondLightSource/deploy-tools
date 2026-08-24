@@ -7,7 +7,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>deploy_tools.models.save_and_load &#8212; deploy-tools 0.7.2.dev148+ga30100b23 documentation</title>
+    <title>deploy_tools.models.save_and_load &#8212; deploy-tools 0.7.2.dev149+g59a84d3e8 documentation</title>
   
   
   
@@ -41,7 +41,7 @@
   <link rel="preload" as="script" href="../../../_static/scripts/bootstrap.js?digest=90905a2f556bf617f1a9" />
 <link rel="preload" as="script" href="../../../_static/scripts/pydata-sphinx-theme.js?digest=90905a2f556bf617f1a9" />
 
-    <script src="../../../_static/documentation_options.js?v=b1263fd4"></script>
+    <script src="../../../_static/documentation_options.js?v=35dce433"></script>
     <script src="../../../_static/doctools.js?v=fd6eb6e6"></script>
     <script src="../../../_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script src="../../../_static/clipboard.min.js?v=a7894cd8"></script>
@@ -477,14 +477,14 @@
 <span class="p">)</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">.module</span><span class="w"> </span><span class="kn">import</span> <span class="n">Module</span><span class="p">,</span> <span class="n">Release</span>
 
-<span class="n">YAML_FILE_SUFFIX</span> <span class="o">=</span> <span class="s2">&quot;.yaml&quot;</span>
-<span class="n">DEPLOYMENT_SETTINGS</span> <span class="o">=</span> <span class="s2">&quot;settings&quot;</span> <span class="o">+</span> <span class="n">YAML_FILE_SUFFIX</span>
+<span class="n">YAML_FILE_SUFFIX</span> <span class="o">=</span> <span class="s2">".yaml"</span>
+<span class="n">DEPLOYMENT_SETTINGS</span> <span class="o">=</span> <span class="s2">"settings"</span> <span class="o">+</span> <span class="n">YAML_FILE_SUFFIX</span>
 
 
 <div class="viewcode-block" id="LoadError">
 <a class="viewcode-back" href="../../../_api/deploy_tools.models.save_and_load.html#deploy_tools.models.save_and_load.LoadError">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">LoadError</span><span class="p">(</span><span class="n">DeployToolsError</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Raised when configuration files cannot be loaded into the model.&quot;&quot;&quot;</span></div>
+<span class="w">    </span><span class="sd">"""Raised when configuration files cannot be loaded into the model."""</span></div>
 
 
 
@@ -493,11 +493,11 @@
 <span class="k">def</span><span class="w"> </span><span class="nf">save_as_yaml</span><span class="p">(</span>
     <span class="n">obj</span><span class="p">:</span> <span class="n">BaseModel</span><span class="p">,</span> <span class="n">output_path</span><span class="p">:</span> <span class="n">Path</span><span class="p">,</span> <span class="n">create_parents</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Serialise a Pydantic model to YAML and write it to the given path.&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""Serialise a Pydantic model to YAML and write it to the given path."""</span>
     <span class="k">if</span> <span class="n">create_parents</span><span class="p">:</span>
         <span class="n">output_path</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">mkdir</span><span class="p">(</span><span class="n">exist_ok</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">parents</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 
-    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">output_path</span><span class="p">,</span> <span class="s2">&quot;w&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">output_path</span><span class="p">,</span> <span class="s2">"w"</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
         <span class="c1"># Use model_dump_json() and then yaml.safe_dump() to allow us to use Pydantic</span>
         <span class="c1"># types such as AnyURL with YAML without needing a custom serializer</span>
         <span class="n">load_json</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">obj</span><span class="o">.</span><span class="n">model_dump_json</span><span class="p">())</span>
@@ -508,7 +508,7 @@
 <div class="viewcode-block" id="load_from_yaml">
 <a class="viewcode-back" href="../../../_api/deploy_tools.models.save_and_load.html#deploy_tools.models.save_and_load.load_from_yaml">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">load_from_yaml</span><span class="p">[</span><span class="n">T</span><span class="p">:</span> <span class="n">BaseModel</span><span class="p">](</span><span class="n">model</span><span class="p">:</span> <span class="nb">type</span><span class="p">[</span><span class="n">T</span><span class="p">],</span> <span class="n">input_stream</span><span class="p">:</span> <span class="n">TextIO</span> <span class="o">|</span> <span class="n">BinaryIO</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">T</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Load a single Pydantic model from a yaml file.&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""Load a single Pydantic model from a yaml file."""</span>
     <span class="k">return</span> <span class="n">model</span><span class="p">(</span><span class="o">**</span><span class="n">yaml</span><span class="o">.</span><span class="n">safe_load</span><span class="p">(</span><span class="n">input_stream</span><span class="p">))</span></div>
 
 
@@ -516,12 +516,12 @@
 <div class="viewcode-block" id="load_deployment">
 <a class="viewcode-back" href="../../../_api/deploy_tools.models.save_and_load.html#deploy_tools.models.save_and_load.load_deployment">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">load_deployment</span><span class="p">(</span><span class="n">config_folder</span><span class="p">:</span> <span class="n">Path</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Deployment</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Load Deployment configuration from a yaml file.&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""Load Deployment configuration from a yaml file."""</span>
     <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">config_folder</span> <span class="o">/</span> <span class="n">DEPLOYMENT_SETTINGS</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
         <span class="n">settings</span> <span class="o">=</span> <span class="n">load_from_yaml</span><span class="p">(</span><span class="n">DeploymentSettings</span><span class="p">,</span> <span class="n">f</span><span class="p">)</span>
 
     <span class="n">releases</span><span class="p">:</span> <span class="n">ReleasesByNameAndVersion</span> <span class="o">=</span> <span class="n">defaultdict</span><span class="p">(</span><span class="nb">dict</span><span class="p">)</span>
-    <span class="k">for</span> <span class="n">version_path</span> <span class="ow">in</span> <span class="n">config_folder</span><span class="o">.</span><span class="n">glob</span><span class="p">(</span><span class="s2">&quot;*/*&quot;</span><span class="p">):</span>
+    <span class="k">for</span> <span class="n">version_path</span> <span class="ow">in</span> <span class="n">config_folder</span><span class="o">.</span><span class="n">glob</span><span class="p">(</span><span class="s2">"*/*"</span><span class="p">):</span>
         <span class="n">release</span> <span class="o">=</span> <span class="n">_load_release</span><span class="p">(</span><span class="n">version_path</span><span class="p">)</span>
         <span class="n">module</span> <span class="o">=</span> <span class="n">release</span><span class="o">.</span><span class="n">module</span>
 
@@ -538,9 +538,9 @@
 
 
 <span class="k">def</span><span class="w"> </span><span class="nf">_load_release</span><span class="p">(</span><span class="n">path</span><span class="p">:</span> <span class="n">Path</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Release</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Load Module configuration from a yaml file.&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""Load Module configuration from a yaml file."""</span>
     <span class="k">if</span> <span class="n">path</span><span class="o">.</span><span class="n">is_dir</span><span class="p">()</span> <span class="ow">or</span> <span class="ow">not</span> <span class="n">path</span><span class="o">.</span><span class="n">suffix</span> <span class="o">==</span> <span class="n">YAML_FILE_SUFFIX</span><span class="p">:</span>
-        <span class="k">raise</span> <span class="n">LoadError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Unexpected file in configuration directory:</span><span class="se">\n</span><span class="si">{</span><span class="n">path</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="k">raise</span> <span class="n">LoadError</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Unexpected file in configuration directory:</span><span class="se">\n</span><span class="si">{</span><span class="n">path</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
 
     <span class="k">try</span><span class="p">:</span>
         <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">path</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
@@ -548,17 +548,17 @@
     <span class="k">except</span> <span class="p">(</span><span class="ne">OSError</span><span class="p">,</span> <span class="n">yaml</span><span class="o">.</span><span class="n">YAMLError</span><span class="p">,</span> <span class="n">PydanticValidationError</span><span class="p">,</span> <span class="ne">TypeError</span><span class="p">)</span> <span class="k">as</span> <span class="n">exc</span><span class="p">:</span>
         <span class="c1"># Include exc: under the top-level handler the traceback (and chained cause) is</span>
         <span class="c1"># suppressed, so the failing field is only visible if surfaced in the message.</span>
-        <span class="k">raise</span> <span class="n">LoadError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Module configuration is invalid:</span><span class="se">\n</span><span class="si">{</span><span class="n">path</span><span class="si">}</span><span class="se">\n</span><span class="si">{</span><span class="n">exc</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span> <span class="kn">from</span><span class="w"> </span><span class="nn">exc</span>
+        <span class="k">raise</span> <span class="n">LoadError</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Module configuration is invalid:</span><span class="se">\n</span><span class="si">{</span><span class="n">path</span><span class="si">}</span><span class="se">\n</span><span class="si">{</span><span class="n">exc</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span> <span class="kn">from</span><span class="w"> </span><span class="nn">exc</span>
 
 
 <span class="k">def</span><span class="w"> </span><span class="nf">_check_filepath_matches</span><span class="p">(</span><span class="n">version_path</span><span class="p">:</span> <span class="n">Path</span><span class="p">,</span> <span class="n">module</span><span class="p">:</span> <span class="n">Module</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Ensure the Module&#39;s file path (in config folder) matches the metadata.</span>
+<span class="w">    </span><span class="sd">"""Ensure the Module's file path (in config folder) matches the metadata.</span>
 
-<span class="sd">    It should be the Module&#39;s name and version as /&lt;config_folder&gt;/&lt;name&gt;/&lt;version&gt;.yaml</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    It should be the Module's name and version as /&lt;config_folder&gt;/&lt;name&gt;/&lt;version&gt;.yaml</span>
+<span class="sd">    """</span>
     <span class="k">if</span> <span class="ow">not</span> <span class="n">module</span><span class="o">.</span><span class="n">name</span> <span class="o">==</span> <span class="n">version_path</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">name</span><span class="p">:</span>
         <span class="k">raise</span> <span class="n">LoadError</span><span class="p">(</span>
-            <span class="sa">f</span><span class="s2">&quot;Module name </span><span class="si">{</span><span class="n">module</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2"> does not match path:</span><span class="se">\n</span><span class="si">{</span><span class="n">version_path</span><span class="si">}</span><span class="s2">&quot;</span>
+            <span class="sa">f</span><span class="s2">"Module name </span><span class="si">{</span><span class="n">module</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2"> does not match path:</span><span class="se">\n</span><span class="si">{</span><span class="n">version_path</span><span class="si">}</span><span class="s2">"</span>
         <span class="p">)</span>
 
     <span class="n">version_match</span> <span class="o">=</span> <span class="p">(</span>
@@ -569,7 +569,7 @@
 
     <span class="k">if</span> <span class="ow">not</span> <span class="n">version_match</span><span class="p">:</span>
         <span class="k">raise</span> <span class="n">LoadError</span><span class="p">(</span>
-            <span class="sa">f</span><span class="s2">&quot;Module version </span><span class="si">{</span><span class="n">module</span><span class="o">.</span><span class="n">version</span><span class="si">}</span><span class="s2"> does not match path:</span><span class="se">\n</span><span class="si">{</span><span class="n">version_path</span><span class="si">}</span><span class="s2">&quot;</span>
+            <span class="sa">f</span><span class="s2">"Module version </span><span class="si">{</span><span class="n">module</span><span class="o">.</span><span class="n">version</span><span class="si">}</span><span class="s2"> does not match path:</span><span class="se">\n</span><span class="si">{</span><span class="n">version_path</span><span class="si">}</span><span class="s2">"</span>
         <span class="p">)</span>
 </pre></div>
 

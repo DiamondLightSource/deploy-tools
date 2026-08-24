@@ -7,7 +7,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>deploy_tools.validate &#8212; deploy-tools 0.7.2.dev148+ga30100b23 documentation</title>
+    <title>deploy_tools.validate &#8212; deploy-tools 0.7.2.dev149+g59a84d3e8 documentation</title>
   
   
   
@@ -41,7 +41,7 @@
   <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=90905a2f556bf617f1a9" />
 <link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=90905a2f556bf617f1a9" />
 
-    <script src="../../_static/documentation_options.js?v=b1263fd4"></script>
+    <script src="../../_static/documentation_options.js?v=35dce433"></script>
     <script src="../../_static/doctools.js?v=fd6eb6e6"></script>
     <script src="../../_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
@@ -485,13 +485,13 @@
 <span class="n">logger</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
 
 
-<span class="n">SCRIPT_INDICATOR_PHRASE</span> <span class="o">=</span> <span class="s2">&quot;shell script&quot;</span>
+<span class="n">SCRIPT_INDICATOR_PHRASE</span> <span class="o">=</span> <span class="s2">"shell script"</span>
 
 
 <div class="viewcode-block" id="ValidationError">
 <a class="viewcode-back" href="../../_api/deploy_tools.validate.html#deploy_tools.validate.ValidationError">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">ValidationError</span><span class="p">(</span><span class="n">DeployToolsError</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Raised when the deployment configuration fails validation.&quot;&quot;&quot;</span></div>
+<span class="w">    </span><span class="sd">"""Raised when the deployment configuration fails validation."""</span></div>
 
 
 
@@ -504,32 +504,32 @@
     <span class="n">from_scratch</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
     <span class="n">test_build</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Validate deployment configuration and perform a test build.&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""Validate deployment configuration and perform a test build."""</span>
     <span class="k">with</span> <span class="n">TemporaryDirectory</span><span class="p">()</span> <span class="k">as</span> <span class="n">build_dir</span><span class="p">:</span>
-        <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Loading deployment configuration from: </span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">config_folder</span><span class="p">)</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">"Loading deployment configuration from: </span><span class="si">%s</span><span class="s2">"</span><span class="p">,</span> <span class="n">config_folder</span><span class="p">)</span>
         <span class="n">deployment</span> <span class="o">=</span> <span class="n">load_deployment</span><span class="p">(</span><span class="n">config_folder</span><span class="p">)</span>
 
-        <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Loading deployment snapshot&quot;</span><span class="p">)</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">"Loading deployment snapshot"</span><span class="p">)</span>
         <span class="n">layout</span> <span class="o">=</span> <span class="n">Layout</span><span class="p">(</span><span class="n">deployment_root</span><span class="p">,</span> <span class="n">build_root</span><span class="o">=</span><span class="n">Path</span><span class="p">(</span><span class="n">build_dir</span><span class="p">))</span>
         <span class="n">snapshot</span> <span class="o">=</span> <span class="n">load_snapshot</span><span class="p">(</span><span class="n">layout</span><span class="p">,</span> <span class="n">from_scratch</span><span class="p">)</span>
 
-        <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Validating deployment changes&quot;</span><span class="p">)</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">"Validating deployment changes"</span><span class="p">)</span>
         <span class="n">deployment_changes</span> <span class="o">=</span> <span class="n">validate_deployment_changes</span><span class="p">(</span>
             <span class="n">deployment</span><span class="p">,</span> <span class="n">snapshot</span><span class="p">,</span> <span class="n">allow_all</span>
         <span class="p">)</span>
 
-        <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Retrieving previous default versions&quot;</span><span class="p">)</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">"Retrieving previous default versions"</span><span class="p">)</span>
         <span class="n">snapshot_default_versions</span> <span class="o">=</span> <span class="n">validate_default_versions</span><span class="p">(</span><span class="n">snapshot</span><span class="p">)</span>
 
         <span class="k">if</span> <span class="n">test_build</span><span class="p">:</span>
-            <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Performing test build&quot;</span><span class="p">)</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">"Performing test build"</span><span class="p">)</span>
             <span class="n">build</span><span class="p">(</span><span class="n">deployment_changes</span><span class="p">,</span> <span class="n">layout</span><span class="p">)</span>
             <span class="n">_check_built_scripts</span><span class="p">(</span><span class="n">deployment_changes</span><span class="p">,</span> <span class="n">layout</span><span class="p">)</span>
 
-        <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Printing updates&quot;</span><span class="p">)</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">"Printing updates"</span><span class="p">)</span>
         <span class="n">print_updates</span><span class="p">(</span><span class="n">snapshot_default_versions</span><span class="p">,</span> <span class="n">deployment_changes</span><span class="p">)</span>
 
-        <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Validation finished&quot;</span><span class="p">)</span></div>
+        <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">"Validation finished"</span><span class="p">)</span></div>
 
 
 
@@ -538,7 +538,7 @@
 <span class="k">def</span><span class="w"> </span><span class="nf">validate_deployment_changes</span><span class="p">(</span>
     <span class="n">deployment</span><span class="p">:</span> <span class="n">Deployment</span><span class="p">,</span> <span class="n">snapshot</span><span class="p">:</span> <span class="n">Deployment</span><span class="p">,</span> <span class="n">allow_all</span><span class="p">:</span> <span class="nb">bool</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">DeploymentChanges</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Validate configuration to get set of actions that need to be carried out.&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""Validate configuration to get set of actions that need to be carried out."""</span>
     <span class="n">release_changes</span> <span class="o">=</span> <span class="n">_validate_release_changes</span><span class="p">(</span><span class="n">deployment</span><span class="p">,</span> <span class="n">snapshot</span><span class="p">,</span> <span class="n">allow_all</span><span class="p">)</span>
     <span class="n">default_versions</span> <span class="o">=</span> <span class="n">validate_default_versions</span><span class="p">(</span><span class="n">deployment</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">DeploymentChanges</span><span class="p">(</span>
@@ -550,7 +550,7 @@
 <span class="k">def</span><span class="w"> </span><span class="nf">_validate_release_changes</span><span class="p">(</span>
     <span class="n">deployment</span><span class="p">:</span> <span class="n">Deployment</span><span class="p">,</span> <span class="n">snapshot</span><span class="p">:</span> <span class="n">Deployment</span><span class="p">,</span> <span class="n">allow_all</span><span class="p">:</span> <span class="nb">bool</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ReleaseChanges</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Validate configuration to get set of Release changes.&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""Validate configuration to get set of Release changes."""</span>
     <span class="n">old_releases</span> <span class="o">=</span> <span class="n">snapshot</span><span class="o">.</span><span class="n">releases</span>
     <span class="n">new_releases</span> <span class="o">=</span> <span class="n">deployment</span><span class="o">.</span><span class="n">releases</span>
 
@@ -559,12 +559,12 @@
 
 
 <span class="k">def</span><span class="w"> </span><span class="nf">_validate_module_dependencies</span><span class="p">(</span><span class="n">deployment</span><span class="p">:</span> <span class="n">Deployment</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Ensure that all module dependencies reference versions that will exist.</span>
+<span class="w">    </span><span class="sd">"""Ensure that all module dependencies reference versions that will exist.</span>
 
 <span class="sd">    Only dependencies that pin a version are checked: if the dependency is a Module</span>
 <span class="sd">    managed by this deployment, the pinned version must be present among the final</span>
 <span class="sd">    deployed (non-deprecated) versions.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
     <span class="n">final_deployed_versions</span> <span class="o">=</span> <span class="n">deployment</span><span class="o">.</span><span class="n">get_final_deployed_versions</span><span class="p">()</span>
 
     <span class="k">for</span> <span class="n">name</span><span class="p">,</span> <span class="n">release_versions</span> <span class="ow">in</span> <span class="n">deployment</span><span class="o">.</span><span class="n">releases</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
@@ -575,8 +575,8 @@
                 <span class="k">if</span> <span class="n">dep_version</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">dep_name</span> <span class="ow">in</span> <span class="n">final_deployed_versions</span><span class="p">:</span>
                     <span class="k">if</span> <span class="n">dep_version</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">final_deployed_versions</span><span class="p">[</span><span class="n">dep_name</span><span class="p">]:</span>
                         <span class="k">raise</span> <span class="n">ValidationError</span><span class="p">(</span>
-                            <span class="sa">f</span><span class="s2">&quot;Module </span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2">/</span><span class="si">{</span><span class="n">version</span><span class="si">}</span><span class="s2"> has unknown module dependency &quot;</span>
-                            <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">dep_name</span><span class="si">}</span><span class="s2">/</span><span class="si">{</span><span class="n">dep_version</span><span class="si">}</span><span class="s2">.&quot;</span>
+                            <span class="sa">f</span><span class="s2">"Module </span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2">/</span><span class="si">{</span><span class="n">version</span><span class="si">}</span><span class="s2"> has unknown module dependency "</span>
+                            <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">dep_name</span><span class="si">}</span><span class="s2">/</span><span class="si">{</span><span class="n">dep_version</span><span class="si">}</span><span class="s2">."</span>
                         <span class="p">)</span>
 
 
@@ -604,7 +604,7 @@
                     <span class="k">continue</span>
 
                 <span class="k">raise</span> <span class="n">ValidationError</span><span class="p">(</span>
-                    <span class="sa">f</span><span class="s2">&quot;Module </span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2">/</span><span class="si">{</span><span class="n">version</span><span class="si">}</span><span class="s2"> modified without updating version.&quot;</span>
+                    <span class="sa">f</span><span class="s2">"Module </span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2">/</span><span class="si">{</span><span class="n">version</span><span class="si">}</span><span class="s2"> modified without updating version."</span>
                 <span class="p">)</span>
 
             <span class="k">if</span> <span class="ow">not</span> <span class="n">old_release</span><span class="o">.</span><span class="n">deprecated</span> <span class="ow">and</span> <span class="n">new_release</span><span class="o">.</span><span class="n">deprecated</span><span class="p">:</span>
@@ -633,8 +633,8 @@
         <span class="k">if</span> <span class="n">release</span><span class="o">.</span><span class="n">deprecated</span><span class="p">:</span>
             <span class="k">if</span> <span class="ow">not</span> <span class="n">allow_all</span><span class="p">:</span>
                 <span class="k">raise</span> <span class="n">ValidationError</span><span class="p">(</span>
-                    <span class="sa">f</span><span class="s2">&quot;Module </span><span class="si">{</span><span class="n">module</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2">/</span><span class="si">{</span><span class="n">module</span><span class="o">.</span><span class="n">version</span><span class="si">}</span><span class="s2"> cannot have deprecated &quot;</span>
-                    <span class="sa">f</span><span class="s2">&quot;status on initial creation.&quot;</span>
+                    <span class="sa">f</span><span class="s2">"Module </span><span class="si">{</span><span class="n">module</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2">/</span><span class="si">{</span><span class="n">module</span><span class="o">.</span><span class="n">version</span><span class="si">}</span><span class="s2"> cannot have deprecated "</span>
+                    <span class="sa">f</span><span class="s2">"status on initial creation."</span>
                 <span class="p">)</span>
 
 
@@ -643,22 +643,22 @@
         <span class="n">module</span> <span class="o">=</span> <span class="n">release</span><span class="o">.</span><span class="n">module</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="n">allow_all</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">module</span><span class="o">.</span><span class="n">allow_updates</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">release</span><span class="o">.</span><span class="n">deprecated</span><span class="p">:</span>
             <span class="k">raise</span> <span class="n">ValidationError</span><span class="p">(</span>
-                <span class="sa">f</span><span class="s2">&quot;Module </span><span class="si">{</span><span class="n">module</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2">/</span><span class="si">{</span><span class="n">module</span><span class="o">.</span><span class="n">version</span><span class="si">}</span><span class="s2"> removed without prior &quot;</span>
-                <span class="sa">f</span><span class="s2">&quot;deprecation.&quot;</span>
+                <span class="sa">f</span><span class="s2">"Module </span><span class="si">{</span><span class="n">module</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2">/</span><span class="si">{</span><span class="n">module</span><span class="o">.</span><span class="n">version</span><span class="si">}</span><span class="s2"> removed without prior "</span>
+                <span class="sa">f</span><span class="s2">"deprecation."</span>
             <span class="p">)</span>
 
 
 <div class="viewcode-block" id="validate_default_versions">
 <a class="viewcode-back" href="../../_api/deploy_tools.validate.html#deploy_tools.validate.validate_default_versions">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">validate_default_versions</span><span class="p">(</span><span class="n">deployment</span><span class="p">:</span> <span class="n">Deployment</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">DefaultVersionsByName</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Validate configuration to get set of default version changes.&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""Validate configuration to get set of default version changes."""</span>
     <span class="n">final_deployed_versions</span> <span class="o">=</span> <span class="n">deployment</span><span class="o">.</span><span class="n">get_final_deployed_versions</span><span class="p">()</span>
 
     <span class="k">for</span> <span class="n">name</span><span class="p">,</span> <span class="n">version</span> <span class="ow">in</span> <span class="n">deployment</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">default_versions</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
         <span class="k">if</span> <span class="n">version</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">final_deployed_versions</span><span class="p">[</span><span class="n">name</span><span class="p">]:</span>
             <span class="k">raise</span> <span class="n">ValidationError</span><span class="p">(</span>
-                <span class="sa">f</span><span class="s2">&quot;Unable to configure </span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2">/</span><span class="si">{</span><span class="n">version</span><span class="si">}</span><span class="s2"> as default; module will not &quot;</span>
-                <span class="sa">f</span><span class="s2">&quot;exist.&quot;</span>
+                <span class="sa">f</span><span class="s2">"Unable to configure </span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2">/</span><span class="si">{</span><span class="n">version</span><span class="si">}</span><span class="s2"> as default; module will not "</span>
+                <span class="sa">f</span><span class="s2">"exist."</span>
             <span class="p">)</span>
 
     <span class="n">default_versions</span> <span class="o">=</span> <span class="n">_get_all_default_versions</span><span class="p">(</span>
@@ -673,12 +673,12 @@
     <span class="n">initial_defaults</span><span class="p">:</span> <span class="n">DefaultVersionsByName</span><span class="p">,</span>
     <span class="n">final_deployed_modules</span><span class="p">:</span> <span class="n">ModulesByName</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">DefaultVersionsByName</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Return the default versions that will be used for all modules in configuration.</span>
+<span class="w">    </span><span class="sd">"""Return the default versions that will be used for all modules in configuration.</span>
 
 <span class="sd">    All modules will have a .version file to specify their default, even if they do not</span>
-<span class="sd">    specify one in configuration. This is to ensure that &#39;development&#39; versions are not</span>
+<span class="sd">    specify one in configuration. This is to ensure that 'development' versions are not</span>
 <span class="sd">    accidentally used as the default.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
     <span class="n">final_defaults</span><span class="p">:</span> <span class="n">DefaultVersionsByName</span> <span class="o">=</span> <span class="p">{}</span>
     <span class="n">final_defaults</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">initial_defaults</span><span class="p">)</span>
 
@@ -697,51 +697,51 @@
             <span class="c1"># the default. Environment Modules will otherwise make an arbitrary module</span>
             <span class="c1"># the default</span>
             <span class="k">raise</span> <span class="n">ValidationError</span><span class="p">(</span>
-                <span class="sa">f</span><span class="s2">&quot;All modules require a default, but every version for name: </span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2"> &quot;</span>
-                <span class="sa">f</span><span class="s2">&quot;has set exclude_from_defaults=true. Please specify an explicit &quot;</span>
-                <span class="sa">f</span><span class="s2">&quot;default or provide an alternative version without the exclusion.&quot;</span>
+                <span class="sa">f</span><span class="s2">"All modules require a default, but every version for name: </span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2"> "</span>
+                <span class="sa">f</span><span class="s2">"has set exclude_from_defaults=true. Please specify an explicit "</span>
+                <span class="sa">f</span><span class="s2">"default or provide an alternative version without the exclusion."</span>
             <span class="p">)</span>
 
-        <span class="c1"># The key follows natsort&#39;s documentation for supporting non-SemVer strings</span>
+        <span class="c1"># The key follows natsort's documentation for supporting non-SemVer strings</span>
         <span class="c1"># E.g. 1.2rc1 should come before 1.2.1 or 1.2</span>
-        <span class="n">sorted_versions</span> <span class="o">=</span> <span class="n">natsorted</span><span class="p">(</span><span class="n">versions</span><span class="p">,</span> <span class="n">key</span><span class="o">=</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;.&quot;</span><span class="p">,</span> <span class="s2">&quot;~&quot;</span><span class="p">)</span> <span class="o">+</span> <span class="s2">&quot;z&quot;</span><span class="p">)</span>
+        <span class="n">sorted_versions</span> <span class="o">=</span> <span class="n">natsorted</span><span class="p">(</span><span class="n">versions</span><span class="p">,</span> <span class="n">key</span><span class="o">=</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">"."</span><span class="p">,</span> <span class="s2">"~"</span><span class="p">)</span> <span class="o">+</span> <span class="s2">"z"</span><span class="p">)</span>
         <span class="n">final_defaults</span><span class="p">[</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="n">sorted_versions</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
 
     <span class="k">return</span> <span class="n">final_defaults</span>
 
 
 <span class="k">def</span><span class="w"> </span><span class="nf">_is_shell_script</span><span class="p">(</span><span class="n">file</span><span class="p">:</span> <span class="n">Path</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Determine whether specified file is a shell script.</span>
+<span class="w">    </span><span class="sd">"""Determine whether specified file is a shell script.</span>
 
-<span class="sd">    This uses the output of the Linux &#39;file&#39; command, which is dependent on the</span>
+<span class="sd">    This uses the output of the Linux 'file' command, which is dependent on the</span>
 <span class="sd">    shebang line as well as the OS. Both are controlled in our deployment.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">result</span> <span class="o">=</span> <span class="n">run_command</span><span class="p">([</span><span class="s2">&quot;file&quot;</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">file</span><span class="o">.</span><span class="n">absolute</span><span class="p">())],</span> <span class="n">capture_output</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">text</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="sd">    """</span>
+    <span class="n">result</span> <span class="o">=</span> <span class="n">run_command</span><span class="p">([</span><span class="s2">"file"</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">file</span><span class="o">.</span><span class="n">absolute</span><span class="p">())],</span> <span class="n">capture_output</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">text</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">SCRIPT_INDICATOR_PHRASE</span> <span class="ow">in</span> <span class="n">result</span><span class="o">.</span><span class="n">stdout</span>
 
 
 <span class="k">def</span><span class="w"> </span><span class="nf">_check_bash_syntax</span><span class="p">(</span><span class="n">file</span><span class="p">:</span> <span class="n">Path</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Check bash syntax is valid for the given file.</span>
+<span class="w">    </span><span class="sd">"""Check bash syntax is valid for the given file.</span>
 
 <span class="sd">    Since failing this validation will prevent a deploy-tools job from continuing, we</span>
-<span class="sd">    don&#39;t want to use more stringent tests as with e.g. shellcheck.</span>
+<span class="sd">    don't want to use more stringent tests as with e.g. shellcheck.</span>
 
 <span class="sd">    This is also unable to check that all required functions and tools are available, so</span>
 <span class="sd">    some typos are likely to pass.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
     <span class="n">result</span> <span class="o">=</span> <span class="n">run_command</span><span class="p">(</span>
-        <span class="p">[</span><span class="s2">&quot;bash&quot;</span><span class="p">,</span> <span class="s2">&quot;-n&quot;</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">file</span><span class="o">.</span><span class="n">absolute</span><span class="p">())],</span>
+        <span class="p">[</span><span class="s2">"bash"</span><span class="p">,</span> <span class="s2">"-n"</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">file</span><span class="o">.</span><span class="n">absolute</span><span class="p">())],</span>
         <span class="n">capture_output</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
         <span class="n">text</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
     <span class="p">)</span>
     <span class="k">if</span> <span class="n">result</span><span class="o">.</span><span class="n">returncode</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">:</span>
         <span class="k">raise</span> <span class="n">ValidationError</span><span class="p">(</span>
-            <span class="sa">f</span><span class="s2">&quot;Output script </span><span class="si">{</span><span class="n">file</span><span class="o">.</span><span class="n">absolute</span><span class="p">()</span><span class="si">}</span><span class="s2"> is invalid with errors:</span><span class="se">\n</span><span class="si">{</span><span class="n">result</span><span class="o">.</span><span class="n">stderr</span><span class="si">}</span><span class="s2">&quot;</span>
+            <span class="sa">f</span><span class="s2">"Output script </span><span class="si">{</span><span class="n">file</span><span class="o">.</span><span class="n">absolute</span><span class="p">()</span><span class="si">}</span><span class="s2"> is invalid with errors:</span><span class="se">\n</span><span class="si">{</span><span class="n">result</span><span class="o">.</span><span class="n">stderr</span><span class="si">}</span><span class="s2">"</span>
         <span class="p">)</span>
 
 
 <span class="k">def</span><span class="w"> </span><span class="nf">_check_built_scripts</span><span class="p">(</span><span class="n">changes</span><span class="p">:</span> <span class="n">DeploymentChanges</span><span class="p">,</span> <span class="n">layout</span><span class="p">:</span> <span class="n">Layout</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Check the syntax of all shell-script entrypoints in the built modules.&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""Check the syntax of all shell-script entrypoints in the built modules."""</span>
     <span class="n">release_changes</span> <span class="o">=</span> <span class="n">changes</span><span class="o">.</span><span class="n">release_changes</span>
     <span class="n">releases</span> <span class="o">=</span> <span class="n">release_changes</span><span class="o">.</span><span class="n">to_add</span> <span class="o">+</span> <span class="n">release_changes</span><span class="o">.</span><span class="n">to_update</span>
     <span class="n">build_layout</span> <span class="o">=</span> <span class="n">layout</span><span class="o">.</span><span class="n">build_layout</span>
@@ -750,7 +750,7 @@
         <span class="n">name</span> <span class="o">=</span> <span class="n">release</span><span class="o">.</span><span class="n">module</span><span class="o">.</span><span class="n">name</span>
         <span class="n">version</span> <span class="o">=</span> <span class="n">release</span><span class="o">.</span><span class="n">module</span><span class="o">.</span><span class="n">version</span>
 
-        <span class="k">for</span> <span class="n">entrypoint</span> <span class="ow">in</span> <span class="n">build_layout</span><span class="o">.</span><span class="n">get_entrypoints_folder</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">version</span><span class="p">)</span><span class="o">.</span><span class="n">glob</span><span class="p">(</span><span class="s2">&quot;*&quot;</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">entrypoint</span> <span class="ow">in</span> <span class="n">build_layout</span><span class="o">.</span><span class="n">get_entrypoints_folder</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">version</span><span class="p">)</span><span class="o">.</span><span class="n">glob</span><span class="p">(</span><span class="s2">"*"</span><span class="p">):</span>
             <span class="k">if</span> <span class="n">_is_shell_script</span><span class="p">(</span><span class="n">entrypoint</span><span class="p">):</span>
                 <span class="n">_check_bash_syntax</span><span class="p">(</span><span class="n">entrypoint</span><span class="p">)</span>
 </pre></div>

@@ -7,7 +7,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>deploy_tools.snapshot &#8212; deploy-tools 0.7.2.dev148+ga30100b23 documentation</title>
+    <title>deploy_tools.snapshot &#8212; deploy-tools 0.7.2.dev149+g59a84d3e8 documentation</title>
   
   
   
@@ -41,7 +41,7 @@
   <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=90905a2f556bf617f1a9" />
 <link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=90905a2f556bf617f1a9" />
 
-    <script src="../../_static/documentation_options.js?v=b1263fd4"></script>
+    <script src="../../_static/documentation_options.js?v=35dce433"></script>
     <script src="../../_static/doctools.js?v=fd6eb6e6"></script>
     <script src="../../_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
@@ -479,19 +479,19 @@
 <div class="viewcode-block" id="SnapshotError">
 <a class="viewcode-back" href="../../_api/deploy_tools.snapshot.html#deploy_tools.snapshot.SnapshotError">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">SnapshotError</span><span class="p">(</span><span class="n">DeployToolsError</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Raised when a deployment snapshot is missing or in an unexpected state.&quot;&quot;&quot;</span></div>
+<span class="w">    </span><span class="sd">"""Raised when a deployment snapshot is missing or in an unexpected state."""</span></div>
 
 
 
 <div class="viewcode-block" id="create_snapshot">
 <a class="viewcode-back" href="../../_api/deploy_tools.snapshot.html#deploy_tools.snapshot.create_snapshot">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">create_snapshot</span><span class="p">(</span><span class="n">deployment</span><span class="p">:</span> <span class="n">Deployment</span><span class="p">,</span> <span class="n">layout</span><span class="p">:</span> <span class="n">Layout</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Create a snapshot file for the deployment configuration.</span>
+<span class="w">    </span><span class="sd">"""Create a snapshot file for the deployment configuration.</span>
 
 <span class="sd">    This snapshot can then be used to compare the previous and current deployment</span>
 <span class="sd">    configuration when a compare, validate or sync process is run.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;Creating snapshot: </span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">layout</span><span class="o">.</span><span class="n">deployment_snapshot_path</span><span class="p">)</span>
+<span class="sd">    """</span>
+    <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">"Creating snapshot: </span><span class="si">%s</span><span class="s2">"</span><span class="p">,</span> <span class="n">layout</span><span class="o">.</span><span class="n">deployment_snapshot_path</span><span class="p">)</span>
     <span class="n">save_as_yaml</span><span class="p">(</span><span class="n">deployment</span><span class="p">,</span> <span class="n">layout</span><span class="o">.</span><span class="n">deployment_snapshot_path</span><span class="p">)</span></div>
 
 
@@ -499,40 +499,40 @@
 <div class="viewcode-block" id="load_snapshot">
 <a class="viewcode-back" href="../../_api/deploy_tools.snapshot.html#deploy_tools.snapshot.load_snapshot">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">load_snapshot</span><span class="p">(</span><span class="n">layout</span><span class="p">:</span> <span class="n">Layout</span><span class="p">,</span> <span class="n">from_scratch</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Deployment</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Load snapshot of the Deployment configuration taken at start of Deploy step.</span>
+<span class="w">    </span><span class="sd">"""Load snapshot of the Deployment configuration taken at start of Deploy step.</span>
 
 <span class="sd">    Args:</span>
 <span class="sd">        layout: The ``Layout`` representing the Deployment Area.</span>
 <span class="sd">        from_scratch: If True, this will return the default ``Deployment``</span>
 <span class="sd">            configuration in order to work with an empty Deployment Area.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
     <span class="k">if</span> <span class="ow">not</span> <span class="n">layout</span><span class="o">.</span><span class="n">deployment_root</span><span class="o">.</span><span class="n">exists</span><span class="p">()</span> <span class="ow">or</span> <span class="ow">not</span> <span class="n">layout</span><span class="o">.</span><span class="n">deployment_root</span><span class="o">.</span><span class="n">is_dir</span><span class="p">():</span>
         <span class="k">raise</span> <span class="n">SnapshotError</span><span class="p">(</span>
-            <span class="sa">f</span><span class="s2">&quot;Deployment root folder does not exist:</span><span class="se">\n</span><span class="si">{</span><span class="n">layout</span><span class="o">.</span><span class="n">deployment_root</span><span class="si">}</span><span class="s2">&quot;</span>
+            <span class="sa">f</span><span class="s2">"Deployment root folder does not exist:</span><span class="se">\n</span><span class="si">{</span><span class="n">layout</span><span class="o">.</span><span class="n">deployment_root</span><span class="si">}</span><span class="s2">"</span>
         <span class="p">)</span>
 
     <span class="k">if</span> <span class="n">from_scratch</span><span class="p">:</span>
         <span class="k">if</span> <span class="n">layout</span><span class="o">.</span><span class="n">deployment_snapshot_path</span><span class="o">.</span><span class="n">exists</span><span class="p">():</span>
             <span class="k">raise</span> <span class="n">SnapshotError</span><span class="p">(</span>
-                <span class="sa">f</span><span class="s2">&quot;Deployment snapshot must not exist when deploying from scratch:</span><span class="se">\n</span><span class="s2">&quot;</span>
-                <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">layout</span><span class="o">.</span><span class="n">deployment_snapshot_path</span><span class="si">}</span><span class="s2">&quot;</span>
+                <span class="sa">f</span><span class="s2">"Deployment snapshot must not exist when deploying from scratch:</span><span class="se">\n</span><span class="s2">"</span>
+                <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">layout</span><span class="o">.</span><span class="n">deployment_snapshot_path</span><span class="si">}</span><span class="s2">"</span>
             <span class="p">)</span>
 
-        <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;Loading empty deployment configuration as snapshot&quot;</span><span class="p">)</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">"Loading empty deployment configuration as snapshot"</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">Deployment</span><span class="p">(</span><span class="n">settings</span><span class="o">=</span><span class="n">DeploymentSettings</span><span class="p">(),</span> <span class="n">releases</span><span class="o">=</span><span class="p">{})</span>
 
     <span class="k">if</span> <span class="ow">not</span> <span class="n">layout</span><span class="o">.</span><span class="n">deployment_snapshot_path</span><span class="o">.</span><span class="n">exists</span><span class="p">():</span>
         <span class="k">raise</span> <span class="n">SnapshotError</span><span class="p">(</span>
-            <span class="sa">f</span><span class="s2">&quot;Deployment snapshot not found:</span><span class="se">\n</span><span class="si">{</span><span class="n">layout</span><span class="o">.</span><span class="n">deployment_snapshot_path</span><span class="si">}</span><span class="s2">&quot;</span>
+            <span class="sa">f</span><span class="s2">"Deployment snapshot not found:</span><span class="se">\n</span><span class="si">{</span><span class="n">layout</span><span class="o">.</span><span class="n">deployment_snapshot_path</span><span class="si">}</span><span class="s2">"</span>
         <span class="p">)</span>
 
-    <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;Loading snapshot: </span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">layout</span><span class="o">.</span><span class="n">deployment_snapshot_path</span><span class="p">)</span>
+    <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">"Loading snapshot: </span><span class="si">%s</span><span class="s2">"</span><span class="p">,</span> <span class="n">layout</span><span class="o">.</span><span class="n">deployment_snapshot_path</span><span class="p">)</span>
     <span class="k">try</span><span class="p">:</span>
         <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">layout</span><span class="o">.</span><span class="n">deployment_snapshot_path</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
             <span class="k">return</span> <span class="n">load_from_yaml</span><span class="p">(</span><span class="n">Deployment</span><span class="p">,</span> <span class="n">f</span><span class="p">)</span>
     <span class="k">except</span> <span class="p">(</span><span class="ne">OSError</span><span class="p">,</span> <span class="n">yaml</span><span class="o">.</span><span class="n">YAMLError</span><span class="p">,</span> <span class="n">PydanticValidationError</span><span class="p">,</span> <span class="ne">TypeError</span><span class="p">)</span> <span class="k">as</span> <span class="n">exc</span><span class="p">:</span>
         <span class="k">raise</span> <span class="n">SnapshotError</span><span class="p">(</span>
-            <span class="sa">f</span><span class="s2">&quot;Deployment snapshot could not be read:</span><span class="se">\n</span><span class="si">{</span><span class="n">layout</span><span class="o">.</span><span class="n">deployment_snapshot_path</span><span class="si">}</span><span class="s2">&quot;</span>
+            <span class="sa">f</span><span class="s2">"Deployment snapshot could not be read:</span><span class="se">\n</span><span class="si">{</span><span class="n">layout</span><span class="o">.</span><span class="n">deployment_snapshot_path</span><span class="si">}</span><span class="s2">"</span>
         <span class="p">)</span> <span class="kn">from</span><span class="w"> </span><span class="nn">exc</span></div>
 
 
@@ -540,14 +540,14 @@
 <div class="viewcode-block" id="load_snapshot_from_ref">
 <a class="viewcode-back" href="../../_api/deploy_tools.snapshot.html#deploy_tools.snapshot.load_snapshot_from_ref">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">load_snapshot_from_ref</span><span class="p">(</span><span class="n">layout</span><span class="p">:</span> <span class="n">Layout</span><span class="p">,</span> <span class="n">ref</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Deployment</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Load the deployment snapshot from the given git ref of the deployment area.&quot;&quot;&quot;</span>
-    <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;Loading snapshot from ref: </span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">ref</span><span class="p">)</span>
+<span class="w">    </span><span class="sd">"""Load the deployment snapshot from the given git ref of the deployment area."""</span>
+    <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">"Loading snapshot from ref: </span><span class="si">%s</span><span class="s2">"</span><span class="p">,</span> <span class="n">ref</span><span class="p">)</span>
     <span class="k">with</span> <span class="n">Repo</span><span class="p">(</span><span class="n">layout</span><span class="o">.</span><span class="n">deployment_root</span><span class="p">)</span> <span class="k">as</span> <span class="n">repo</span><span class="p">:</span>
         <span class="k">try</span><span class="p">:</span>
             <span class="n">ref_snapshot</span> <span class="o">=</span> <span class="n">repo</span><span class="o">.</span><span class="n">commit</span><span class="p">(</span><span class="n">ref</span><span class="p">)</span><span class="o">.</span><span class="n">tree</span><span class="p">[</span><span class="n">layout</span><span class="o">.</span><span class="n">DEPLOYMENT_SNAPSHOT_FILENAME</span><span class="p">]</span>
         <span class="k">except</span> <span class="p">(</span><span class="n">BadName</span><span class="p">,</span> <span class="ne">KeyError</span><span class="p">)</span> <span class="k">as</span> <span class="n">exc</span><span class="p">:</span>
             <span class="k">raise</span> <span class="n">SnapshotError</span><span class="p">(</span>
-                <span class="sa">f</span><span class="s2">&quot;Deployment snapshot not found at git ref:</span><span class="se">\n</span><span class="si">{</span><span class="n">ref</span><span class="si">}</span><span class="s2">&quot;</span>
+                <span class="sa">f</span><span class="s2">"Deployment snapshot not found at git ref:</span><span class="se">\n</span><span class="si">{</span><span class="n">ref</span><span class="si">}</span><span class="s2">"</span>
             <span class="p">)</span> <span class="kn">from</span><span class="w"> </span><span class="nn">exc</span>
 
         <span class="n">snapshot_bytes</span> <span class="o">=</span> <span class="n">cast</span><span class="p">(</span><span class="nb">bytes</span><span class="p">,</span> <span class="n">ref_snapshot</span><span class="o">.</span><span class="n">data_stream</span><span class="o">.</span><span class="n">read</span><span class="p">())</span>
