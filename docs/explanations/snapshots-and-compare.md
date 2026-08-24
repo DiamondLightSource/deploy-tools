@@ -37,7 +37,7 @@ will not be detected. The risk of corruption is avoided at build time instead: a
 is built on the same filesystem as the deployment area and published by a single atomic
 rename, so a partial or failed build (including `.sif` files) is never moved into place.
 
-This is why CI should run `compare` *before* every `sync`: it confirms the area is in the
+This is why `compare` should be run *before* every `sync`: it confirms the area is in the
 healthy state the last `sync` claimed to leave it in.
 
 ## Recovery is manual
@@ -55,7 +55,7 @@ Two facilities help here:
   often easier to rollback the configuration to a previous state rather than fix the
   latest deployment.
 - `compare --from-scratch` asserts only that the deployment root exists and is *empty* —
-  this is the check to run in CI before the very first `sync`, when no snapshot exists yet.
+  this is the check to run before the very first `sync`, when no snapshot exists yet.
 
 The git repository in the deployment area exists only to give `compare --use-ref` this
 reference point. It deliberately excludes the build area and Apptainer images, and is

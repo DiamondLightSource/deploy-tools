@@ -68,10 +68,13 @@ automatic choice is made.
 
 ## Get your change deployed
 
-You don't run `deploy-tools` yourself. Open a merge request in the configuration
-repository; CI validates the change and, once it is merged, deploys it (see
-[drive deploy-tools from CI](ci-pipeline.md)). The `yaml-language-server` schema line
-catches structural mistakes in your editor as you type, before you open the request.
+How your change reaches the deployment area depends on how your site runs `deploy-tools`.
+The recommended setup is a CI pipeline in the configuration repository: you open a merge
+request, CI validates the change, and merging it deploys (see
+[drive deploy-tools from CI](ci-pipeline.md)). CI is not a requirement — an administrator
+can run the same `validate` and `sync` commands by hand instead. Either way, the
+`yaml-language-server` schema line catches structural mistakes in your editor as you type,
+before anyone else looks at the change.
 
 ## Change or retire a version
 

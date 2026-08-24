@@ -23,4 +23,4 @@ place, or nothing changes.
 read-only checks run before it. See
 [snapshots and the compare safety net](snapshots-and-compare.md) for how the snapshot
 ties them together, and [drive deploy-tools from CI](../how-to/ci-pipeline.md) for the
-order a pipeline runs them in.
+order to run them in.
