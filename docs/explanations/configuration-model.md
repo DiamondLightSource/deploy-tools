@@ -51,6 +51,20 @@ A Module is the unit an end user loads. It carries:
 | `allow_updates` | Permit in-place changes to this version — see [the guard rails](deprecation-lifecycle.md#the-guard-rails). |
 | `exclude_from_defaults` | Keep this version out of automatic default selection — see [default versions](default-versions.md#excluding-a-version-from-the-automatic-default). |
 
+Each entry under `env_vars` is a name/value pair:
+
+| Field | Purpose |
+|-------|---------|
+| `name` | The variable to set. |
+| `value` | The value to set it to. |
+
+Each entry under `dependencies` names another Module:
+
+| Field | Purpose |
+|-------|---------|
+| `name` | The Module to load first. |
+| `version` | The version to pin to. If omitted, that Module's default version is resolved at load time. |
+
 `load_script` and `unload_script` are injected raw into the generated Modulefile. They
 are for advanced cases the other fields cannot cover — check with a `deploy-tools` admin
 before using them.
@@ -63,11 +77,11 @@ Each per-version file also carries a `deprecated` flag; see
 Every entry under `applications` sets `app_type` to select one of three kinds; a single
 Module can mix them.
 
-| `app_type` | Provides | Key fields |
-|------------|----------|------------|
-| `apptainer` | Commands that run inside a container image | `container`, `entrypoints`, `global_options` |
-| `shell` | A single executable running a bash script | `name`, `script` |
-| `binary` | A downloaded executable added to the path | `name`, `url`, `hash`, `hash_type` |
+| `app_type` | Provides |
+|------------|----------|
+| `apptainer` | Commands that run inside a container image |
+| `shell` | A single executable running a bash script |
+| `binary` | A downloaded executable added to the path |
 
 The demo `example-module-apps` Module combines an Apptainer app with a Shell app:
 
@@ -76,16 +90,62 @@ The demo `example-module-apps` Module combines an Apptainer app with a Shell app
 :lines: 3-
 ```
 
-**Apptainer** uses one container image with one or more `entrypoints`, each mapping an
-executable name to a command run inside the container. Options — container `mounts`,
-`command_args`, `apptainer_args`, `host_binaries` — can be set per entrypoint or shared
-across all of them via `global_options`.
+### Apptainer
 
-**Shell** exposes a single executable (`name`) that runs the `script` list as bash.
+One container image with one or more entrypoints, each mapping an executable name to a
+command run inside the container.
 
-**Binary** downloads `url`, checks it against `hash` using `hash_type` (`sha256`,
-`sha512`, `md5`, or `none` to skip the check), and adds the executable to the path as
-`name`. The demo `argocd` Module uses one:
+| Field | Purpose |
+|-------|---------|
+| `container` | The image to use (below). |
+| `entrypoints` | The executables provided (below). |
+| `global_options` | Options applied to every entrypoint. |
+
+`container` splits the image reference into `path:version`:
+
+| Field | Purpose |
+|-------|---------|
+| `path` | The image URL, excluding the version or tag. `docker`, `shub`, `oras` and `https` schemes are accepted. |
+| `version` | The image version or tag. |
+
+Each entry under `entrypoints` is one executable:
+
+| Field | Purpose |
+|-------|---------|
+| `name` | The executable provided. |
+| `command` | The command to run inside the container. Defaults to `name`. |
+| `options` | Options applied to this entrypoint only. |
+
+Both `options` and `global_options` take the same fields:
+
+| Field | Purpose |
+|-------|---------|
+| `apptainer_args` | Arguments passed to Apptainer when launching the container. |
+| `command_args` | Arguments passed to the command being run. |
+| `mounts` | Mount points as `host_path[:container_path[:opts]]`, where `opts` is `ro` or `rw` (default `rw`). |
+| `host_binaries` | Host binaries, found on the current `PATH`, to mount into the container at `/usr/bin/<name>`. |
+
+### Shell
+
+A single executable running a bash script.
+
+| Field | Purpose |
+|-------|---------|
+| `name` | The executable provided. |
+| `script` | The lines of bash it runs. |
+
+### Binary
+
+An executable downloaded, hash-checked and added to the path.
+
+| Field | Purpose |
+|-------|---------|
+| `name` | The executable provided. |
+| `url` | Where the binary is downloaded from. |
+| `hash` | The expected hash of the download. |
+| `hash_type` | `sha256`, `sha512`, `md5`, or `none` to skip the check. |
+
+The demo `argocd` Module uses one:
 
 ```{literalinclude} ../../src/deploy_tools/demo_configuration/argocd/v2.14.10.yaml
 :language: yaml
