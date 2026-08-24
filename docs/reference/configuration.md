@@ -53,14 +53,14 @@ A Module is the unit an end user loads. It carries:
 | `allow_updates` | Permit in-place changes to this version — see [the guard rails](../explanations/deprecation-lifecycle.md#the-guard-rails). |
 | `exclude_from_defaults` | Keep this version out of automatic default selection — see [default versions](../explanations/default-versions.md#excluding-a-version-from-the-automatic-default). |
 
-Each entry under `env_vars` is a name/value pair:
+**`env_vars`** — each entry is a name/value pair:
 
 | Field | Purpose |
 |-------|---------|
 | `name` | The variable to set. |
 | `value` | The value to set it to. |
 
-Each entry under `dependencies` names another Module:
+**`dependencies`** — each entry names another Module:
 
 | Field | Purpose |
 |-------|---------|
@@ -103,14 +103,14 @@ command run inside the container.
 | `entrypoints` | The executables provided (below). |
 | `global_options` | Options applied to every entrypoint. |
 
-`container` splits the image reference into `path:version`:
+**`container`** — splits the image reference into `path:version`:
 
 | Field | Purpose |
 |-------|---------|
 | `path` | The image URL, excluding the version or tag. `docker`, `shub`, `oras` and `https` schemes are accepted. |
 | `version` | The image version or tag. |
 
-Each entry under `entrypoints` is one executable:
+**`entrypoints`** — each entry is one executable:
 
 | Field | Purpose |
 |-------|---------|
@@ -118,7 +118,7 @@ Each entry under `entrypoints` is one executable:
 | `command` | The command to run inside the container. Defaults to `name`. |
 | `options` | Options applied to this entrypoint only. |
 
-Both `options` and `global_options` take the same fields:
+**`options` and `global_options`** — both take the same fields:
 
 | Field | Purpose |
 |-------|---------|
