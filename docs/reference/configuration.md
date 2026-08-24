@@ -1,4 +1,4 @@
-# The configuration model
+# Configuration
 
 This page is for anyone writing or editing deployment configuration. It documents every
 field of the files you author and how they nest. The field tables are curated by hand
