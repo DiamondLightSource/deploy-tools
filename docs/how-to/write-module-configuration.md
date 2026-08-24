@@ -56,6 +56,9 @@ default_versions:
   my-module: "1.0"
 ```
 
+`settings.yaml` can take a schema line of its own, as
+[above](#add-a-new-module-version), pointing at `deployment-settings.json`.
+
 To keep a version out of automatic selection — an alpha or release candidate, say — while
 still allowing an explicit `module load <name>/<version>`, set
 `exclude_from_defaults: true` on that Module.
