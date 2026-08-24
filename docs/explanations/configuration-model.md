@@ -36,20 +36,24 @@ see [the three application types](#the-three-application-types) below.
 
 ## A Module
 
-A Module is the unit an end user loads. Alongside its `name` and `version` it carries:
+A Module is the unit an end user loads. It carries:
 
 | Field | Purpose |
 |-------|---------|
+| `name` | The name an end user loads it by. |
+| `version` | The version an end user loads it by. |
 | `description` | Shown by `module whatis <name>`. |
 | `env_vars` | Environment variables set when the Module is loaded. |
 | `dependencies` | Other Modules loaded first, optionally version-pinned. |
 | `applications` | One or more applications providing the executables (below). |
+| `load_script` | Extra commands run when the Module is loaded — see below. |
+| `unload_script` | Extra commands run when the Module is unloaded — see below. |
 | `allow_updates` | Permit in-place changes to this version — see [the guard rails](deprecation-lifecycle.md#the-guard-rails). |
 | `exclude_from_defaults` | Keep this version out of automatic default selection — see [default versions](default-versions.md#excluding-a-version-from-the-automatic-default). |
 
-`load_script` and `unload_script` run extra commands when the Module is loaded and
-unloaded respectively, injected raw into the generated Modulefile. They are an advanced
-escape hatch — check with a `deploy-tools` admin before using them.
+`load_script` and `unload_script` are injected raw into the generated Modulefile. They
+are for advanced cases the other fields cannot cover — check with a `deploy-tools` admin
+before using them.
 
 Each per-version file also carries a `deprecated` flag; see
 [the release lifecycle](deprecation-lifecycle.md).
