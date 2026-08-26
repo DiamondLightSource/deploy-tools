@@ -25,8 +25,8 @@ the deploy-tools commands. The deployment_root needs to be a writeable location 
 files to get deployed under.
 
 These commands act on a shared deployment area, so we recommend running them from a CI
-pipeline gated by change review rather than by hand a requirement. Running them manually
-against the demo configuration, as below, is the quickest way to see what each does — the
+pipeline gated by change review rather than by hand. Running them manually against the demo
+configuration, as below, is the quickest way to see what each does — the
 [documentation](https://diamondlightsource.github.io/deploy-tools) has a hands-on tutorial
 and a guide to driving them from CI.
 
