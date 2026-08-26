@@ -28,9 +28,9 @@ $ git clone https://github.com/DiamondLightSource/deploy-tools.git
 $ export CONFIG=$PWD/deploy-tools/src/deploy_tools/demo_configuration
 ```
 
-That folder contains a `settings.yaml` and one folder per Module, each holding a
-`<version>.yaml` file. Have a look — `example-module-apps/0.1.yaml`, for example, defines
-a Module with a containerised app and a couple of small shell entrypoints.
+That folder contains a `settings.yaml` and one folder per Module, each holding a Release
+file named `<version>.yaml`. Have a look — `example-module-apps/0.1.yaml`, for example,
+defines a Module with a containerised app and a couple of small shell entrypoints.
 
 ```{note}
 The `# yaml-language-server: $schema=…` line at the top of each file only drives editor

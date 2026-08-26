@@ -9,9 +9,9 @@ the [glossary](../glossary.md).
 
 ## What you author
 
-You author two kinds of file: a single `settings.yaml`, and one `<name>/<version>.yaml`
-per Module version. The [schema reference](../schemas.md) covers which schema validates
-which and how to point your editor at them.
+You author two kinds of file: a single `settings.yaml`, and one Release file,
+`<name>/<version>.yaml`, per Module version. The [schema reference](../schemas.md) covers
+which schema validates which and how to point your editor at them.
 
 They are structured as follows:
 
@@ -19,7 +19,7 @@ They are structured as follows:
 settings.yaml
   └── default_versions
 
-<name>/<version>.yaml               one file per Module version
+<name>/<version>.yaml               one Release file per Module version
   ├── deprecated: false             lifecycle flag
   └── module
       ├── name                      Module name
@@ -71,7 +71,7 @@ A Module is the unit an end user loads. It carries:
 are for advanced cases the other fields cannot cover — check with a `deploy-tools` admin
 before using them.
 
-Each per-version file also carries a `deprecated` flag; see
+Each Release file also carries a `deprecated` flag; see
 [the release lifecycle](../explanations/deprecation-lifecycle.md).
 
 ## The three application types

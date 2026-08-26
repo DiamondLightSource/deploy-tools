@@ -11,6 +11,7 @@ for the on-disk layout these terms refer to.
 | Module | A set of files that can be used to provide applications on your path, provide configuration, and set environment variables. We do this using the Environment Modules system by providing a Modulefile with the relevant configuration. |
 | Application | Each Module can be configured with multiple Applications, each one providing one or more executables. There are 3 types of Application: `Apptainer` (an executable container image), `Shell` (a Bash script) and `Binary` (an executable downloaded from a URL and verified against a hash). See [the configuration reference](reference/configuration.md). |
 | Release (noun) | A Module, including version, alongside its [lifecycle](explanations/deprecation-lifecycle.md) (i.e. deprecation) status. |
+| Release file | The `<name>/<version>.yaml` file you author to define one Release. See [the configuration reference](reference/configuration.md). |
 | Deployment | The declared configuration for a Deployment Area: all Releases (deprecated or not) to be maintained there, plus global settings. Written to the `deployment.yaml` snapshot by `sync`. The act of deploying is written lowercase. |
 | Deployment Step | Refers to one of the primary steps that make up the deployment process. See [the deployment process](explanations/deployment-steps.md) for a breakdown. |
 | End User | Refers to anybody who is intending to make use of a deployed Module. This can include the people modifying configuration themselves. |

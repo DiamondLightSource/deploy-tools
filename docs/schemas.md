@@ -19,7 +19,7 @@ You author two kinds of configuration file, each validated against a different s
 | `settings.yaml` (one per config folder) | `deployment-settings.json` | `DeploymentSettings` |
 | `<name>/<version>.yaml` (one per Module version) | `release.json` | `Release` |
 
-Per-version files sit in a folder named after the Module, so the path is
+Release files sit in a folder named after the Module, so the path is
 `<config folder>/<name>/<version>.yaml` (folder = Module `name`, filename = `version`).
 Add a `yaml-language-server` comment as the first line of each file, pointing at the
 matching schema, so your editor validates it as you type:

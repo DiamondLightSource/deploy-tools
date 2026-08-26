@@ -7,9 +7,10 @@ the matching schema, the [schema reference](../schemas.md).
 
 ## Add a new Module version
 
-1. Create the file at `<config folder>/<name>/<version>.yaml`. The folder name is the
-   Module `name` and the filename is the `version`, so `phoebus/0.1.yaml` defines version
-   `0.1` of `phoebus`. The `name` and `version` inside the file must match the path.
+1. Create the Release file at `<config folder>/<name>/<version>.yaml`. The folder name
+   is the Module `name` and the filename is the `version`, so `phoebus/0.1.yaml` defines
+   version `0.1` of `phoebus`. The `name` and `version` inside the file must match the
+   path.
 
 2. Add the schema line as the first line so your editor validates as you type:
 
@@ -81,7 +82,7 @@ before anyone else looks at the change.
 - **Update an existing version in place.** Rejected by default so published versions stay
   stable; prefer publishing a new version. If you must, set `allow_updates: true` on the
   Module — see [the guard rails](../explanations/deprecation-lifecycle.md#the-guard-rails).
-- **Retire a version.** Set `deprecated: true` to steer users away from it. Deleting it
-  outright has to wait until after it is deprecated (unless the Module has
-  `allow_updates: true`). See
+- **Retire a version.** Set `deprecated: true` in the Release file to steer users away
+  from it. Deleting it outright has to wait until after it is deprecated (unless the
+  Module has `allow_updates: true`). See
   [the guard rails](../explanations/deprecation-lifecycle.md#the-guard-rails).
