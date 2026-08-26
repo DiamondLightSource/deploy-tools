@@ -36,6 +36,15 @@ settings.yaml
 Those last three are the values `app_type` can take rather than fields of their own —
 see [the three application types](#the-three-application-types) below.
 
+## A Release file
+
+Each Release file has two fields:
+
+| Field | Purpose |
+|-------|---------|
+| `module` | The Module being released (below). |
+| `deprecated` | Whether this version is deprecated. Defaults to `false` — see [the release lifecycle](../explanations/deprecation-lifecycle.md). |
+
 ## A Module
 
 A Module is the unit an end user loads. It carries:
@@ -70,9 +79,6 @@ A Module is the unit an end user loads. It carries:
 `load_script` and `unload_script` are injected raw into the generated Modulefile. They
 are for advanced cases the other fields cannot cover — check with a `deploy-tools` admin
 before using them.
-
-Each Release file also carries a `deprecated` flag; see
-[the release lifecycle](../explanations/deprecation-lifecycle.md).
 
 ## The three application types
 
