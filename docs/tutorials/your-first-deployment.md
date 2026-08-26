@@ -146,8 +146,8 @@ dls-pmac-control` loads `0.1` unless you ask for `dls-pmac-control/0.2` explicit
 
 You took a configuration folder, checked the area was clean, previewed the changes, and
 deployed Modules you could load and run. Those are the same `compare`, `validate` and
-`sync` commands a real deployment runs; a CI pipeline spreads them across separate stages
-(see [drive deploy-tools from CI](../how-to/ci-pipeline.md)).
+`sync` commands a real deployment runs; our recommended pipeline spreads them across
+separate stages (see [drive deploy-tools from CI](../how-to/ci-pipeline.md)).
 
 From here:
 
