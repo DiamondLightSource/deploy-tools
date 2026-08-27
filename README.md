@@ -24,9 +24,9 @@ The demo_configuration folder in this repository can be passed as the config_fol
 the deploy-tools commands. The deployment_root needs to be a writeable location for all
 files to get deployed under.
 
-In normal use these commands are not run by hand: they act on a shared deployment area and
-belong in a CI pipeline, gated by change review. Running them manually against the demo
-configuration, as below, is just the quickest way to see what each does — the
+These commands act on a shared deployment area, so we recommend running them from a CI
+pipeline gated by change review rather than by hand. Running them manually against the demo
+configuration, as below, is the quickest way to see what each does — the
 [documentation](https://diamondlightsource.github.io/deploy-tools) has a hands-on tutorial
 and a guide to driving them from CI.
 
@@ -46,7 +46,7 @@ deploy-tools validate $deployment_root $config_folder
 deploy-tools sync $deployment_root $config_folder
 
 # Compare the current deployment snapshot against what is actually deployed in the
-# deployment area. CI/CD should run this before a deploy to confirm a healthy state.
+# deployment area. Run this before a deploy to confirm a healthy state.
 deploy-tools compare $deployment_root
 
 ```

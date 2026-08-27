@@ -1,12 +1,15 @@
 # Drive deploy-tools from CI
 
-In normal use, nobody should run `sync`, `validate` or `compare` by hand. Those commands
-touch a shared deployment area, so they belong to a CI pipeline in the configuration
-repository, gated by change review. End users only edit configuration and open a change;
-merging it deploys.
+`sync`, `validate` and `compare` touch a shared deployment area, so we recommend driving
+them from a CI pipeline in the configuration repository, gated by change review: end users
+only edit configuration and open a change, and merging it deploys. `deploy-tools` does not
+require this — an administrator can run the commands by hand — but a pipeline gives you
+review, repeatability and one place to serialise runs.
 
-This guide describes what that pipeline must do. It is deliberately independent of any
-particular CI system — translate the responsibilities below into your own.
+This guide describes the responsibilities such a pipeline has. It is deliberately
+independent of any particular CI system — translate them into your own. If you run the
+commands by hand, the same ordering and the [one at a time](#run-one-at-a-time) rule still
+apply.
 
 ## On a proposed change
 
@@ -15,9 +18,9 @@ When someone opens a change (before it is merged), run, without altering the are
 - `deploy-tools compare <area>` — confirm the area still matches its last snapshot, so
   the change is being checked against a known-healthy baseline.
 - `deploy-tools validate <area> <config>` — confirm the new configuration is valid and its
-  [lifecycle transitions](../explanations/deprecation-lifecycle.md) are permitted. Add
-  `--test-build` to build every changed Module in a temporary directory, catching build
-  failures before merge.
+  [lifecycle transitions](../explanations/deprecation-lifecycle.md#the-guard-rails) are
+  permitted. Add `--test-build` to build every changed Module in a temporary directory,
+  catching build failures before merge.
 
 This gives reviewers a green light that the change is deployable without changing anything
 on the filesystem.
@@ -32,15 +35,15 @@ When the change is merged to the main branch, deploy it:
 
 ## Run one at a time
 
-`deploy-tools` has no locking of its own. The pipeline must ensure only one run
+`deploy-tools` has no locking of its own. Whatever drives it must ensure only one run
 touches the area at a time — two concurrent `sync`s, or a `sync` racing a `compare`,
 can corrupt the area or report false drift. Serialise the relevant jobs (and, if
 possible, restrict them to a single runner).
 
 ## Manual operations
 
-Some tasks fall outside the automatic flows and are best run from a manually-triggered
-pipeline, exposing the relevant options as parameters:
+Some tasks fall outside the automatic flows and are run by hand, or from a
+manually-triggered pipeline exposing the relevant options as parameters:
 
 - **The first deployment.** A brand-new area has no snapshot to compare against, so it is
   run manually rather than triggered by a merge. Use `--from-scratch`, which assumes the
