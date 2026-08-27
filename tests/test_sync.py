@@ -17,7 +17,7 @@ def test_deprecate_then_remove_multiple_versions_of_same_module(
     # Regression test for issues with removing name folders for the same module name
     # twice.
     run_cli(
-        "sync", "--from-scratch", tmp_path, configs / "valid" / "multi-version-active"
+        "sync", "--from-scratch", tmp_path, configs / "valid" / "multi-version-live"
     )
 
     layout = Layout(tmp_path)
@@ -56,12 +56,12 @@ def test_sync_rejects_deployment_area_without_git_repo(
     # An area whose .git has been lost still has a snapshot but no history to commit
     # against: a corrupt state surfaced as a clean error, not a GitPython traceback.
     run_cli(
-        "sync", "--from-scratch", tmp_path, configs / "valid" / "multi-version-active"
+        "sync", "--from-scratch", tmp_path, configs / "valid" / "multi-version-live"
     )
     shutil.rmtree(tmp_path / ".git")
 
     with pytest.raises(SyncError, match="not a git repository"):
-        run_cli("sync", tmp_path, configs / "valid" / "multi-version-active")
+        run_cli("sync", tmp_path, configs / "valid" / "multi-version-live")
 
 
 def test_sync_from_scratch_rejects_existing_snapshot(
