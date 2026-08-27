@@ -12,3 +12,6 @@ $ docker run ghcr.io/diamondlightsource/deploy-tools:latest --version
 ```
 
 To get a released version, use a numbered release instead of `latest`.
+
+This image is a convenient way to drive `deploy-tools` against a shared deployment area,
+typically from a CI pipeline — see [drive deploy-tools from CI](ci-pipeline.md).

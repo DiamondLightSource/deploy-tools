@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>Your first deployment &#8212; deploy-tools 0.7.2.dev149+g59a84d3e8 documentation</title>
+    <title>Your first deployment &#8212; deploy-tools 0.7.2.dev169+g4f5ee44b1 documentation</title>
   
   
   
@@ -42,7 +42,7 @@
   <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=90905a2f556bf617f1a9" />
 <link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=90905a2f556bf617f1a9" />
 
-    <script src="../_static/documentation_options.js?v=35dce433"></script>
+    <script src="../_static/documentation_options.js?v=318e446f"></script>
     <script src="../_static/doctools.js?v=fd6eb6e6"></script>
     <script src="../_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
@@ -490,9 +490,10 @@
 <p>This tutorial takes you from a set of configuration files to a Module you can load and run,
 using the demo configuration that ships in the repository.</p>
 <p>It is a hands-on learning exercise: you run each command yourself, in a throwaway directory.
-Real deployments don’t work this way — a CI pipeline runs these commands against a shared
-area (see <a class="reference internal" href="../how-to/ci-pipeline.html"><span class="std std-doc">drive deploy-tools from CI</span></a>) — but running them by
-hand once is the quickest way to see what each does.</p>
+A real deployment targets a shared area, where we recommend driving these commands from
+a CI pipeline instead (see
+<a class="reference internal" href="../how-to/ci-pipeline.html"><span class="std std-doc">drive deploy-tools from CI</span></a>) — but running them by hand once
+is the quickest way to see what each does.</p>
 <section id="before-you-start">
 <h2>Before you start<a class="headerlink" href="#before-you-start" title="Link to this heading">#</a></h2>
 <p>You will need:</p>
@@ -511,9 +512,9 @@ either, if you only want to see the mechanics.)</p></li>
 $ export CONFIG=$PWD/deploy-tools/src/deploy_tools/demo_configuration
 </pre></div>
 </div>
-<p>That folder contains a <code class="docutils literal notranslate"><span class="pre">settings.yaml</span></code> and one folder per Module, each holding a
-<code class="docutils literal notranslate"><span class="pre">&lt;version&gt;.yaml</span></code> file. Have a look — <code class="docutils literal notranslate"><span class="pre">example-module-apps/0.1.yaml</span></code>, for example, defines
-a Module with a containerised app and a couple of small shell entrypoints.</p>
+<p>That folder contains a <code class="docutils literal notranslate"><span class="pre">settings.yaml</span></code> and one folder per Module, each holding a Release
+file named <code class="docutils literal notranslate"><span class="pre">&lt;version&gt;.yaml</span></code>. Have a look — <code class="docutils literal notranslate"><span class="pre">example-module-apps/0.1.yaml</span></code>, for example,
+defines a Module with a containerised app and a couple of small shell entrypoints.</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
 <p>The <code class="docutils literal notranslate"><span class="pre">#</span> <span class="pre">yaml-language-server:</span> <span class="pre">$schema=…</span></code> line at the top of each file only drives editor
@@ -611,8 +612,8 @@ and <code class="docutils literal notranslate"><span class="pre">0.2</span></cod
 <h2>What you have learned<a class="headerlink" href="#what-you-have-learned" title="Link to this heading">#</a></h2>
 <p>You took a configuration folder, checked the area was clean, previewed the changes, and
 deployed Modules you could load and run. Those are the same <code class="docutils literal notranslate"><span class="pre">compare</span></code>, <code class="docutils literal notranslate"><span class="pre">validate</span></code> and
-<code class="docutils literal notranslate"><span class="pre">sync</span></code> commands a real pipeline runs, though it spreads them across separate stages (see
-<a class="reference internal" href="../how-to/ci-pipeline.html"><span class="std std-doc">drive deploy-tools from CI</span></a>).</p>
+<code class="docutils literal notranslate"><span class="pre">sync</span></code> commands a real deployment runs; our recommended pipeline spreads them across
+separate stages (see <a class="reference internal" href="../how-to/ci-pipeline.html"><span class="std std-doc">drive deploy-tools from CI</span></a>).</p>
 <p>From here:</p>
 <ul class="simple">
 <li><p><a class="reference internal" href="../explanations/deprecation-lifecycle.html"><span class="std std-doc">The release lifecycle</span></a> — how to update,

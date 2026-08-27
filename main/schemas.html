@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>JSON Schema files &#8212; deploy-tools 0.7.2.dev149+g59a84d3e8 documentation</title>
+    <title>JSON Schema files &#8212; deploy-tools 0.7.2.dev169+g4f5ee44b1 documentation</title>
   
   
   
@@ -42,7 +42,7 @@
   <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=90905a2f556bf617f1a9" />
 <link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=90905a2f556bf617f1a9" />
 
-    <script src="_static/documentation_options.js?v=35dce433"></script>
+    <script src="_static/documentation_options.js?v=318e446f"></script>
     <script src="_static/doctools.js?v=fd6eb6e6"></script>
     <script src="_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script src="_static/clipboard.min.js?v=a7894cd8"></script>
@@ -423,6 +423,7 @@
      aria-label="Section Navigation">
   <p class="bd-links__title" role="heading" aria-level="1">Section Navigation</p>
   <div class="bd-toc-item navbar-nav"><ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="reference/configuration.html">Configuration</a></li>
 <li class="toctree-l1"><a class="reference internal" href="cli.html">CLI</a></li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="_api/deploy_tools.html">API</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
 <li class="toctree-l2"><a class="reference internal" href="_api/deploy_tools.app_builder.html"><code class="docutils literal notranslate"><span class="pre">deploy_tools.app_builder</span></code></a></li>
@@ -527,8 +528,12 @@
 <h1>JSON Schema files<a class="headerlink" href="#json-schema-files" title="Link to this heading">#</a></h1>
 <p>These JSON schema files are generated from the Pydantic models in
 <code class="docutils literal notranslate"><span class="pre">src/deploy_tools/models</span></code>. The YAML language server and other tooling use them to validate
-deployment configuration files. This section links to per-schema reference pages that
-render each schema and list its properties.</p>
+deployment configuration files. This page covers which file each schema validates and how
+to point your editor at it.</p>
+<p>To look a field up, use <a class="reference internal" href="reference/configuration.html"><span class="std std-doc">the configuration reference</span></a> — it
+documents the same fields in a form meant for reading. The
+<a class="reference internal" href="#schema-pages">schema pages</a> below render each schema mechanically, so they are the
+exhaustive detail rather than the place to start.</p>
 <section id="which-file-uses-which-schema">
 <h2>Which file uses which schema<a class="headerlink" href="#which-file-uses-which-schema" title="Link to this heading">#</a></h2>
 <p>You author two kinds of configuration file, each validated against a different schema:</p>
@@ -551,7 +556,7 @@ render each schema and list its properties.</p>
 </tbody>
 </table>
 </div>
-<p>Per-version files sit in a folder named after the Module, so the path is
+<p>Release files sit in a folder named after the Module, so the path is
 <code class="docutils literal notranslate"><span class="pre">&lt;config</span> <span class="pre">folder&gt;/&lt;name&gt;/&lt;version&gt;.yaml</span></code> (folder = Module <code class="docutils literal notranslate"><span class="pre">name</span></code>, filename = <code class="docutils literal notranslate"><span class="pre">version</span></code>).
 Add a <code class="docutils literal notranslate"><span class="pre">yaml-language-server</span></code> comment as the first line of each file, pointing at the
 matching schema, so your editor validates it as you type:</p>
@@ -562,6 +567,11 @@ matching schema, so your editor validates it as you type:</p>
 <a class="reference external" href="https://marketplace.visualstudio.com/items?itemName=redhat.vscode-yaml">Red Hat YAML extension</a>,
 or any <a class="reference external" href="https://microsoft.github.io/language-server-protocol/">LSP</a>-capable editor
 running <a class="reference external" href="https://github.com/redhat-developer/yaml-language-server"><code class="docutils literal notranslate"><span class="pre">yaml-language-server</span></code></a>.</p>
+<p>Alternatively, VS Code’s <a class="reference external" href="https://github.com/redhat-developer/vscode-yaml#associating-schemas"><code class="docutils literal notranslate"><span class="pre">yaml.schemas</span></code></a>
+setting (committed to <code class="docutils literal notranslate"><span class="pre">.vscode/settings.json</span></code>) maps schemas to file paths once for the
+whole repository, avoiding the per-file comment. This documentation uses the comment
+because it is self-contained and editor-agnostic, but a real configuration repository may
+reasonably prefer the repository-level setting.</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
 <p>The bundled <code class="docutils literal notranslate"><span class="pre">demo_configuration</span></code> instead points at the locally generated schemas via an

@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>Snapshots and the compare safety net &#8212; deploy-tools 0.7.2.dev149+g59a84d3e8 documentation</title>
+    <title>Snapshots and the compare safety net &#8212; deploy-tools 0.7.2.dev169+g4f5ee44b1 documentation</title>
   
   
   
@@ -42,7 +42,7 @@
   <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=90905a2f556bf617f1a9" />
 <link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=90905a2f556bf617f1a9" />
 
-    <script src="../_static/documentation_options.js?v=35dce433"></script>
+    <script src="../_static/documentation_options.js?v=318e446f"></script>
     <script src="../_static/doctools.js?v=fd6eb6e6"></script>
     <script src="../_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
@@ -528,7 +528,7 @@ built files such as Apptainer <code class="docutils literal notranslate"><span c
 will not be detected. The risk of corruption is avoided at build time instead: a Module
 is built on the same filesystem as the deployment area and published by a single atomic
 rename, so a partial or failed build (including <code class="docutils literal notranslate"><span class="pre">.sif</span></code> files) is never moved into place.</p>
-<p>This is why CI should run <code class="docutils literal notranslate"><span class="pre">compare</span></code> <em>before</em> every <code class="docutils literal notranslate"><span class="pre">sync</span></code>: it confirms the area is in the
+<p>This is why <code class="docutils literal notranslate"><span class="pre">compare</span></code> should be run <em>before</em> every <code class="docutils literal notranslate"><span class="pre">sync</span></code>: it confirms the area is in the
 healthy state the last <code class="docutils literal notranslate"><span class="pre">sync</span></code> claimed to leave it in.</p>
 </section>
 <section id="recovery-is-manual">
@@ -545,7 +545,7 @@ This is helpful when attempting to fix a broken deployment area, as it is
 often easier to rollback the configuration to a previous state rather than fix the
 latest deployment.</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">compare</span> <span class="pre">--from-scratch</span></code> asserts only that the deployment root exists and is <em>empty</em> —
-this is the check to run in CI before the very first <code class="docutils literal notranslate"><span class="pre">sync</span></code>, when no snapshot exists yet.</p></li>
+this is the check to run before the very first <code class="docutils literal notranslate"><span class="pre">sync</span></code>, when no snapshot exists yet.</p></li>
 </ul>
 <p>The git repository in the deployment area exists only to give <code class="docutils literal notranslate"><span class="pre">compare</span> <span class="pre">--use-ref</span></code> this
 reference point. It deliberately excludes the build area and Apptainer images, and is

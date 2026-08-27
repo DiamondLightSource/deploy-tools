@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>deploy_tools &#8212; deploy-tools 0.7.2.dev149+g59a84d3e8 documentation</title>
+    <title>deploy_tools &#8212; deploy-tools 0.7.2.dev169+g4f5ee44b1 documentation</title>
   
   
   
@@ -42,7 +42,7 @@
   <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=90905a2f556bf617f1a9" />
 <link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=90905a2f556bf617f1a9" />
 
-    <script src="_static/documentation_options.js?v=35dce433"></script>
+    <script src="_static/documentation_options.js?v=318e446f"></script>
     <script src="_static/doctools.js?v=fd6eb6e6"></script>
     <script src="_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script src="_static/clipboard.min.js?v=a7894cd8"></script>
@@ -473,9 +473,9 @@ applications available to the end user.</p>
 <p>The demo_configuration folder in this repository can be passed as the config_folder to
 the deploy-tools commands. The deployment_root needs to be a writeable location for all
 files to get deployed under.</p>
-<p>In normal use these commands are not run by hand: they act on a shared deployment area and
-belong in a CI pipeline, gated by change review. Running them manually against the demo
-configuration, as below, is just the quickest way to see what each does — the
+<p>These commands act on a shared deployment area, so we recommend running them from a CI
+pipeline gated by change review rather than by hand. Running them manually against the demo
+configuration, as below, is the quickest way to see what each does — the
 <a class="reference external" href="https://diamondlightsource.github.io/deploy-tools">documentation</a> has a hands-on tutorial
 and a guide to driving them from CI.</p>
 <p>The examples below use the <code class="docutils literal notranslate"><span class="pre">deploy-tools</span></code> console script; <code class="docutils literal notranslate"><span class="pre">python</span> <span class="pre">-m</span> <span class="pre">deploy_tools</span></code> is
@@ -492,7 +492,7 @@ deploy-tools validate $deployment_root $config_folder
 deploy-tools sync $deployment_root $config_folder
 
 # Compare the current deployment snapshot against what is actually deployed in the
-# deployment area. CI/CD should run this before a deploy to confirm a healthy state.
+# deployment area. Run this before a deploy to confirm a healthy state.
 deploy-tools compare $deployment_root
 
 </pre></div>
@@ -534,6 +534,7 @@ and is not part of a deployment. See the schema reference in the documentation.<
 <div class="toctree-wrapper compound">
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="how-to.html">How-to Guides</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="how-to/write-module-configuration.html">Write a Module configuration</a></li>
 <li class="toctree-l2"><a class="reference internal" href="how-to/ci-pipeline.html">Drive deploy-tools from CI</a></li>
 <li class="toctree-l2"><a class="reference internal" href="how-to/run-container.html">Run in a container</a></li>
 <li class="toctree-l2"><a class="reference internal" href="how-to/vscode-tasks.html">Run the VSCode tasks and debug configurations</a></li>
@@ -581,6 +582,7 @@ and is not part of a deployment. See the schema reference in the documentation.<
 <div class="toctree-wrapper compound">
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="reference.html">Reference</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="reference/configuration.html">Configuration</a></li>
 <li class="toctree-l2"><a class="reference internal" href="cli.html">CLI</a></li>
 <li class="toctree-l2"><a class="reference internal" href="_api/deploy_tools.html">API</a></li>
 <li class="toctree-l2"><a class="reference internal" href="schemas.html">Schemas</a></li>

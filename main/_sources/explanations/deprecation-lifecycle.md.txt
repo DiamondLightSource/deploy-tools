@@ -9,8 +9,8 @@ deleted — is expressed by adding or removing a Release in configuration and to
 
 You never tell `deploy-tools` to "deprecate" or "remove" something directly. You describe
 the set of Releases you want, and the tool compares that against the
-[snapshot](snapshots-and-compare.md) of the last `sync` to derive the actions needed. Each
-Release falls into one of these cases:
+[snapshot](snapshots-and-compare.md#what-the-snapshot-is) of the last `sync` to derive
+the actions needed. Each Release falls into one of these cases:
 
 | Transition | Detected when… | Effect on the deployment area |
 |------------|----------------|-------------------------------|

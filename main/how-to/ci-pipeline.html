@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>Drive deploy-tools from CI &#8212; deploy-tools 0.7.2.dev149+g59a84d3e8 documentation</title>
+    <title>Drive deploy-tools from CI &#8212; deploy-tools 0.7.2.dev169+g4f5ee44b1 documentation</title>
   
   
   
@@ -42,7 +42,7 @@
   <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=90905a2f556bf617f1a9" />
 <link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=90905a2f556bf617f1a9" />
 
-    <script src="../_static/documentation_options.js?v=35dce433"></script>
+    <script src="../_static/documentation_options.js?v=318e446f"></script>
     <script src="../_static/doctools.js?v=fd6eb6e6"></script>
     <script src="../_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
@@ -61,7 +61,7 @@
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
     <link rel="next" title="Run in a container" href="run-container.html" />
-    <link rel="prev" title="How-to Guides" href="../how-to.html" />
+    <link rel="prev" title="Write a Module configuration" href="write-module-configuration.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
   <meta name="docsearch:version" content="main" />
@@ -423,6 +423,7 @@
      aria-label="Section Navigation">
   <p class="bd-links__title" role="heading" aria-level="1">Section Navigation</p>
   <div class="bd-toc-item navbar-nav"><ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="write-module-configuration.html">Write a Module configuration</a></li>
 <li class="toctree-l1 current active"><a class="current reference internal" href="#">Drive deploy-tools from CI</a></li>
 <li class="toctree-l1"><a class="reference internal" href="run-container.html">Run in a container</a></li>
 <li class="toctree-l1"><a class="reference internal" href="vscode-tasks.html">Run the VSCode tasks and debug configurations</a></li>
@@ -490,12 +491,15 @@
                   
   <section id="drive-deploy-tools-from-ci">
 <h1>Drive deploy-tools from CI<a class="headerlink" href="#drive-deploy-tools-from-ci" title="Link to this heading">#</a></h1>
-<p>In normal use, nobody should run <code class="docutils literal notranslate"><span class="pre">sync</span></code>, <code class="docutils literal notranslate"><span class="pre">validate</span></code> or <code class="docutils literal notranslate"><span class="pre">compare</span></code> by hand. Those commands
-touch a shared deployment area, so they belong to a CI pipeline in the configuration
-repository, gated by change review. End users only edit configuration and open a change;
-merging it deploys.</p>
-<p>This guide describes what that pipeline must do. It is deliberately independent of any
-particular CI system — translate the responsibilities below into your own.</p>
+<p><code class="docutils literal notranslate"><span class="pre">sync</span></code>, <code class="docutils literal notranslate"><span class="pre">validate</span></code> and <code class="docutils literal notranslate"><span class="pre">compare</span></code> touch a shared deployment area, so we recommend driving
+them from a CI pipeline in the configuration repository, gated by change review: end users
+only edit configuration and open a change, and merging it deploys. <code class="docutils literal notranslate"><span class="pre">deploy-tools</span></code> does not
+require this — an administrator can run the commands by hand — but a pipeline gives you
+review, repeatability and one place to serialise runs.</p>
+<p>This guide describes the responsibilities such a pipeline has. It is deliberately
+independent of any particular CI system — translate them into your own. If you run the
+commands by hand, the same ordering and the <a class="reference internal" href="#run-one-at-a-time">one at a time</a> rule still
+apply.</p>
 <section id="on-a-proposed-change">
 <h2>On a proposed change<a class="headerlink" href="#on-a-proposed-change" title="Link to this heading">#</a></h2>
 <p>When someone opens a change (before it is merged), run, without altering the area:</p>
@@ -503,9 +507,9 @@ particular CI system — translate the responsibilities below into your own.</p>
 <li><p><code class="docutils literal notranslate"><span class="pre">deploy-tools</span> <span class="pre">compare</span> <span class="pre">&lt;area&gt;</span></code> — confirm the area still matches its last snapshot, so
 the change is being checked against a known-healthy baseline.</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">deploy-tools</span> <span class="pre">validate</span> <span class="pre">&lt;area&gt;</span> <span class="pre">&lt;config&gt;</span></code> — confirm the new configuration is valid and its
-<a class="reference internal" href="../explanations/deprecation-lifecycle.html"><span class="std std-doc">lifecycle transitions</span></a> are permitted. Add
-<code class="docutils literal notranslate"><span class="pre">--test-build</span></code> to build every changed Module in a temporary directory, catching build
-failures before merge.</p></li>
+<a class="reference internal" href="../explanations/deprecation-lifecycle.html#the-guard-rails"><span class="std std-ref">lifecycle transitions</span></a> are
+permitted. Add <code class="docutils literal notranslate"><span class="pre">--test-build</span></code> to build every changed Module in a temporary directory,
+catching build failures before merge.</p></li>
 </ul>
 <p>This gives reviewers a green light that the change is deployable without changing anything
 on the filesystem.</p>
@@ -521,15 +525,15 @@ place.</p></li>
 </section>
 <section id="run-one-at-a-time">
 <h2>Run one at a time<a class="headerlink" href="#run-one-at-a-time" title="Link to this heading">#</a></h2>
-<p><code class="docutils literal notranslate"><span class="pre">deploy-tools</span></code> has no locking of its own. The pipeline must ensure only one run
+<p><code class="docutils literal notranslate"><span class="pre">deploy-tools</span></code> has no locking of its own. Whatever drives it must ensure only one run
 touches the area at a time — two concurrent <code class="docutils literal notranslate"><span class="pre">sync</span></code>s, or a <code class="docutils literal notranslate"><span class="pre">sync</span></code> racing a <code class="docutils literal notranslate"><span class="pre">compare</span></code>,
 can corrupt the area or report false drift. Serialise the relevant jobs (and, if
 possible, restrict them to a single runner).</p>
 </section>
 <section id="manual-operations">
 <h2>Manual operations<a class="headerlink" href="#manual-operations" title="Link to this heading">#</a></h2>
-<p>Some tasks fall outside the automatic flows and are best run from a manually-triggered
-pipeline, exposing the relevant options as parameters:</p>
+<p>Some tasks fall outside the automatic flows and are run by hand, or from a
+manually-triggered pipeline exposing the relevant options as parameters:</p>
 <ul class="simple">
 <li><p><strong>The first deployment.</strong> A brand-new area has no snapshot to compare against, so it is
 run manually rather than triggered by a merge. Use <code class="docutils literal notranslate"><span class="pre">--from-scratch</span></code>, which assumes the
@@ -559,12 +563,12 @@ how these fit into recovery.</p>
                   
 <div class="prev-next-area">
     <a class="left-prev"
-       href="../how-to.html"
+       href="write-module-configuration.html"
        title="previous page">
       <i class="fa-solid fa-angle-left"></i>
       <div class="prev-next-info">
         <p class="prev-next-subtitle">previous</p>
-        <p class="prev-next-title">How-to Guides</p>
+        <p class="prev-next-title">Write a Module configuration</p>
       </div>
     </a>
     <a class="right-next"

@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>The deployment process &#8212; deploy-tools 0.7.2.dev149+g59a84d3e8 documentation</title>
+    <title>The deployment process &#8212; deploy-tools 0.7.2.dev169+g4f5ee44b1 documentation</title>
   
   
   
@@ -42,7 +42,7 @@
   <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=90905a2f556bf617f1a9" />
 <link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=90905a2f556bf617f1a9" />
 
-    <script src="../_static/documentation_options.js?v=35dce433"></script>
+    <script src="../_static/documentation_options.js?v=318e446f"></script>
     <script src="../_static/doctools.js?v=fd6eb6e6"></script>
     <script src="../_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
@@ -511,7 +511,7 @@ a command of their own. For the commands themselves see the <a class="reference 
 <td><p><code class="docutils literal notranslate"><span class="pre">compare</span></code></p></td>
 </tr>
 <tr class="row-odd"><td><p>Validate</p></td>
-<td><p>Diff the new configuration against the current snapshot to determine the set of actions to take, and check those actions are permitted by the <a class="reference internal" href="deprecation-lifecycle.html"><span class="std std-doc">release lifecycle</span></a>.</p></td>
+<td><p>Diff the new configuration against the current snapshot to determine the set of actions to take, and check those actions are permitted by the <a class="reference internal" href="deprecation-lifecycle.html#the-guard-rails"><span class="std std-ref">lifecycle guard rails</span></a>.</p></td>
 <td><p><code class="docutils literal notranslate"><span class="pre">validate</span></code>, <code class="docutils literal notranslate"><span class="pre">sync</span></code></p></td>
 </tr>
 <tr class="row-even"><td><p>Build</p></td>
@@ -537,7 +537,7 @@ place, or nothing changes.</p>
 read-only checks run before it. See
 <a class="reference internal" href="snapshots-and-compare.html"><span class="std std-doc">snapshots and the compare safety net</span></a> for how the snapshot
 ties them together, and <a class="reference internal" href="../how-to/ci-pipeline.html"><span class="std std-doc">drive deploy-tools from CI</span></a> for the
-order a pipeline runs them in.</p>
+order to run them in.</p>
 </section>
 </section>
 

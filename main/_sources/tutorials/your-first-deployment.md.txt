@@ -4,9 +4,10 @@ This tutorial takes you from a set of configuration files to a Module you can lo
 using the demo configuration that ships in the repository.
 
 It is a hands-on learning exercise: you run each command yourself, in a throwaway directory.
-Real deployments don't work this way — a CI pipeline runs these commands against a shared
-area (see [drive deploy-tools from CI](../how-to/ci-pipeline.md)) — but running them by
-hand once is the quickest way to see what each does.
+A real deployment targets a shared area, where we recommend driving these commands from
+a CI pipeline instead (see
+[drive deploy-tools from CI](../how-to/ci-pipeline.md)) — but running them by hand once
+is the quickest way to see what each does.
 
 ## Before you start
 
@@ -27,9 +28,9 @@ $ git clone https://github.com/DiamondLightSource/deploy-tools.git
 $ export CONFIG=$PWD/deploy-tools/src/deploy_tools/demo_configuration
 ```
 
-That folder contains a `settings.yaml` and one folder per Module, each holding a
-`<version>.yaml` file. Have a look — `example-module-apps/0.1.yaml`, for example, defines
-a Module with a containerised app and a couple of small shell entrypoints.
+That folder contains a `settings.yaml` and one folder per Module, each holding a Release
+file named `<version>.yaml`. Have a look — `example-module-apps/0.1.yaml`, for example,
+defines a Module with a containerised app and a couple of small shell entrypoints.
 
 ```{note}
 The `# yaml-language-server: $schema=…` line at the top of each file only drives editor
@@ -145,8 +146,8 @@ dls-pmac-control` loads `0.1` unless you ask for `dls-pmac-control/0.2` explicit
 
 You took a configuration folder, checked the area was clean, previewed the changes, and
 deployed Modules you could load and run. Those are the same `compare`, `validate` and
-`sync` commands a real pipeline runs, though it spreads them across separate stages (see
-[drive deploy-tools from CI](../how-to/ci-pipeline.md)).
+`sync` commands a real deployment runs; our recommended pipeline spreads them across
+separate stages (see [drive deploy-tools from CI](../how-to/ci-pipeline.md)).
 
 From here:
 
