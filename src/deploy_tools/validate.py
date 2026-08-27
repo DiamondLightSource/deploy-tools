@@ -128,14 +128,15 @@ def _get_release_changes(
             old_release = old_releases[name][version]
 
             if old_release.module != new_release.module:
-                if old_release.module.allow_updates:
-                    release_changes.to_update.append(new_release)
-                    continue
+                if not old_release.module.allow_updates:
+                    raise ValidationError(
+                        f"Module {name}/{version} modified without updating version."
+                    )
+                release_changes.to_update.append(new_release)
 
-                raise ValidationError(
-                    f"Module {name}/{version} modified without updating version."
-                )
-
+            # Note that a content update and a lifecycle transition can happen in the
+            # same sync; evaluate the transition independently of whether content
+            # has changed.
             if not old_release.deprecated and new_release.deprecated:
                 release_changes.to_deprecate.append(new_release)
             elif old_release.deprecated and not new_release.deprecated:
