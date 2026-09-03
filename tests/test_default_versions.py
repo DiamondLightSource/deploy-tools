@@ -77,7 +77,7 @@ def test_excluded_versions_are_not_auto_selected() -> None:
 
 def test_deprecated_versions_are_not_auto_selected() -> None:
     # Deprecated releases are excluded from the deployed set, so a higher deprecated
-    # version must not become the default over a lower active one.
+    # version must not become the default over a lower live one.
     deployment = _deployment(
         _release("mod", "1.0"),
         _release("mod", "2.0", deprecated=True),

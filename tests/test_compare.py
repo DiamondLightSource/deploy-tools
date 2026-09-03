@@ -42,7 +42,7 @@ def test_compare_accepts_deprecated_modules(tmp_path: Path, configs: Path) -> No
     # Deploy a module then deprecate it, so the area holds deprecated modulefile links;
     # compare must accept them.
     run_cli(
-        "sync", "--from-scratch", tmp_path, configs / "valid" / "multi-version-active"
+        "sync", "--from-scratch", tmp_path, configs / "valid" / "multi-version-live"
     )
     run_cli("sync", tmp_path, configs / "valid" / "multi-version-deprecated")
     assert run_cli("compare", tmp_path) == ""
@@ -137,7 +137,7 @@ def test_compare_use_ref_detects_drift(tmp_path: Path, configs: Path) -> None:
     # two syncs the area matches its own (HEAD) snapshot. The previous commit's
     # snapshot, taken before the second sync deprecated a module version, doesn't match.
     run_cli(
-        "sync", "--from-scratch", tmp_path, configs / "valid" / "multi-version-active"
+        "sync", "--from-scratch", tmp_path, configs / "valid" / "multi-version-live"
     )
     run_cli("sync", tmp_path, configs / "valid" / "multi-version-deprecated")
 

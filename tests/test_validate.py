@@ -122,6 +122,20 @@ def test_validate_test_build_catches_invalid_script(
         run_cli("validate", "--test-build", "--from-scratch", tmp_path, config)
 
 
+def test_validate_previews_simultaneous_update_and_deprecation(
+    tmp_path: Path, configs: Path
+) -> None:
+    # A single sync that both updates a module's content and deprecates it must preview
+    # both actions in the printed changes summary: the release is listed under
+    # "updated" and under "deprecated", not just one of them.
+    run_cli("sync", "--from-scratch", tmp_path, configs / "valid" / "updatable-live")
+
+    output = run_cli("validate", tmp_path, configs / "valid" / "updatable-deprecated")
+
+    assert "Modules to be updated:\nexample-module-updatable/1.0" in output
+    assert "Modules to be deprecated:\nexample-module-updatable/1.0" in output
+
+
 def test_validate_reports_no_actions_when_unchanged(
     tmp_path: Path, configs: Path
 ) -> None:
