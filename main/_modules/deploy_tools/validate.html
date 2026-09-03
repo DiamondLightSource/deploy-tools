@@ -7,7 +7,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>deploy_tools.validate &#8212; deploy-tools 0.7.2.dev170+g2068139b0 documentation</title>
+    <title>deploy_tools.validate &#8212; deploy-tools 0.7.2.dev175+g484c9ddc2 documentation</title>
   
   
   
@@ -41,7 +41,7 @@
   <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=cb8930eaaf36d9849b67" />
 <link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=cb8930eaaf36d9849b67" />
 
-    <script src="../../_static/documentation_options.js?v=43d74da5"></script>
+    <script src="../../_static/documentation_options.js?v=78b3f7da"></script>
     <script src="../../_static/doctools.js?v=fd6eb6e6"></script>
     <script src="../../_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
@@ -599,14 +599,15 @@
             <span class="n">old_release</span> <span class="o">=</span> <span class="n">old_releases</span><span class="p">[</span><span class="n">name</span><span class="p">][</span><span class="n">version</span><span class="p">]</span>
 
             <span class="k">if</span> <span class="n">old_release</span><span class="o">.</span><span class="n">module</span> <span class="o">!=</span> <span class="n">new_release</span><span class="o">.</span><span class="n">module</span><span class="p">:</span>
-                <span class="k">if</span> <span class="n">old_release</span><span class="o">.</span><span class="n">module</span><span class="o">.</span><span class="n">allow_updates</span><span class="p">:</span>
-                    <span class="n">release_changes</span><span class="o">.</span><span class="n">to_update</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">new_release</span><span class="p">)</span>
-                    <span class="k">continue</span>
+                <span class="k">if</span> <span class="ow">not</span> <span class="n">old_release</span><span class="o">.</span><span class="n">module</span><span class="o">.</span><span class="n">allow_updates</span><span class="p">:</span>
+                    <span class="k">raise</span> <span class="n">ValidationError</span><span class="p">(</span>
+                        <span class="sa">f</span><span class="s2">"Module </span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2">/</span><span class="si">{</span><span class="n">version</span><span class="si">}</span><span class="s2"> modified without updating version."</span>
+                    <span class="p">)</span>
+                <span class="n">release_changes</span><span class="o">.</span><span class="n">to_update</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">new_release</span><span class="p">)</span>
 
-                <span class="k">raise</span> <span class="n">ValidationError</span><span class="p">(</span>
-                    <span class="sa">f</span><span class="s2">"Module </span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2">/</span><span class="si">{</span><span class="n">version</span><span class="si">}</span><span class="s2"> modified without updating version."</span>
-                <span class="p">)</span>
-
+            <span class="c1"># Note that a content update and a lifecycle transition can happen in the</span>
+            <span class="c1"># same sync; evaluate the transition independently of whether content</span>
+            <span class="c1"># has changed.</span>
             <span class="k">if</span> <span class="ow">not</span> <span class="n">old_release</span><span class="o">.</span><span class="n">deprecated</span> <span class="ow">and</span> <span class="n">new_release</span><span class="o">.</span><span class="n">deprecated</span><span class="p">:</span>
                 <span class="n">release_changes</span><span class="o">.</span><span class="n">to_deprecate</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">new_release</span><span class="p">)</span>
             <span class="k">elif</span> <span class="n">old_release</span><span class="o">.</span><span class="n">deprecated</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">new_release</span><span class="o">.</span><span class="n">deprecated</span><span class="p">:</span>
