@@ -17,6 +17,23 @@ command="{{ command }}"
 # Options and arguments to pass to command
 command_args="{{ command_args }}"
 
+# Filter out any invalid mounts and warn the user
+IFS="," read -ra entries <<< "$mounts"
+
+valid_mounts=()
+
+for entry in "${entries[@]}"; do
+    host_path="${entry%%:*}"
+
+    if [[ -d "$host_path" || -f "$host_path" ]]; then
+        valid_mounts+=("$entry")
+    else
+        echo "WARNING: Unable to mount $host_path: path does not exist" >&2
+    fi
+done
+
+mounts=$(IFS=','; echo "${valid_mounts[*]}")
+
 # Raise an error if sif file does not exist
 if [[ ! -f ${sif_file} ]]; then
     echo "ERROR: sif file ${sif_file} does not exist" 1>&2
