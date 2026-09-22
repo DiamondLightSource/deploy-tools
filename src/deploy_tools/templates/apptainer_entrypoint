@@ -7,7 +7,8 @@
 set -e
 
 # Mounts for container
-mounts="{{ mounts }}"
+standard_mounts="{{ standard_mounts }}"
+optional_mounts="{{ optional_mounts }}"
 # Additional arguments for apptainer
 apptainer_args="{{ apptainer_args }}"
 # Sif file path
@@ -18,7 +19,7 @@ command="{{ command }}"
 command_args="{{ command_args }}"
 
 # Filter out any invalid mounts and warn the user
-IFS="," read -ra entries <<< "$mounts"
+IFS="," read -ra entries <<< "$optional_mounts"
 
 valid_mounts=()
 
@@ -32,7 +33,7 @@ for entry in "${entries[@]}"; do
     fi
 done
 
-mounts=$(IFS=','; echo "${valid_mounts[*]}")
+mounts="${standard_mounts},$(IFS=','; echo "${valid_mounts[*]}")"
 
 # Raise an error if sif file does not exist
 if [[ ! -f ${sif_file} ]]; then

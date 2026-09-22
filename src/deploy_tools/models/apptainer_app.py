@@ -12,6 +12,23 @@ IMAGE_VERSION_REGEX = r"^[a-zA-Z0-9_][a-zA-Z0-9._-]{0,127}$"  # OCI specificatio
 type MountPoint = Annotated[str, StringConstraints(pattern=MOUNT_REGEX)]
 
 
+class OptionalMountPoint(ParentModel):
+    """Represents an optional mount point for the Apptainer container.
+
+    When specified, the mount path is checked to see if it exists on the host.
+    If it does not exist, the mount is skipped and no error is raised.
+    """
+
+    optional_mount: Annotated[
+        str,
+        StringConstraints(pattern=MOUNT_PATH_REGEX),
+        Field(
+            description="Path to mount in the container. "
+            "Will not error if the path does not exist"
+        ),
+    ]
+
+
 class EntrypointOptions(ParentModel):
     """Options applied when running an Apptainer entrypoint."""
 
@@ -25,7 +42,7 @@ class EntrypointOptions(ParentModel):
     ] = ""
 
     mounts: Annotated[
-        list[MountPoint],
+        list[MountPoint | OptionalMountPoint],
         Field(
             description="A list of mount points to add to the container in the form of "
             "'host_path[:container_path[:opts]]' where opts (mount options) can be "
@@ -41,6 +58,20 @@ class EntrypointOptions(ParentModel):
             "mounted into the container at /usr/bin/[binary_name]"
         ),
     ] = []
+
+    @property
+    def standard_mounts(self) -> list[str]:
+        """Return a list of standard mount points from the mounts list."""
+        return [mount for mount in self.mounts if isinstance(mount, str)]
+
+    @property
+    def optional_mounts(self) -> list[str]:
+        """Return a list of optional mount points from the mounts list."""
+        return [
+            mount.optional_mount
+            for mount in self.mounts
+            if isinstance(mount, OptionalMountPoint)
+        ]
 
 
 class Entrypoint(ParentModel):

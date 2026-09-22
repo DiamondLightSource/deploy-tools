@@ -169,7 +169,14 @@
           "default": [],
           "description": "A list of mount points to add to the container in the form of 'host_path[:container_path[:opts]]' where opts (mount options) can be 'ro' or 'rw' and defaults to 'rw'",
           "items": {
-            "$ref": "#/$defs/MountPoint"
+            "anyOf": [
+              {
+                "$ref": "#/$defs/MountPoint"
+              },
+              {
+                "$ref": "#/$defs/OptionalMountPoint"
+              }
+            ]
           },
           "title": "Mounts",
           "type": "array"
@@ -365,6 +372,23 @@
     "MountPoint": {
       "pattern": "^/[^:]*(:/[^:]*(:(ro|rw))?)?$",
       "type": "string"
+    },
+    "OptionalMountPoint": {
+      "additionalProperties": false,
+      "description": "Represents an optional mount point for the Apptainer container.\n\nWhen specified, the mount path is checked to see if it exists on the host.\nIf it does not exist, the mount is skipped and no error is raised.",
+      "properties": {
+        "optional_mount": {
+          "description": "Path to mount in the container. Will not error if the path does not exist",
+          "pattern": "/[^:]*",
+          "title": "Optional Mount",
+          "type": "string"
+        }
+      },
+      "required": [
+        "optional_mount"
+      ],
+      "title": "OptionalMountPoint",
+      "type": "object"
     },
     "ShellApp": {
       "additionalProperties": false,
