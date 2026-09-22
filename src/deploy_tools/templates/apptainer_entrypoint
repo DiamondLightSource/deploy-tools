@@ -20,21 +20,21 @@ command_args="{{ command_args }}"
 
 {% if optional_mounts != None %}
 # Filter out any invalid mounts and warn the user
-IFS="," read -ra entries <<< "$optional_mounts"
+IFS="," read -ra mount_paths <<< "$optional_mounts"
 
-valid_mounts=()
+validated_mounts=()
 
-for entry in "${entries[@]}"; do
-    host_path="${entry%%:*}"
+for mount_path in "${mount_paths[@]}"; do
+    host_path="${mount_path%%:*}"
 
     if [[ -d "$host_path" || -f "$host_path" ]]; then
-        valid_mounts+=("$entry")
+        validated_mounts+=("$mount_path")
     else
         echo "WARNING: Unable to mount $host_path: path does not exist" >&2
     fi
 done
 
-mounts="${standard_mounts},$(IFS=','; echo "${valid_mounts[*]}")"
+mounts="${standard_mounts},$(IFS=','; echo "${validated_mounts[*]}")"
 {% endif %}
 
 # Raise an error if sif file does not exist
