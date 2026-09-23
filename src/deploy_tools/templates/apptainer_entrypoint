@@ -20,11 +20,11 @@ command_args="{{ command_args }}"
 
 {% if optional_mounts != None %}
 # Filter out any invalid mounts and warn the user
-IFS="," read -ra mount_paths <<< "$optional_mounts"
+IFS="," read -ra optional_mount_paths <<< "$optional_mounts"
 
 validated_mounts=()
 
-for mount_path in "${mount_paths[@]}"; do
+for mount_path in "${optional_mount_paths[@]}"; do
     host_path="${mount_path%%:*}"
 
     if [[ -d "$host_path" || -f "$host_path" ]]; then
