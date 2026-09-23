@@ -379,7 +379,7 @@
       "properties": {
         "optional_mount": {
           "description": "Path to mount in the container. Will not error if the path does not exist",
-          "pattern": "/[^:]*",
+          "pattern": "^/[^:]*(:/[^:]*(:(ro|rw))?)?$",
           "title": "Optional Mount",
           "type": "string"
         }

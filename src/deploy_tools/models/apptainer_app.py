@@ -21,7 +21,7 @@ class OptionalMountPoint(ParentModel):
 
     optional_mount: Annotated[
         str,
-        StringConstraints(pattern=MOUNT_PATH_REGEX),
+        StringConstraints(pattern=MOUNT_REGEX),
         Field(
             description="Path to mount in the container. "
             "Will not error if the path does not exist"
