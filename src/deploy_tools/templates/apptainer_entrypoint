@@ -7,7 +7,7 @@
 set -e
 
 # Mounts for container
-standard_mounts="{{ standard_mounts }}"
+mounts="{{ mounts }}"
 optional_mounts="{{ optional_mounts }}"
 # Additional arguments for apptainer
 apptainer_args="{{ apptainer_args }}"
@@ -34,7 +34,7 @@ for mount_path in "${optional_mount_paths[@]}"; do
     fi
 done
 
-mounts="${standard_mounts},$(IFS=','; echo "${validated_mounts[*]}")"
+mounts="${mounts},$(IFS=','; echo "${validated_mounts[*]}")"
 {% endif %}
 
 # Raise an error if sif file does not exist

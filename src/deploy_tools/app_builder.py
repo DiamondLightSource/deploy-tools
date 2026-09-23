@@ -56,9 +56,7 @@ class AppBuilder:
             options = entrypoint.options
             entrypoint_file = entrypoints_folder / entrypoint.name
 
-            standard_mounts = ",".join(
-                chain(global_options.standard_mounts, options.standard_mounts)
-            ).strip()
+            mounts = ",".join(chain(global_options.mounts, options.mounts)).strip()
             optional_mounts = ",".join(
                 chain(global_options.optional_mounts, options.optional_mounts)
             ).strip()
@@ -75,7 +73,7 @@ class AppBuilder:
             command_args = command_args.strip()
 
             params = {
-                "standard_mounts": standard_mounts,
+                "mounts": mounts,
                 "optional_mounts": optional_mounts,
                 "host_binaries": host_binaries,
                 "apptainer_args": apptainer_args,

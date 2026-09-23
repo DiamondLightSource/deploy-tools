@@ -28,6 +28,7 @@
             "apptainer_args": "",
             "command_args": "",
             "mounts": [],
+            "optional_mounts": [],
             "host_binaries": []
           },
           "description": "Global options that apply to all Entrypoints"
@@ -138,6 +139,7 @@
             "apptainer_args": "",
             "command_args": "",
             "mounts": [],
+            "optional_mounts": [],
             "host_binaries": []
           },
           "description": "Options to apply for this entrypoint"
@@ -167,18 +169,20 @@
         },
         "mounts": {
           "default": [],
-          "description": "A list of mount points to add to the container in the form of 'host_path[:container_path[:opts]]' where opts (mount options) can be 'ro' or 'rw' and defaults to 'rw'. Mounts can be specified as either a string or an object with the key 'optional_mount' to indicate that the mount is optional. Mounts defined as a string will error if the path does not exist, whereas optional mounts will be excluded when non-existent.",
+          "description": "A list of mount points that will result in an error if their host paths cannot be found. This takes the form of 'host_path[:container_path[:opts]]' where opts (mount options) can be 'ro' or 'rw' and defaults to 'rw'. ",
           "items": {
-            "anyOf": [
-              {
-                "$ref": "#/$defs/MountPoint"
-              },
-              {
-                "$ref": "#/$defs/OptionalMountPoint"
-              }
-            ]
+            "$ref": "#/$defs/MountPoint"
           },
           "title": "Mounts",
+          "type": "array"
+        },
+        "optional_mounts": {
+          "default": [],
+          "description": "A list of mount points that will not be mounted if their host paths cannot be found (avoiding an error). This takes the form of 'host_path[:container_path[:opts]]' where opts (mount options) can be 'ro' or 'rw' and defaults to 'rw'.",
+          "items": {
+            "$ref": "#/$defs/MountPoint"
+          },
+          "title": "Optional Mounts",
           "type": "array"
         },
         "host_binaries": {
@@ -260,23 +264,6 @@
     "MountPoint": {
       "pattern": "^/[^:]*(:/[^:]*(:(ro|rw))?)?$",
       "type": "string"
-    },
-    "OptionalMountPoint": {
-      "additionalProperties": false,
-      "description": "Represents an optional mount point for the Apptainer container.\n\nWhen specified, the mount path is checked to see if it exists on the host.\nIf it does not exist, the mount is skipped and no error is raised.",
-      "properties": {
-        "optional_mount": {
-          "description": "Path to mount in the container. Will not error if the path does not exist",
-          "pattern": "^/[^:]*(:/[^:]*(:(ro|rw))?)?$",
-          "title": "Optional Mount",
-          "type": "string"
-        }
-      },
-      "required": [
-        "optional_mount"
-      ],
-      "title": "OptionalMountPoint",
-      "type": "object"
     },
     "ShellApp": {
       "additionalProperties": false,
