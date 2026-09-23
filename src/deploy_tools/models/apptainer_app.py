@@ -1,6 +1,6 @@
 from typing import Annotated, Literal
 
-from pydantic import AnyUrl, Field, StringConstraints, UrlConstraints
+from pydantic import AnyUrl, Field, StringConstraints, UrlConstraints, model_validator
 
 from .app import ENTRYPOINT_NAME_REGEX
 from .parent import ParentModel
@@ -52,6 +52,17 @@ class EntrypointOptions(ParentModel):
             "mounted into the container at /usr/bin/[binary_name]"
         ),
     ] = []
+
+    @model_validator(mode="after")
+    def check_unique_mounts(self) -> "EntrypointOptions":
+        """Ensure that mounts and optional_mounts do not contain duplicates."""
+        duplicate_mounts = set(self.mounts).intersection(set(self.optional_mounts))
+        if duplicate_mounts:
+            raise ValueError(
+                f"Duplicate paths found in mounts and optional_mounts: "
+                f"{duplicate_mounts}"
+            )
+        return self
 
 
 class Entrypoint(ParentModel):
