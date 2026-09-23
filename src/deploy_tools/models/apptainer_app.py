@@ -46,7 +46,10 @@ class EntrypointOptions(ParentModel):
         Field(
             description="A list of mount points to add to the container in the form of "
             "'host_path[:container_path[:opts]]' where opts (mount options) can be "
-            "'ro' or 'rw' and defaults to 'rw'"
+            "'ro' or 'rw' and defaults to 'rw'. Mounts can be specified as either a"
+            " string or an object with the key 'optional_mount' to indicate that the"
+            " mount is optional. Mounts defined as a string will error if the path does"
+            " not exist, whereas optional mounts will be excluded when non-existent."
         ),
     ] = []
 
