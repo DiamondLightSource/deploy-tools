@@ -8,6 +8,7 @@ set -e
 
 # Mounts for container
 mounts=""
+optional_mounts=""
 # Additional arguments for apptainer
 apptainer_args=""
 # Sif file path
@@ -16,6 +17,23 @@ sif_file="$(dirname $0)/../sif_files/a553018b87553334a94c33cb04eb025c.sif"
 command="cowsay"
 # Options and arguments to pass to command
 command_args="Hello"
+
+# Filter out any invalid mounts and warn the user
+IFS="," read -ra optional_mount_paths <<< "$optional_mounts"
+
+validated_mounts=()
+
+for mount_path in "${optional_mount_paths[@]}"; do
+    host_path="${mount_path%%:*}"
+
+    if [[ -d "$host_path" || -f "$host_path" ]]; then
+        validated_mounts+=("$mount_path")
+    else
+        echo "WARNING: Unable to mount $host_path: path does not exist" >&2
+    fi
+done
+
+mounts="${mounts},$(IFS=','; echo "${validated_mounts[*]}")"
 
 # Raise an error if sif file does not exist
 if [[ ! -f ${sif_file} ]]; then

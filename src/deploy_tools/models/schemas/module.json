@@ -28,6 +28,7 @@
             "apptainer_args": "",
             "command_args": "",
             "mounts": [],
+            "optional_mounts": [],
             "host_binaries": []
           },
           "description": "Global options that apply to all Entrypoints"
@@ -138,6 +139,7 @@
             "apptainer_args": "",
             "command_args": "",
             "mounts": [],
+            "optional_mounts": [],
             "host_binaries": []
           },
           "description": "Options to apply for this entrypoint"
@@ -167,11 +169,20 @@
         },
         "mounts": {
           "default": [],
-          "description": "A list of mount points to add to the container in the form of 'host_path[:container_path[:opts]]' where opts (mount options) can be 'ro' or 'rw' and defaults to 'rw'",
+          "description": "A list of mount points that will result in an error if their host paths cannot be found. This takes the form of 'host_path[:container_path[:opts]]' where opts (mount options) can be 'ro' or 'rw' and defaults to 'rw'. ",
           "items": {
             "$ref": "#/$defs/MountPoint"
           },
           "title": "Mounts",
+          "type": "array"
+        },
+        "optional_mounts": {
+          "default": [],
+          "description": "A list of mount points that will not be mounted if their host paths cannot be found (avoiding an error). This takes the form of 'host_path[:container_path[:opts]]' where opts (mount options) can be 'ro' or 'rw' and defaults to 'rw'.",
+          "items": {
+            "$ref": "#/$defs/MountPoint"
+          },
+          "title": "Optional Mounts",
           "type": "array"
         },
         "host_binaries": {
