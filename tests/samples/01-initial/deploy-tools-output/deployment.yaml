@@ -17,11 +17,13 @@ releases:
               command_args: Hello
               host_binaries: []
               mounts: []
+              optional_mounts: []
           global_options:
             apptainer_args: ''
             command_args: ''
             host_binaries: []
             mounts: []
+            optional_mounts: []
         - app_type: shell
           name: test-echo-module-var
           script:

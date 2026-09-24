@@ -8,6 +8,7 @@ set -e
 
 # Mounts for container
 mounts=""
+optional_mounts=""
 # Additional arguments for apptainer
 apptainer_args=""
 # Sif file path
