@@ -18,7 +18,7 @@ command="{{ command }}"
 # Options and arguments to pass to command
 command_args="{{ command_args }}"
 
-{% if optional_mounts != None %}
+{% if optional_mounts|length %}
 # Filter out any invalid mounts and warn the user
 IFS="," read -ra optional_mount_paths <<< "$optional_mounts"
 
