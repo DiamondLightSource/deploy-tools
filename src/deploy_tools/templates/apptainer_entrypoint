@@ -19,7 +19,7 @@ command="{{ command }}"
 command_args="{{ command_args }}"
 
 {% if optional_mounts|length %}
-# Filter out any invalid mounts and warn the user
+# Filter out optional mounts that are non-existent
 IFS="," read -ra optional_mount_paths <<< "$optional_mounts"
 
 validated_mounts=()
