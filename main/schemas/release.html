@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>Release &#8212; deploy-tools 0.7.2.dev179+gb75126d76 documentation</title>
+    <title>Release &#8212; deploy-tools 0.7.2.dev200+g5dd45a3d0 documentation</title>
   
   
   
@@ -43,7 +43,7 @@
   <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=cb8930eaaf36d9849b67" />
 <link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=cb8930eaaf36d9849b67" />
 
-    <script src="../_static/documentation_options.js?v=ca73af55"></script>
+    <script src="../_static/documentation_options.js?v=1f82d2f4"></script>
     <script src="../_static/doctools.js?v=fd6eb6e6"></script>
     <script src="../_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
@@ -612,13 +612,13 @@ container image.</p>
 <tr class="row-even"><td><p>items</p></td>
 <td colspan="2"><p><a class="reference internal" href="#entrypoint">Entrypoint</a></p></td>
 </tr>
-<tr class="row-odd"><td rowspan="6"><ul class="simple">
+<tr class="row-odd"><td rowspan="7"><ul class="simple">
 <li><p>global_options</p></li>
 </ul>
 </td>
 <td colspan="3"><p>Global options that apply to all Entrypoints</p></td>
 </tr>
-<tr class="row-even"><td rowspan="4"><p>default</p></td>
+<tr class="row-even"><td rowspan="5"><p>default</p></td>
 <td><p>apptainer_args</p></td>
 <td></td>
 </tr>
@@ -628,10 +628,13 @@ container image.</p>
 <tr class="row-even"><td><p>mounts</p></td>
 <td></td>
 </tr>
-<tr class="row-odd"><td><p>host_binaries</p></td>
+<tr class="row-odd"><td><p>optional_mounts</p></td>
 <td></td>
 </tr>
-<tr class="row-even"><td colspan="3"><p><a class="reference internal" href="#entrypointoptions">EntrypointOptions</a></p></td>
+<tr class="row-even"><td><p>host_binaries</p></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td colspan="3"><p><a class="reference internal" href="#entrypointoptions">EntrypointOptions</a></p></td>
 </tr>
 </tbody>
 </table>
@@ -800,13 +803,13 @@ corresponds to the name of the executable provided by the Module.</p>
 <tr class="row-even"><td><p>type</p></td>
 <td><p><em>null</em></p></td>
 </tr>
-<tr class="row-odd"><td rowspan="6"><ul class="simple">
+<tr class="row-odd"><td rowspan="7"><ul class="simple">
 <li><p>options</p></li>
 </ul>
 </td>
 <td colspan="3"><p>Options to apply for this entrypoint</p></td>
 </tr>
-<tr class="row-even"><td rowspan="4"><p>default</p></td>
+<tr class="row-even"><td rowspan="5"><p>default</p></td>
 <td><p>apptainer_args</p></td>
 <td></td>
 </tr>
@@ -816,10 +819,13 @@ corresponds to the name of the executable provided by the Module.</p>
 <tr class="row-even"><td><p>mounts</p></td>
 <td></td>
 </tr>
-<tr class="row-odd"><td><p>host_binaries</p></td>
+<tr class="row-odd"><td><p>optional_mounts</p></td>
 <td></td>
 </tr>
-<tr class="row-even"><td colspan="3"><p><a class="reference internal" href="#entrypointoptions">EntrypointOptions</a></p></td>
+<tr class="row-even"><td><p>host_binaries</p></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td colspan="3"><p><a class="reference internal" href="#entrypointoptions">EntrypointOptions</a></p></td>
 </tr>
 </tbody>
 </table>
@@ -863,13 +869,13 @@ corresponds to the name of the executable provided by the Module.</p>
 <tr class="row-even"><td><p>default</p></td>
 <td colspan="2"></td>
 </tr>
-<tr class="row-odd"><td rowspan="5"><ul class="simple">
+<tr class="row-odd"><td rowspan="6"><ul class="simple">
 <li><p>mounts</p></li>
 </ul>
 </td>
 <td colspan="3"><p><em>Mounts</em></p></td>
 </tr>
-<tr class="row-even"><td colspan="3"><p>A list of mount points to add to the container in the form of ‘host_path[:container_path[:opts]]’ where opts (mount options) can be ‘ro’ or ‘rw’ and defaults to ‘rw’</p></td>
+<tr class="row-even"><td colspan="3"><p>A set of mount points that will result in an error if their host paths cannot be found. This takes the form of ‘host_path[:container_path[:opts]]’ where opts (mount options) can be ‘ro’ or ‘rw’ and defaults to ‘rw’.</p></td>
 </tr>
 <tr class="row-odd"><td><p>type</p></td>
 <td colspan="2"><p><em>array</em></p></td>
@@ -880,21 +886,44 @@ corresponds to the name of the executable provided by the Module.</p>
 <tr class="row-odd"><td><p>items</p></td>
 <td colspan="2"><p><a class="reference internal" href="#mountpoint">MountPoint</a></p></td>
 </tr>
-<tr class="row-even"><td rowspan="5"><ul class="simple">
+<tr class="row-even"><td><p>uniqueItems</p></td>
+<td colspan="2"><p>True</p></td>
+</tr>
+<tr class="row-odd"><td rowspan="6"><ul class="simple">
+<li><p>optional_mounts</p></li>
+</ul>
+</td>
+<td colspan="3"><p><em>Optional Mounts</em></p></td>
+</tr>
+<tr class="row-even"><td colspan="3"><p>A set of mount points that will not be mounted if their host paths cannot be found (avoiding an error). This takes the form of ‘host_path[:container_path[:opts]]’ where opts (mount options) can be ‘ro’ or ‘rw’ and defaults to ‘rw’.</p></td>
+</tr>
+<tr class="row-odd"><td><p>type</p></td>
+<td colspan="2"><p><em>array</em></p></td>
+</tr>
+<tr class="row-even"><td><p>default</p></td>
+<td colspan="2"></td>
+</tr>
+<tr class="row-odd"><td><p>items</p></td>
+<td colspan="2"><p><a class="reference internal" href="#mountpoint">MountPoint</a></p></td>
+</tr>
+<tr class="row-even"><td><p>uniqueItems</p></td>
+<td colspan="2"><p>True</p></td>
+</tr>
+<tr class="row-odd"><td rowspan="5"><ul class="simple">
 <li><p>host_binaries</p></li>
 </ul>
 </td>
 <td colspan="3"><p><em>Host Binaries</em></p></td>
 </tr>
-<tr class="row-odd"><td colspan="3"><p>A list of host binaries to mount into the container. These are discovered on the host using the current PATH and are mounted into the container at /usr/bin/[binary_name]</p></td>
+<tr class="row-even"><td colspan="3"><p>A list of host binaries to mount into the container. These are discovered on the host using the current PATH and are mounted into the container at /usr/bin/[binary_name]</p></td>
 </tr>
-<tr class="row-even"><td><p>type</p></td>
+<tr class="row-odd"><td><p>type</p></td>
 <td colspan="2"><p><em>array</em></p></td>
 </tr>
-<tr class="row-odd"><td><p>default</p></td>
+<tr class="row-even"><td><p>default</p></td>
 <td colspan="2"></td>
 </tr>
-<tr class="row-even"><td><p>items</p></td>
+<tr class="row-odd"><td><p>items</p></td>
 <td><p>type</p></td>
 <td><p><em>string</em></p></td>
 </tr>
