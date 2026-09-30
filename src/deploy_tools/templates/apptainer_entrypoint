@@ -35,8 +35,8 @@ for mount_path in "${optional_mount_paths[@]}"; do
 done
 
 mounts="${mounts},$(IFS=','; echo "${validated_mounts[*]}")"
-{% endif -%}
 
+{% endif -%}
 # Raise an error if sif file does not exist
 if [[ ! -f ${sif_file} ]]; then
     echo "ERROR: sif file ${sif_file} does not exist" 1>&2
