@@ -94,7 +94,7 @@ class AppBuilder:
         options: EntrypointOptions, global_options: EntrypointOptions
     ) -> tuple[str, str]:
         """Allow entrypoint options to override mounts defined in global_options."""
-        entrypoint_mounts = set(options.mounts).union(set(options.optional_mounts))
+        entrypoint_mounts = options.mounts.union(options.optional_mounts)
         global_mounts = (
             mount for mount in global_options.mounts if mount not in entrypoint_mounts
         )

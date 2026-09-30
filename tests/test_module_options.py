@@ -93,7 +93,7 @@ def test_apptainer_options_merge_global_and_entrypoint(
                         version="latest",
                     ),
                     global_options=EntrypointOptions(
-                        mounts=["/global/mount"],
+                        mounts={"/global/mount"},
                         host_binaries=["globalbin"],
                         apptainer_args="--global-arg",
                         command_args="--global-cmd",
@@ -103,7 +103,7 @@ def test_apptainer_options_merge_global_and_entrypoint(
                             name="example-cmd",
                             command="realcmd",
                             options=EntrypointOptions(
-                                mounts=["/local/mount"],
+                                mounts={"/local/mount"},
                                 host_binaries=["localbin"],
                                 apptainer_args="--local-arg",
                                 command_args="--local-cmd",
