@@ -143,14 +143,3 @@ class ApptainerApp(ParentModel):
         EntrypointOptions,
         Field(description="Global options that apply to all Entrypoints"),
     ] = EntrypointOptions()
-
-    @model_validator(mode="after")
-    def prioritise_entrypoint_mounts(self) -> "ApptainerApp":
-        """Allow entrypoint options to override mounts defined in global_options"""
-        for entrypoint in self.entrypoints:
-            for mount in entrypoint.options.mounts + entrypoint.options.optional_mounts:
-                if mount in self.global_options.mounts:
-                    self.global_options.mounts.remove(mount)
-                if mount in self.global_options.optional_mounts:
-                    self.global_options.optional_mounts.remove(mount)
-        return self

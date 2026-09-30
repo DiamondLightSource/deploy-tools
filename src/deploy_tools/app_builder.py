@@ -56,9 +56,22 @@ class AppBuilder:
             options = entrypoint.options
             entrypoint_file = entrypoints_folder / entrypoint.name
 
-            mounts = ",".join(chain(global_options.mounts, options.mounts)).strip()
+            # Allow entrypoint options to override mounts defined in global_options
+            entrypoint_mounts = set(options.mounts + options.optional_mounts)
+            global_mounts = (
+                mount
+                for mount in global_options.mounts
+                if mount not in entrypoint_mounts
+            )
+            global_optional_mounts = (
+                mount
+                for mount in global_options.optional_mounts
+                if mount not in entrypoint_mounts
+            )
+
+            mounts = ",".join(chain(global_mounts, options.mounts)).strip()
             optional_mounts = ",".join(
-                chain(global_options.optional_mounts, options.optional_mounts)
+                chain(global_optional_mounts, options.optional_mounts)
             ).strip()
             host_binaries = " ".join(
                 chain(global_options.host_binaries, options.host_binaries)
