@@ -8,6 +8,7 @@ set -e
 
 # Mounts for container
 mounts="{{ mounts }}"
+optional_mounts="{{ optional_mounts }}"
 # Additional arguments for apptainer
 apptainer_args="{{ apptainer_args }}"
 # Sif file path
@@ -17,6 +18,23 @@ command="{{ command }}"
 # Options and arguments to pass to command
 command_args="{{ command_args }}"
 
+{% if optional_mounts|length %}
+# Filter out optional mounts that are non-existent
+IFS="," read -ra optional_mount_paths <<< "$optional_mounts"
+
+validated_mounts=()
+
+for mount_path in "${optional_mount_paths[@]}"; do
+    host_path="${mount_path%%:*}"
+
+    if [[ -d "$host_path" || -f "$host_path" ]]; then
+        validated_mounts+=("$mount_path")
+    fi
+done
+
+mounts="${mounts},$(IFS=','; echo "${validated_mounts[*]}")"
+
+{% endif -%}
 # Raise an error if sif file does not exist
 if [[ ! -f ${sif_file} ]]; then
     echo "ERROR: sif file ${sif_file} does not exist" 1>&2

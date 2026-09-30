@@ -1,6 +1,6 @@
 from typing import Annotated, Literal
 
-from pydantic import AnyUrl, Field, StringConstraints, UrlConstraints
+from pydantic import AnyUrl, Field, StringConstraints, UrlConstraints, model_validator
 
 from .app import ENTRYPOINT_NAME_REGEX
 from .parent import ParentModel
@@ -25,13 +25,24 @@ class EntrypointOptions(ParentModel):
     ] = ""
 
     mounts: Annotated[
-        list[MountPoint],
+        set[MountPoint],
         Field(
-            description="A list of mount points to add to the container in the form of "
+            description="A set of mount points that will result in an error if their "
+            "host paths cannot be found. This takes the form of "
             "'host_path[:container_path[:opts]]' where opts (mount options) can be "
-            "'ro' or 'rw' and defaults to 'rw'"
+            "'ro' or 'rw' and defaults to 'rw'. "
         ),
-    ] = []
+    ] = set()
+
+    optional_mounts: Annotated[
+        set[MountPoint],
+        Field(
+            description="A set of mount points that will not be mounted if their host "
+            "paths cannot be found (avoiding an error). This takes the form of "
+            "'host_path[:container_path[:opts]]' where opts (mount options) "
+            "can be 'ro' or 'rw' and defaults to 'rw'."
+        ),
+    ] = set()
 
     host_binaries: Annotated[
         list[str],
@@ -41,6 +52,17 @@ class EntrypointOptions(ParentModel):
             "mounted into the container at /usr/bin/[binary_name]"
         ),
     ] = []
+
+    @model_validator(mode="after")
+    def check_unique_mounts(self) -> "EntrypointOptions":
+        """Ensure that mounts and optional_mounts do not contain duplicates."""
+        duplicate_mounts = self.mounts.intersection(self.optional_mounts)
+        if duplicate_mounts:
+            raise ValueError(
+                f"Duplicate paths found in mounts and optional_mounts: "
+                f"{duplicate_mounts}"
+            )
+        return self
 
 
 class Entrypoint(ParentModel):
