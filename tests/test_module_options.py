@@ -129,6 +129,63 @@ def test_apptainer_options_merge_global_and_entrypoint(
     assert 'command="realcmd"' in entrypoint
 
 
+def test_apptainer_entrypoint_mounts_take_precendence_over_global_mounts(
+    tmp_path: Path, stub_apptainer_pull: None
+) -> None:
+    # The Apptainer entrypoint combines global_options with per-entrypoint options
+    release = Release(
+        module=Module(
+            name="example-apptainer-opts",
+            version="2.0",
+            description="Module exercising apptainer entrypoint option merge",
+            applications=[
+                ApptainerApp(
+                    app_type="apptainer",
+                    container=ContainerImage(
+                        path="docker://ghcr.io/apptainer/lolcow",  # type: ignore[arg-type]
+                        version="latest",
+                    ),
+                    global_options=EntrypointOptions(
+                        mounts={"/global/mount"},
+                        optional_mounts={"/global/mount/optional"},
+                        host_binaries=["globalbin"],
+                        apptainer_args="--global-arg",
+                        command_args="--global-cmd",
+                    ),
+                    entrypoints=[
+                        Entrypoint(
+                            name="example-cmd",
+                            command="realcmd",
+                            options=EntrypointOptions(
+                                mounts={"/global/mount/optional"},
+                                optional_mounts={"/global/mount"},
+                                host_binaries=["localbin"],
+                                apptainer_args="--local-arg",
+                                command_args="--local-cmd",
+                            ),
+                        )
+                    ],
+                )
+            ],
+        )
+    )
+    deployment_root = _sync(tmp_path, release)
+
+    entrypoint = (
+        deployment_root / "modules/example-apptainer-opts/2.0/entrypoints/example-cmd"
+    ).read_text()
+
+    # When duplicate mounts are defined between global and entrypoint options,
+    # entrypoint options will take priority
+    print(entrypoint)
+    assert 'mounts="/global/mount/optional"' in entrypoint
+    assert 'optional_mounts="/global/mount"' in entrypoint
+    assert 'apptainer_args="--global-arg --local-arg"' in entrypoint
+    assert 'command_args="--global-cmd --local-cmd"' in entrypoint
+    assert "for i in globalbin localbin; do" in entrypoint
+    assert 'command="realcmd"' in entrypoint
+
+
 def test_dependencies_render_module_load_lines(tmp_path: Path) -> None:
     # The modulefile dependency block branches on whether a version is given: a pinned
     # dependency renders `name/version`, while a version-less one renders the bare name.
