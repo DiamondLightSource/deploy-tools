@@ -9,7 +9,7 @@ from deploy_tools.models.binary_app import BinaryApp, HashType
 from .apptainer import create_sif_file
 from .errors import DeployToolsError
 from .layout import ModuleBuildLayout
-from .models.apptainer_app import ApptainerApp
+from .models.apptainer_app import ApptainerApp, EntrypointOptions
 from .models.module import Application, Module
 from .models.shell_app import ShellApp
 from .templater import Templater, TemplateType
@@ -56,23 +56,9 @@ class AppBuilder:
             options = entrypoint.options
             entrypoint_file = entrypoints_folder / entrypoint.name
 
-            # Allow entrypoint options to override mounts defined in global_options
-            entrypoint_mounts = set(options.mounts + options.optional_mounts)
-            global_mounts = (
-                mount
-                for mount in global_options.mounts
-                if mount not in entrypoint_mounts
+            mounts, optional_mounts = self._resolve_entrypoint_mounts(
+                options, global_options
             )
-            global_optional_mounts = (
-                mount
-                for mount in global_options.optional_mounts
-                if mount not in entrypoint_mounts
-            )
-
-            mounts = ",".join(chain(global_mounts, options.mounts)).strip()
-            optional_mounts = ",".join(
-                chain(global_optional_mounts, options.optional_mounts)
-            ).strip()
             host_binaries = " ".join(
                 chain(global_options.host_binaries, options.host_binaries)
             ).strip()
@@ -102,6 +88,28 @@ class AppBuilder:
                 executable=True,
                 create_parents=True,
             )
+
+    @staticmethod
+    def _resolve_entrypoint_mounts(
+        options: EntrypointOptions, global_options: EntrypointOptions
+    ) -> tuple[str, str]:
+        """Allow entrypoint options to override mounts defined in global_options."""
+        entrypoint_mounts = set(options.mounts).union(set(options.optional_mounts))
+        global_mounts = (
+            mount for mount in global_options.mounts if mount not in entrypoint_mounts
+        )
+        global_optional_mounts = (
+            mount
+            for mount in global_options.optional_mounts
+            if mount not in entrypoint_mounts
+        )
+
+        mounts = ",".join(chain(global_mounts, options.mounts)).strip()
+        optional_mounts = ",".join(
+            chain(global_optional_mounts, options.optional_mounts)
+        ).strip()
+
+        return mounts, optional_mounts
 
     def _generate_sif_file(self, app: ApptainerApp, module: Module) -> None:
         sif_file_path = self._get_sif_file_path(app, module)
