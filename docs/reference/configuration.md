@@ -135,7 +135,7 @@ command run inside the container.
 | `host_binaries` | Host binaries, found on the current `PATH`, to mount into the container at `/usr/bin/<name>`. |
 
 Where the same `mounts` or `optional_mounts` are defined in both an entrypoint’s
-`options` and `global_options`,the entrypoint-level setting takes precedence.
+`options` and `global_options`, the entrypoint-level setting takes precedence.
 
 ### Shell
 
