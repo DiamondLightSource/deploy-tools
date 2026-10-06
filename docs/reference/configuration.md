@@ -131,7 +131,11 @@ command run inside the container.
 | `apptainer_args` | Arguments passed to Apptainer when launching the container. |
 | `command_args` | Arguments passed to the command being run. |
 | `mounts` | Mount points as `host_path[:container_path[:opts]]`, where `opts` is `ro` or `rw` (default `rw`). |
+| `optional_mounts` | Same format as `mounts`, but will not cause apptainer to error if the path cannot be found. |
 | `host_binaries` | Host binaries, found on the current `PATH`, to mount into the container at `/usr/bin/<name>`. |
+
+Where the same `mounts` or `optional_mounts` are defined in both an entrypoint’s
+`options` and `global_options`,the entrypoint-level setting takes precedence.
 
 ### Shell
 
