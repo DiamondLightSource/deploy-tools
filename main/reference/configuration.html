@@ -7,7 +7,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>Configuration &#8212; deploy-tools 0.8.1.dev1+g33505f617 documentation</title>
+    <title>Configuration &#8212; deploy-tools 0.8.1.dev4+gfda762d4d documentation</title>
   
   
   
@@ -42,7 +42,7 @@
   <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=64cc4de3f052d77215f0" />
 <link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=64cc4de3f052d77215f0" />
 
-    <script src="../_static/documentation_options.js?v=6bab197b"></script>
+    <script src="../_static/documentation_options.js?v=3ea9bfa6"></script>
     <script src="../_static/doctools.js?v=fd6eb6e6"></script>
     <script src="../_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
@@ -798,12 +798,17 @@ command run inside the container.</p>
 <tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">mounts</span></code></p></td>
 <td><p>Mount points as <code class="docutils literal notranslate"><span class="pre">host_path[:container_path[:opts]]</span></code>, where <code class="docutils literal notranslate"><span class="pre">opts</span></code> is <code class="docutils literal notranslate"><span class="pre">ro</span></code> or <code class="docutils literal notranslate"><span class="pre">rw</span></code> (default <code class="docutils literal notranslate"><span class="pre">rw</span></code>).</p></td>
 </tr>
-<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">host_binaries</span></code></p></td>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">optional_mounts</span></code></p></td>
+<td><p>Same format as <code class="docutils literal notranslate"><span class="pre">mounts</span></code>, but will not cause apptainer to error if the path cannot be found.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">host_binaries</span></code></p></td>
 <td><p>Host binaries, found on the current <code class="docutils literal notranslate"><span class="pre">PATH</span></code>, to mount into the container at <code class="docutils literal notranslate"><span class="pre">/usr/bin/&lt;name&gt;</span></code>.</p></td>
 </tr>
 </tbody>
 </table>
 </div>
+<p>Where the same <code class="docutils literal notranslate"><span class="pre">mounts</span></code> or <code class="docutils literal notranslate"><span class="pre">optional_mounts</span></code> are defined in both an entrypoint’s
+<code class="docutils literal notranslate"><span class="pre">options</span></code> and <code class="docutils literal notranslate"><span class="pre">global_options</span></code>, the entrypoint-level setting takes precedence.</p>
 </section>
 <section id="shell">
 <h3>Shell<a class="headerlink" href="#shell" title="Link to this heading">#</a></h3>
