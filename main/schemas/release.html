@@ -7,7 +7,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>Release &#8212; deploy-tools 0.8.1.dev6+g8f31c3c12 documentation</title>
+    <title>Release &#8212; deploy-tools 0.8.1.dev7+g2feab10d6 documentation</title>
   
   
   
@@ -42,7 +42,7 @@
   <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=18bd87630a240e9c25be" />
 <link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=18bd87630a240e9c25be" />
 
-    <script src="../_static/documentation_options.js?v=d138e546"></script>
+    <script src="../_static/documentation_options.js?v=9bd0f1c7"></script>
     <script src="../_static/doctools.js?v=fd6eb6e6"></script>
     <script src="../_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
@@ -529,7 +529,7 @@
                 <article class="bd-article">
                   
   <section id="release">
-<span id="release"></span><h1>Release<a class="headerlink" href="#release" title="Link to this heading">#</a></h1>
+<span id="id1"></span><h1>Release<a class="headerlink" href="#release" title="Link to this heading">#</a></h1>
 <p>Represents a Module along with its lifecycle (deprecation) status.</p>
 <div class="pst-scrollable-table-container"><table class="table">
 <tbody>
@@ -544,7 +544,7 @@
 </td>
 <td colspan="2"><p>Module (name, version &amp; configuration) to release</p></td>
 </tr>
-<tr class="row-even"><td colspan="2"><p><a class="reference internal" href="#module">Module</a></p></td>
+<tr class="row-even"><td colspan="2"><p><a class="reference internal" href="#id9">Module</a></p></td>
 </tr>
 <tr class="row-odd"><td rowspan="4"><ul class="simple">
 <li><p>deprecated</p></li>
@@ -558,13 +558,13 @@
 <td><p><em>boolean</em></p></td>
 </tr>
 <tr class="row-even"><td><p>default</p></td>
-<td><p>False</p></td>
+<td><p>false</p></td>
 </tr>
 </tbody>
 </table>
 </div>
 <section id="apptainerapp">
-<span id="apptainerapp"></span><h2>ApptainerApp<a class="headerlink" href="#apptainerapp" title="Link to this heading">#</a></h2>
+<span id="id2"></span><h2>ApptainerApp<a class="headerlink" href="#apptainerapp" title="Link to this heading">#</a></h2>
 <p>Represents an Apptainer application or set of applications using a single image.</p>
 <p>This uses Apptainer to deploy a portable image of the desired container. Multiple
 entrypoints can be specified to allow different commands to be run on the same
@@ -596,7 +596,7 @@ container image.</p>
 </td>
 <td colspan="3"><p>Container URL information</p></td>
 </tr>
-<tr class="row-even"><td colspan="3"><p><a class="reference internal" href="#containerimage">ContainerImage</a></p></td>
+<tr class="row-even"><td colspan="3"><p><a class="reference internal" href="#id4">ContainerImage</a></p></td>
 </tr>
 <tr class="row-odd"><td rowspan="4"><ul class="simple">
 <li><p><strong>entrypoints</strong></p></li>
@@ -610,7 +610,7 @@ container image.</p>
 <td colspan="2"><p><em>array</em></p></td>
 </tr>
 <tr class="row-even"><td><p>items</p></td>
-<td colspan="2"><p><a class="reference internal" href="#entrypoint">Entrypoint</a></p></td>
+<td colspan="2"><p><a class="reference internal" href="#id5">Entrypoint</a></p></td>
 </tr>
 <tr class="row-odd"><td rowspan="7"><ul class="simple">
 <li><p>global_options</p></li>
@@ -634,14 +634,14 @@ container image.</p>
 <tr class="row-even"><td><p>host_binaries</p></td>
 <td></td>
 </tr>
-<tr class="row-odd"><td colspan="3"><p><a class="reference internal" href="#entrypointoptions">EntrypointOptions</a></p></td>
+<tr class="row-odd"><td colspan="3"><p><a class="reference internal" href="#id6">EntrypointOptions</a></p></td>
 </tr>
 </tbody>
 </table>
 </div>
 </section>
 <section id="binaryapp">
-<span id="binaryapp"></span><h2>BinaryApp<a class="headerlink" href="#binaryapp" title="Link to this heading">#</a></h2>
+<span id="id3"></span><h2>BinaryApp<a class="headerlink" href="#binaryapp" title="Link to this heading">#</a></h2>
 <p>Represents a standalone Binary application.</p>
 <p>This will fetch a standalone binary, validate its hash and add its
 location to the path.</p>
@@ -714,14 +714,14 @@ location to the path.</p>
 </td>
 <td colspan="2"><p>Type of hash used to check the binary</p></td>
 </tr>
-<tr class="row-even"><td colspan="2"><p><a class="reference internal" href="#hashtype">HashType</a></p></td>
+<tr class="row-even"><td colspan="2"><p><a class="reference internal" href="#id8">HashType</a></p></td>
 </tr>
 </tbody>
 </table>
 </div>
 </section>
 <section id="containerimage">
-<span id="containerimage"></span><h2>ContainerImage<a class="headerlink" href="#containerimage" title="Link to this heading">#</a></h2>
+<span id="id4"></span><h2>ContainerImage<a class="headerlink" href="#containerimage" title="Link to this heading">#</a></h2>
 <p>Reference to a container image, split into a base path and version/tag.</p>
 <div class="pst-scrollable-table-container"><table class="table">
 <tbody>
@@ -763,7 +763,7 @@ location to the path.</p>
 </div>
 </section>
 <section id="entrypoint">
-<span id="entrypoint"></span><h2>Entrypoint<a class="headerlink" href="#entrypoint" title="Link to this heading">#</a></h2>
+<span id="id5"></span><h2>Entrypoint<a class="headerlink" href="#entrypoint" title="Link to this heading">#</a></h2>
 <p>Represents an entrypoint to a command on the Apptainer image.</p>
 <p>If no command is provided, the entrypoint (<code class="docutils literal notranslate"><span class="pre">name</span></code>) is used by default. This
 corresponds to the name of the executable provided by the Module.</p>
@@ -825,14 +825,14 @@ corresponds to the name of the executable provided by the Module.</p>
 <tr class="row-even"><td><p>host_binaries</p></td>
 <td></td>
 </tr>
-<tr class="row-odd"><td colspan="3"><p><a class="reference internal" href="#entrypointoptions">EntrypointOptions</a></p></td>
+<tr class="row-odd"><td colspan="3"><p><a class="reference internal" href="#id6">EntrypointOptions</a></p></td>
 </tr>
 </tbody>
 </table>
 </div>
 </section>
 <section id="entrypointoptions">
-<span id="entrypointoptions"></span><h2>EntrypointOptions<a class="headerlink" href="#entrypointoptions" title="Link to this heading">#</a></h2>
+<span id="id6"></span><h2>EntrypointOptions<a class="headerlink" href="#entrypointoptions" title="Link to this heading">#</a></h2>
 <p>Options applied when running an Apptainer entrypoint.</p>
 <div class="pst-scrollable-table-container"><table class="table">
 <tbody>
@@ -884,10 +884,10 @@ corresponds to the name of the executable provided by the Module.</p>
 <td colspan="2"></td>
 </tr>
 <tr class="row-odd"><td><p>items</p></td>
-<td colspan="2"><p><a class="reference internal" href="#mountpoint">MountPoint</a></p></td>
+<td colspan="2"><p><a class="reference internal" href="#id11">MountPoint</a></p></td>
 </tr>
 <tr class="row-even"><td><p>uniqueItems</p></td>
-<td colspan="2"><p>True</p></td>
+<td colspan="2"><p>true</p></td>
 </tr>
 <tr class="row-odd"><td rowspan="6"><ul class="simple">
 <li><p>optional_mounts</p></li>
@@ -904,10 +904,10 @@ corresponds to the name of the executable provided by the Module.</p>
 <td colspan="2"></td>
 </tr>
 <tr class="row-odd"><td><p>items</p></td>
-<td colspan="2"><p><a class="reference internal" href="#mountpoint">MountPoint</a></p></td>
+<td colspan="2"><p><a class="reference internal" href="#id11">MountPoint</a></p></td>
 </tr>
 <tr class="row-even"><td><p>uniqueItems</p></td>
-<td colspan="2"><p>True</p></td>
+<td colspan="2"><p>true</p></td>
 </tr>
 <tr class="row-odd"><td rowspan="5"><ul class="simple">
 <li><p>host_binaries</p></li>
@@ -932,7 +932,7 @@ corresponds to the name of the executable provided by the Module.</p>
 </div>
 </section>
 <section id="envvar">
-<span id="envvar"></span><h2>EnvVar<a class="headerlink" href="#envvar" title="Link to this heading">#</a></h2>
+<span id="id7"></span><h2>EnvVar<a class="headerlink" href="#envvar" title="Link to this heading">#</a></h2>
 <p>Represents an environment variable to set when loading the Module.</p>
 <div class="pst-scrollable-table-container"><table class="table">
 <tbody>
@@ -968,7 +968,7 @@ corresponds to the name of the executable provided by the Module.</p>
 </div>
 </section>
 <section id="hashtype">
-<span id="hashtype"></span><h2>HashType<a class="headerlink" href="#hashtype" title="Link to this heading">#</a></h2>
+<span id="id8"></span><h2>HashType<a class="headerlink" href="#hashtype" title="Link to this heading">#</a></h2>
 <p>Type of hash to use for the binary.</p>
 <div class="pst-scrollable-table-container"><table class="table">
 <tbody>
@@ -983,7 +983,7 @@ corresponds to the name of the executable provided by the Module.</p>
 </div>
 </section>
 <section id="module">
-<span id="module"></span><h2>Module<a class="headerlink" href="#module" title="Link to this heading">#</a></h2>
+<span id="id9"></span><h2>Module<a class="headerlink" href="#module" title="Link to this heading">#</a></h2>
 <p>Represents a Module to be deployed.</p>
 <p>Modules can optionally include a set of applications, environment variables to load,
 and a list of module dependencies.</p>
@@ -1049,7 +1049,7 @@ and a list of module dependencies.</p>
 <td colspan="2"></td>
 </tr>
 <tr class="row-even"><td><p>items</p></td>
-<td colspan="2"><p><a class="reference internal" href="#moduledependency">ModuleDependency</a></p></td>
+<td colspan="2"><p><a class="reference internal" href="#id10">ModuleDependency</a></p></td>
 </tr>
 <tr class="row-odd"><td rowspan="5"><ul class="simple">
 <li><p>env_vars</p></li>
@@ -1066,7 +1066,7 @@ and a list of module dependencies.</p>
 <td colspan="2"></td>
 </tr>
 <tr class="row-odd"><td><p>items</p></td>
-<td colspan="2"><p><a class="reference internal" href="#envvar">EnvVar</a></p></td>
+<td colspan="2"><p><a class="reference internal" href="#id7">EnvVar</a></p></td>
 </tr>
 <tr class="row-even"><td rowspan="6"><ul class="simple">
 <li><p><strong>applications</strong></p></li>
@@ -1081,11 +1081,11 @@ and a list of module dependencies.</p>
 </tr>
 <tr class="row-odd"><td rowspan="3"><p>items</p></td>
 <td rowspan="3"><p>oneOf</p></td>
-<td><p><a class="reference internal" href="#apptainerapp">ApptainerApp</a></p></td>
+<td><p><a class="reference internal" href="#id2">ApptainerApp</a></p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#shellapp">ShellApp</a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#id12">ShellApp</a></p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#binaryapp">BinaryApp</a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#id3">BinaryApp</a></p></td>
 </tr>
 <tr class="row-even"><td rowspan="4"><ul class="simple">
 <li><p>allow_updates</p></li>
@@ -1099,7 +1099,7 @@ and a list of module dependencies.</p>
 <td colspan="2"><p><em>boolean</em></p></td>
 </tr>
 <tr class="row-odd"><td><p>default</p></td>
-<td colspan="2"><p>False</p></td>
+<td colspan="2"><p>false</p></td>
 </tr>
 <tr class="row-even"><td rowspan="4"><ul class="simple">
 <li><p>exclude_from_defaults</p></li>
@@ -1113,7 +1113,7 @@ and a list of module dependencies.</p>
 <td colspan="2"><p><em>boolean</em></p></td>
 </tr>
 <tr class="row-odd"><td><p>default</p></td>
-<td colspan="2"><p>False</p></td>
+<td colspan="2"><p>false</p></td>
 </tr>
 <tr class="row-even"><td rowspan="5"><ul class="simple">
 <li><p>load_script</p></li>
@@ -1156,7 +1156,7 @@ and a list of module dependencies.</p>
 </div>
 </section>
 <section id="moduledependency">
-<span id="moduledependency"></span><h2>ModuleDependency<a class="headerlink" href="#moduledependency" title="Link to this heading">#</a></h2>
+<span id="id10"></span><h2>ModuleDependency<a class="headerlink" href="#moduledependency" title="Link to this heading">#</a></h2>
 <p>Specify an Environment Module to include as a dependency.</p>
 <p>The version is optional. If a version is given and the dependency is a Module
 managed by this same Deployment, that version must exist among the deployed
@@ -1203,7 +1203,7 @@ dependency’s default version is resolved at load time and is not validated.</p
 </div>
 </section>
 <section id="mountpoint">
-<span id="mountpoint"></span><h2>MountPoint<a class="headerlink" href="#mountpoint" title="Link to this heading">#</a></h2>
+<span id="id11"></span><h2>MountPoint<a class="headerlink" href="#mountpoint" title="Link to this heading">#</a></h2>
 <div class="pst-scrollable-table-container"><table class="table">
 <tbody>
 <tr class="row-odd"><td><p>type</p></td>
@@ -1214,7 +1214,7 @@ dependency’s default version is resolved at load time and is not validated.</p
 </div>
 </section>
 <section id="shellapp">
-<span id="shellapp"></span><h2>ShellApp<a class="headerlink" href="#shellapp" title="Link to this heading">#</a></h2>
+<span id="id12"></span><h2>ShellApp<a class="headerlink" href="#shellapp" title="Link to this heading">#</a></h2>
 <p>Represents a Shell application.</p>
 <p>This will run the code specified as a shell script. This currently uses Bash for
 improved functionality while retaining high compatibility with various Linux
