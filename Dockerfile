@@ -4,10 +4,7 @@ FROM ghcr.io/diamondlightsource/ubuntu-devcontainer:resolute AS developer
 
 # Add any system dependencies for the developer/build environment here
 RUN apt-get update -y && apt-get install -y --no-install-recommends \
-    graphviz environment-modules wget file \
-    && cd /tmp \
-    && wget https://github.com/apptainer/apptainer/releases/download/v1.3.3/apptainer_1.3.3_amd64.deb \
-    && apt install -y ./apptainer_1.3.3_amd64.deb \
+    graphviz environment-modules wget file apptainer \
     && apt-get dist-clean
 
 # The build stage installs the context into the venv
@@ -31,11 +28,8 @@ FROM ubuntu:resolute AS runtime
 
 # Add apt-get system dependecies for runtime here if needed
 RUN apt-get update -y && apt-get install -y --no-install-recommends \
-    graphviz environment-modules wget git ca-certificates file \
+    graphviz environment-modules wget git ca-certificates file apptainer \
     && update-ca-certificates \
-    && cd /tmp \
-    && wget https://github.com/apptainer/apptainer/releases/download/v1.3.3/apptainer_1.3.3_amd64.deb \
-    && apt install -y ./apptainer_1.3.3_amd64.deb \
     && apt-get dist-clean
 
 # Copy the python installation from the build stage
