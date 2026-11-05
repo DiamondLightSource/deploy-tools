@@ -1,13 +1,10 @@
 # The devcontainer should use the developer target and run as root with podman
 # or docker with user namespaces.
-FROM ghcr.io/diamondlightsource/ubuntu-devcontainer:noble AS developer
+FROM ghcr.io/diamondlightsource/ubuntu-devcontainer:resolute AS developer
 
 # Add any system dependencies for the developer/build environment here
 RUN apt-get update -y && apt-get install -y --no-install-recommends \
-    graphviz environment-modules wget file \
-    && cd /tmp \
-    && wget https://github.com/apptainer/apptainer/releases/download/v1.3.3/apptainer_1.3.3_amd64.deb \
-    && apt install -y ./apptainer_1.3.3_amd64.deb \
+    graphviz environment-modules wget file apptainer \
     && apt-get dist-clean
 
 # The build stage installs the context into the venv
@@ -27,15 +24,12 @@ RUN --mount=type=cache,target=/root/.cache/uv \
     uv sync --locked --no-editable --no-dev --managed-python
 
 # The runtime stage copies the built venv into a runtime container
-FROM ubuntu:noble AS runtime
+FROM ubuntu:resolute AS runtime
 
 # Add apt-get system dependecies for runtime here if needed
 RUN apt-get update -y && apt-get install -y --no-install-recommends \
-    graphviz environment-modules wget git ca-certificates file \
+    graphviz environment-modules wget git ca-certificates file apptainer \
     && update-ca-certificates \
-    && cd /tmp \
-    && wget https://github.com/apptainer/apptainer/releases/download/v1.3.3/apptainer_1.3.3_amd64.deb \
-    && apt install -y ./apptainer_1.3.3_amd64.deb \
     && apt-get dist-clean
 
 # Copy the python installation from the build stage

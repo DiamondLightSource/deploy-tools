@@ -55,6 +55,11 @@ GitHub = "https://github.com/DiamondLightSource/deploy-tools"
 email = "martin.gaughran@diamond.ac.uk"
 name = "Martin Gaughran"
 
+[tool.uv]
+# Minimum uv to fix eMudhra CA cert incident (see discuss.python.org/t/109576)
+required-version = ">=0.13.5"
+exclude-newer = "3 days"
+
 [tool.setuptools_scm]
 version_file = "src/deploy_tools/_version.py"
 
@@ -84,9 +89,6 @@ data_file = "/tmp/deploy_tools.coverage"
 [tool.coverage.paths]
 # Tests are run from installed location, map back to the src directory
 source = ["src", "**/site-packages/"]
-
-[tool.uv]
-exclude-newer = "3 days"
 
 [tool.tox]
 skipsdist = true
