@@ -1,0 +1,27 @@
+``deploy_tools.models.module``
+==============================
+        
+        
+        
+        
+
+.. automodule:: deploy_tools.models.module
+    :members:
+
+    
+    
+    
+
+    
+    
+    .. rubric:: Members
+
+    .. autosummary::
+        :nosignatures:
+    
+        EnvVar
+        Module
+        ModuleDependency
+        Release
+    
+    

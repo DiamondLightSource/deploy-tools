@@ -1,0 +1,23 @@
+``deploy_tools.models.binary_app``
+==================================
+        
+        
+
+.. automodule:: deploy_tools.models.binary_app
+    :members:
+
+    
+    
+    
+
+    
+    
+    .. rubric:: Members
+
+    .. autosummary::
+        :nosignatures:
+    
+        BinaryApp
+        HashType
+    
+    

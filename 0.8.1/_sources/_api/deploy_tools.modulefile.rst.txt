@@ -1,0 +1,29 @@
+``deploy_tools.modulefile``
+===========================
+        
+        
+        
+        
+        
+
+.. automodule:: deploy_tools.modulefile
+    :members:
+
+    
+    
+    
+
+    
+    
+    .. rubric:: Members
+
+    .. autosummary::
+        :nosignatures:
+    
+        apply_default_versions
+        deprecate_modulefile_link
+        get_default_modulefile_version
+        get_deployed_modulefile_versions
+        restore_modulefile_link
+    
+    
